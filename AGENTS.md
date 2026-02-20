@@ -1,0 +1,47 @@
+# Agent Context for entropy-guard
+
+A scratch repo with currently unknown deliverable that exists to track work on the general idea of entropy guards. An entropy guard is a meta-process, or part of a larger process that is designed to ensure that a system stays optimally orgnised after each iteration. Where an iteration could for example be a task performed by an AI agent.
+
+## Quick Links
+
+- [README.md](README.md) - Project overview
+- [TODO.md](TODO.md) - Active work
+- [DECISIONS.md](DECISIONS.md) - Key decisions
+- [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
+
+## Working Practices
+
+- **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
+- **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
+- **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
+- **Docs travel with code**: If a change affects how the project works, update the relevant docs in the same commit — not later
+- **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+- **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+- **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+
+## Project Constraints
+
+[Add constraints as they emerge - e.g., dependencies, patterns, non-obvious rules]
+
+## Key Files
+
+[Add critical file paths and their purposes as the project grows]
+
+## Commands
+
+[Add build, test, and run commands as they emerge]
+
+
+## Testing
+
+[Add test conventions and how to verify changes]
+
+## Maintaining These Docs
+
+When adding/removing source files or changing architecture, update:
+- The **Key Files** section above
+- Any affected sections in linked docs
+
+## Scaffolding Feedback
+
+This project was scaffolded by [seed](https://github.com/justinphilpott/seed). If you notice gaps in the scaffolding — missing template sections, working practices that don't fit, or ideas for improvement — see the `seed-feedback` skill in the skills/ directory.
