@@ -5,12 +5,17 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 ## Quick Links
 
 - [README.md](README.md) - Project overview
+- [INTENT.md](INTENT.md) - Living intent statement (north star)
+- [PHILOSOPHY.md](PHILOSOPHY.md) - Philosophical musings
 - [TODO.md](TODO.md) - Active work
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
+- [guards/](guards/) - Guard library
+- [skills/](skills/) - Skills
 
 ## Working Practices
 
+- **Run entropy-guard before committing**: After any meaningful work session, run `skills/entropy-guard.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches.
 - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
 - **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
 - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
@@ -18,6 +23,7 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
 - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
 - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
 
 ## Project Constraints
 
@@ -25,7 +31,11 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 
 ## Key Files
 
-[Add critical file paths and their purposes as the project grows]
+- [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
+- [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
+- [skills/entropy-guard.md](skills/entropy-guard.md) — mandatory pre-commit ritual; run after every meaningful work session
+- [skills/meta-guard.md](skills/meta-guard.md) — the meta-skill for analyzing systems and designing entropy guards
+- [guards/README.md](guards/README.md) — index and evaluation criteria for the guards library
 
 ## Commands
 
