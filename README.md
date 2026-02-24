@@ -18,7 +18,7 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 
 ## What this project does
 
-- **Develops and refines the meta-skill** ([skills/meta-guard.md](skills/meta-guard.md)) — a process for analyzing any system and designing an entropy guard appropriate to it
+- **Develops and refines the meta-skill** ([skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md)) — a process for analyzing any system and designing an entropy guard appropriate to it
 - **Maintains a library of guards** ([guards/](guards/)) — system-specific guard skill files developed and evaluated over time
 - **Records the thinking** — decisions, learnings, and philosophical reflections that emerge from the work
 - **Practices what it preaches** — this project runs [skills/entropy-guard.md](skills/entropy-guard.md) before every commit
@@ -33,7 +33,7 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form musings — humans and agents write here |
 | [guards/README.md](guards/README.md) | Guards library index and evaluation criteria |
 | [skills/entropy-guard.md](skills/entropy-guard.md) | The post-work micro-ritual; run before every commit |
-| [skills/meta-guard.md](skills/meta-guard.md) | Meta-skill for analyzing systems and designing guards |
+| [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) | Meta-skill for analyzing systems and designing guards |
 | [DECISIONS.md](DECISIONS.md) | Architectural decisions |
 | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries |
 | [AGENTS.md](AGENTS.md) | Working practices for contributors (human and AI) |
@@ -49,6 +49,6 @@ Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 3. Run [skills/entropy-guard.md](skills/entropy-guard.md) before committing
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
 
-To add a guard to the library: run [skills/meta-guard.md](skills/meta-guard.md) against a target system and follow the output instructions.
+To add a guard to the library: run [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) against a target system and follow the output instructions.
 
 To add a philosophical reflection: open [PHILOSOPHY.md](PHILOSOPHY.md) and write freely.

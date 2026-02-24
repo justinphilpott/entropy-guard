@@ -34,7 +34,7 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
 - [skills/entropy-guard.md](skills/entropy-guard.md) — mandatory pre-commit ritual; run after every meaningful work session
-- [skills/meta-guard.md](skills/meta-guard.md) — the meta-skill for analyzing systems and designing entropy guards
+- [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) — the meta-skill for analyzing systems and designing entropy guards
 - [guards/README.md](guards/README.md) — index and evaluation criteria for the guards library
 
 ## Commands

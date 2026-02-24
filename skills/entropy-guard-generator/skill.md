@@ -2,7 +2,7 @@
 
 Analyze a system and design an entropy guard appropriate for it. This skill produces a draft guard file ready for the guards/ library.
 
-> **Before you begin**: Read [INTENT.md](../INTENT.md). The intent statement defines what a guard should preserve and what it should not be. Use it as your reference throughout.
+> **Before you begin**: Read [INTENT.md](../../INTENT.md). The intent statement defines what a guard should preserve and what it should not be. Use it as your reference throughout.
 
 > **Status**: This is a living scaffold. The process below reflects current best thinking and will be refined as we apply it to real systems. Note what works and what doesn't in LEARNINGS.md.
 
@@ -68,7 +68,7 @@ If the standard entropy-guard already covers this system well, the answer may si
 
 ### Step 5: Consult INTENT.md
 
-Check your analysis against [INTENT.md](../INTENT.md):
+Check your analysis against [INTENT.md](../../INTENT.md):
 
 - Does the proposed guard preserve continuity of intent, internal consistency, accumulated knowledge, legibility, and honest state — where relevant to this system?
 - Is the proposed guard low-burden (2–10 minutes at the handoff point)?

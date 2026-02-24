@@ -2,7 +2,7 @@
 
 This directory contains entropy guard skill files for specific types of systems. Each guard is a targeted, low-burden ritual designed to preserve the coherence and intent of a particular kind of system across repeated iterations.
 
-New guards should be generated using the meta-skill: [skills/meta-guard.md](../skills/meta-guard.md)
+New guards should be generated using the meta-skill: [skills/entropy-guard-generator/skill.md](../skills/entropy-guard-generator/skill.md)
 
 ---
 
@@ -24,13 +24,13 @@ A guard in this library should satisfy these criteria:
 |-------|-------------|--------|
 | *(none yet)* | | |
 
-Guards are added as they are developed and evaluated. The first guards will likely emerge from running [meta-guard](../skills/meta-guard.md) against real systems.
+Guards are added as they are developed and evaluated. The first guards will likely emerge from running [meta-guard](../skills/entropy-guard-generator/skill.md) against real systems.
 
 ---
 
 ## How to add a guard
 
-1. Run `skills/meta-guard.md` against the target system
+1. Run `skills/entropy-guard-generator/skill.md` against the target system
 2. Review the proposed guard against the criteria above
 3. Save the resulting skill file here as `guards/<system-type>-guard.md`
 4. Add a row to the table above

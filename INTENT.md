@@ -43,7 +43,7 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ## What the meta-skill should achieve
 
-The meta-skill (`skills/meta-guard.md`) is a process for analyzing *any* system — codebase, document corpus, team process, collaborative AI workflow — and designing an appropriate entropy guard for it. A good output from the meta-skill:
+The meta-skill (`skills/entropy-guard-generator/skill.md`) is a process for analyzing *any* system — codebase, document corpus, team process, collaborative AI workflow — and designing an appropriate entropy guard for it. A good output from the meta-skill:
 
 - Identifies the highest-value entropy vectors for that specific system (not a generic checklist)
 - Proposes a guard that is proportionate to the system's complexity and iteration rate
