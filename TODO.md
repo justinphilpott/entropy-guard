@@ -8,8 +8,10 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Next Up
 
-- [ ] Fill in the Goal section in README.md — what are you validating?
+- [ ] Run distill-article skill against the current conversation (entropy vectors, enforcement depth, meta-skill design) — first real test of the skill
+- [ ] Test the entropy-guard-generator meta-skill against a real system with history
+- [ ] Explore domain-specific guard creation skills (documentation vs code as first two domains)
 
 ## Backlog
 
-[Keep tasks small and concrete — if one needs multiple commits, break it down]
+- [ ] Create `doc-health-check` skill (referenced in entropy-guard.md but doesn't exist yet)

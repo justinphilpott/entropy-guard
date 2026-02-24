@@ -20,7 +20,7 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 
 - **Develops and refines the meta-skill** ([skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md)) — a process for analyzing any system and designing an entropy guard appropriate to it
 - **Maintains a library of guards** ([guards/](guards/)) — system-specific guard skill files developed and evaluated over time
-- **Records the thinking** — decisions, learnings, and philosophical reflections that emerge from the work
+- **Records the thinking** — decisions, learnings, philosophical reflections, and [articles](articles/) distilled from project conversations
 - **Practices what it preaches** — this project runs [skills/entropy-guard.md](skills/entropy-guard.md) before every commit
 
 ---
@@ -36,6 +36,8 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 | [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) | Meta-skill for analyzing systems and designing guards |
 | [DECISIONS.md](DECISIONS.md) | Architectural decisions |
 | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries |
+| [articles/](articles/) | Substack-ready article drafts distilled from discussions |
+| [skills/distill-article/skill.md](skills/distill-article/skill.md) | Editorial skill for extracting publishable articles from conversations |
 | [AGENTS.md](AGENTS.md) | Working practices for contributors (human and AI) |
 
 ---

@@ -2,7 +2,7 @@
 
 > This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
 
-*Last revised: 2026-02-21 — initial seed draft*
+*Last revised: 2026-02-24 — added entropy dimensions, enforcement depth spectrum, and inter-domain drift (from discussion on making the project genuinely useful)*
 
 ---
 
@@ -17,6 +17,30 @@ In thermodynamics, entropy is the tendency of closed systems toward disorder. In
 - **Loss of self-awareness**: the system no longer knows what it is, what it decided, or why
 
 These forms of entropy are insidious because they compound. Each iteration that doesn't actively guard against drift makes the next iteration harder and less coherent.
+
+### Entropy dimensions
+
+An operational definition: **entropy is the effort required for a competent newcomer to accurately understand a system's current state, purpose, and design rationale — and to make a confident, correct change.** A low-entropy system explains itself. A high-entropy system requires archaeology.
+
+This can be assessed across five dimensions:
+
+1. **Intent entropy**: how much of the "why" has been lost? Can you explain the rationale for each major design choice without reverse-engineering it from code?
+2. **Consistency entropy**: how many patterns coexist for the same class of problem? How many conventions are violated?
+3. **Referential entropy**: how many cross-references, links, and names are stale or broken?
+4. **State entropy**: how much of the system's self-description is outdated? Does the system accurately represent its own condition?
+5. **Knowledge entropy**: how many learnings have been lost and will need to be rediscovered?
+
+Each dimension decays at a different rate and has a different recovery cost. **Guards should be prioritized by the product of decay rate and recovery cost.** Intent entropy decays slowly but is catastrophic to recover. Referential entropy decays fast but is cheap to fix — if caught within one iteration. Left for five iterations, it becomes archaeology.
+
+### Inter-domain drift
+
+Most real-world entropy shows up as drift *between* domains, not just within them. A system has three aspects that must stay in agreement:
+
+- **The map** (documentation) — what the system says it is
+- **The territory** (code/implementation) — what the system actually does
+- **The practice** (workflow) — how people actually use and change the system
+
+A guard that only checks internal consistency within one domain will miss the most damaging form of entropy: the map no longer matches the territory, or the stated practice no longer matches what people actually do.
 
 ---
 
@@ -38,6 +62,7 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 - **A blocker**: a guard that takes too long won't be run. Low burden is a design requirement, not a nice-to-have
 - **Opinionated about content**: a guard checks *coherence and completeness*, not whether the underlying decisions were wise
 - **Static**: guards themselves need to evolve as systems evolve. A guard that no longer fits the system is itself a source of entropy
+- **Always a skill file**: not all guards are checklists. Depending on the entropy vector, the right guard might be a linting rule, a CI check, an architectural constraint, or a type system invariant. Skill files are appropriate for judgment-requiring checks; mechanical checks should be embedded more deeply (see enforcement depth below)
 
 ---
 
@@ -51,6 +76,19 @@ The meta-skill (`skills/entropy-guard-generator/skill.md`) is a process for anal
 - Produces a guard file ready for the guards/ library, with rationale
 
 The meta-skill is itself subject to this project's entropy guard. It should be run on this project periodically.
+
+### Enforcement depth spectrum
+
+Not all guards should live at the same level. There is a spectrum of enforcement depth, and the meta-skill should map each identified entropy vector to the appropriate level:
+
+1. **External** (skill file, checklist) — relies on discipline; best for judgment-requiring checks like intent alignment
+2. **Prompted** (pre-commit hook, workflow reminder) — removes the need to remember; still requires judgment
+3. **Semi-embedded** (linting, CI checks, automated tests) — catches mechanical issues automatically; no discipline required
+4. **Fully embedded** (type system, schema constraints, architectural invariants) — certain entropy is structurally impossible
+
+Heuristic: **if you're relying on discipline for something that could be mechanically checked, that's a design smell.** Conversely, if you're trying to mechanically enforce something that requires judgment, you'll get false positives and people will learn to ignore the guard.
+
+The most mature form of a guard is when it becomes a behaviour of the system itself — the external skill file is scaffolding that can eventually be removed for entropy vectors that are mechanically checkable.
 
 ---
 

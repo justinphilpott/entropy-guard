@@ -1,6 +1,6 @@
 # Agent Context for entropy-guard
 
-A scratch repo with currently unknown deliverable that exists to track work on the general idea of entropy guards. An entropy guard is a meta-process, or part of a larger process that is designed to ensure that a system stays optimally orgnised after each iteration. Where an iteration could for example be a task performed by an AI agent.
+A collaborative research and development project exploring entropy guards — skills, rituals, and processes that keep iterated systems from drifting, losing coherence, or forgetting their purpose. See [INTENT.md](INTENT.md) for the full intent statement. Both humans and AI agents contribute here.
 
 ## Quick Links
 
@@ -11,6 +11,7 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
 - [guards/](guards/) - Guard library
+- [articles/](articles/) - Article drafts
 - [skills/](skills/) - Skills
 
 ## Working Practices
@@ -36,6 +37,8 @@ A scratch repo with currently unknown deliverable that exists to track work on t
 - [skills/entropy-guard.md](skills/entropy-guard.md) — mandatory pre-commit ritual; run after every meaningful work session
 - [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) — the meta-skill for analyzing systems and designing entropy guards
 - [guards/README.md](guards/README.md) — index and evaluation criteria for the guards library
+- [skills/distill-article/skill.md](skills/distill-article/skill.md) — editorial skill for distilling conversations into publishable articles
+- [articles/](articles/) — article drafts produced by the distill-article skill
 
 ## Commands
 
