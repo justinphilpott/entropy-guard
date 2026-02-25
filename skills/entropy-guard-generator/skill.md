@@ -1,6 +1,6 @@
-# Skill: Meta Guard
+# Skill: Entropy Guard Generator
 
-Analyze a system and design an entropy guard appropriate for it. This skill produces a draft guard file ready for the guards/ library.
+Analyze a system and design an entropy guard appropriate for it. This is the general-purpose generator; domain-specific variants (e.g. `docs-guard-generator.md`, `code-guard-generator.md`) live alongside this file and provide deeper, tailored analysis for specific system types.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md). The intent statement defines what a guard should preserve and what it should not be. Use it as your reference throughout.
 
@@ -12,7 +12,7 @@ Analyze a system and design an entropy guard appropriate for it. This skill prod
 
 - When you encounter a new system that undergoes repeated AI-assisted (or human) iteration and has no entropy guard
 - When asked to evaluate whether an existing system's guard is adequate
-- When an existing guard in guards/ feels stale or misaligned
+- When an existing guard feels stale or misaligned
 
 ## When NOT to Run
 
@@ -90,7 +90,7 @@ If the system is complex enough to need multiple guards (covering different aspe
 
 ### Step 7: Output
 
-Save the draft guard to `guards/<system-type>-guard.md`. Add it to the table in `guards/README.md`.
+Save the draft guard as a skill file in the target system's skills directory (e.g. `skills/<system-type>-guard.md`).
 
 Note in your output:
 - What the top entropy vectors were and why

@@ -73,7 +73,7 @@ The meta-skill (`skills/entropy-guard-generator/skill.md`) is a process for anal
 - Identifies the highest-value entropy vectors for that specific system (not a generic checklist)
 - Proposes a guard that is proportionate to the system's complexity and iteration rate
 - Acknowledges when multiple guards may be needed for complex systems
-- Produces a guard file ready for the guards/ library, with rationale
+- Produces a guard skill file ready to be placed in the target system, with rationale
 
 The meta-skill is itself subject to this project's entropy guard. It should be run on this project periodically.
 

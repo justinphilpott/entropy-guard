@@ -18,8 +18,7 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 
 ## What this project does
 
-- **Develops and refines the meta-skill** ([skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md)) — a process for analyzing any system and designing an entropy guard appropriate to it
-- **Maintains a library of guards** ([guards/](guards/)) — system-specific guard skill files developed and evaluated over time
+- **Develops and refines guard generator skills** ([skills/entropy-guard-generator/](skills/entropy-guard-generator/)) — a general-purpose meta-skill plus domain-specific variants for analyzing systems and designing entropy guards
 - **Records the thinking** — decisions, learnings, philosophical reflections, and [articles](articles/) distilled from project conversations
 - **Practices what it preaches** — this project runs [skills/entropy-guard.md](skills/entropy-guard.md) before every commit
 
@@ -31,9 +30,8 @@ See [INTENT.md](INTENT.md) for a more precise definition of what entropy means h
 |----------|---------|
 | [INTENT.md](INTENT.md) | Living intent statement — north star for all guard design |
 | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form musings — humans and agents write here |
-| [guards/README.md](guards/README.md) | Guards library index and evaluation criteria |
 | [skills/entropy-guard.md](skills/entropy-guard.md) | The post-work micro-ritual; run before every commit |
-| [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) | Meta-skill for analyzing systems and designing guards |
+| [skills/entropy-guard-generator/](skills/entropy-guard-generator/) | General + domain-specific guard generator skills |
 | [DECISIONS.md](DECISIONS.md) | Architectural decisions |
 | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries |
 | [articles/](articles/) | Substack-ready article drafts distilled from discussions |
@@ -51,6 +49,6 @@ Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 3. Run [skills/entropy-guard.md](skills/entropy-guard.md) before committing
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
 
-To add a guard to the library: run [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) against a target system and follow the output instructions.
+To generate a guard for a system: run the appropriate generator from [skills/entropy-guard-generator/](skills/entropy-guard-generator/) against the target system.
 
 To add a philosophical reflection: open [PHILOSOPHY.md](PHILOSOPHY.md) and write freely.

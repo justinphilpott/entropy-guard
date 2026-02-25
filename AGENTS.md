@@ -10,7 +10,6 @@ A collaborative research and development project exploring entropy guards — sk
 - [TODO.md](TODO.md) - Active work
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
-- [guards/](guards/) - Guard library
 - [articles/](articles/) - Article drafts
 - [skills/](skills/) - Skills
 
@@ -35,8 +34,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
 - [skills/entropy-guard.md](skills/entropy-guard.md) — mandatory pre-commit ritual; run after every meaningful work session
-- [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) — the meta-skill for analyzing systems and designing entropy guards
-- [guards/README.md](guards/README.md) — index and evaluation criteria for the guards library
+- [skills/entropy-guard-generator/skill.md](skills/entropy-guard-generator/skill.md) — the general-purpose meta-skill for analyzing systems and designing entropy guards
 - [skills/distill-article/skill.md](skills/distill-article/skill.md) — editorial skill for distilling conversations into publishable articles
 - [articles/](articles/) — article drafts produced by the distill-article skill
 

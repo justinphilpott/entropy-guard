@@ -8,10 +8,12 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Next Up
 
-- [ ] Run distill-article skill against the current conversation (entropy vectors, enforcement depth, meta-skill design) — first real test of the skill
-- [ ] Test the entropy-guard-generator meta-skill against a real system with history
-- [ ] Explore domain-specific guard creation skills (documentation vs code as first two domains)
+- [ ] Build `skills/entropy-guard-generator/docs-guard-generator.md` — a domain-specific guard generator for documentation systems. Should use interview-style prompting to deeply understand the system's documentation priorities before generating a guard. Very different analytical lens from code guards.
+- [ ] Test the general entropy-guard-generator against a real system with history
+- [ ] Review and edit article drafts in articles/ for Substack publication
 
 ## Backlog
 
+- [ ] Build `skills/entropy-guard-generator/code-guard-generator.md` — domain-specific for codebases
+- [ ] Consider other domain-specific generators (process/workflow, API contracts, etc.)
 - [ ] Create `doc-health-check` skill (referenced in entropy-guard.md but doesn't exist yet)
