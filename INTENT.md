@@ -66,16 +66,31 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ---
 
-## What the meta-skill should achieve
+## What the guard generator should achieve
 
-The meta-skill (`skills/entropy-guard-generator/skill.md`) is a process for analyzing *any* system — codebase, document corpus, team process, collaborative AI workflow — and designing an appropriate entropy guard for it. A good output from the meta-skill:
+The guard generator is a two-layer system. The entry point (`skills/entropy-guard-generator/README.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and routes to domain-specific generators that produce the actual guards. Domain generators (docs, test, code, API) live alongside the entry point and provide deep, domain-aware analysis.
 
-- Identifies the highest-value entropy vectors for that specific system (not a generic checklist)
-- Proposes a guard that is proportionate to the system's complexity and iteration rate
-- Acknowledges when multiple guards may be needed for complex systems
-- Produces a guard skill file ready to be placed in the target system, with rationale
+A good output from the guard generator:
 
-The meta-skill is itself subject to this project's entropy guard. It should be run on this project periodically.
+- Identifies which domains the system spans and which are highest-risk
+- Routes to the right domain-specific generators, providing cross-domain context
+- Produces guards that are proportionate to the system's complexity and iteration rate
+- Coordinates multiple guards so they don't overlap or leave gaps — especially at inter-domain boundaries
+- Each guard is a skill file ready to be placed in the target system, with rationale
+
+The guard generator is itself subject to this project's entropy guard. It should be run on this project periodically.
+
+### The guard lifecycle: three distinct tools
+
+A complete guard system involves three distinct tools that serve different purposes:
+
+1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. This is the entry point + domain generators described above.
+
+2. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
+
+3. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
+
+These three tools have different cadences: the generator runs once (or rarely), the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
 
 ### Enforcement depth spectrum
 

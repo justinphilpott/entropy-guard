@@ -1,6 +1,6 @@
 # Articles
 
-Rough drafts distilled from project conversations using the [distill-article](../skills/distill-article/skill.md) skill.
+Rough drafts distilled from project conversations using the [distill-article](../skills/distill-article/) skill.
 
 **Audience**: Senior developers, tech leads, AI/agentic practitioners, information systems researchers.
 
