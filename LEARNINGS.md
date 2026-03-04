@@ -18,9 +18,9 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 **Topic**: Guard generation methodology
 
-**Insight**: The docs-guard-generator assumes documentation is a "map" of some separate "territory" (code, infrastructure, etc.). But when the system *is* documentation — like this project — the map is the territory. Map/territory drift becomes internal consistency drift (do the docs agree with each other?), and coverage gaps become completeness gaps (are all concepts addressed?). The entropy vectors are the same in kind but different in what they point at.
-**Validated by**: Running the generator entry point against this project. The docs-guard-generator's framing needed mental adaptation at every step. The guard it produced was materially different from what a naive application of the template would give.
-**Implication**: Domain generators should acknowledge this special case explicitly. Systems where the artifact *is* the product (not a description of the product) need a note about how to adapt the analysis.
+**Insight**: The documentation domain analysis assumes documentation is a "map" of some separate "territory" (code, infrastructure, etc.). But when the system *is* documentation — like this project — the map is the territory. Map/territory drift becomes internal consistency drift (do the docs agree with each other?), and coverage gaps become completeness gaps (are all concepts addressed?). The entropy vectors are the same in kind but different in what they point at.
+**Validated by**: Running the assessment skill against this project. The documentation domain framing needed mental adaptation at every step. The guard it produced was materially different from what a naive application of the template would give.
+**Implication**: Domain analysis should acknowledge this special case explicitly. Systems where the artifact *is* the product (not a description of the product) need a note about how to adapt the analysis.
 
 ---
 

@@ -6,9 +6,9 @@ Record architectural choices so future you (and agents) understand why.
 
 ### Exportable skills vs local skills: skills/ and skills/local/
 
-**Context**: The project has two kinds of skills — ones designed for use by external projects (the guard generators) and ones generated for this repo's own use (entropy-guard, distill-article). Domain generators were previously files inside the entry point directory, but they're independently invocable skills in their own right.
-**Decision**: Exportable skills live directly under `skills/`. Local skills live under `skills/local/`. Domain generators are promoted to peer skills with their own directories. The entry point remains the recommended starting point, but each domain generator can be invoked directly.
-**Impact**: Clear structural distinction between what this project exports and what it uses internally. Domain generators are independently discoverable.
+**Context**: The project has two kinds of skills — ones designed for use by external projects (the assessment/generator skill) and ones for this repo's own use (e.g., entropy-guard).
+**Decision**: Exportable skills live directly under `skills/`. Local skills live under `skills/local/`.
+**Impact**: Clear structural distinction between what this project exports and what it uses internally.
 
 ---
 
@@ -30,6 +30,8 @@ Record architectural choices so future you (and agents) understand why.
 
 ### Two-layer generator architecture: entry point + domain generators
 
+*Superseded by "Consolidate domain generators into single skill" below.*
+
 **Context**: The general-purpose generator tried to both assess systems and produce guards. Domain-specific generators (docs, test, code, API) proved to have fundamentally different analytical lenses — different inventories, different entropy vectors, different enforcement depth stories. The general generator couldn't go deep enough on any domain.
 **Decision**: Refactor into a two-layer system. The entry point (`skills/entropy-assessment/SKILL.md`) assesses the system, identifies relevant domains, and routes to domain-specific generators. Domain generators produce the actual guards. The entry point coordinates outputs so guards don't overlap or leave gaps.
 **Impact**: Clean separation of concerns. Each domain generator can go deep. Cross-domain coordination happens at the entry point level. New domains can be added without modifying existing generators.
@@ -40,7 +42,7 @@ Record architectural choices so future you (and agents) understand why.
 
 **Context**: The entry point skill's primary value is assessment (Steps 1–4: establish intent, survey landscape, identify drift risks, recommend generators). Guard generation (Steps 5–8) is optional delegation to domain generators. But the name "generator" framed assessment as a means to an end rather than a first-class deliverable. Agents arriving cold didn't recognize this skill as the obvious start point for reviewing a system.
 **Decision**: Rename to `entropy-assessment`. Restructure the skill into two explicit phases: Phase 1 (Assessment, Steps 1–4) produces a standalone entropy profile; Phase 2 (Guard Generation, Steps 5–8) is optional. Add an assessment output format between the phases.
-**Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards. Domain generators keep their `*-guard-generator` names since they genuinely produce guard artifacts.
+**Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards.
 
 ---
 
@@ -52,8 +54,16 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
-### LEARNINGS.md stays tactical; articles capture conceptual work
+### Consolidate domain generators into single skill with domain appendices
+
+**Context**: The four domain generators (docs, code, test, API) were ~80% identical scaffolding — Steps 0–7 with the same structure, domain-adapted. The unique domain knowledge (entropy vectors, inventory items, checklist design guidance) accounted for ~20% of their content. The assessment skill's Phase 2 existed solely as a routing/coordination layer between the entry point and the generators. This meant an agent had to read 5 files to do what one file could accomplish. The insight from the two-layer decision — that domains need different analytical lenses — was correct, but the domain-specific knowledge turned out to be reference data, not separate processes.
+**Decision**: Fold all domain knowledge into the entropy-assessment skill as reference appendices (one per domain). Delete the four standalone generator skills. The assessment skill now handles both assessment (Phase 1) and generation (Phase 2) with built-in domain references. Supersedes "Two-layer generator architecture" and "Exportable skills vs local skills" (for the generator skills specifically — the distinction still applies to local skills like entropy-guard).
+**Impact**: One file to read instead of five. All domain knowledge preserved as structured appendices. No routing/coordination overhead. The "different analytical lenses" insight is preserved — the appendices provide domain-specific vectors, inventory items, and checklist guidance — but without duplicating the process scaffolding four times.
+
+---
+
+### LEARNINGS.md stays tactical; articles live elsewhere
 
 **Context**: Extended discussions produce two kinds of knowledge — tactical learnings (short, specific, validated) and conceptual frameworks (longer-form arguments and analyses). Needed to decide where each lives.
-**Decision**: LEARNINGS.md keeps its current format for tactical insights. Conceptual/intellectual work from conversations is captured via the distill-article skill into `articles/` as Substack-ready drafts. PHILOSOPHY.md remains for fragments and reflections that aren't structured enough for an article.
-**Impact**: Three containers with clear purposes — no ambiguity about where to put what.
+**Decision**: LEARNINGS.md keeps its current format for tactical insights. Conceptual/intellectual work from conversations is captured as article drafts in a separate [writing](https://github.com/justinphilpott/writing) repo. PHILOSOPHY.md remains for fragments and reflections that aren't structured enough for an article.
+**Impact**: Clean separation — entropy-guard stays focused on the skill and its supporting docs. Articles live in their own repo where they can be edited and published independently.

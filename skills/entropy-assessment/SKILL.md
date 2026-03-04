@@ -1,34 +1,25 @@
 ---
 name: entropy-assessment
-description: Assess any system for entropy risks. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, and produces an entropy profile with recommendations. Optionally continues to guard generation using domain-specific generators.
+description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, and can generate domain-specific guard artifacts — all in one skill.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
-# Skill: Entropy Assessment
+# Skill: Entropy Assessment & Guard Generation
 
-Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it coordinates domain-specific generators to do that.
+Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it continues into domain-specific analysis and guard design using built-in domain references.
 
 **Two phases, one skill:**
 - **Phase 1 (Steps 1–4): Assessment** — produces an entropy profile and recommendations. This is a complete, useful deliverable on its own.
-- **Phase 2 (Steps 5–8): Guard generation** — optional. Runs domain-specific generators to produce guard artifacts based on the assessment.
+- **Phase 2 (Steps 5–8): Guard generation** — optional. Analyzes each relevant domain in depth and produces guard artifacts.
 
-> **Before you begin**: Read [INTENT.md](../../INTENT.md) (from the [entropy-guard](https://github.com/justinphilpott/entropy-guard) project). The intent statement defines what a guard should preserve and what it should not be. Use it as your north star throughout.
+> **Key principles** (from [INTENT.md](../../INTENT.md)):
+> - A guard preserves five things: **continuity of intent**, **internal consistency**, **accumulated knowledge**, **legibility**, and **honest state**
+> - A guard is **delta-scoped** (what changed this iteration, not a full audit) and **low-burden** (2–10 minutes)
+> - Prioritize entropy vectors by **decay rate x recovery cost** — fast-decaying, cheap-to-fix problems (like link rot) need catching every iteration; slow-decaying, catastrophic-to-recover problems (like intent drift) need the most careful guarding
+> - **Enforcement depth spectrum**: External (skill file, relies on discipline) → Prompted (pre-commit hook, removes need to remember) → Semi-embedded (linting, CI, catches mechanically) → Fully embedded (type system, structurally impossible to violate). If you're relying on discipline for something that could be mechanically checked, that's a design smell.
 
-> **Status**: Living scaffold. The starting point for all entropy assessment and guard generation. Refine based on real use and note what works in LEARNINGS.md.
-
----
-
-## Domain-specific generators
-
-These live alongside this file and produce the actual guards:
-
-- [**docs-guard-generator**](../docs-guard-generator/SKILL.md) — documentation systems
-- [**test-guard-generator**](../test-guard-generator/SKILL.md) — test suites
-- [**code-guard-generator**](../code-guard-generator/SKILL.md) — codebases
-- [**api-guard-generator**](../api-guard-generator/SKILL.md) — API contracts
-
-Each generator has its own Step 0 (system inventory), domain-specific entropy vectors, and enforcement depth analysis. The assessment phase (Steps 1–4) determines which generators are relevant; the generation phase (Steps 5–8) runs them and coordinates their output.
+> **If you already know which domain needs a guard**: Skip Phase 1 and go directly to Phase 2. Pre-select your domain and use the relevant appendix.
 
 ---
 
@@ -38,12 +29,13 @@ Each generator has its own Step 0 (system inventory), domain-specific entropy ve
 - When you encounter a new system that undergoes repeated iteration and has no entropy guard
 - When asked to evaluate whether an existing system's guards are adequate
 - When an existing guard feels stale or misaligned and you need to reassess from scratch
+- When you want to generate guards for a system (continue through Phase 2)
 
 ## When NOT to Run
 
 - As a substitute for actually running an existing guard — if a guard exists, run it
 - For trivial one-off scripts or throwaway artifacts that won't be iterated
-- When you already know which domain generator to run — go directly to it
+- When the codebase needs a linter, not a guard — if the problems are formatting, syntax, or style, the answer is tooling, not a skill file
 
 ---
 
@@ -61,7 +53,7 @@ If you can't articulate what this system is for after investigation, stop. A gua
 
 ### Step 2: Assess the system landscape
 
-Survey the system at a high level to understand what it contains and how it's structured. You're not going deep yet — you're building a map to decide which domain generators are relevant.
+Survey the system at a high level to understand what it contains and how it's structured. You're not going deep yet — you're building a map to decide which domains need analysis.
 
 **What domains does this system span?**
 
@@ -85,42 +77,31 @@ Note whether different domains have different iteration patterns. Documentation 
 
 ### Step 3: Identify cross-domain drift risks
 
-Before routing to domain-specific generators, assess the **inter-domain drift** risks (from INTENT.md). These live in the gaps *between* domains and no single domain generator will catch them:
+Before diving into domain-specific analysis, assess the **inter-domain drift** risks. These live in the gaps *between* domains and no single domain analysis will catch them:
 
 - **Docs vs. implementation**: do the docs describe the current system, or a past version?
 - **Tests vs. implementation**: do the tests verify the current contract, or an old one?
 - **API spec vs. implementation**: does the spec match what the code actually does?
 - **Tests vs. docs**: do the documented behaviors have corresponding tests? Do tested behaviors appear in the docs?
 
-Note the most dangerous drift risks. These will inform how the domain generators coordinate — for example, the docs guard should cross-check against code, and the test guard should cross-check against the API contract.
+Note the most dangerous drift risks. These will inform how domain-specific guards coordinate — for example, a docs guard should cross-check against code, and a test guard should cross-check against the API contract.
 
-### Step 4: Select and sequence domain generators
+### Step 4: Prioritize domains for guard generation
 
-Based on Steps 2 and 3, decide which domain generators to run.
+Based on Steps 2 and 3, decide which domains warrant guards.
 
 **Selection criteria:**
 
-- Only run generators for domains that are present and will be iterated. Don't generate a test guard for a system with no tests and no plan to add them.
-- Prioritize by entropy risk. If docs/code drift is the biggest danger, run the docs generator first.
-- Consider whether the standard `entropy-guard` skill (the general post-work checklist in `skills/local/entropy-guard/SKILL.md`) already covers the system adequately. For simple systems with one domain, the standard guard may be enough. Note this explicitly rather than running generators unnecessarily.
+- Only analyze domains that are present and will be iterated. Don't generate a test guard for a system with no tests and no plan to add them.
+- Prioritize by entropy risk. If docs/code drift is the biggest danger, focus on docs first.
+- Consider whether a general-purpose post-work checklist already covers the system adequately. A general guard is a short checklist (5–10 items) covering decision capture, internal consistency, cross-references, and honest state — run before each commit. For simple systems with one domain, this may be enough. Note this explicitly rather than generating domain-specific guards unnecessarily.
 
-**Sequencing:**
-
-If running multiple generators, sequence them so each can build on the previous one's findings:
+**Sequencing (if generating guards for multiple domains):**
 
 1. **Code** first (if applicable) — establishes the architectural baseline that other domains reference
 2. **API contract** second (if applicable) — defines the contract surface that tests should verify and docs should describe
 3. **Tests** third (if applicable) — can reference the code architecture and API contract
 4. **Docs** last (if applicable) — can reference all of the above and check alignment across them
-
-This is a suggested order, not a requirement. Adapt to the system.
-
-**Coordination instructions:**
-
-When invoking each domain generator, provide it with:
-- The system intent summary from Step 1
-- The relevant cross-domain drift risks from Step 3
-- What the other generators are covering, so it can avoid overlap and include cross-domain checks where appropriate
 
 ### Assessment output
 
@@ -129,7 +110,7 @@ At this point you have a complete entropy assessment. Deliver it as a report:
 - **System intent summary** (from Step 1)
 - **Domain map** — which domains are present, their iteration patterns, cadence mismatches (from Step 2)
 - **Entropy risk profile** — top cross-domain drift risks, ranked by danger (from Step 3)
-- **Recommendations** — which domain generators to run (if any), in what order, and why. For simple systems, note if the standard entropy-guard checklist is sufficient (from Step 4)
+- **Recommendations** — which domains need guards (if any), in what order, and why. For simple systems, note if a general entropy-guard checklist is sufficient (from Step 4)
 - **Bootstrap actions** — anything the system needs before guards can work (e.g., write an intent statement, consolidate duplicate conventions)
 
 > **If your goal is assessment only, stop here.** The report above is a complete deliverable — it tells the system's maintainers where entropy is accumulating and what to do about it. Continue to Phase 2 only if you want to produce guard artifacts.
@@ -138,76 +119,87 @@ At this point you have a complete entropy assessment. Deliver it as a report:
 
 ## Phase 2: Guard Generation (optional)
 
-This phase takes the assessment from Phase 1 and produces concrete guard artifacts by running domain-specific generators. Only continue here if the goal is to produce guards, not just to assess.
+This phase takes the assessment from Phase 1 and produces concrete guard artifacts. For each domain prioritized in Step 4, work through Steps 5–8 using the domain reference appendices at the bottom of this file.
 
-### Step 5: Run the generators
+### Step 5: Domain inventory
 
-Run each selected domain generator in sequence. Each generator follows its own Steps 0–7 process and produces a draft guard.
+For each selected domain, inventory what exists before analyzing entropy. This prevents generating a guard that references artifacts that don't exist.
 
-As each generator completes, note:
-- What guard it produced
-- What entropy vectors it prioritized
-- What enforcement depth recommendations it made
-- What cross-domain checks it included
+**Catalogue what's present.** Consult the relevant domain appendix (A–D) for domain-specific inventory items. For each item, note whether it's present, absent, or stale.
 
-### Step 6: Coordinate the outputs
+**Classify gaps.** For each expected element that's missing, determine:
 
-After all generators have run, review the complete set of guards for coherence:
+- **Missing and needed** — the generated guard should include a bootstrap action (e.g., "write a 2-sentence intent statement before the first guard run")
+- **Missing and fine** — not every system needs every element. A small CLI tool doesn't need a tutorial site.
+- **Present but possibly stale** — exists but shows signs of age (dates, references to removed features, etc.)
 
-- **Overlap**: are any checks duplicated across guards? Consolidate — each check should live in exactly one guard.
-- **Gaps**: are there cross-domain drift risks from Step 3 that no guard covers? Add them to the most appropriate guard.
-- **Handoff alignment**: if guards run at different handoff points (e.g., code guard at PR merge, docs guard at release), are the cross-domain checks timed correctly? A docs/code drift check is useless if it runs before the code has been merged.
-- **Burden check**: will running all the guards together stay within the low-burden principle (total 2–10 minutes at each handoff point)? If not, consider consolidating or staggering.
-- **Bootstrap sequencing**: if multiple guards have bootstrap actions (from their Step 0 findings), what order should they be done in? Intent documentation first, then everything else.
+If there is no intent or strategy documentation for the domain at all, **flag this prominently**. A guard cannot check alignment with intent that was never articulated.
 
-### Step 7: Close the loop — integration and versioning
+### Step 6: Analyze domain entropy
 
-A guard that isn't integrated into the workflow is dead weight. This step ensures every guard produced actually gets run.
+For each selected domain, work through four analyses:
 
-**Integration plan:**
+**a. Understand the domain's purpose.** This is not "what does it contain?" — it's "what role does this domain play?" Who relies on it? What is the cost of it being wrong? Write a 2–4 sentence domain intent summary.
 
-For each guard, specify:
+**b. Map the iteration pattern.** When does this domain change? Who changes it? What triggers changes? What is the handoff point? Note the **lag pattern**: how much time typically passes between a change in one domain and the corresponding update in this one?
+
+**c. Identify entropy vectors.** Consult the relevant domain appendix (A–D) for domain-specific entropy vectors. Rank the top 3–5 by destructive potential for *this specific system*. The ranking should reflect the product of decay rate and recovery cost (see key principles above).
+
+**d. Assess existing quality mechanisms.** What does the system already have? For each existing mechanism, map it to the enforcement depth spectrum (see key principles above): External → Prompted → Semi-embedded → Fully embedded. Where is the system relying on discipline for something that could be mechanically enforced? Those are the highest-value recommendations. Consult the domain appendix for common mechanisms to look for.
+
+**Check before proceeding.** Verify your analysis preserves: continuity of intent, internal consistency, accumulated knowledge, legibility, honest state. Verify the proposed guard will be low-burden (2–10 minutes) and delta-scoped (what changed this iteration, not a full audit).
+
+### Step 7: Design the guard
+
+Write a draft guard as a **skill file** — a markdown file (typically `SKILL.md` in its own directory under `skills/`) containing a structured checklist that a contributor (human or AI) runs at a handoff point. For a reference example of a generated guard, see the [entropy-guard project's own guard](https://github.com/justinphilpott/entropy-guard/blob/main/skills/local/entropy-guard/SKILL.md).
+
+The guard should include:
+
+- **When to Run** — tied to the domain handoff point identified in Step 6b
+- **When NOT to Run** — scope boundaries
+- **Bootstrap checks** (if Step 5 identified critical gaps) — one-time actions to establish baselines before the recurring guard makes sense
+- **Checklist** — organized into two sections. Consult the relevant domain appendix (A–D) for domain-specific items:
+
+  **Judgment-requiring checks** (keep as skill-file items):
+  Items that require a human or AI to evaluate intent alignment, design coherence, and whether the right things are being guarded.
+
+  **Mechanically-assistable checks** (with enforcement depth recommendations):
+  Items where tooling could catch the issue. Each item should note its current enforcement level and recommend a target level with specific tool suggestions.
+
+- **Inter-domain drift check** — at least one item should explicitly verify consistency with other domains (e.g., "do the docs reflect the code change you just made?")
+- **Output** — what the contributor records after running
+- **Rationale** — why each check exists and what entropy vector it guards against
+- **Integration** — how this guard gets run (see Step 8)
+- **Versioning metadata** — when generated, for what system state (see Step 8)
+
+If generating guards for multiple domains, review the complete set for coherence: eliminate duplicated checks across guards, fill cross-domain gaps, verify handoff timing alignment, and confirm total burden stays within 2–10 minutes.
+
+### Step 8: Close the loop — integration and versioning
+
+A guard that isn't integrated into the workflow is dead weight.
+
+**Integration plan.** For each guard, specify:
 - **Trigger**: exactly when and how the guard runs. Options by enforcement depth:
   - *External*: contributor runs it manually (skill file instructions)
   - *Prompted*: pre-commit hook prints a reminder, PR template includes a checkbox
   - *Semi-embedded*: CI step runs the guard automatically, blocks merge if checks fail
   - *Fully embedded*: guard checks are structural (type system, schema validation) — no separate "run" needed
-- **Discovery**: how does a new contributor find out which guards exist? Recommend a manifest — a `guards/` directory, a section in AGENTS.md, or a guard-runner config file that lists all active guards.
-- **Execution**: if multiple guards exist, what order do they run in? Can they run in parallel, or do they depend on each other's output?
+- **Discovery**: how does a new contributor find out which guards exist? Recommend a manifest — a `guards/` directory, a section in AGENTS.md, or a guard-runner config file.
+- **Execution**: if multiple guards exist, what order do they run in? Can they run in parallel?
 
-The ideal integration is a **guard runner** — a wrapper (script, CI step, or skill) that:
-1. Discovers all guards registered for this system
-2. Runs them in the correct order at the correct handoff point
-3. Aggregates output into a single report
-4. Blocks commit/merge if any guard flags a critical issue
-
-If the target system doesn't have the infrastructure for a guard runner, the minimum viable integration is: add the guard to the contributor guide with "run before commit" instructions, and add a PR template checkbox.
-
-**Versioning:**
-
-Each generated guard should include metadata:
-- **Generated**: date and which generator version produced it
-- **Last evaluated**: date the guard was last regenerated or reviewed for fit
+**Versioning metadata.** Each generated guard should include:
+- **Generated**: date and which skill version produced it
+- **Last evaluated**: date the guard was last reviewed for fit
 - **System snapshot**: brief description of the system state when the guard was designed (so future evaluators can tell if the system has outgrown the guard)
 
-This enables a periodic health check: "was this guard designed for the system as it exists today, or for an older version?" A guard designed for a 3-file project may be inadequate for a 30-file project. The entry point can be re-run to evaluate whether existing guards need regeneration.
-
-### Step 8: Output
-
-Deliver the complete guard set to the target system. For each guard:
-- Save it as a skill file in the target system's skills directory
-- Include the versioning metadata (generated date, system snapshot)
-- Include integration instructions (trigger, discovery, execution)
-- Note its scope, handoff point, and relationship to other guards
-
-Provide a summary that includes:
+**Output summary.** Deliver the complete guard set with:
 - The system intent summary
-- Which domains were assessed and why
-- Which generators were run (and which were skipped, with reasoning)
+- Which domains were analyzed and why
 - The top cross-domain drift risks and which guards address them
 - Bootstrap actions needed before the guards can be run effectively (ordered)
-- **Integration plan**: how the guards will be triggered, discovered, and executed
-- **Versioning baseline**: the system snapshot so future evaluations can detect drift
+- Enforcement depth recommendations — which discipline-based checks should move to mechanical enforcement
+- Integration plan — how guards will be triggered, discovered, and executed
+- Versioning baseline — the system snapshot for future comparison
 - Any uncertainties or areas to revisit after real use
 
 ---
@@ -215,6 +207,165 @@ Provide a summary that includes:
 ## What This Is Not
 
 - A guard itself — the assessment diagnoses entropy risks, and the optional generation phase produces guards
-- A replacement for domain generators — this assesses and routes, the generators do the deep work
 - A one-size-fits-all template — the value is in system-specific assessment and targeted recommendations
+- A linter or style guide — if the problems are mechanical, the answer is tooling, not a guard
 - A finished product — the first version of any assessment or guard set should be treated as a hypothesis, validated by real use
+
+---
+
+## Domain Reference Appendices
+
+These appendices contain domain-specific knowledge used during Phase 2. Each covers: what to inventory, what entropy vectors to look for, how to split guard checks between judgment and mechanical enforcement, and what existing mechanisms to assess.
+
+---
+
+### Appendix A: Documentation
+
+> Use during Phase 2: **A.1** for Step 5 (inventory), **A.2** for Step 6c (entropy vectors), **A.3** for Step 7 (checklist design), **A.4** for Step 6d (existing mechanisms).
+
+#### A.1 Inventory items
+
+- **Intent/purpose documentation** — INTENT.md, README with a clear "why," architecture docs, design docs
+- **Doc types** — API reference, user guides, developer docs, tutorials, decision logs, changelogs, ADRs, runbooks, inline comments, README files
+- **Location pattern** — co-located with code (docs/, docstrings)? Separate site (wiki, Confluence, Notion)? Both? Scattered?
+- **Build/generation pipeline** — auto-generated docs? (typedoc, Sphinx, Storybook, etc.)
+- **Source of truth** — when docs and code disagree, which is correct? Is this stated or just cultural?
+
+#### A.2 Entropy vectors
+
+- **Map/territory drift** — docs describe the system as it was, not as it is. The most damaging doc entropy vector — readers build incorrect mental models and make wrong decisions.
+- **Coverage gaps** — features, APIs, configuration options, or workflows with no documentation at all. Often invisible because nobody notices what's not there.
+- **Audience confusion** — docs written for the wrong reader. Developer internals mixed with user-facing guides. Expert-level docs as the only onboarding path.
+- **Stale examples** — code samples, command examples, or screenshots that no longer work. Particularly dangerous because readers copy-paste them.
+- **Link rot** — internal cross-references that point to moved/deleted content, external links that 404.
+- **Structural decay** — docs grew organically without reorganization. The table of contents no longer reflects actual structure, related content is scattered.
+- **Terminology drift** — docs use names or terms the codebase has moved away from.
+- **Zombie content** — sections no longer relevant but never removed. They dilute trust in the rest of the docs.
+
+**Special case — documentation-as-system**: When the documentation *is* the product (not docs *about* a separate system), map/territory drift becomes internal consistency drift, and coverage gaps become completeness gaps. The entropy vectors are the same in kind but point inward.
+
+#### A.3 Checklist design guidance
+
+**Judgment-requiring**: map/territory alignment (do docs reflect current system?), audience appropriateness, structural coherence, intent alignment.
+
+**Mechanically-assistable**: link checking (→ CI step or linter), terminology consistency (→ search/replace tooling), stale example detection (→ doc test runner), orphaned page detection (→ build pipeline check).
+
+#### A.4 Existing mechanisms to assess
+
+Doc linters, link checkers, auto-generated docs from code, PR templates requiring doc updates, doc review as part of code review, scheduled doc audits. Note: auto-generated docs solve some entropy vectors but can create a false sense of coverage.
+
+---
+
+### Appendix B: Code
+
+> Use during Phase 2: **B.1** for Step 5, **B.2** for Step 6c, **B.3** for Step 7, **B.4** for Step 6d.
+
+#### B.1 Inventory items
+
+- **Intent/architecture documentation** — INTENT.md, architecture doc, design doc explaining *why* the code is structured this way
+- **Stated conventions** — contributing guide, style guide, conventions doc (documented or culturally transmitted?)
+- **Static analysis** — linters, formatters, type checkers (ESLint, Prettier, mypy, clippy, etc.). What rules? Custom rules?
+- **Type system usage** — structural (making invalid states unrepresentable) or cosmetic (annotating obvious types)?
+- **CI/CD pipeline** — what runs automatically? What gates exist before merge?
+- **Dependency management** — lockfile? Automated updates (Dependabot, Renovate)?
+- **Code organization** — directory structure, module boundaries, pattern for where new code goes
+
+#### B.2 Entropy vectors
+
+- **Pattern proliferation** — multiple approaches to the same class of problem coexist. Error handling done three ways. Data fetching done two ways. Each locally correct, globally incoherent. The most common code entropy vector and hardest to catch mechanically.
+- **Abstraction decay** — an abstraction created for a good reason persists after the need shifted. The name says one thing, the implementation does another. Newcomers build on a wrong mental model.
+- **Responsibility drift** — modules that started with a clear purpose accumulate unrelated responsibilities. The file is 800 lines and handles three concerns. Often visible as "this file is the junk drawer."
+- **Dependency rot** — not just outdated versions, but dependencies the project has outgrown, dependencies that overlap, dependencies whose API surface is barely used.
+- **Dead code accumulation** — commented-out code, unreachable branches, unused functions, always-on feature flags. Dead code misleads readers about what's active.
+- **Naming drift** — variables, functions, classes whose names no longer describe what they do. Often caused by scope expansion without rename.
+- **Convention erosion** — a convention wasn't enforced mechanically and was gradually violated until the convention is the minority pattern.
+- **Knowledge silos** — parts of the code only one person understands, not because they're complex, but because the design rationale was never externalized.
+
+#### B.3 Checklist design guidance
+
+**Judgment-requiring**: pattern consistency (does new code follow existing patterns or introduce a new approach?), abstraction fitness (do touched abstractions still accurately represent what they wrap?), responsibility coherence (does any file now handle responsibilities that don't belong together?), design intent alignment.
+
+**Mechanically-assistable**: dead code detection (→ static analysis), naming consistency (→ linter/naming rules), dependency hygiene (→ unused dependency tools), convention adherence (→ custom lint rules for each convention currently checked by discipline).
+
+#### B.4 Existing mechanisms to assess
+
+Linting (rules, custom rules, auto-fix), type checking (strict mode, coverage), code review process, ADRs, module boundary enforcement (no-restricted-imports, dependency-cruiser), CODEOWNERS, refactoring cadence.
+
+---
+
+### Appendix C: Tests
+
+> Use during Phase 2: **C.1** for Step 5, **C.2** for Step 6c, **C.3** for Step 7, **C.4** for Step 6d.
+
+#### C.1 Inventory items
+
+- **Testing philosophy/strategy** — documented approach? Contributing guide with test expectations?
+- **Test types** — unit, integration, e2e, property-based, snapshot, performance, contract, smoke, acceptance, visual regression
+- **Test infrastructure** — framework, runner, CI integration (Jest, pytest, Go test, Vitest, etc.)
+- **Coverage tooling** — measured? What tool? Coverage gate?
+- **Test data management** — fixtures, factories, builders, mocks, stubs, seeded databases, recorded HTTP responses
+- **Test organization** — mirror source tree? Grouped by feature? By test type?
+- **Mutation testing or test quality tools** — anything that tests the tests? (Stryker, mutmut, pit, etc.)
+
+#### C.2 Entropy vectors
+
+- **Assertion rot** — tests assert on stale values, implementation details rather than behavior, or have assertions so weak they'd pass on broken code. The test is green but proves nothing.
+- **Coverage theater** — high coverage numbers masking untested critical paths. 90% line coverage that misses error handling and edge cases. Coverage as vanity metric rather than confidence signal.
+- **Intent drift** — tests that once verified meaningful behavior now verify incidental implementation details. The test still passes, but what it proves is no longer what matters.
+- **Fixture staleness** — test data, mocks, and recorded responses that no longer resemble real-world inputs. Tests pass against fictional data.
+- **Test/system contract divergence** — the system's contract has evolved but the test suite still guards the old contract. New promises are unverified; old promises are over-guarded.
+- **Redundancy accumulation** — multiple tests verify the same thing (from different eras), while new behavior has no tests at all. Test count grows but test value doesn't.
+- **Flaky test erosion** — intermittently failing tests that train the team to ignore failures. Signal-to-noise ratio degrades.
+- **Mock drift** — mocked dependencies that no longer behave like the real thing. Tests verify behavior against a fiction.
+
+#### C.3 Checklist design guidance
+
+**Judgment-requiring**: intent drift (are tests testing the right things?), test/system contract alignment (does the suite guard current promises?), test meaningfulness (would deleting a random test file matter?).
+
+**Mechanically-assistable**: assertion strength (→ mutation testing), coverage quality (→ branch coverage + mutation testing), fixture freshness (→ contract tests, recorded response expiration), flaky test detection (→ quarantine tooling), redundancy detection (→ test impact analysis).
+
+Test entropy is uniquely amenable to deeper enforcement. For each vector, explicitly note whether it can be mechanized.
+
+#### C.4 Existing mechanisms to assess
+
+Coverage thresholds/gates, mutation testing, test impact analysis, flaky test detection/quarantine, test review as part of code review, test performance monitoring, contract testing between services, snapshot update review.
+
+---
+
+### Appendix D: API Contracts
+
+> Use during Phase 2: **D.1** for Step 5, **D.2** for Step 6c, **D.3** for Step 7, **D.4** for Step 6d.
+
+#### D.1 Inventory items
+
+- **API specification** — OpenAPI/Swagger, GraphQL schema, protobuf, JSON Schema? Generated from code or hand-maintained?
+- **Contract consumers** — who calls this API? (Internal services, external customers, mobile apps, third-party integrations) How many? Can you enumerate them?
+- **Versioning strategy** — URL path, header, query param, no versioning? How many active versions? Deprecation policy?
+- **Contract testing** — tests verifying API behaves according to spec? (Pact, Dredd, Schemathesis) Do consumers contribute expectations?
+- **Change communication** — how are API changes communicated? (Changelog, migration guide, they find out when things break)
+- **Error contract** — consistent error response format? Documented? Actually followed across all endpoints?
+
+**The contract triangle**: Every API has three aspects that can disagree: (1) the spec — what the API says it does, (2) the implementation — what it actually does, (3) client expectations — what consumers believe and depend on. Note which exist, which are explicit, and where you suspect disagreement.
+
+#### D.2 Entropy vectors
+
+- **Spec/implementation divergence** — the spec says one thing, the code does another. Clients trusting the spec build broken integrations. Can go both directions: spec documents removed behavior, or implementation has undocumented behavior.
+- **Implicit contract expansion** — clients depend on behavior that was never promised: response field ordering, undocumented fields, timing characteristics, error message text. The API's *actual* contract is larger than its *documented* contract. Uniquely an API problem — no analog in other domains.
+- **Error contract inconsistency** — different endpoints return errors in different formats. Each locally reasonable, collectively making client-side error handling brittle.
+- **Versioning entropy** — multiple versions with unclear support status. v1 "deprecated" but still serving traffic. Deprecation timelines slipping.
+- **Authentication/authorization drift** — auth model evolved but not all endpoints reflect the current model. Auth documentation lags auth implementation.
+- **Cross-service contract drift** — in multi-service architectures, service A's expectations of service B are based on an old version. The contract between services is implicit rather than explicit.
+- **Documentation decay** — API docs no longer match the current API. Higher stakes than general doc decay because consumers programmatically depend on accuracy.
+- **Deprecation zombies** — endpoints, fields, or parameters marked deprecated but never removed. Consumers continue using them. The deprecation label becomes noise.
+
+#### D.3 Checklist design guidance
+
+**Judgment-requiring**: contract intent alignment (does this change serve the stability promise?), implicit contract awareness (does this alter undocumented behavior clients might depend on?), versioning coherence (is the version lifecycle still coherent?), consumer impact assessment (who is affected and do they know?).
+
+**Mechanically-assistable**: spec/implementation sync (→ schema validation in CI, generated stubs), error format consistency (→ response validation middleware), breaking change detection (→ automated spec diffing), deprecation tracking (→ usage analytics on deprecated endpoints), auth consistency (→ auth middleware validation).
+
+API entropy has the strongest mechanical enforcement story of any domain. Lean into this.
+
+#### D.4 Existing mechanisms to assess
+
+API specification (auto-generated or hand-maintained?), contract testing (consumer-driven, provider-driven, both?), schema validation in CI, breaking change detection, consumer communication channels, API review process, rate limiting/monitoring/usage analytics, client SDK generation from spec.

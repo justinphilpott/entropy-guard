@@ -33,14 +33,12 @@ then assess [your project path] for entropy risks.
 
 The assessment walks through intent, domain mapping, drift analysis, and recommendations. It produces a standalone entropy report — useful on its own for understanding where a system is drifting.
 
-**To generate guards**: if you want to go further, the assessment continues into guard generation — running domain-specific generators that produce guard skill files you place in your project's skills directory.
+**To generate guards**: if you want to go further, the assessment continues into guard generation — producing domain-specific guard skill files you place in your project's skills directory.
 
 ```
 Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
 then assess [your project path] and generate entropy guards.
 ```
-
-If you already know which domain you need, you can go directly to a domain generator: [docs](skills/docs-guard-generator/), [code](skills/code-guard-generator/), [test](skills/test-guard-generator/), [API](skills/api-guard-generator/).
 
 ### Use it as a reference in discussions
 
@@ -48,7 +46,6 @@ Point an agent at this repo when discussing system quality, documentation drift,
 
 Key starting points:
 - [INTENT.md](INTENT.md) — the five entropy dimensions, enforcement depth spectrum, inter-domain drift model
-- [articles/](articles/) — accessible write-ups on specific concepts (guard integration, dogfooding, Step Zero, map-as-territory)
 - [LEARNINGS.md](LEARNINGS.md) — validated insights from applying these ideas to real systems
 
 ### Adapt the project's own guard
@@ -63,18 +60,13 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, optionally generates guards |
-| [docs-guard-generator/](skills/docs-guard-generator/) | Generate guards for documentation systems |
-| [code-guard-generator/](skills/code-guard-generator/) | Generate guards for codebases |
-| [test-guard-generator/](skills/test-guard-generator/) | Generate guards for test suites |
-| [api-guard-generator/](skills/api-guard-generator/) | Generate guards for API contracts |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, and generates domain-specific guards (docs, code, tests, API) |
 
 ### Skills (local to this project)
 
 | Skill | Purpose |
 |-------|---------|
 | [entropy-guard/](skills/local/entropy-guard/) | Post-work micro-ritual — a reference example of generator output |
-| [distill-article/](skills/local/distill-article/) | Editorial skill for extracting articles from project conversations |
 
 ### Frameworks and thinking
 
@@ -82,7 +74,6 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 |----------|---------|
 | [INTENT.md](INTENT.md) | Living intent statement — entropy dimensions, enforcement depth, inter-domain drift |
 | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form reflections on entropy, self-awareness, and system design |
-| [articles/](articles/) | Article drafts distilled from project discussions |
 | [DECISIONS.md](DECISIONS.md) | Architectural decisions with context and rationale |
 | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries from building and using guards |
 
@@ -97,7 +88,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 ## Project status
 
-Actively evolving. The generator has been used against this project itself (dogfooding) and the guard it produced is in daily use. The domain generators (docs, code, test, API) are complete and ready for use against external systems. The full multi-domain pipeline is next to be validated.
+Actively evolving. The assessment skill has been used against this project itself (dogfooding) and the guard it produced is in daily use. Domain-specific knowledge for docs, code, test, and API guards is built into the skill as reference appendices.
 
 See [TODO.md](TODO.md) for current priorities.
 
