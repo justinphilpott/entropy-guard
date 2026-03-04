@@ -1,6 +1,8 @@
 ---
 name: distill-article
 description: Extract intellectual work from project conversations and produce Substack-ready article drafts. Proposes article angles before drafting. Target audience is senior developers, tech leads, and AI practitioners.
+metadata:
+  version: "0.1.0"
 ---
 
 # Skill: Distill Article

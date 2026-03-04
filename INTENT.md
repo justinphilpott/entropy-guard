@@ -68,7 +68,7 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ## What the guard generator should achieve
 
-The guard generator is a two-layer system. The entry point (`skills/entropy-guard-generator/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and routes to domain-specific generators that produce the actual guards. Domain generators (docs, test, code, API) are peer skills under `skills/` and provide deep, domain-aware analysis.
+The system is a two-layer architecture. The entry point (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally route to domain-specific generators that produce the actual guards. Domain generators (docs, test, code, API) are peer skills under `skills/` and provide deep, domain-aware analysis.
 
 A good output from the guard generator:
 

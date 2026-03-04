@@ -44,4 +44,10 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
-[Add your learnings grouped by topic]
+### Naming shapes discoverability more than content does
+
+**Topic**: Skill design
+
+**Insight**: The entropy-guard-generator skill already contained a full system assessment (Steps 1–4) that produced a useful standalone deliverable. But an agent arriving cold didn't recognize it as the start point for reviewing a system — the name "generator" framed assessment as a precursor to generation, not as a first-class output. Renaming to `entropy-assessment` and adding an explicit assessment output format made the same content dramatically more discoverable.
+**Validated by**: A fresh-session agent assessed the project and recommended creating a new assessment skill, not realizing the existing generator already did exactly that. The capability was there; the framing hid it.
+**Implication**: When a skill serves multiple purposes, name it after the most common entry use case, not the most complex one. Users and agents form expectations from names before reading content.

@@ -31,8 +31,16 @@ Record architectural choices so future you (and agents) understand why.
 ### Two-layer generator architecture: entry point + domain generators
 
 **Context**: The general-purpose generator tried to both assess systems and produce guards. Domain-specific generators (docs, test, code, API) proved to have fundamentally different analytical lenses — different inventories, different entropy vectors, different enforcement depth stories. The general generator couldn't go deep enough on any domain.
-**Decision**: Refactor into a two-layer system. The entry point (`skills/entropy-guard-generator/SKILL.md`) assesses the system, identifies relevant domains, and routes to domain-specific generators. Domain generators produce the actual guards. The entry point coordinates outputs so guards don't overlap or leave gaps.
+**Decision**: Refactor into a two-layer system. The entry point (`skills/entropy-assessment/SKILL.md`) assesses the system, identifies relevant domains, and routes to domain-specific generators. Domain generators produce the actual guards. The entry point coordinates outputs so guards don't overlap or leave gaps.
 **Impact**: Clean separation of concerns. Each domain generator can go deep. Cross-domain coordination happens at the entry point level. New domains can be added without modifying existing generators.
+
+---
+
+### Rename entry point from entropy-guard-generator to entropy-assessment
+
+**Context**: The entry point skill's primary value is assessment (Steps 1–4: establish intent, survey landscape, identify drift risks, recommend generators). Guard generation (Steps 5–8) is optional delegation to domain generators. But the name "generator" framed assessment as a means to an end rather than a first-class deliverable. Agents arriving cold didn't recognize this skill as the obvious start point for reviewing a system.
+**Decision**: Rename to `entropy-assessment`. Restructure the skill into two explicit phases: Phase 1 (Assessment, Steps 1–4) produces a standalone entropy profile; Phase 2 (Guard Generation, Steps 5–8) is optional. Add an assessment output format between the phases.
+**Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards. Domain generators keep their `*-guard-generator` names since they genuinely produce guard artifacts.
 
 ---
 

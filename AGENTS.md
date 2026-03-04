@@ -34,7 +34,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
-- [skills/entropy-guard-generator/](skills/entropy-guard-generator/) — entry point for evaluating systems and routing to domain-specific guard generators
+- [skills/entropy-assessment/](skills/entropy-assessment/) — start here to assess a system's entropy risks and optionally generate guards
 - [skills/docs-guard-generator/](skills/docs-guard-generator/), [code](skills/code-guard-generator/), [test](skills/test-guard-generator/), [API](skills/api-guard-generator/) — domain-specific guard generators
 - [skills/local/distill-article/](skills/local/distill-article/) — editorial skill for distilling conversations into publishable articles
 - [articles/](articles/) — article drafts produced by the distill-article skill

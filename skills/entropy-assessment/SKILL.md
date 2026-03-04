@@ -1,15 +1,21 @@
 ---
-name: entropy-guard-generator
-description: Assess any system for entropy risks and route to domain-specific guard generators. Start here when you don't know which guards a project needs — this skill inventories the system, identifies relevant domains (docs, code, test, API), and coordinates guard generation.
+name: entropy-assessment
+description: Assess any system for entropy risks. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, and produces an entropy profile with recommendations. Optionally continues to guard generation using domain-specific generators.
+metadata:
+  version: "0.2.0"
 ---
 
-# Skill: Entropy Guard Generator
+# Skill: Entropy Assessment
 
-The entry point for designing entropy guards for any system. This skill assesses a system, identifies which domains are relevant, and routes to the appropriate domain-specific generators. It does not produce guards directly — the domain generators do that.
+Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it coordinates domain-specific generators to do that.
+
+**Two phases, one skill:**
+- **Phase 1 (Steps 1–4): Assessment** — produces an entropy profile and recommendations. This is a complete, useful deliverable on its own.
+- **Phase 2 (Steps 5–8): Guard generation** — optional. Runs domain-specific generators to produce guard artifacts based on the assessment.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md) (from the [entropy-guard](https://github.com/justinphilpott/entropy-guard) project). The intent statement defines what a guard should preserve and what it should not be. Use it as your north star throughout.
 
-> **Status**: Living scaffold. This is the starting point for all guard generation. Refine based on real use and note what works in LEARNINGS.md.
+> **Status**: Living scaffold. The starting point for all entropy assessment and guard generation. Refine based on real use and note what works in LEARNINGS.md.
 
 ---
 
@@ -22,12 +28,13 @@ These live alongside this file and produce the actual guards:
 - [**code-guard-generator**](../code-guard-generator/SKILL.md) — codebases
 - [**api-guard-generator**](../api-guard-generator/SKILL.md) — API contracts
 
-Each generator has its own Step 0 (system inventory), domain-specific entropy vectors, and enforcement depth analysis. This skill determines which generators to run and coordinates their output.
+Each generator has its own Step 0 (system inventory), domain-specific entropy vectors, and enforcement depth analysis. The assessment phase (Steps 1–4) determines which generators are relevant; the generation phase (Steps 5–8) runs them and coordinates their output.
 
 ---
 
 ## When to Run
 
+- When you want to understand a system's entropy risks (assessment only — stop after Step 4)
 - When you encounter a new system that undergoes repeated iteration and has no entropy guard
 - When asked to evaluate whether an existing system's guards are adequate
 - When an existing guard feels stale or misaligned and you need to reassess from scratch
@@ -40,7 +47,7 @@ Each generator has its own Step 0 (system inventory), domain-specific entropy ve
 
 ---
 
-## The Process
+## Phase 1: Assessment
 
 ### Step 1: Establish system intent
 
@@ -114,6 +121,24 @@ When invoking each domain generator, provide it with:
 - The system intent summary from Step 1
 - The relevant cross-domain drift risks from Step 3
 - What the other generators are covering, so it can avoid overlap and include cross-domain checks where appropriate
+
+### Assessment output
+
+At this point you have a complete entropy assessment. Deliver it as a report:
+
+- **System intent summary** (from Step 1)
+- **Domain map** — which domains are present, their iteration patterns, cadence mismatches (from Step 2)
+- **Entropy risk profile** — top cross-domain drift risks, ranked by danger (from Step 3)
+- **Recommendations** — which domain generators to run (if any), in what order, and why. For simple systems, note if the standard entropy-guard checklist is sufficient (from Step 4)
+- **Bootstrap actions** — anything the system needs before guards can work (e.g., write an intent statement, consolidate duplicate conventions)
+
+> **If your goal is assessment only, stop here.** The report above is a complete deliverable — it tells the system's maintainers where entropy is accumulating and what to do about it. Continue to Phase 2 only if you want to produce guard artifacts.
+
+---
+
+## Phase 2: Guard Generation (optional)
+
+This phase takes the assessment from Phase 1 and produces concrete guard artifacts by running domain-specific generators. Only continue here if the goal is to produce guards, not just to assess.
 
 ### Step 5: Run the generators
 
@@ -189,7 +214,7 @@ Provide a summary that includes:
 
 ## What This Is Not
 
-- A guard itself — this produces guards, it doesn't run them
+- A guard itself — the assessment diagnoses entropy risks, and the optional generation phase produces guards
 - A replacement for domain generators — this assesses and routes, the generators do the deep work
-- A one-size-fits-all template — the value is in system-specific assessment and targeted routing
-- A finished product — the first version of any guard set should be treated as a hypothesis, validated by actually running the guards
+- A one-size-fits-all template — the value is in system-specific assessment and targeted recommendations
+- A finished product — the first version of any assessment or guard set should be treated as a hypothesis, validated by real use

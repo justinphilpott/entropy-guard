@@ -1,11 +1,13 @@
 ---
 name: docs-guard-generator
-description: Analyze a documentation system and design an entropy guard for it. Identifies map/territory drift, coverage gaps, link rot, stale examples, and terminology drift. Use directly when you know the target is documentation, or via the entropy-guard-generator entry point.
+description: Analyze a documentation system and design an entropy guard for it. Identifies map/territory drift, coverage gaps, link rot, stale examples, and terminology drift. Use directly when you know the target is documentation, or via the entropy-assessment entry point.
+metadata:
+  version: "0.1.0"
 ---
 
 # Skill: Documentation Guard Generator
 
-Analyze a documentation system and design an entropy guard appropriate for it. This is a domain-specific variant of the [general entropy guard generator](../entropy-guard-generator/SKILL.md), tuned for the ways documentation uniquely decays.
+Analyze a documentation system and design an entropy guard appropriate for it. This is a domain-specific variant of the [entropy assessment](../entropy-assessment/SKILL.md) skill, tuned for the ways documentation uniquely decays.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md). Pay particular attention to the section on **inter-domain drift** — documentation entropy is fundamentally about the map diverging from the territory.
 

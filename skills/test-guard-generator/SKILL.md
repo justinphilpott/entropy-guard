@@ -1,11 +1,13 @@
 ---
 name: test-guard-generator
-description: Analyze a test suite and design an entropy guard for it. Detects assertion rot, coverage theater, intent drift, and fixture staleness. Maps mechanizable vs judgment-requiring checks. Use directly when you know the target is tests, or via the entropy-guard-generator entry point.
+description: Analyze a test suite and design an entropy guard for it. Detects assertion rot, coverage theater, intent drift, and fixture staleness. Maps mechanizable vs judgment-requiring checks. Use directly when you know the target is tests, or via the entropy-assessment entry point.
+metadata:
+  version: "0.1.0"
 ---
 
 # Skill: Test Suite Guard Generator
 
-Analyze a test suite and design an entropy guard appropriate for it. This is a domain-specific variant of the [general entropy guard generator](../entropy-guard-generator/SKILL.md), tuned for the ways test suites uniquely decay.
+Analyze a test suite and design an entropy guard appropriate for it. This is a domain-specific variant of the [entropy assessment](../entropy-assessment/SKILL.md) skill, tuned for the ways test suites uniquely decay.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md). Pay particular attention to the **enforcement depth spectrum** — test entropy is uniquely suited to mechanical enforcement, and a good test guard should recommend the right depth for each vector.
 

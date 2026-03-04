@@ -18,20 +18,27 @@ See [INTENT.md](INTENT.md) for a precise definition of what entropy means here a
 
 ## How to use this repo
 
-### Evaluate a project and generate guards
+### Assess a system for entropy risks
 
-The primary export of this repo. The [entropy guard generator](skills/entropy-guard-generator/) is the entry point — it first evaluates your system (inventories what exists, identifies which domains are at risk, surfaces cross-domain drift), then helps you decide which guards would be useful before generating them.
+The primary export of this repo. The [entropy assessment](skills/entropy-assessment/) skill is the start point — it inventories your system, identifies which domains are at risk, surfaces cross-domain drift, and produces an entropy profile with recommendations.
 
-You don't need to know what guards you want upfront. The generator figures that out with you.
+You don't need to know what guards you want upfront. The assessment figures that out with you.
 
-**To run it**: point an AI agent at the generator skill and your target project.
+**To assess a system**: point an AI agent at the assessment skill and your target project.
 
 ```
-Read skills/entropy-guard-generator/SKILL.md from the entropy-guard repo,
-then run it against [your project path].
+Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
+then assess [your project path] for entropy risks.
 ```
 
-The generator walks through assessment, domain selection, and guard design. It produces guard skill files you place in your project's skills directory — each with what to check, when to run it, and how to integrate it into your workflow.
+The assessment walks through intent, domain mapping, drift analysis, and recommendations. It produces a standalone entropy report — useful on its own for understanding where a system is drifting.
+
+**To generate guards**: if you want to go further, the assessment continues into guard generation — running domain-specific generators that produce guard skill files you place in your project's skills directory.
+
+```
+Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
+then assess [your project path] and generate entropy guards.
+```
 
 If you already know which domain you need, you can go directly to a domain generator: [docs](skills/docs-guard-generator/), [code](skills/code-guard-generator/), [test](skills/test-guard-generator/), [API](skills/api-guard-generator/).
 
@@ -56,7 +63,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-guard-generator/](skills/entropy-guard-generator/) | Entry point — assesses systems, identifies domains, routes to generators |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, optionally generates guards |
 | [docs-guard-generator/](skills/docs-guard-generator/) | Generate guards for documentation systems |
 | [code-guard-generator/](skills/code-guard-generator/) | Generate guards for codebases |
 | [test-guard-generator/](skills/test-guard-generator/) | Generate guards for test suites |

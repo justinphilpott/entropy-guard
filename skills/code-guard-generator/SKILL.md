@@ -1,11 +1,13 @@
 ---
 name: code-guard-generator
-description: Analyze a codebase and design an entropy guard for it. Identifies pattern proliferation, abstraction decay, responsibility drift, and naming drift. Maps each entropy vector to the appropriate enforcement depth. Use directly when you know the target is code, or via the entropy-guard-generator entry point.
+description: Analyze a codebase and design an entropy guard for it. Identifies pattern proliferation, abstraction decay, responsibility drift, and naming drift. Maps each entropy vector to the appropriate enforcement depth. Use directly when you know the target is code, or via the entropy-assessment entry point.
+metadata:
+  version: "0.1.0"
 ---
 
 # Skill: Code Guard Generator
 
-Analyze a codebase and design an entropy guard appropriate for it. This is a domain-specific variant of the [general entropy guard generator](../entropy-guard-generator/SKILL.md), tuned for the ways codebases uniquely decay.
+Analyze a codebase and design an entropy guard appropriate for it. This is a domain-specific variant of the [entropy assessment](../entropy-assessment/SKILL.md) skill, tuned for the ways codebases uniquely decay.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md). Code entropy is where the enforcement depth spectrum matters most — much of what degrades in code *can* be mechanically enforced, and the generator should be explicit about what should be a skill-file check vs a linter rule vs a type constraint.
 
