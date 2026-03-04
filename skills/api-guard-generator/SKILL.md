@@ -1,6 +1,11 @@
+---
+name: api-guard-generator
+description: Analyze an API and design an entropy guard for it. Assesses the contract triangle (spec vs implementation vs client expectations), error consistency, and versioning entropy. Use directly when you know the target is an API, or via the entropy-guard-generator entry point.
+---
+
 # Skill: API Contract Guard Generator
 
-Analyze an API and design an entropy guard appropriate for it. This is a domain-specific variant of the [general entropy guard generator](README.md), tuned for the ways API contracts uniquely decay.
+Analyze an API and design an entropy guard appropriate for it. This is a domain-specific variant of the [general entropy guard generator](../entropy-guard-generator/SKILL.md), tuned for the ways API contracts uniquely decay.
 
 > **Before you begin**: Read [INTENT.md](../../INTENT.md). API entropy is distinctive because it is **externalized** — your drift becomes someone else's broken system. The inter-domain drift concept from INTENT.md applies with particular force here: the spec, the implementation, and the client expectations are three domains that must stay in agreement.
 

@@ -15,7 +15,7 @@ A collaborative research and development project exploring entropy guards — sk
 
 ## Working Practices
 
-- **Run entropy-guard before committing**: After any meaningful work session, run `skills/entropy-guard/README.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches.
+- **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches.
 - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
 - **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
 - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
@@ -33,9 +33,10 @@ A collaborative research and development project exploring entropy guards — sk
 
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
-- [skills/entropy-guard/](skills/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
-- [skills/entropy-guard-generator/](skills/entropy-guard-generator/) — entry point + domain-specific generators for analyzing systems and designing entropy guards
-- [skills/distill-article/](skills/distill-article/) — editorial skill for distilling conversations into publishable articles
+- [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
+- [skills/entropy-guard-generator/](skills/entropy-guard-generator/) — entry point for evaluating systems and routing to domain-specific guard generators
+- [skills/docs-guard-generator/](skills/docs-guard-generator/), [code](skills/code-guard-generator/), [test](skills/test-guard-generator/), [API](skills/api-guard-generator/) — domain-specific guard generators
+- [skills/local/distill-article/](skills/local/distill-article/) — editorial skill for distilling conversations into publishable articles
 - [articles/](articles/) — article drafts produced by the distill-article skill
 
 ## Commands
@@ -55,4 +56,4 @@ When adding/removing source files or changing architecture, update:
 
 ## Scaffolding Feedback
 
-This project was scaffolded by [seed](https://github.com/justinphilpott/seed). If you notice gaps in the scaffolding — missing template sections, working practices that don't fit, or ideas for improvement — see the `seed-feedback` skill in the skills/ directory.
+This project was scaffolded by [seed](https://github.com/justinphilpott/seed). If you notice gaps in the scaffolding — missing template sections, working practices that don't fit, or ideas for improvement — feed them back to the seed project.

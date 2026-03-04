@@ -1,54 +1,106 @@
 # entropy-guard
 
-A collaborative research and development project exploring **entropy guards** — skills, rituals, and processes that keep iterated systems from drifting, losing coherence, or forgetting their purpose.
+Skills, frameworks, and resources for keeping iterated systems coherent. Designed for AI-assisted workflows where change is fast and drift is faster.
 
-Both humans and AI agents contribute here.
+This is an evolving project — actively used, actively refined. Both humans and AI agents contribute here.
 
 ---
 
 ## What is an entropy guard?
 
-Systems that undergo repeated change — especially AI-assisted change — tend to accumulate entropy: stale docs, forgotten decisions, internal inconsistencies, drift from original intent. An entropy guard is a lightweight, targeted mechanism applied at each iteration to prevent this drift before it compounds.
+Systems that undergo repeated change — especially AI-assisted change — accumulate entropy: stale docs, forgotten decisions, internal inconsistencies, drift from original intent. An entropy guard is a lightweight, targeted mechanism applied at each iteration to prevent this drift before it compounds.
 
 A guard is not a full audit. It is scoped to what changed in this iteration, takes 2–10 minutes, and preserves the things that matter most: continuity of intent, internal consistency, accumulated knowledge, and honest self-representation.
 
-See [INTENT.md](INTENT.md) for a more precise definition of what entropy means here and what guards should preserve.
+See [INTENT.md](INTENT.md) for a precise definition of what entropy means here and what guards should preserve.
 
 ---
 
-## What this project does
+## How to use this repo
 
-- **Develops and refines guard generator skills** ([skills/entropy-guard-generator/](skills/entropy-guard-generator/)) — an entry-point skill that assesses systems and routes to domain-specific generators (docs, test, code, API) to produce tailored entropy guards
-- **Records the thinking** — decisions, learnings, philosophical reflections, and [articles](articles/) distilled from project conversations
-- **Practices what it preaches** — this project runs [skills/entropy-guard/](skills/entropy-guard/) before every commit
+### Evaluate a project and generate guards
+
+The primary export of this repo. The [entropy guard generator](skills/entropy-guard-generator/) is the entry point — it first evaluates your system (inventories what exists, identifies which domains are at risk, surfaces cross-domain drift), then helps you decide which guards would be useful before generating them.
+
+You don't need to know what guards you want upfront. The generator figures that out with you.
+
+**To run it**: point an AI agent at the generator skill and your target project.
+
+```
+Read skills/entropy-guard-generator/SKILL.md from the entropy-guard repo,
+then run it against [your project path].
+```
+
+The generator walks through assessment, domain selection, and guard design. It produces guard skill files you place in your project's skills directory — each with what to check, when to run it, and how to integrate it into your workflow.
+
+If you already know which domain you need, you can go directly to a domain generator: [docs](skills/docs-guard-generator/), [code](skills/code-guard-generator/), [test](skills/test-guard-generator/), [API](skills/api-guard-generator/).
+
+### Use it as a reference in discussions
+
+Point an agent at this repo when discussing system quality, documentation drift, or process design. The frameworks here — entropy dimensions, enforcement depth, inter-domain drift — provide shared vocabulary for thinking about how systems decay and what to do about it.
+
+Key starting points:
+- [INTENT.md](INTENT.md) — the five entropy dimensions, enforcement depth spectrum, inter-domain drift model
+- [articles/](articles/) — accessible write-ups on specific concepts (guard integration, dogfooding, Step Zero, map-as-territory)
+- [LEARNINGS.md](LEARNINGS.md) — validated insights from applying these ideas to real systems
+
+### Adapt the project's own guard
+
+This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual that checks for decision capture, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and can be adapted directly for documentation-heavy or knowledge-management projects.
 
 ---
 
-## Key documents
+## What's here
+
+### Skills (exportable)
+
+| Skill | Purpose |
+|-------|---------|
+| [entropy-guard-generator/](skills/entropy-guard-generator/) | Entry point — assesses systems, identifies domains, routes to generators |
+| [docs-guard-generator/](skills/docs-guard-generator/) | Generate guards for documentation systems |
+| [code-guard-generator/](skills/code-guard-generator/) | Generate guards for codebases |
+| [test-guard-generator/](skills/test-guard-generator/) | Generate guards for test suites |
+| [api-guard-generator/](skills/api-guard-generator/) | Generate guards for API contracts |
+
+### Skills (local to this project)
+
+| Skill | Purpose |
+|-------|---------|
+| [entropy-guard/](skills/local/entropy-guard/) | Post-work micro-ritual — a reference example of generator output |
+| [distill-article/](skills/local/distill-article/) | Editorial skill for extracting articles from project conversations |
+
+### Frameworks and thinking
 
 | Document | Purpose |
 |----------|---------|
-| [INTENT.md](INTENT.md) | Living intent statement — north star for all guard design |
-| [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form musings — humans and agents write here |
-| [skills/entropy-guard/](skills/entropy-guard/) | The post-work micro-ritual; run before every commit |
-| [skills/entropy-guard-generator/](skills/entropy-guard-generator/) | Entry point + domain-specific guard generators (docs, test, code, API) |
-| [DECISIONS.md](DECISIONS.md) | Architectural decisions |
-| [LEARNINGS.md](LEARNINGS.md) | Validated discoveries |
-| [articles/](articles/) | Substack-ready article drafts distilled from discussions |
-| [skills/distill-article/](skills/distill-article/) | Editorial skill for extracting publishable articles from conversations |
+| [INTENT.md](INTENT.md) | Living intent statement — entropy dimensions, enforcement depth, inter-domain drift |
+| [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form reflections on entropy, self-awareness, and system design |
+| [articles/](articles/) | Article drafts distilled from project discussions |
+| [DECISIONS.md](DECISIONS.md) | Architectural decisions with context and rationale |
+| [LEARNINGS.md](LEARNINGS.md) | Validated discoveries from building and using guards |
+
+### Project operations
+
+| Document | Purpose |
+|----------|---------|
 | [AGENTS.md](AGENTS.md) | Working practices for contributors (human and AI) |
+| [TODO.md](TODO.md) | Active work tracking |
 
 ---
 
-## How to contribute
+## Project status
+
+Actively evolving. The generator has been used against this project itself (dogfooding) and the guard it produced is in daily use. The domain generators (docs, code, test, API) are complete and ready for use against external systems. The full multi-domain pipeline is next to be validated.
+
+See [TODO.md](TODO.md) for current priorities.
+
+---
+
+## Contributing
 
 Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 
 1. Check [TODO.md](TODO.md) for what's active
 2. Do your work
-3. Run [skills/entropy-guard/](skills/entropy-guard/) before committing
+3. Run [skills/local/entropy-guard/](skills/local/entropy-guard/) before committing
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
-
-To generate a guard for a system: run the appropriate generator from [skills/entropy-guard-generator/](skills/entropy-guard-generator/) against the target system.
-
-To add a philosophical reflection: open [PHILOSOPHY.md](PHILOSOPHY.md) and write freely.

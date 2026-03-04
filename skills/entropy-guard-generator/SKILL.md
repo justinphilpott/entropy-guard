@@ -1,8 +1,13 @@
+---
+name: entropy-guard-generator
+description: Assess any system for entropy risks and route to domain-specific guard generators. Start here when you don't know which guards a project needs — this skill inventories the system, identifies relevant domains (docs, code, test, API), and coordinates guard generation.
+---
+
 # Skill: Entropy Guard Generator
 
 The entry point for designing entropy guards for any system. This skill assesses a system, identifies which domains are relevant, and routes to the appropriate domain-specific generators. It does not produce guards directly — the domain generators do that.
 
-> **Before you begin**: Read [INTENT.md](../../INTENT.md). The intent statement defines what a guard should preserve and what it should not be. Use it as your north star throughout.
+> **Before you begin**: Read [INTENT.md](../../INTENT.md) (from the [entropy-guard](https://github.com/justinphilpott/entropy-guard) project). The intent statement defines what a guard should preserve and what it should not be. Use it as your north star throughout.
 
 > **Status**: Living scaffold. This is the starting point for all guard generation. Refine based on real use and note what works in LEARNINGS.md.
 
@@ -12,10 +17,10 @@ The entry point for designing entropy guards for any system. This skill assesses
 
 These live alongside this file and produce the actual guards:
 
-- [**docs-guard-generator.md**](docs-guard-generator.md) — documentation systems
-- [**test-guard-generator.md**](test-guard-generator.md) — test suites
-- [**code-guard-generator.md**](code-guard-generator.md) — codebases
-- [**api-guard-generator.md**](api-guard-generator.md) — API contracts
+- [**docs-guard-generator**](../docs-guard-generator/SKILL.md) — documentation systems
+- [**test-guard-generator**](../test-guard-generator/SKILL.md) — test suites
+- [**code-guard-generator**](../code-guard-generator/SKILL.md) — codebases
+- [**api-guard-generator**](../api-guard-generator/SKILL.md) — API contracts
 
 Each generator has its own Step 0 (system inventory), domain-specific entropy vectors, and enforcement depth analysis. This skill determines which generators to run and coordinates their output.
 
@@ -90,7 +95,7 @@ Based on Steps 2 and 3, decide which domain generators to run.
 
 - Only run generators for domains that are present and will be iterated. Don't generate a test guard for a system with no tests and no plan to add them.
 - Prioritize by entropy risk. If docs/code drift is the biggest danger, run the docs generator first.
-- Consider whether the standard `entropy-guard` skill (the general post-work checklist in `skills/entropy-guard/README.md`) already covers the system adequately. For simple systems with one domain, the standard guard may be enough. Note this explicitly rather than running generators unnecessarily.
+- Consider whether the standard `entropy-guard` skill (the general post-work checklist in `skills/local/entropy-guard/SKILL.md`) already covers the system adequately. For simple systems with one domain, the standard guard may be enough. Note this explicitly rather than running generators unnecessarily.
 
 **Sequencing:**
 

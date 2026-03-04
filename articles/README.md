@@ -1,6 +1,6 @@
 # Articles
 
-Rough drafts distilled from project conversations using the [distill-article](../skills/distill-article/) skill.
+Rough drafts distilled from project conversations using the [distill-article](../skills/local/distill-article/) skill.
 
 **Audience**: Senior developers, tech leads, AI/agentic practitioners, information systems researchers.
 
@@ -21,3 +21,7 @@ Rough drafts distilled from project conversations using the [distill-article](..
 | 2026-02-24 | [Stop Writing Checklists, Start Designing Constraints](2026-02-24-enforcement-depth.md) | draft |
 | 2026-02-24 | [The Map, The Territory, and The Practice: Where Systems Actually Rot](2026-02-24-inter-domain-drift.md) | draft |
 | 2026-02-24 | [Teach the Skill, Not the Fish: Why Guard-Creation Beats Guard-Libraries](2026-02-24-creation-skills.md) | draft |
+| 2026-03-03 | [Your Guards Are Dead Weight: Why Integration Beats Intention](2026-03-03-dead-weight-guards.md) | draft |
+| 2026-03-03 | [Dogfood Your Quality Process, Not Just Your Product](2026-03-03-dogfood-your-quality.md) | draft |
+| 2026-03-03 | [When the Map Is the Territory: Quality for Documentation-as-Product](2026-03-03-map-is-territory.md) | draft |
+| 2026-03-03 | [Before You Guard It, Inventory It: The Case for Step Zero](2026-03-03-step-zero.md) | draft |

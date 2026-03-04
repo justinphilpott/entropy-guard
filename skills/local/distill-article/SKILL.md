@@ -1,3 +1,8 @@
+---
+name: distill-article
+description: Extract intellectual work from project conversations and produce Substack-ready article drafts. Proposes article angles before drafting. Target audience is senior developers, tech leads, and AI practitioners.
+---
+
 # Skill: Distill Article
 
 An editorial collaboration skill. After a substantive conversation, extract the intellectual work and produce Substack-ready article drafts — but only after discussing angles with the human first.
