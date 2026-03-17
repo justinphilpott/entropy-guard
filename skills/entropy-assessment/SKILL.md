@@ -1,17 +1,17 @@
 ---
 name: entropy-assessment
-description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, and can generate domain-specific guard artifacts — all in one skill.
+description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts, and should leave maintainers with actionable integration advice.
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
 ---
 
 # Skill: Entropy Assessment & Guard Generation
 
-Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it continues into domain-specific analysis and guard design using built-in domain references.
+Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it continues into domain-specific analysis and guard design using built-in domain references, then recommends how those guards should fit into the system's real iteration loop.
 
 **Two phases, one skill:**
 - **Phase 1 (Steps 1–4): Assessment** — produces an entropy profile and recommendations. This is a complete, useful deliverable on its own.
-- **Phase 2 (Steps 5–8): Guard generation** — optional. Analyzes each relevant domain in depth and produces guard artifacts.
+- **Phase 2 (Steps 5–8): Guard generation** — optional. Analyzes each relevant domain in depth, produces guard artifacts, and closes with concrete integration guidance.
 
 > **Key principles** (from [INTENT.md](../../INTENT.md)):
 > - A guard preserves five things: **continuity of intent**, **internal consistency**, **accumulated knowledge**, **legibility**, and **honest state**
@@ -178,6 +178,8 @@ If generating guards for multiple domains, review the complete set for coherence
 
 A guard that isn't integrated into the workflow is dead weight.
 
+Treat this step as a first-pass integration design. Stop here if you have one guard, one main actor, and an obvious trigger. If guard generation happens in a separate session from operational planning, or if the system has more than one guard, more than one actor type (for example humans plus agents), or existing CI / hooks / PR workflows that the guards should plug into, run [`skills/guards-integrator/SKILL.md`](../guards-integrator/SKILL.md) after this step to produce a deeper integration brief.
+
 **Integration plan.** For each guard, specify:
 - **Trigger**: exactly when and how the guard runs. Options by enforcement depth:
   - *External*: contributor runs it manually (skill file instructions)
@@ -186,6 +188,8 @@ A guard that isn't integrated into the workflow is dead weight.
   - *Fully embedded*: guard checks are structural (type system, schema validation) — no separate "run" needed
 - **Discovery**: how does a new contributor find out which guards exist? Recommend a manifest — a `guards/` directory, a section in AGENTS.md, or a guard-runner config file.
 - **Execution**: if multiple guards exist, what order do they run in? Can they run in parallel?
+- **Right-now adoption**: what can the maintainers do immediately, using their current workflow, so the guards start catching drift this week rather than waiting for ideal automation?
+- **Agentic integration**: if AI agents work in the system, what standing instructions, task templates, or wrapper prompts need to mention these guards so a fresh agent actually runs them?
 
 **Versioning metadata.** Each generated guard should include:
 - **Generated**: date and which skill version produced it
@@ -199,6 +203,8 @@ A guard that isn't integrated into the workflow is dead weight.
 - Bootstrap actions needed before the guards can be run effectively (ordered)
 - Enforcement depth recommendations — which discipline-based checks should move to mechanical enforcement
 - Integration plan — how guards will be triggered, discovered, and executed
+- Immediate adoption plan — the smallest workflow changes that make the guards valuable right now
+- Agent-facing integration notes — how the guards should appear in prompts, instructions, or handoff artifacts
 - Versioning baseline — the system snapshot for future comparison
 - Any uncertainties or areas to revisit after real use
 
