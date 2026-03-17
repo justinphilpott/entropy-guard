@@ -33,11 +33,19 @@ then assess [your project path] for entropy risks.
 
 The assessment walks through intent, domain mapping, drift analysis, and recommendations. It produces a standalone entropy report — useful on its own for understanding where a system is drifting.
 
-**To generate guards**: if you want to go further, the assessment continues into guard generation — producing domain-specific guard skill files you place in your project's skills directory.
+**To generate guards**: if you want to go further, the assessment continues into guard generation — producing domain-specific guard skill files you place in your project's skills directory, along with first-pass advice on how to integrate them into the workflow you already use.
 
 ```
 Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
 then assess [your project path] and generate entropy guards.
+```
+
+**To integrate generated guards into a real loop**: run the [guards integrator](skills/guards-integrator/) skill after guard generation when you want a sharper recommendation about how those guards should fit an existing agent, commit, PR, or CI workflow.
+
+```
+Read skills/guards-integrator/SKILL.md from the entropy-guard repo,
+then examine [your project path] and the generated guards,
+and recommend how those guards should be integrated into the current iteration loop.
 ```
 
 ### Use it as a reference in discussions
@@ -60,7 +68,8 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, and generates domain-specific guards (docs, code, tests, API) |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, generates domain-specific guards, and gives first-pass integration advice |
+| [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) |
 
 ### Skills (local to this project)
 

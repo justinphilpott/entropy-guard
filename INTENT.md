@@ -68,7 +68,7 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ## What the guard generator should achieve
 
-The assessment skill (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally continue into guard generation, using built-in domain reference appendices (docs, code, tests, API) to produce domain-aware guards.
+The assessment skill (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally continue into guard generation, using built-in domain reference appendices (docs, code, tests, API) to produce domain-aware guards. Those generated guards should then be integrated into the system's existing iteration loop rather than left as passive files.
 
 A good output from the generator:
 
@@ -79,17 +79,19 @@ A good output from the generator:
 
 The assessment skill is itself subject to this project's entropy guard. It should be run on this project periodically.
 
-### The guard lifecycle: three distinct tools
+### The guard lifecycle: four distinct tools
 
-A complete guard system involves three distinct tools that serve different purposes:
+A complete guard system involves four distinct tools that serve different purposes:
 
 1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. This is the assessment skill described above.
 
-2. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
+2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
 
-3. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
+3. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
 
-These three tools have different cadences: the generator runs once (or rarely), the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
+4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
+
+These four tools have different cadences: the generator and integrator run when guards are introduced or redesigned, the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
 
 ### Enforcement depth spectrum
 

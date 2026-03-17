@@ -51,3 +51,13 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 **Insight**: The entropy-guard-generator skill already contained a full system assessment (Steps 1–4) that produced a useful standalone deliverable. But an agent arriving cold didn't recognize it as the start point for reviewing a system — the name "generator" framed assessment as a precursor to generation, not as a first-class output. Renaming to `entropy-assessment` and adding an explicit assessment output format made the same content dramatically more discoverable.
 **Validated by**: A fresh-session agent assessed the project and recommended creating a new assessment skill, not realizing the existing generator already did exactly that. The capability was there; the framing hid it.
 **Implication**: When a skill serves multiple purposes, name it after the most common entry use case, not the most complex one. Users and agents form expectations from names before reading content.
+
+---
+
+### Guard adoption is a separate design problem from guard generation
+
+**Topic**: Guard integration
+
+**Insight**: Knowing which guards a system needs is not the same as knowing where those guards should live in the system's real iteration loop. The missing work is operational: mapping guards onto the actual agent, commit, PR, CI, and release handoffs people already use.
+**Validated by**: Reviewing the current docs showed that Step 8 of `entropy-assessment` already said guards need integration, but the repo still lacked a dedicated artifact for translating generated guards into concrete adoption steps for a specific workflow.
+**Implication**: Treat guard integration as a first-class skill. Generators should emit immediate adoption advice, and more complex systems should get a dedicated integration pass before guards are considered truly in use.
