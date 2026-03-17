@@ -178,7 +178,7 @@ If generating guards for multiple domains, review the complete set for coherence
 
 A guard that isn't integrated into the workflow is dead weight.
 
-Treat this step as a first-pass integration design. If guard generation happens in a separate session from operational planning, or if the system has a complex agent / CI / PR workflow, run [`skills/guards-integrator/SKILL.md`](../guards-integrator/SKILL.md) after this step to produce a deeper integration brief.
+Treat this step as a first-pass integration design. Stop here if you have one guard, one main actor, and an obvious trigger. If guard generation happens in a separate session from operational planning, or if the system has more than one guard, more than one actor type (for example humans plus agents), or existing CI / hooks / PR workflows that the guards should plug into, run [`skills/guards-integrator/SKILL.md`](../guards-integrator/SKILL.md) after this step to produce a deeper integration brief.
 
 **Integration plan.** For each guard, specify:
 - **Trigger**: exactly when and how the guard runs. Options by enforcement depth:

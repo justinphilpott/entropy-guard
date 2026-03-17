@@ -61,3 +61,13 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 **Insight**: Knowing which guards a system needs is not the same as knowing where those guards should live in the system's real iteration loop. The missing work is operational: mapping guards onto the actual agent, commit, PR, CI, and release handoffs people already use.
 **Validated by**: Reviewing the current docs showed that Step 8 of `entropy-assessment` already said guards need integration, but the repo still lacked a dedicated artifact for translating generated guards into concrete adoption steps for a specific workflow.
 **Implication**: Treat guard integration as a first-class skill. Generators should emit immediate adoption advice, and more complex systems should get a dedicated integration pass before guards are considered truly in use.
+
+---
+
+### Cold-start reliability needs scaffolding, not just process prose
+
+**Topic**: Skill design
+
+**Insight**: A well-sequenced process is not enough for an agent entering a repo cold. Reliability improves materially when the skill also points to where evidence usually lives and shows what good output looks like in compact scaffolds.
+**Validated by**: Review feedback on the `guards-integrator` PR surfaced that the process was sound, but the skill still left too much unstated for an unfamiliar agent: where to inspect workflow artifacts, how to judge current automation maturity, and what shape the final brief should take.
+**Implication**: For exportable skills, include both reasoning steps and lightweight output / discovery scaffolding. This preserves flexibility while reducing cold-start variance.

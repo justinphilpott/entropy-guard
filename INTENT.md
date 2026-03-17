@@ -81,7 +81,7 @@ The assessment skill is itself subject to this project's entropy guard. It shoul
 
 ### The guard lifecycle: four distinct tools
 
-A complete guard system involves four distinct tools that serve different purposes:
+A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
 
 1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. This is the assessment skill described above.
 

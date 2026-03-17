@@ -2,7 +2,7 @@
 name: guards-integrator
 description: Examine a system's existing iteration loops and generated guards, then recommend how those guards should be integrated for immediate operational value. Maps guard checks to triggers, discovery paths, execution order, and adoption steps.
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Skill: Guards Integrator
@@ -40,6 +40,14 @@ Gather these before recommending integration:
 - Existing workflow mechanisms: commit hooks, CI jobs, PR templates, agent instructions, runbooks, release checklists
 - Any known pain points: skipped docs updates, stale tests, forgotten decisions, late review, noisy automation
 
+When entering a repo cold, look for concrete evidence of the current loop before inferring one:
+
+- **CI / automation**: `.github/workflows/`, `.gitlab-ci.yml`, `circle.yml`, `buildkite.yml`, `azure-pipelines.yml`, `Jenkinsfile`, `Makefile`, task runners
+- **Git hooks / local prompts**: `.pre-commit-config.yaml`, `.husky/`, `.git/hooks/` (if visible), `package.json` scripts, lint-staged config
+- **PR / review flow**: `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE/`, contribution docs, CODEOWNERS
+- **Agent instructions**: `AGENTS.md`, local wrapper prompts, slash-command docs, task templates, repo-specific contributor instructions
+- **Iteration pattern clues**: recent commit history, release notes, changelog cadence, scheduled review docs, deployment runbooks
+
 If any of these are missing, infer what you can from the repository and state the uncertainty explicitly.
 
 ---
@@ -56,6 +64,17 @@ Identify how change actually moves through the system today.
 - Where is entropy introduced because an expected follow-up happens later or not at all?
 
 Write a short loop map. Prefer the real workflow over the idealized one.
+
+Minimal scaffold:
+
+```md
+Loop map
+- Change starts in: agent task + local branch
+- First handoff: local commit
+- Second handoff: pull request review
+- Automated gate: GitHub Actions test + lint workflow
+- Final handoff: merge to main
+```
 
 ### Step 2: Classify each guard by timing and burden
 
@@ -79,6 +98,14 @@ For each guard or guard check, recommend the right depth:
 
 Default rule: keep judgment in skills, move mechanics into tooling as soon as the system can support it.
 
+Signals to calibrate what the system can support *now*:
+
+- **CI already exists**: prefer prompted or semi-embedded recommendations over purely manual ones
+- **Hook framework already exists** (`pre-commit`, Husky, lint-staged): prefer local reminders or lightweight scripted checks
+- **No automation exists yet**: keep the `Now` plan manual or lightly prompted; reserve CI or structural enforcement for `Next` / `Later`
+- **Team already uses agent instructions or templates**: add agent-facing guard reminders there before inventing new surfaces
+- **The workflow is unstable or informal**: recommend the smallest reliable trigger first rather than a broad rollout
+
 ### Step 4: Fit guards into the existing loop
 
 For each guard, specify:
@@ -90,6 +117,14 @@ For each guard, specify:
 - **Escalation path**: what to do when the guard reveals a gap too large to fix inside the current iteration
 
 If multiple guards exist, define ordering and note which can run in parallel.
+
+Minimal scaffold:
+
+```md
+Guard placement
+- `docs-drift-guard`: run at PR open or before merge because doc/code drift is cheapest to fix before review ends
+- `decision-capture-guard`: run at end of agent session or before commit because the required context is freshest then
+```
 
 ### Step 5: Adapt for agentic workflows
 
@@ -112,6 +147,15 @@ Deliver a phased recommendation with three horizons:
 
 The "Now" plan should be actionable without waiting for new infrastructure.
 
+Minimal scaffold:
+
+```md
+Adoption plan
+- Now: add guard links to `AGENTS.md` and require a short guard note in PR descriptions
+- Next: add a PR template checkbox and a pre-commit reminder script
+- Later: move mechanical checks into CI and add a guard runner if the set grows
+```
+
 ---
 
 ## Output
@@ -125,6 +169,36 @@ Produce an integration brief with these sections:
 - **Execution plan** — ordering, parallelism, and outputs
 - **Automation opportunities** — which manual checks should move deeper into tooling
 - **Risks / uncertainties** — assumptions that should be validated after a few real iterations
+
+Use compact, explicit entries rather than narrative prose. A good brief is easy for a maintainer or fresh agent to scan and immediately act on.
+
+Minimal output scaffold:
+
+```md
+## Loop map
+- Change starts in ...
+
+## Guard placement
+- `guard-name` -> trigger / actor / why here
+
+## Adoption plan
+- Now: ...
+- Next: ...
+- Later: ...
+
+## Discovery plan
+- Add guard references in ...
+
+## Execution plan
+- Order: ...
+- Parallelizable: ...
+
+## Automation opportunities
+- Move ... from manual to CI when ...
+
+## Risks / uncertainties
+- Assumed ... because ...
+```
 
 If the assessment skill generated the guards in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
 
