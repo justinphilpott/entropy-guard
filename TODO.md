@@ -4,7 +4,7 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-[Write what you're working on before you start. Include enough context to resume if interrupted. When done, use these items to write your commit message, then clear this section.]
+[empty]
 
 ## Next Up
 
