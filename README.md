@@ -67,6 +67,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 | Skill | Purpose |
 |-------|---------|
 | [entropy-guard/](skills/local/entropy-guard/) | Post-work micro-ritual — a reference example of generator output |
+| [entropy-guard-feedback/](skills/local/entropy-guard-feedback/) | Create a GitHub issue on the entropy-guard repo to report a problem or suggestion about the tool itself |
 
 ### Frameworks and thinking
 

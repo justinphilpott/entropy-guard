@@ -53,3 +53,7 @@ When adding/removing source files or changing architecture, update:
 ## Scaffolding Feedback
 
 This project was scaffolded by [seed](https://github.com/justinphilpott/seed). If you notice gaps in the scaffolding — missing template sections, working practices that don't fit, or ideas for improvement — feed them back to the seed project.
+
+## entropy-guard Feedback
+
+If you notice something about entropy-guard itself that could be better — a guard that misfired, an assessment heuristic that missed something, a skill that caused friction — use the [entropy-guard-feedback](skills/local/entropy-guard-feedback/) skill to create a GitHub issue on the entropy-guard repository.
