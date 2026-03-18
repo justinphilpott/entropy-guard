@@ -28,6 +28,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Guard generation should produce immediate integration advice, not just guard files
+
+**Context**: The assessment skill already required an integration plan in Step 8, but the repo did not yet provide a dedicated way to examine a target system's actual agent / commit / PR / CI loop and translate generated guards into an adoption plan. That left a gap between guard design and guard use.
+**Decision**: Add a separate exportable skill, `skills/guards-integrator/`, focused on mapping generated guards into a system's real iteration loop. Also strengthen `skills/entropy-assessment/` so guard generation always includes immediate adoption guidance and points to the integrator skill for deeper operational planning.
+**Impact**: Running the assessment now yields not only candidate guards but also system-specific advice for how to make them valuable right away. The integrator skill clarifies that adoption is a first-class part of guard design, while still leaving room for a future guard runner implementation.
+
+---
+
 ### Two-layer generator architecture: entry point + domain generators
 
 *Superseded by "Consolidate domain generators into single skill" below.*
