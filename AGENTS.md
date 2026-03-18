@@ -33,6 +33,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
+- [skills/local/entropy-guard-feedback/](skills/local/entropy-guard-feedback/) — optional local skill for reporting issues or suggestions about entropy-guard itself back to the upstream repository
 - [skills/entropy-assessment/](skills/entropy-assessment/) — start here to assess a system's entropy risks and generate domain-specific guards (docs, code, tests, API)
 
 ## Commands
