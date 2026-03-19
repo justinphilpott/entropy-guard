@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Workflow/process belongs in the assessment model, not just in the prose
+
+**Topic**: Assessment methodology
+
+**Insight**: It is not enough for the framework to mention workflow in abstract terms. If workflow/process is a real entropy-bearing domain, it has to appear explicitly in the assessment map, the cross-domain drift prompts, and the guard-generation reference material; otherwise agents will underweight it or treat it as an awkward docs-only special case.
+**Validated by**: Running the assessment against this repo surfaced workflow/practice drift immediately, but the skill's old domain table and appendices had no first-class slot for it. Adding a dedicated workflow/process appendix made the methodology line up with what the repo's own intent already claimed.
+**Implication**: When a domain matters enough to change prioritization or guard design, it should be explicit in the skill structure, not left implicit in examples or surrounding theory.
+
+---
+
 ### Workflow-heavy repos do not always need separate guards
 
 **Topic**: Guard generation methodology

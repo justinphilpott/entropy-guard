@@ -68,7 +68,7 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ## What the guard generator should achieve
 
-The assessment skill (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally continue into guard generation, using built-in domain reference appendices (docs, code, tests, API) to produce domain-aware guards. Those generated guards should then be integrated into the system's existing iteration loop rather than left as passive files.
+The assessment skill (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally continue into guard generation, using built-in domain reference appendices (docs, code, tests, API, workflow/process) to produce domain-aware guards. Those generated guards should then be integrated into the system's existing iteration loop rather than left as passive files.
 
 A good output from the generator:
 

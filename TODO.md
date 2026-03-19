@@ -13,5 +13,5 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 ## Backlog
 
 - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
-- [ ] Consider additional domain appendices (process/workflow, config/infrastructure)
+- [ ] Consider additional domain appendices (config/infrastructure)
 - [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)

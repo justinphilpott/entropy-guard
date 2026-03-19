@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Add workflow/process as a first-class assessment domain
+
+**Context**: Dogfooding `entropy-assessment` against this repo showed a repeatable gap. The skill already talked about collaborative workflow and inter-domain drift in principle, but its explicit Phase 1 domain map and Phase 2 appendices only covered documentation, code, tests, and API contracts. That made workflow-heavy repos awkward to classify and left no direct path to generate workflow/process guards when the main entropy risks lived in handoffs, rituals, or contributor instructions.
+**Decision**: Extend `skills/entropy-assessment/SKILL.md` with workflow/process as a first-class domain in both assessment and guard generation. Add workflow/process signals to the Phase 1 domain map and drift analysis, and add a dedicated appendix covering inventory items, entropy vectors, checklist guidance, and existing mechanisms.
+**Impact**: The assessment now matches the repo's own framing that entropy often accumulates in practice as much as in map or territory. Workflow-heavy systems can be assessed without awkward shoehorning, and the skill can recommend either a dedicated workflow guard or a combined guard when that is the lower-burden design.
+
+---
+
 ### Keep a single local guard, but treat workflow/practice drift as first-class
 
 **Context**: Re-running `entropy-assessment` against this repo showed that its main entropy risks no longer fit neatly into a docs-only framing. The project is a documentation-as-system repo, but it also exports a way of working: TODO discipline, agent instructions, upstream feedback capture, and a pre-commit ritual. The existing local `entropy-guard` skill mostly checked documentation consistency and knowledge capture, but did not name workflow/practice drift as a first-class thing it was guarding.

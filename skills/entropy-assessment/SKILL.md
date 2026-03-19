@@ -1,8 +1,8 @@
 ---
 name: entropy-assessment
-description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts, and should leave maintainers with actionable integration advice.
+description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts including workflow/process guards, and should leave maintainers with actionable integration advice.
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 ---
 
 # Skill: Entropy Assessment & Guard Generation
@@ -17,7 +17,7 @@ Assess a system's entropy profile — where it's drifting, what's at risk, and w
 > - A guard preserves five things: **continuity of intent**, **internal consistency**, **accumulated knowledge**, **legibility**, and **honest state**
 > - A guard is **delta-scoped** (what changed this iteration, not a full audit) and **low-burden** (2–10 minutes)
 > - Prioritize entropy vectors by **decay rate x recovery cost** — fast-decaying, cheap-to-fix problems (like link rot) need catching every iteration; slow-decaying, catastrophic-to-recover problems (like intent drift) need the most careful guarding
-> - **Enforcement depth spectrum**: External (skill file, relies on discipline) → Prompted (pre-commit hook, removes need to remember) → Semi-embedded (linting, CI, catches mechanically) → Fully embedded (type system, structurally impossible to violate). If you're relying on discipline for something that could be mechanically checked, that's a design smell.
+> - **Enforcement depth spectrum**: External (skill file, relies on discipline) → Prompted (pre-commit hook, workflow reminder) → Semi-embedded (linting, CI, catches mechanically) → Fully embedded (type system, structurally impossible to violate). If you're relying on discipline for something that could be mechanically checked, that's a design smell.
 
 > **If you already know which domain needs a guard**: Skip Phase 1 and go directly to Phase 2. Pre-select your domain and use the relevant appendix.
 
@@ -63,8 +63,9 @@ Survey the system at a high level to understand what it contains and how it's st
 | **Documentation** | Yes/No | README, docs/, wiki, guides, API reference, inline docs |
 | **Tests** | Yes/No | Test files, test config, CI test steps, coverage reports |
 | **API contracts** | Yes/No | API endpoints, OpenAPI spec, GraphQL schema, protobuf, IPC interfaces, public SDK |
+| **Workflow / process** | Yes/No | Contributor instructions, PR templates, checklists, runbooks, handoff docs, local skills, CI gates, release rituals |
 
-Most systems span multiple domains. A web application likely has all four. A documentation project might only have docs (and possibly tests for doc tooling). A library might have code, tests, docs, and an API contract.
+Most systems span multiple domains. A web application likely has code, docs, tests, API contracts, and workflow/process. A documentation project might have docs plus workflow/process. A library might have code, tests, docs, API contracts, and release/process rituals.
 
 **What is the iteration pattern?**
 
@@ -73,7 +74,7 @@ Most systems span multiple domains. A web application likely has all four. A doc
 - How often? (Multiple times daily, weekly, per sprint, sporadically?)
 - What is the handoff point? (PR merge, deploy, sprint boundary, session end?)
 
-Note whether different domains have different iteration patterns. Documentation may lag code. Tests may lag features. API specs may only update at release time. These cadence mismatches are themselves an entropy signal.
+Note whether different domains have different iteration patterns. Documentation may lag code. Tests may lag features. API specs may only update at release time. Workflow docs may describe an idealized loop that nobody actually follows. These cadence mismatches are themselves an entropy signal.
 
 ### Step 3: Identify cross-domain drift risks
 
@@ -83,8 +84,10 @@ Before diving into domain-specific analysis, assess the **inter-domain drift** r
 - **Tests vs. implementation**: do the tests verify the current contract, or an old one?
 - **API spec vs. implementation**: does the spec match what the code actually does?
 - **Tests vs. docs**: do the documented behaviors have corresponding tests? Do tested behaviors appear in the docs?
+- **Workflow vs. reality**: do contributor instructions, checklists, and handoff rituals match how changes actually happen?
+- **Workflow vs. other domains**: do process docs still point at the current code/tests/docs/API surfaces, or do they enforce stale expectations?
 
-Note the most dangerous drift risks. These will inform how domain-specific guards coordinate — for example, a docs guard should cross-check against code, and a test guard should cross-check against the API contract.
+Note the most dangerous drift risks. These will inform how domain-specific guards coordinate — for example, a docs guard should cross-check against code, a test guard should cross-check against the API contract, and a workflow/process guard should cross-check against the real handoff loop.
 
 ### Step 4: Prioritize domains for guard generation
 
@@ -94,14 +97,17 @@ Based on Steps 2 and 3, decide which domains warrant guards.
 
 - Only analyze domains that are present and will be iterated. Don't generate a test guard for a system with no tests and no plan to add them.
 - Prioritize by entropy risk. If docs/code drift is the biggest danger, focus on docs first.
+- Treat workflow/process as first-class when the system's main risks live in handoffs, contributor rituals, release steps, agent instructions, or operational checklists. This is especially common in documentation-as-system repos, agent-heavy projects, and mature systems with lots of automation.
 - Consider whether a general-purpose post-work checklist already covers the system adequately. A general guard is a short checklist (5–10 items) covering decision capture, internal consistency, cross-references, and honest state — run before each commit. For simple systems with one domain, this may be enough. Note this explicitly rather than generating domain-specific guards unnecessarily.
+- Do not assume each high-risk domain needs its own file. If multiple risk areas share the same actor, trigger, and burden budget, a single combined guard may be better than separate guards.
 
 **Sequencing (if generating guards for multiple domains):**
 
 1. **Code** first (if applicable) — establishes the architectural baseline that other domains reference
 2. **API contract** second (if applicable) — defines the contract surface that tests should verify and docs should describe
 3. **Tests** third (if applicable) — can reference the code architecture and API contract
-4. **Docs** last (if applicable) — can reference all of the above and check alignment across them
+4. **Documentation** fourth (if applicable) — can reference all of the above and check alignment across them
+5. **Workflow / process** last (if applicable) — should reference the real loop, the chosen guards, and the current enforcement surfaces rather than freezing an outdated ideal
 
 ### Assessment output
 
@@ -125,7 +131,7 @@ This phase takes the assessment from Phase 1 and produces concrete guard artifac
 
 For each selected domain, inventory what exists before analyzing entropy. This prevents generating a guard that references artifacts that don't exist.
 
-**Catalogue what's present.** Consult the relevant domain appendix (A–D) for domain-specific inventory items. For each item, note whether it's present, absent, or stale.
+**Catalogue what's present.** Consult the relevant domain appendix (A-E) for domain-specific inventory items. For each item, note whether it's present, absent, or stale.
 
 **Classify gaps.** For each expected element that's missing, determine:
 
@@ -143,7 +149,7 @@ For each selected domain, work through four analyses:
 
 **b. Map the iteration pattern.** When does this domain change? Who changes it? What triggers changes? What is the handoff point? Note the **lag pattern**: how much time typically passes between a change in one domain and the corresponding update in this one?
 
-**c. Identify entropy vectors.** Consult the relevant domain appendix (A–D) for domain-specific entropy vectors. Rank the top 3–5 by destructive potential for *this specific system*. The ranking should reflect the product of decay rate and recovery cost (see key principles above).
+**c. Identify entropy vectors.** Consult the relevant domain appendix (A-E) for domain-specific entropy vectors. Rank the top 3–5 by destructive potential for *this specific system*. The ranking should reflect the product of decay rate and recovery cost (see key principles above).
 
 **d. Assess existing quality mechanisms.** What does the system already have? For each existing mechanism, map it to the enforcement depth spectrum (see key principles above): External → Prompted → Semi-embedded → Fully embedded. Where is the system relying on discipline for something that could be mechanically enforced? Those are the highest-value recommendations. Consult the domain appendix for common mechanisms to look for.
 
@@ -158,7 +164,7 @@ The guard should include:
 - **When to Run** — tied to the domain handoff point identified in Step 6b
 - **When NOT to Run** — scope boundaries
 - **Bootstrap checks** (if Step 5 identified critical gaps) — one-time actions to establish baselines before the recurring guard makes sense
-- **Checklist** — organized into two sections. Consult the relevant domain appendix (A–D) for domain-specific items:
+- **Checklist** — organized into two sections. Consult the relevant domain appendix (A-E) for domain-specific items:
 
   **Judgment-requiring checks** (keep as skill-file items):
   Items that require a human or AI to evaluate intent alignment, design coherence, and whether the right things are being guarded.
@@ -387,3 +393,40 @@ API entropy has the strongest mechanical enforcement story of any domain. Lean i
 #### D.4 Existing mechanisms to assess
 
 API specification (auto-generated or hand-maintained?), contract testing (consumer-driven, provider-driven, both?), schema validation in CI, breaking change detection, consumer communication channels, API review process, rate limiting/monitoring/usage analytics, client SDK generation from spec.
+
+---
+
+### Appendix E: Workflow / Process
+
+> Use during Phase 2: **E.1** for Step 5, **E.2** for Step 6c, **E.3** for Step 7, **E.4** for Step 6d.
+
+#### E.1 Inventory items
+
+- **Contributor instructions** — AGENTS.md, CONTRIBUTING.md, onboarding docs, team playbooks, local skills, task templates
+- **Handoff artifacts** — TODOs, issue trackers, PR templates, release checklists, runbooks, changelogs, decision logs
+- **Execution surfaces** — local scripts, git hooks, CI jobs, scheduled reviews, release rituals, wrapper prompts, slash commands
+- **Actor model** — who changes the system and at which handoffs? Humans, AI agents, reviewers, operators, release managers?
+- **Declared loop vs. real loop** — what the repo says the workflow is, and what commit history / contributor behavior suggests it actually is
+
+#### E.2 Entropy vectors
+
+- **Practice drift** — the documented workflow no longer matches how work actually happens. Contributors follow habit instead of the stated loop, and the docs silently become fiction.
+- **Handoff gaps** — a crucial follow-up step has no reliable trigger. Docs are "supposed" to be updated later; decisions are "supposed" to be captured at some point; nobody owns the transition.
+- **Ceremony accumulation** — the process grew extra steps nobody believes in. People skip them routinely, which trains the system to ignore its own safeguards.
+- **Responsibility ambiguity** — multiple actors assume someone else handles the check, or no one knows who is expected to do it.
+- **Discovery failure** — the right ritual exists, but a fresh contributor or agent cannot tell it exists or when to run it.
+- **Workflow/tooling mismatch** — the process relies on discipline for a check that could be prompted or automated, or conversely tries to automate something too judgment-heavy and creates noise.
+- **Stale integration points** — process docs point at removed scripts, old CI jobs, obsolete branch rules, or outdated review steps.
+- **Local optimization, global drift** — each team or agent follows a workable micro-loop, but the end-to-end system loses coherence because the handoffs do not line up.
+
+#### E.3 Checklist design guidance
+
+**Judgment-requiring**: does the documented loop still match reality, is each guard/check at the right handoff point, are roles and escalation paths clear, does the process preserve intent without adding cargo-cult ceremony?
+
+**Mechanically-assistable**: reminder hooks (→ pre-commit / wrapper prompt), template enforcement (→ PR templates, issue forms), stale path detection in process docs (→ search / CI), required metadata capture (→ issue template fields, PR checks), handoff visibility (→ guard manifest, generated summaries).
+
+Workflow/process guards often coordinate other guards rather than standing alone. Prefer a separate workflow guard only when the process has its own stable trigger or actor. If the workflow checks naturally belong at the same handoff as another guard, combine them.
+
+#### E.4 Existing mechanisms to assess
+
+CONTRIBUTING.md, AGENTS.md, PR templates, issue templates, release checklists, recurring review rituals, git hooks, wrapper scripts, CI jobs, bot reminders, CODEOWNERS, branch protection rules, scheduled maintenance tasks, and local skills that contributors are expected to run.

@@ -100,7 +100,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 ## Project status
 
-Actively evolving. The assessment skill has been used against this project itself (dogfooding) and the guard it produced is in daily use. Domain-specific knowledge for docs, code, test, and API guards is built into the skill as reference appendices.
+Actively evolving. The assessment skill has been used against this project itself (dogfooding) and the guard it produced is in daily use. Domain-specific knowledge for docs, code, test, API, and workflow/process guards is built into the skill as reference appendices.
 
 See [TODO.md](TODO.md) for current priorities.
 
