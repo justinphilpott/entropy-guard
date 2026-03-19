@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Upstream feedback should be embedded in assessment and integration flows
+
+**Context**: The repo had a local `entropy-guard-feedback` helper for creating upstream issues, but agents only found it if they separately noticed the helper existed. The main exportable workflows (`entropy-assessment` and `guards-integrator`) did not explicitly ask whether the skills themselves had misfired, so the improvement loop depended on extra initiative rather than being part of normal use.
+**Decision**: Keep the dedicated local feedback helper, but move the feedback prompt into the main exportable skills. `skills/entropy-assessment/` and `skills/guards-integrator/` should both end with an explicit upstream feedback check, and use the local helper when available to turn that note into a GitHub issue on entropy-guard.
+**Impact**: The feedback path stays lightweight, but becomes part of the default workflow. Agents using the exported skills now have a built-in moment to surface reusable issues and suggestions, which tightens the loop between real-world use and methodology improvement.
+
+---
+
 ### Exportable skills vs local skills: skills/ and skills/local/
 
 **Context**: The project has two kinds of skills — ones designed for use by external projects (the assessment/generator skill) and ones for this repo's own use (e.g., entropy-guard).

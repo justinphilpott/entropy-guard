@@ -208,6 +208,18 @@ Treat this step as a first-pass integration design. Stop here if you have one gu
 - Versioning baseline — the system snapshot for future comparison
 - Any uncertainties or areas to revisit after real use
 
+**Upstream feedback check.** Before you finish, ask one final question: did `entropy-assessment` itself misfire in a way future users would hit too? Examples: it missed an important entropy signal, recommended an impractical integration point, generated a guard that needed major rewriting, or left the next step too implicit for a cold-start agent.
+
+- If **no**, note that no upstream feedback is needed and finish normally.
+- If **yes**, include a short `entropy-guard feedback` note in your output with:
+  - **Title** — short, specific summary
+  - **Category** — `assessment`, `guard-quality`, `integration`, `skill`, or `other`
+  - **What I observed** — the concrete misfire or friction
+  - **Suggestion** — what should change
+  - **Project context** — enough context to judge whether the issue is general or niche
+- When working inside the entropy-guard repo, or whenever the local feedback helper is available, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
+- When that helper is not available, leave the formatted feedback note in your final output so the maintainer can submit it manually.
+
 ---
 
 ## What This Is Not

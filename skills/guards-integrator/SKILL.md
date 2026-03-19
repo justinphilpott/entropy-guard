@@ -156,6 +156,20 @@ Adoption plan
 - Later: move mechanical checks into CI and add a guard runner if the set grows
 ```
 
+### Step 7: Capture upstream feedback on entropy-guard itself
+
+Before you finish, ask whether `guards-integrator` or the surrounding entropy-guard workflow misfired in a reusable way during this session. Examples: the recommended trigger point was wrong, the adoption plan needed heavy rewriting, the discovery advice missed an obvious workflow surface, or the skill left too much implicit for a cold-start agent.
+
+- If **no**, note that no upstream feedback is needed.
+- If **yes**, include a short `entropy-guard feedback` note in your output with:
+  - **Title** — short, specific summary
+  - **Category** — `assessment`, `guard-quality`, `integration`, `skill`, or `other`
+  - **What I observed** — the concrete misfire or friction
+  - **Suggestion** — what should change
+  - **Project context** — enough context to judge whether the issue is general or niche
+- When working inside the entropy-guard repo, or whenever the local feedback helper is available, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
+- When that helper is not available, leave the formatted feedback note in your final output so the maintainer can submit it manually.
+
 ---
 
 ## Output

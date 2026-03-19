@@ -33,6 +33,8 @@ then assess [your project path] for entropy risks.
 
 The assessment walks through intent, domain mapping, drift analysis, and recommendations. It produces a standalone entropy report — useful on its own for understanding where a system is drifting.
 
+It also closes the loop on the skill itself: if the assessment misfires or creates avoidable friction, the final step is to capture a short upstream feedback note so the heuristic can improve.
+
 **To generate guards**: if you want to go further, the assessment continues into guard generation — producing domain-specific guard skill files you place in your project's skills directory, along with first-pass advice on how to integrate them into the workflow you already use.
 
 ```
@@ -68,8 +70,8 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, generates domain-specific guards, and gives first-pass integration advice |
-| [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, generates domain-specific guards, gives first-pass integration advice, and prompts for upstream feedback when the skill itself misfires |
+| [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
 
 ### Skills (local to this project)
 
