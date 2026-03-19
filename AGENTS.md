@@ -26,7 +26,9 @@ A collaborative research and development project exploring entropy guards — sk
 
 ## Project Constraints
 
-[Add constraints as they emerge - e.g., dependencies, patterns, non-obvious rules]
+- Keep the repo markdown-first and workflow-focused; there is no application runtime in this project yet.
+- Prefer updating the core knowledge docs (`README.md`, `INTENT.md`, `DECISIONS.md`, `LEARNINGS.md`, `TODO.md`) in the same change when behavior or methodology shifts.
+- Exportable skills live in `skills/`; repo-local helper and ritual skills live in `skills/local/`.
 
 ## Key Files
 
@@ -39,12 +41,14 @@ A collaborative research and development project exploring entropy guards — sk
 
 ## Commands
 
-[Add build, test, and run commands as they emerge]
+- No build, test, or runtime commands yet. This repo is currently markdown-first and workflow-focused.
+- Typical verification is: read affected docs, check cross-references and workflow alignment, and review `git diff` for unintended drift.
 
 
 ## Testing
 
-[Add test conventions and how to verify changes]
+- There is no automated test suite yet.
+- Verify changes by checking that affected docs agree with each other, referenced files exist, and local skills still describe the current workflow accurately.
 
 ## Maintaining These Docs
 

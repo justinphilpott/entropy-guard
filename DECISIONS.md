@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Keep a single local guard, but treat workflow/practice drift as first-class
+
+**Context**: Re-running `entropy-assessment` against this repo showed that its main entropy risks no longer fit neatly into a docs-only framing. The project is a documentation-as-system repo, but it also exports a way of working: TODO discipline, agent instructions, upstream feedback capture, and a pre-commit ritual. The existing local `entropy-guard` skill mostly checked documentation consistency and knowledge capture, but did not name workflow/practice drift as a first-class thing it was guarding.
+**Decision**: Keep one local `entropy-guard` skill rather than splitting into separate docs and workflow guards, because this repo still has one obvious low-burden handoff point: end of a meaningful work session / before commit. Update that guard so it explicitly checks workflow/practice alignment alongside documentation consistency.
+**Impact**: The local guard stays lightweight and easy to remember, but better matches the actual entropy profile of the repo. The assessment methodology also gets a clearer real-world example of a system where workflow is part of the artifact being preserved.
+
+---
+
 ### Upstream feedback should be embedded in assessment and integration flows
 
 **Context**: The repo had a local `entropy-guard-feedback` helper for creating upstream issues, but agents only found it if they separately noticed the helper existed. The main exportable workflows (`entropy-assessment` and `guards-integrator`) did not explicitly ask whether the skills themselves had misfired, so the improvement loop depended on extra initiative rather than being part of normal use.

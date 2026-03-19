@@ -60,7 +60,7 @@ Key starting points:
 
 ### Adapt the project's own guard
 
-This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual that checks for decision capture, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and can be adapted directly for documentation-heavy or knowledge-management projects.
+This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual that checks for decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and can be adapted directly for documentation-heavy or knowledge-management projects.
 
 ---
 
@@ -77,7 +77,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-guard/](skills/local/entropy-guard/) | Post-work micro-ritual — a reference example of generator output |
+| [entropy-guard/](skills/local/entropy-guard/) | Post-work micro-ritual — a reference example of generator output for a docs + workflow-heavy repo |
 | [entropy-guard-feedback/](skills/local/entropy-guard-feedback/) | Create a GitHub issue on the entropy-guard repo to report a problem or suggestion about the tool itself |
 
 ### Frameworks and thinking

@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Workflow-heavy repos do not always need separate guards
+
+**Topic**: Guard generation methodology
+
+**Insight**: A repo can have workflow/practice drift as a first-class entropy vector without needing a separate workflow guard. If there is still one stable, low-burden handoff point and the checks are tightly coupled, the better design can be a single guard that explicitly covers both documentation and workflow alignment.
+**Validated by**: Running Phase 2 of `entropy-assessment` against this repo. The main risks clearly span both docs and practice, but splitting the local guard would have added ceremony without adding a better trigger point.
+**Implication**: The assessment should model workflow/process more explicitly during analysis, but guard design should still optimize for the smallest effective set of rituals rather than assuming each risk area deserves its own file.
+
+---
+
 ### Conversations are high-entropy artifacts
 
 **Topic**: Knowledge management
