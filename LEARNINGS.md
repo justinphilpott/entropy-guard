@@ -84,6 +84,36 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Just-in-time guard generation is a better model than pre-generated guard artifacts
+
+**Topic**: Guard generation methodology
+
+**Insight**: A pre-generated guard encodes system state at time A and drifts from time B onward. A process generator that produces fresh guards from current state + cached memory + intent is fundamentally more robust — not because it's a better implementation but because it's a different category of thing. The generator makes claims about how to assess *any state of this system*; the guard makes claims about *a specific past state*. The analogy: DNA repair enzymes aren't pre-stocked patches — they're proteins that recognise and respond to damage classes, whatever form the damage takes.
+**Validated by**: The 2026-03-19 philosophical conversation on autopoiesis and entropy guards (`explorations/2026-03-19-autopoiesis.md`).
+**Implication**: Entropy-assessment should be designed as a generator invoked fresh at each handoff, not a template that's maintained between uses. The intermediate guard artifact is a pragmatic concession to the current state of tooling, not a design goal. The mature form collapses assess → fix with no persistent guard artifact.
+
+---
+
+### The four-component temporal hierarchy of a complete guarding system
+
+**Topic**: Guard system architecture
+
+**Insight**: A complete guarding system has four components with fundamentally different persistence expectations: (1) intent — slowest to change, constitutional core; (2) system memory — the cached entropy profile, analogous to immune memory, updates with major architectural shifts; (3) process generator — freshly instantiated at each handoff from the other three, never persisted; (4) delta — what changed this iteration, consumed immediately. The error in current guard design is treating all four as having the same persistence profile. The stability hierarchy maps directly to the biological analogy: the repair enzyme genes (intent) are ancient; the enzymes themselves (memory) persist in the cell; the specific repair action (process) is immediate and consumed.
+**Validated by**: The 2026-03-19 philosophical conversation on autopoiesis and entropy guards.
+**Implication**: Future entropy-assessment design should explicitly distinguish these four components and design persistence expectations accordingly. The process generator should be ephemeral. The system memory should be maintained as a first-class artifact with its own update cadence. The intent should be the most protected and slowest-changing element.
+
+---
+
+### Most current guards operate at the wrong layer — representational rather than meaning
+
+**Topic**: Guard design methodology
+
+**Insight**: There is a layer hierarchy from representational consistency (layer 5: docs agree with each other) down to actual-meaning integrity (layer 1: the effect still serves what motivated building it). Current entropy guards almost entirely operate at layers 4–5. Test suites operate at layer 3 — checking against a static behavioral baseline. Almost nothing guards layers 1–2. A system can be perfectly internally consistent, pass all tests, and be doing the wrong thing — intent drift at layer 1 is invisible to every representational guard. This is the cancer pattern: local coherence, global harm.
+**Validated by**: The 2026-03-19 philosophical conversation; the observation that test suites guard regression but not purpose drift.
+**Implication**: The most valuable future development for entropy guards is mechanisms for layer 1–2 checking — evaluating whether the running system still serves its stated intent. This likely requires AI-assisted evaluation rather than mechanical checking. The fact that almost no tooling addresses this layer is itself a significant gap in the current software development infrastructure.
+
+---
+
 ### Cold-start reliability needs scaffolding, not just process prose
 
 **Topic**: Skill design
