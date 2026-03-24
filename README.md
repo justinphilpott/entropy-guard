@@ -60,7 +60,7 @@ Key starting points:
 
 ### Adapt the project's own guard
 
-This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual that checks for decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and can be adapted directly for documentation-heavy or knowledge-management projects.
+This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual backed by a non-blocking local reminder hook in [`.githooks/pre-commit`](.githooks/pre-commit). The guard checks decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and how a guard can mature from manual instructions to prompted workflow support.
 
 ---
 
@@ -94,6 +94,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 | Document | Purpose |
 |----------|---------|
 | [AGENTS.md](AGENTS.md) | Working practices for contributors (human and AI) |
+| [`.githooks/pre-commit`](.githooks/pre-commit) | Non-blocking local reminder hook for running the repo's entropy guard before commit |
 | [TODO.md](TODO.md) | Active work tracking |
 
 ---
@@ -112,5 +113,7 @@ Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 
 1. Check [TODO.md](TODO.md) for what's active
 2. Do your work
-3. Run [skills/local/entropy-guard/](skills/local/entropy-guard/) before committing
+3. Run [skills/local/entropy-guard/](skills/local/entropy-guard/) before committing (the local reminder hook nudges, but does not block)
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
+
+To enable the reminder in a fresh clone, symlink [`.githooks/pre-commit`](.githooks/pre-commit) to `.git/hooks/pre-commit`.

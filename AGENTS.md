@@ -14,7 +14,7 @@ A collaborative research and development project exploring entropy guards — sk
 
 ## Working Practices
 
-- **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches.
+- **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
 - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
 - **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
 - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
@@ -34,6 +34,7 @@ A collaborative research and development project exploring entropy guards — sk
 
 - [INTENT.md](INTENT.md) — the living intent statement; north star for the meta-skill and all guard design. Consult before any significant design work.
 - [PHILOSOPHY.md](PHILOSOPHY.md) — open-ended philosophical musings; humans and agents both contribute freely
+- [`.githooks/pre-commit`](.githooks/pre-commit) — non-blocking local reminder hook for running the repo's entropy guard before commit
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
 - [skills/local/entropy-guard-feedback/](skills/local/entropy-guard-feedback/) — local helper for turning assessment/integration feedback into upstream GitHub issues on entropy-guard
 - [skills/entropy-assessment/](skills/entropy-assessment/) — start here to assess a system's entropy risks, generate domain-specific guards, and sketch how they should be integrated

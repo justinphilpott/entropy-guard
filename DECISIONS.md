@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Guard adoption should usually mature from external to prompted before deeper automation
+
+**Context**: The repo's local `entropy-guard` ritual had clear standing instructions and was being used, but its main failure mode was now forgetfulness rather than disagreement about scope. For judgment-heavy guards like session-close or pre-commit rituals, jumping straight from a manual skill file to CI enforcement is usually the wrong move; the useful intermediate step is a non-blocking reminder at the real handoff point. The exportable assessment process already named Prompted enforcement in theory, but it did not yet emphasize this manual-to-prompted progression as the default next move after a guard proves valuable.
+**Decision**: Treat `External -> Prompted -> deeper embedding` as the normal maturity path for judgment-heavy guards. Add a tracked non-blocking pre-commit reminder to this repo's local workflow, and strengthen the exportable assessment / integration guidance so assessed projects are encouraged to add reminder layers before they jump to heavier automation.
+**Impact**: This repo now practices the adoption path it recommends. Future assessments should more consistently distinguish "the guard definition" from "the reminder surface that makes it run," which should reduce skipped-guard failures without prematurely turning judgment calls into hard gates.
+
+---
+
 ### Entropy assessment should support guard refinement and evidence-based bootstrap design
 
 **Context**: Applying `entropy-assessment` to real projects exposed a cluster of related misfires. The skill framed Phase 2 primarily as generating new guards, even when the right outcome was a targeted amendment to an existing guard. It also allowed bootstrap checks to be written from indirect notes without verifying the current artifact, and it did not clearly distinguish stable guard definitions from the companion artifacts that should record bootstrap completion. Cold-start projects with no established loop likewise had no named minimum-viable integration pattern.

@@ -2,7 +2,7 @@
 name: entropy-guard
 description: Post-work micro-ritual for the entropy-guard project itself. Run before committing after meaningful work. Checks decision capture, workflow/practice alignment, internal consistency, cross-references, and honest state. A reference example of what the guard generators produce.
 metadata:
-  version: "0.2.1"
+  version: "0.2.2"
 ---
 
 # Skill: Entropy Guard
@@ -19,7 +19,7 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 > - Generated: 2026-03-19, via entropy-assessment v0.4.0
 > - System snapshot: documentation-as-system repo with 2 exportable skills, 2 local skills, AI-agent contributors, TODO-driven session workflow, and no application code/tests/API
 > - Last evaluated: 2026-03-24, via entropy-assessment v0.5.1
-> - Integration: run manually before commit per AGENTS.md working practices
+> - Integration: standing instruction in AGENTS.md plus a non-blocking local pre-commit reminder via `.githooks/pre-commit`
 
 ## When to Run
 

@@ -2,7 +2,7 @@
 name: entropy-assessment
 description: Assess any system for entropy risks and optionally generate or refine guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts including workflow/process guards, and should leave maintainers with actionable integration advice.
 metadata:
-  version: "0.5.1"
+  version: "0.5.2"
 ---
 
 # Skill: Entropy Assessment & Guard Generation
@@ -201,6 +201,7 @@ Treat this step as a first-pass integration design. Stop here if you have one gu
 - **Discovery**: how does a new contributor find out which guards exist? Recommend a manifest — a `guards/` directory, a section in AGENTS.md, or a guard-runner config file.
 - **Execution**: if multiple guards exist, what order do they run in? Can they run in parallel?
 - **Right-now adoption**: what can the maintainers do immediately, using their current workflow, so the guards start catching drift this week rather than waiting for ideal automation?
+- **Adoption ladder**: if the guard is judgment-heavy and useful but easy to forget, recommend the next maturity step explicitly: `External -> Prompted -> deeper embedding`. A strong default is to start with the guard file plus standing instructions, then add a non-blocking reminder at the real handoff (pre-commit hook, task wrapper, PR template), then move mechanically-checkable sub-checks deeper into tooling.
 - **Agentic integration**: if AI agents work in the system, what standing instructions, task templates, or wrapper prompts need to mention these guards so a fresh agent actually runs them? The guard file itself is often the most reliable place to put the core agent-facing trigger instruction.
 
 **Bootstrap pattern — no existing loop yet.** If the system has no CI, no hooks, and no established ritual, start with External enforcement but make the trigger explicit:
@@ -208,7 +209,7 @@ Treat this step as a first-pass integration design. Stop here if you have one gu
 2. Put a standing instruction in the guard file itself for AI agents (for example: "Run this at session close without being asked. Check `TODO.md` at session open.")
 3. Define a lightweight session artifact convention (session log, commit prefix, handoff note) so collaborators can reconstruct what happened without diff archaeology.
 
-Graduate to Prompted enforcement after real use shows what still slips through.
+Graduate to Prompted enforcement after real use shows that the main failure mode is forgetting to run the guard, not disagreement about what the guard asks for.
 
 **Versioning metadata.** Each generated guard should include:
 - **Generated**: date and which skill version produced it

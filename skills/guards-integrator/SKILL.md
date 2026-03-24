@@ -2,7 +2,7 @@
 name: guards-integrator
 description: Examine a system's existing iteration loops and generated guards, then recommend how those guards should be integrated for immediate operational value. Maps guard checks to triggers, discovery paths, execution order, and adoption steps.
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # Skill: Guards Integrator
@@ -147,12 +147,14 @@ Deliver a phased recommendation with three horizons:
 
 The "Now" plan should be actionable without waiting for new infrastructure.
 
+Default maturity path for judgment-heavy guards: `Now = External`, `Next = Prompted reminder at the real handoff once missed runs become the main failure mode`, `Later = move mechanically-checkable sub-checks into Semi-embedded or Fully embedded enforcement`.
+
 Minimal scaffold:
 
 ```md
 Adoption plan
 - Now: add guard links to `AGENTS.md` and require a short guard note in PR descriptions
-- Next: add a PR template checkbox and a pre-commit reminder script
+- Next: add a PR template checkbox and a non-blocking pre-commit reminder
 - Later: move mechanical checks into CI and add a guard runner if the set grows
 ```
 

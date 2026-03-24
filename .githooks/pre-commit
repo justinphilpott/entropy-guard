@@ -1,0 +1,9 @@
+#!/bin/sh
+
+printf '\n' >&2
+printf '%s\n' 'entropy-guard reminder: if this commit reflects meaningful work, run skills/local/entropy-guard/SKILL.md before committing.' >&2
+printf '%s\n' 'If this was only a trivial change, use judgment and continue.' >&2
+printf '%s\n' 'Also make sure TODO.md "Doing Now" is cleared before the commit lands.' >&2
+printf '\n' >&2
+
+exit 0

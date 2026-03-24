@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Judgment-heavy guards usually mature through reminders before automation
+
+**Topic**: Guard adoption
+
+**Insight**: When a guard is already well-scoped and useful, the next failure mode is often forgetfulness rather than bad guard design. For judgment-heavy guards, the right next move is usually a non-blocking reminder at the real handoff point, not immediate CI or hard enforcement.
+**Validated by**: This repo's local `entropy-guard` ritual had become stable enough that the main remaining gap was remembering to run it consistently. Adding a local pre-commit reminder hook improved the workflow without pretending the underlying judgment checks could be automated.
+**Implication**: Assessment and integration guidance should explicitly recommend an `External -> Prompted -> deeper embedding` adoption ladder for judgment-heavy guards, and distinguish reminder surfaces from the guard definition itself.
+
+---
+
 ### Bootstrap checks need direct evidence and external state tracking
 
 **Topic**: Guard generation methodology
