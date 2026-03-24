@@ -2,7 +2,7 @@
 
 > This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
 
-*Last revised: 2026-02-24 — added entropy dimensions, enforcement depth spectrum, and inter-domain drift (from discussion on making the project genuinely useful)*
+*Last revised: 2026-03-24 — clarified repo scope after farming broader entropic-immunity exploration into a sibling repo, and set external validation on open source projects as the next phase*
 
 ---
 
@@ -114,6 +114,23 @@ The most mature form of a guard is when it becomes a behaviour of the system its
 - **Low-burden by design** — 2–10 minutes, not an hour; this is sustained practice, not a one-off audit
 - **Collaborative and cumulative** — humans and AI agents both contribute; each iteration should leave the system better-understood than before
 - **Self-applying** — the guards and meta-skill developed here should be applied to this project itself
+
+---
+
+## Scope boundary and next validation loop
+
+This repo is now intentionally narrower than the broader conceptual work it helped surface.
+
+- `entropy-guard` stays focused on practical entropy protection: assessment, guard generation/refinement, integration, and eventually stronger operational validation.
+- The larger exploration into entropic immunity, layered steering, viability, and broader sociotechnical theory now continues in the sibling `entropy-immune-system` repo.
+
+The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively:
+
+- select a larger batch of open source projects
+- run `entropy-assessment` on each
+- generate or refine guards where appropriate
+- run those guards locally while making targeted improvements
+- track whether this produces more merged PRs and sharper feedback on what the methodology gets right or wrong
 
 ---
 

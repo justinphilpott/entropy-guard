@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical
+
+**Context**: The March 2026 explorations on autopoiesis, layered intent, steering, viability, and entropic immunity opened a broader research program than `entropy-guard` itself needs in order to stay useful. Letting that conceptual exploration continue inside this repo risked blurring the scope of the practical guard project and making the README / INTENT / contributor guidance less clear about what this repo is actually trying to validate next.
+**Decision**: Keep `entropy-guard` focused on practical entropy protection: assessment, guard generation/refinement, integration, and iterative validation of those workflows on real projects. Farm the broader entropic-immunity exploration into a sibling repo, `entropy-immune-system`, seeded with the exploration documents and early research scaffolding. Set the next validation loop here to: assess a larger set of open source projects, generate or refine guards, run them locally while making targeted improvements, and track whether that produces more merged PRs.
+**Impact**: `entropy-guard` retains a clear operational center and a concrete next step. The broader theory can evolve without forcing premature architectural or philosophical expansion into this repo. Future contributors should treat `entropy-guard` as the practical ladder and `entropy-immune-system` as the larger inquiry.
+
+---
+
 ### Guard adoption should usually mature from external to prompted before deeper automation
 
 **Context**: The repo's local `entropy-guard` ritual had clear standing instructions and was being used, but its main failure mode was now forgetfulness rather than disagreement about scope. For judgment-heavy guards like session-close or pre-commit rituals, jumping straight from a manual skill file to CI enforcement is usually the wrong move; the useful intermediate step is a non-blocking reminder at the real handoff point. The exportable assessment process already named Prompted enforcement in theory, but it did not yet emphasize this manual-to-prompted progression as the default next move after a guard proves valuable.

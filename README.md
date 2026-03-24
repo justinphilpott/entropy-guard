@@ -4,6 +4,8 @@ Skills, frameworks, and resources for keeping iterated systems coherent. Designe
 
 This is an evolving project — actively used, actively refined. Both humans and AI agents contribute here.
 
+The broader exploratory thread that grew out of this work — layered intent, entropic immunity, viability / steering, and the larger theory space around long-lived intent-bearing systems — now continues in the sibling `entropy-immune-system` repo. This repo stays focused on practical entropy guards and their validation.
+
 ---
 
 ## What is an entropy guard?
@@ -102,6 +104,10 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 ## Project status
 
 Actively evolving. The assessment skill has been used against this project itself (dogfooding) and the guard it produced is in daily use. Domain-specific knowledge for docs, code, test, API, and workflow/process guards is built into the skill as reference appendices.
+
+The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+
+The next concrete phase here is external validation: select a larger set of open source projects, run entropy assessments on them, generate guards, run those guards locally, make targeted improvements, and see whether that yields more merged PRs in the wild.
 
 See [TODO.md](TODO.md) for current priorities.
 
