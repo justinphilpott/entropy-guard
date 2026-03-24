@@ -1,17 +1,17 @@
 ---
 name: entropy-assessment
-description: Assess any system for entropy risks and optionally generate guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts including workflow/process guards, and should leave maintainers with actionable integration advice.
+description: Assess any system for entropy risks and optionally generate or refine guards. Inventories what exists, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile, can generate domain-specific guard artifacts including workflow/process guards, and should leave maintainers with actionable integration advice.
 metadata:
-  version: "0.5.0"
+  version: "0.5.1"
 ---
 
 # Skill: Entropy Assessment & Guard Generation
 
-Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards, it continues into domain-specific analysis and guard design using built-in domain references, then recommends how those guards should fit into the system's real iteration loop.
+Assess a system's entropy profile — where it's drifting, what's at risk, and what to do about it. This skill walks through a structured assessment that produces a standalone entropy report. If you want to go further and generate guards or refine existing ones, it continues into domain-specific analysis and guard design using built-in domain references, then recommends how those guards should fit into the system's real iteration loop.
 
 **Two phases, one skill:**
 - **Phase 1 (Steps 1–4): Assessment** — produces an entropy profile and recommendations. This is a complete, useful deliverable on its own.
-- **Phase 2 (Steps 5–8): Guard generation** — optional. Analyzes each relevant domain in depth, produces guard artifacts, and closes with concrete integration guidance.
+- **Phase 2 (Steps 5–8): Guard generation / refinement** — optional. Analyzes each relevant domain in depth, produces guard artifacts or revision guidance, and closes with concrete integration guidance.
 
 > **Key principles** (from [INTENT.md](../../INTENT.md)):
 > - A guard preserves five things: **continuity of intent**, **internal consistency**, **accumulated knowledge**, **legibility**, and **honest state**
@@ -81,17 +81,20 @@ Note whether different domains have different iteration patterns. Documentation 
 Before diving into domain-specific analysis, assess the **inter-domain drift** risks. These live in the gaps *between* domains and no single domain analysis will catch them:
 
 - **Docs vs. implementation**: do the docs describe the current system, or a past version?
+- **Docs vs. docs**: in documentation-first or markdown-first systems, do the core documents still agree with each other? Check for drift between the intent statement and current-shape summary, next-slice TODOs and review checklists, model/spec docs and concrete example artifacts, and workflow docs and stated contributor practice.
 - **Tests vs. implementation**: do the tests verify the current contract, or an old one?
 - **API spec vs. implementation**: does the spec match what the code actually does?
 - **Tests vs. docs**: do the documented behaviors have corresponding tests? Do tested behaviors appear in the docs?
 - **Workflow vs. reality**: do contributor instructions, checklists, and handoff rituals match how changes actually happen?
 - **Workflow vs. other domains**: do process docs still point at the current code/tests/docs/API surfaces, or do they enforce stale expectations?
 
+For documentation-as-system or markdown-first repositories, internal documentation drift is often the primary inter-domain risk rather than a special case of docs-vs-code drift.
+
 Note the most dangerous drift risks. These will inform how domain-specific guards coordinate — for example, a docs guard should cross-check against code, a test guard should cross-check against the API contract, and a workflow/process guard should cross-check against the real handoff loop.
 
-### Step 4: Prioritize domains for guard generation
+### Step 4: Prioritize domains for guard generation or amendment
 
-Based on Steps 2 and 3, decide which domains warrant guards.
+Based on Steps 2 and 3, decide which domains warrant new guards, targeted guard amendments, or no additional guard work.
 
 **Selection criteria:**
 
@@ -99,9 +102,10 @@ Based on Steps 2 and 3, decide which domains warrant guards.
 - Prioritize by entropy risk. If docs/code drift is the biggest danger, focus on docs first.
 - Treat workflow/process as first-class when the system's main risks live in handoffs, contributor rituals, release steps, agent instructions, or operational checklists. This is especially common in documentation-as-system repos, agent-heavy projects, and mature systems with lots of automation.
 - Consider whether a general-purpose post-work checklist already covers the system adequately. A general guard is a short checklist (5–10 items) covering decision capture, internal consistency, cross-references, and honest state — run before each commit. For simple systems with one domain, this may be enough. Note this explicitly rather than generating domain-specific guards unnecessarily.
+- If the system already has guards for a domain, assess their adequacy before recommending new files. Check whether the existing guard covers the right entropy vectors, actor, trigger, burden budget, and enforcement depth. If the guard is mostly sound, recommend targeted amendments rather than replacement.
 - Do not assume each high-risk domain needs its own file. If multiple risk areas share the same actor, trigger, and burden budget, a single combined guard may be better than separate guards.
 
-**Sequencing (if generating guards for multiple domains):**
+**Sequencing (if generating or revising guards for multiple domains):**
 
 1. **Code** first (if applicable) — establishes the architectural baseline that other domains reference
 2. **API contract** second (if applicable) — defines the contract surface that tests should verify and docs should describe
@@ -116,7 +120,7 @@ At this point you have a complete entropy assessment. Deliver it as a report:
 - **System intent summary** (from Step 1)
 - **Domain map** — which domains are present, their iteration patterns, cadence mismatches (from Step 2)
 - **Entropy risk profile** — top cross-domain drift risks, ranked by danger (from Step 3)
-- **Recommendations** — which domains need guards (if any), in what order, and why. For simple systems, note if a general entropy-guard checklist is sufficient (from Step 4)
+- **Recommendations** — which domains need new guards, targeted amendments to existing guards, or no change; in what order; and why. For simple systems, note if a general entropy-guard checklist is sufficient (from Step 4)
 - **Bootstrap actions** — anything the system needs before guards can work (e.g., write an intent statement, consolidate duplicate conventions)
 
 > **If your goal is assessment only, stop here.** The report above is a complete deliverable — it tells the system's maintainers where entropy is accumulating and what to do about it. Continue to Phase 2 only if you want to produce guard artifacts.
@@ -125,7 +129,7 @@ At this point you have a complete entropy assessment. Deliver it as a report:
 
 ## Phase 2: Guard Generation (optional)
 
-This phase takes the assessment from Phase 1 and produces concrete guard artifacts. For each domain prioritized in Step 4, work through Steps 5–8 using the domain reference appendices at the bottom of this file.
+This phase takes the assessment from Phase 1 and produces concrete guard artifacts or revision guidance. For each domain prioritized in Step 4 for new or revised guard work, work through Steps 5–8 using the domain reference appendices at the bottom of this file.
 
 ### Step 5: Domain inventory
 
@@ -138,6 +142,8 @@ For each selected domain, inventory what exists before analyzing entropy. This p
 - **Missing and needed** — the generated guard should include a bootstrap action (e.g., "write a 2-sentence intent statement before the first guard run")
 - **Missing and fine** — not every system needs every element. A small CLI tool doesn't need a tutorial site.
 - **Present but possibly stale** — exists but shows signs of age (dates, references to removed features, etc.)
+
+**Verify each claimed gap against the current artifact.** Before writing a bootstrap action that names a specific file, field, section, script, or configuration key, read the target and confirm the gap is real in the current state. A bootstrap check that describes a non-existent gap is worse than no check; it trains contributors to distrust the guard.
 
 If there is no intent or strategy documentation for the domain at all, **flag this prominently**. A guard cannot check alignment with intent that was never articulated.
 
@@ -173,12 +179,12 @@ The guard should include:
   Items where tooling could catch the issue. Each item should note its current enforcement level and recommend a target level with specific tool suggestions.
 
 - **Inter-domain drift check** — at least one item should explicitly verify consistency with other domains (e.g., "do the docs reflect the code change you just made?")
-- **Output** — what the contributor records after running
+- **Output** — what the contributor records after running, including where bootstrap completion is tracked. Bootstrap completion should be recorded in a companion artifact (for example `SESSION.md`, `TODO.md`, an issue, or a handoff note), not by editing the guard file itself. The guard definition should stay stable across runs.
 - **Rationale** — why each check exists and what entropy vector it guards against
 - **Integration** — how this guard gets run (see Step 8)
 - **Versioning metadata** — when generated, for what system state (see Step 8)
 
-If generating guards for multiple domains, review the complete set for coherence: eliminate duplicated checks across guards, fill cross-domain gaps, verify handoff timing alignment, and confirm total burden stays within 2–10 minutes.
+If generating or revising guards for multiple domains, review the complete set for coherence: eliminate duplicated checks across guards, fill cross-domain gaps, verify handoff timing alignment, and confirm total burden stays within 2–10 minutes.
 
 ### Step 8: Close the loop — integration and versioning
 
@@ -195,7 +201,14 @@ Treat this step as a first-pass integration design. Stop here if you have one gu
 - **Discovery**: how does a new contributor find out which guards exist? Recommend a manifest — a `guards/` directory, a section in AGENTS.md, or a guard-runner config file.
 - **Execution**: if multiple guards exist, what order do they run in? Can they run in parallel?
 - **Right-now adoption**: what can the maintainers do immediately, using their current workflow, so the guards start catching drift this week rather than waiting for ideal automation?
-- **Agentic integration**: if AI agents work in the system, what standing instructions, task templates, or wrapper prompts need to mention these guards so a fresh agent actually runs them?
+- **Agentic integration**: if AI agents work in the system, what standing instructions, task templates, or wrapper prompts need to mention these guards so a fresh agent actually runs them? The guard file itself is often the most reliable place to put the core agent-facing trigger instruction.
+
+**Bootstrap pattern — no existing loop yet.** If the system has no CI, no hooks, and no established ritual, start with External enforcement but make the trigger explicit:
+1. Add a working-practice note in `AGENTS.md`, `CONTRIBUTING.md`, or equivalent stating when the guard runs.
+2. Put a standing instruction in the guard file itself for AI agents (for example: "Run this at session close without being asked. Check `TODO.md` at session open.")
+3. Define a lightweight session artifact convention (session log, commit prefix, handoff note) so collaborators can reconstruct what happened without diff archaeology.
+
+Graduate to Prompted enforcement after real use shows what still slips through.
 
 **Versioning metadata.** Each generated guard should include:
 - **Generated**: date and which skill version produced it
@@ -421,9 +434,11 @@ API specification (auto-generated or hand-maintained?), contract testing (consum
 
 #### E.3 Checklist design guidance
 
-**Judgment-requiring**: does the documented loop still match reality, is each guard/check at the right handoff point, are roles and escalation paths clear, does the process preserve intent without adding cargo-cult ceremony?
+**Judgment-requiring**: does the documented loop still match reality, is each guard/check at the right handoff point, are roles and escalation paths clear, does the process preserve intent without adding cargo-cult ceremony, and did this session produce decisions or learnings that warrant capture in `DECISIONS.md`, `LEARNINGS.md`, ADRs, or similar artifacts?
 
 **Mechanically-assistable**: reminder hooks (→ pre-commit / wrapper prompt), template enforcement (→ PR templates, issue forms), stale path detection in process docs (→ search / CI), required metadata capture (→ issue template fields, PR checks), handoff visibility (→ guard manifest, generated summaries).
+
+For projects with explicit decision or learning capture practices, include a workflow check that maps directly to the "accumulated knowledge" preservation goal rather than assuming those captures will happen elsewhere.
 
 Workflow/process guards often coordinate other guards rather than standing alone. Prefer a separate workflow guard only when the process has its own stable trigger or actor. If the workflow checks naturally belong at the same handoff as another guard, combine them.
 

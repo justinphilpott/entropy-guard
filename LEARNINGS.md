@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Bootstrap checks need direct evidence and external state tracking
+
+**Topic**: Guard generation methodology
+
+**Insight**: A generated guard loses trust quickly if it names a gap that is not actually present or if it asks contributors to mutate the guard definition to prove completion. Bootstrap checks should be grounded in the current artifact, and their completion should be tracked in a companion artifact rather than the guard file itself.
+**Validated by**: Dogfooding `entropy-assessment` produced two first-draft errors that were only caught in self-review: one bootstrap action targeted a config key that was not present in the tracked file, and another proposed striking completed bootstrap items from the generated `SKILL.md` itself.
+**Implication**: Step 5 should require direct verification of the target artifact before a bootstrap action is written, and Step 7 should require an explicit output location outside the guard definition.
+
+---
+
 ### Workflow/process belongs in the assessment model, not just in the prose
 
 **Topic**: Assessment methodology
