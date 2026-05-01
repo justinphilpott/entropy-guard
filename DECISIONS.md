@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Specialize first around docs-first planning repos, but keep entropy-assessment as the front door
+
+**Context**: Repeated real use of `entropy-assessment` has not converged on conventional code-heavy repositories. The strongest, most consistent signal has come from markdown-first planning/design repos where the main artifacts are architecture docs, decision logs, task state, templates, and contributor/agent workflow guidance. The recent issue cluster (`#9`-`#12`) sharpened that further: these systems need explicit canonical truth mapping, current-state session packets, supersession-aware guard checks, and caution about brittle phrase-encoded automation. This is now a distinct workflow shape, not just a few extra appendix bullets.
+**Decision**: Keep `skills/entropy-assessment/` as the single front door, but change its role to triage and routing rather than carrying all deep guidance itself. Add a specialized export, `skills/docs-first-planning-assessment/`, for markdown-first planning/design repos. Treat the current-state packet as an output of that specialized assessment rather than a separate skill for now. Keep `skills/guards-integrator/` as the separate adoption-time skill.
+**Impact**: The repo stays easy to enter, but the deepest validated path is now explicit instead of buried inside a general skill. `entropy-assessment` can remain the obvious first stop while the docs-first planning workflow gets the space it needs to evolve without overloading the umbrella skill. Broader code/test/API support remains in scope, but is now more honestly positioned as less validated until future specializations or stronger evidence emerge.
+
+---
+
 ### Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical
 
 **Context**: The March 2026 explorations on autopoiesis, layered intent, steering, viability, and entropic immunity opened a broader research program than `entropy-guard` itself needs in order to stay useful. Letting that conceptual exploration continue inside this repo risked blurring the scope of the practical guard project and making the README / INTENT / contributor guidance less clear about what this repo is actually trying to validate next.
@@ -111,6 +119,8 @@ Record architectural choices so future you (and agents) understand why.
 ---
 
 ### Consolidate domain generators into single skill with domain appendices
+
+*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above.*
 
 **Context**: The four domain generators (docs, code, test, API) were ~80% identical scaffolding — Steps 0–7 with the same structure, domain-adapted. The unique domain knowledge (entropy vectors, inventory items, checklist design guidance) accounted for ~20% of their content. The assessment skill's Phase 2 existed solely as a routing/coordination layer between the entry point and the generators. This meant an agent had to read 5 files to do what one file could accomplish. The insight from the two-layer decision — that domains need different analytical lenses — was correct, but the domain-specific knowledge turned out to be reference data, not separate processes.
 **Decision**: Fold all domain knowledge into the entropy-assessment skill as reference appendices (one per domain). Delete the four standalone generator skills. The assessment skill now handles both assessment (Phase 1) and generation (Phase 2) with built-in domain references. Supersedes "Two-layer generator architecture" and "Exportable skills vs local skills" (for the generator skills specifically — the distinction still applies to local skills like entropy-guard).

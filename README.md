@@ -20,28 +20,41 @@ See [INTENT.md](INTENT.md) for a precise definition of what entropy means here a
 
 ## How to use this repo
 
+Current strongest fit: markdown-first, docs-as-system, architecture/planning, and workflow-heavy repos that evolve through repeated AI-assisted sessions. Code/test/API-oriented use is still in scope, but is less validated here today.
+
 ### Assess a system for entropy risks
 
-The primary export of this repo. The [entropy assessment](skills/entropy-assessment/) skill is the start point — it inventories your system, identifies which domains are at risk, surfaces cross-domain drift, produces an entropy profile with recommendations, and can tell you when an existing guard should be amended rather than replaced.
+The front door is [entropy assessment](skills/entropy-assessment/). It classifies the system shape, routes you to the right assessment workflow, and produces a lightweight entropy profile when no deeper specialization fits yet.
 
-You don't need to know what guards you want upfront. The assessment figures that out with you.
+Today the deepest specialized path is [docs-first planning assessment](skills/docs-first-planning-assessment/), for markdown-first planning/design repos where the main artifact is evolving documentation and the main risk is repeated session drift.
 
-**To assess a system**: point an AI agent at the assessment skill and your target project.
+You don't need to know what guards you want upfront. Start at the front door unless you already know you're in the docs-first planning case.
+
+**To assess a system**: point an AI agent at the front-door assessment skill and your target project.
 
 ```
 Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
 then assess [your project path] for entropy risks.
 ```
 
-The assessment walks through intent, domain mapping, drift analysis, and recommendations. It produces a standalone entropy report — useful on its own for understanding where a system is drifting.
+The front door classifies the repo and sends docs-first planning repos to the specialized workflow. That workflow produces a standalone entropy report, a canonical truth map, a compact current-state packet for fresh sessions, and guard recommendations.
+
+**If you already know the repo is docs-first planning**: go straight to the specialized skill.
+
+```
+Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
+then assess [your project path], produce a current-state packet,
+and generate or refine a delta guard.
+```
 
 It also closes the loop on the skill itself: if the assessment misfires or creates avoidable friction, the final step is to capture a short upstream feedback note so the heuristic can improve.
 
-**To generate guards**: if you want to go further, the assessment continues into guard generation — producing domain-specific guard skill files you place in your project's skills directory, or targeted amendment guidance for guards you already have, along with first-pass advice on how to integrate them into the workflow you already use.
+**To generate guards**: if you want to go further, the specialized assessment continues into guard generation or refinement — producing a delta guard skill file you place in the target project's skills directory, or targeted amendment guidance for the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
 
 ```
-Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
-then assess [your project path] and generate entropy guards.
+Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
+then assess [your project path], produce a current-state packet,
+and generate or refine the entropy guard.
 ```
 
 **To integrate generated guards into a real loop**: run the [guards integrator](skills/guards-integrator/) skill after guard generation when you want a sharper recommendation about how those guards should fit an existing agent, commit, PR, or CI workflow.
@@ -72,7 +85,8 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-assessment/](skills/entropy-assessment/) | Start here — assesses systems for entropy risks, produces profiles, generates or refines domain-specific guards, gives first-pass integration advice, and prompts for upstream feedback when the skill itself misfires |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
+| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
 | [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
 
 ### Skills (local to this project)
@@ -103,11 +117,11 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 ## Project status
 
-Actively evolving. The assessment skill has been used against this project itself (dogfooding) and the guard it produced is in daily use. Domain-specific knowledge for docs, code, test, API, and workflow/process guards is built into the skill as reference appendices.
+Actively evolving. The project's strongest validated use case is now docs-first planning repos: markdown-first systems where evolving design docs, decision logs, handoff docs, and agent instructions need to stay coherent across repeated sessions. This repo's own guard remains the main reference example.
 
-The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
 
-The next concrete phase here is external validation: select a larger set of open source projects, run entropy assessments on them, generate guards, run those guards locally, make targeted improvements, and see whether that yields more merged PRs in the wild.
+The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
 
 See [TODO.md](TODO.md) for current priorities.
 

@@ -11,6 +11,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
 - [skills/](skills/) - Skills
+- [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) - Specialized deep path for docs-first planning repos
 - `../entropy-immune-system/` - Sibling repo for the broader entropic-immunity exploration spun out of this project
 
 ## Working Practices
@@ -30,7 +31,7 @@ A collaborative research and development project exploring entropy guards — sk
 - Keep the repo markdown-first and workflow-focused; there is no application runtime in this project yet.
 - Prefer updating the core knowledge docs (`README.md`, `INTENT.md`, `DECISIONS.md`, `LEARNINGS.md`, `TODO.md`) in the same change when behavior or methodology shifts.
 - Exportable skills live in `skills/`; repo-local helper and ritual skills live in `skills/local/`.
-- Keep this repo focused on practical entropy-guard validation and exported workflow guidance; broader entropic-immunity theory work now lives in the sibling `entropy-immune-system` repo.
+- Keep this repo focused on practical entropy-guard validation and exported workflow guidance; broader entropic-immunity theory work now lives in the sibling `entropy-immune-system` repo. The current strongest validation track is docs-first planning repos.
 
 ## Key Files
 
@@ -39,7 +40,8 @@ A collaborative research and development project exploring entropy guards — sk
 - [`.githooks/pre-commit`](.githooks/pre-commit) — non-blocking local reminder hook for running the repo's entropy guard before commit
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
 - [skills/local/entropy-guard-feedback/](skills/local/entropy-guard-feedback/) — local helper for turning assessment/integration feedback into upstream GitHub issues on entropy-guard
-- [skills/entropy-assessment/](skills/entropy-assessment/) — start here to assess a system's entropy risks, generate domain-specific guards, and sketch how they should be integrated
+- [skills/entropy-assessment/](skills/entropy-assessment/) — front door that classifies the system shape and routes to the right deeper assessment workflow
+- [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — specialized deep path for markdown-first planning/design repos; produces a canonical truth map, current-state packet, and delta guard guidance
 - [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
 - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
 

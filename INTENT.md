@@ -2,7 +2,7 @@
 
 > This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
 
-*Last revised: 2026-03-24 — clarified repo scope after farming broader entropic-immunity exploration into a sibling repo, and set external validation on open source projects as the next phase*
+*Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
 
 ---
 
@@ -68,7 +68,9 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 
 ## What the guard generator should achieve
 
-The assessment skill (`skills/entropy-assessment/SKILL.md`) assesses any system — codebase, document corpus, API, test suite, collaborative workflow — and produces an entropy profile. It can optionally continue into guard generation, using built-in domain reference appendices (docs, code, tests, API, workflow/process) to produce domain-aware guards. Those generated guards should then be integrated into the system's existing iteration loop rather than left as passive files.
+The front-door assessment skill (`skills/entropy-assessment/SKILL.md`) triages a system, identifies its dominant shape, and routes it into the most appropriate deeper workflow. The first specialized export in this direction is `skills/docs-first-planning-assessment/SKILL.md`, which focuses on markdown-first planning/design repos where the main artifact is evolving documentation and the main risks are repeated session drift, parallel truth, and workflow/practice misalignment.
+
+For that class of system, the useful output is not only a delta guard. It is a small lifecycle: an entropy profile, a canonical truth map, a compact current-state packet for fresh sessions, and a session-end guard that protects the delta before it compounds.
 
 A good output from the generator:
 
@@ -77,13 +79,13 @@ A good output from the generator:
 - When generating guards for multiple domains, ensures they don't overlap or leave gaps — especially at inter-domain boundaries
 - Each guard is a skill file ready to be placed in the target system, with rationale
 
-The assessment skill is itself subject to this project's entropy guard. It should be run on this project periodically.
+The assessment workflow is itself subject to this project's entropy guard. It should be run on this project periodically.
 
 ### The guard lifecycle: four distinct tools
 
 A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
 
-1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. This is the assessment skill described above.
+1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, that role is carried by the assessment workflow rooted at `skills/entropy-assessment/` and, for the strongest validated case, `skills/docs-first-planning-assessment/`.
 
 2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
 
@@ -124,13 +126,13 @@ This repo is now intentionally narrower than the broader conceptual work it help
 - `entropy-guard` stays focused on practical entropy protection: assessment, guard generation/refinement, integration, and eventually stronger operational validation.
 - The larger exploration into entropic immunity, layered steering, viability, and broader sociotechnical theory now continues in the sibling `entropy-immune-system` repo.
 
-The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively:
+The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge should be the repo shape where the methodology is already proving useful: docs-first planning systems.
 
-- select a larger batch of open source projects
-- run `entropy-assessment` on each
-- generate or refine guards where appropriate
+- select a larger batch of docs-first planning / architecture / blueprint repos
+- run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
+- generate or refine guards where appropriate and use the current-state packet at session start
 - run those guards locally while making targeted improvements
-- track whether this produces more merged PRs and sharper feedback on what the methodology gets right or wrong
+- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
 
 ---
 

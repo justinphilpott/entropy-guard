@@ -2,7 +2,7 @@
 name: guards-integrator
 description: Examine a system's existing iteration loops and generated guards, then recommend how those guards should be integrated for immediate operational value. Maps guard checks to triggers, discovery paths, execution order, and adoption steps.
 metadata:
-  version: "0.2.1"
+  version: "0.2.2"
 ---
 
 # Skill: Guards Integrator
@@ -97,6 +97,8 @@ For each guard or guard check, recommend the right depth:
 4. **Fully embedded** — structural enforcement; no separate guard run needed
 
 Default rule: keep judgment in skills, move mechanics into tooling as soon as the system can support it.
+
+For docs-first planning repos, be especially careful about automating volatile wording or transitional structure. Prefer scripts for durable invariants like link integrity, required files, stable frontmatter, or fixed template structure. If a proposed check mostly encodes current phrasing, temporary paths, or architecture that is still moving, keep it in the narrative guard for now.
 
 Signals to calibrate what the system can support *now*:
 

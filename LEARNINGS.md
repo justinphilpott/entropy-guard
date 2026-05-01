@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### Docs-first planning repos need session-start orientation as much as session-end guarding
+
+**Topic**: Docs-first planning lifecycle
+
+**Insight**: In markdown-first planning/design repos, the main entropy problem often starts before the change, not after it. A fresh agent or human enters cold, reads too much adjacent documentation of equal apparent status, and rehydrates stale or superseded concepts. A session-end guard catches some fallout, but it does not solve the entry problem. These repos need both a compact current-state packet at session start and a delta guard at session end.
+**Validated by**: The recent issue cluster around canonical topology, registry duplication, superseded-nearby interference, and brittle docs automation. The recurring pain was not only "the docs drifted after work" but "the session started from the wrong truth surface and drift followed from there."
+**Implication**: The deepest validated export should specialize around docs-first planning repos and produce a small lifecycle: entropy profile, canonical truth map, session-start current-state packet, and session-end guard.
+
+---
+
 ### Judgment-heavy guards usually mature through reminders before automation
 
 **Topic**: Guard adoption
