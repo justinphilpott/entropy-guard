@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Session-coherence generation should bootstrap young repos before generating guards
+
+**Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.
+**Decision**: Add an explicit bootstrap mode to `skills/session-coherence-skill-generator/`. For young repos, it should inventory existing context, classify missing memory surfaces as needed now / soon / premature, and recommend or create only the smallest viable handoff structure before guard generation. Full guard creation waits until there is a real repeated loop or recurring drift symptom to guard.
+**Impact**: Early repos get useful context preservation without premature ceremony. The skill now covers the transition from "fits in memory" to "needs durable handoff state" while preserving the project's minimum-viable-intervention principle.
+
+---
+
 ### Specialize first around docs-first planning repos, but keep entropy-assessment as the front door
 
 **Context**: Repeated real use of `entropy-assessment` has not converged on conventional code-heavy repositories. The strongest, most consistent signal has come from markdown-first planning/design repos where the main artifacts are architecture docs, decision logs, task state, templates, and contributor/agent workflow guidance. The recent issue cluster (`#9`-`#12`) sharpened that further: these systems need explicit canonical truth mapping, current-state session packets, supersession-aware guard checks, and caution about brittle phrase-encoded automation. This is now a distinct workflow shape, not just a few extra appendix bullets.

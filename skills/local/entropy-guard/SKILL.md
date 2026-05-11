@@ -17,7 +17,7 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 
 > **Guard metadata**:
 > - Generated: 2026-03-19, via entropy-assessment v0.4.0
-> - System snapshot: documentation-as-system repo with 3 exportable skills, 2 local skills, AI-agent contributors, TODO-driven session workflow, and no application code/tests/API
+> - System snapshot: documentation-as-system repo with 4 exportable skills, 2 local skills, AI-agent contributors, TODO-driven session workflow, and no application code/tests/API
 > - Last evaluated: 2026-04-07, against docs-first-planning-assessment v0.1.0
 > - Integration: standing instruction in AGENTS.md plus a non-blocking local pre-commit reminder via `.githooks/pre-commit`
 

@@ -88,6 +88,7 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 | [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
 | [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
 | [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
+| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | Generates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
 
 ### Skills (local to this project)
 

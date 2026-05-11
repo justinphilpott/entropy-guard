@@ -43,6 +43,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [skills/entropy-assessment/](skills/entropy-assessment/) — front door that classifies the system shape and routes to the right deeper assessment workflow
 - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — specialized deep path for markdown-first planning/design repos; produces a canonical truth map, current-state packet, and delta guard guidance
 - [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
+- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — generates repo-specific session handoff guards or bootstraps minimal handoff memory for young repos
 - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
 
 ## Commands
