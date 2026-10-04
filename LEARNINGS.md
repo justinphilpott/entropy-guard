@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### A guard's own repair instruction can launder intent drift
+
+**Topic**: Guard design methodology
+
+**Insight**: A guard that tells an agent to resolve a mismatch between work and intent by "updating the intent docs" turns drift into the new intent. Every later check then passes. The documents agree, and the evidence that nobody decided the change is gone. The repair path has to separate a defect in the work, an adaptation within what was authorised, and a decision nobody has made, and send the last one to the steward as a proposal.
+**Validated by**: Two independent reviews on 2026-10-04 found this instruction in two guards the skills had produced: this repo's own guard (check 3) and FlowVoice's (judgment check 1). Neither asked the steward.
+**Implication**: Every generated guard carries the intent-change rule in `skills/entropy-assessment/intent-pass.md`. When reviewing a guard, read its repair instructions as closely as its checks.
+
+---
+
 ### Docs-first planning repos need session-start orientation as much as session-end guarding
 
 **Topic**: Docs-first planning lifecycle
@@ -60,7 +70,7 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 **Insight**: Conversations between humans and AI agents produce genuine intellectual work — frameworks, analyses, non-obvious insights — but this work decays instantly unless captured. The chat transcript is effectively write-only; nobody reads it again.
 **Validated by**: Realised the discussion on entropy vectors, enforcement depth, and domain-specific guards contained publishable-quality thinking that would have been lost without a capture mechanism.
-**Implication**: Need a systematic way to distill conversations into durable artifacts. Led to the distill-article skill.
+**Implication**: Need a systematic way to distill conversations into durable artifacts. Led to a distill-article skill, since removed from this repo; article drafts now live in the separate writing repo (see DECISIONS.md, "LEARNINGS.md stays tactical").
 
 ---
 
@@ -116,15 +126,20 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ### Just-in-time guard generation is a better model than pre-generated guard artifacts
 
+**Status**: hypothesis. Its only validation is a conversation, not use on a real system (marked 2026-10-04).
+
 **Topic**: Guard generation methodology
 
 **Insight**: A pre-generated guard encodes system state at time A and drifts from time B onward. A process generator that produces fresh guards from current state + cached memory + intent is fundamentally more robust — not because it's a better implementation but because it's a different category of thing. The generator makes claims about how to assess *any state of this system*; the guard makes claims about *a specific past state*. The analogy: DNA repair enzymes aren't pre-stocked patches — they're proteins that recognise and respond to damage classes, whatever form the damage takes.
 **Validated by**: The 2026-03-19 philosophical conversation on autopoiesis and entropy guards (`explorations/2026-03-19-autopoiesis.md`).
 **Implication**: Entropy-assessment should be designed as a generator invoked fresh at each handoff, not a template that's maintained between uses. The intermediate guard artifact is a pragmatic concession to the current state of tooling, not a design goal. The mature form collapses assess → fix with no persistent guard artifact.
+**Later qualification (2026-10-04)**: Astra's review pointed out that checks regenerated from the current system alone can treat drift as normal; they need a fixed reference in the steward's authorised intent. The method adopted is a compact reusable guard, anchored on authorised intent, that picks its checks for each change (DECISIONS.md, 2026-10-04).
 
 ---
 
 ### The four-component temporal hierarchy of a complete guarding system
+
+**Status**: hypothesis. Its only validation is a conversation, not use on a real system (marked 2026-10-04).
 
 **Topic**: Guard system architecture
 
@@ -135,6 +150,8 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 ---
 
 ### Most current guards operate at the wrong layer — representational rather than meaning
+
+**Status**: hypothesis. Its only validation is a conversation, not use on a real system (marked 2026-10-04).
 
 **Topic**: Guard design methodology
 

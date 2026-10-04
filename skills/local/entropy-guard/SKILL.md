@@ -2,7 +2,7 @@
 name: entropy-guard
 description: Post-work micro-ritual for the entropy-guard project itself. Run before committing after meaningful work. Checks decision capture, workflow/practice alignment, internal consistency, cross-references, and honest state. A reference example of what the guard generators produce.
 metadata:
-  version: "0.2.3"
+  version: "0.3.0"
 ---
 
 # Skill: Entropy Guard
@@ -18,7 +18,7 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 > **Guard metadata**:
 > - Generated: 2026-03-19, via entropy-assessment v0.4.0
 > - System snapshot: documentation-as-system repo with 4 exportable skills, 2 local skills, AI-agent contributors, TODO-driven session workflow, and no application code/tests/API
-> - Last evaluated: 2026-04-07, against docs-first-planning-assessment v0.1.0
+> - Last evaluated: 2026-10-04, by two independent reviews (`explorations/2026-10-04-skills-review*.md`), and amended to carry the intent-change rule and the one-owner check
 > - Integration: standing instruction in AGENTS.md plus a non-blocking local pre-commit reminder via `.githooks/pre-commit`
 
 ## When to Run
@@ -30,8 +30,25 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 ## When NOT to Run
 
 - After trivial changes (typo fixes, minor formatting) — use judgement
-- As a replacement for a full doc audit — use doc-health-check for that
+- As a replacement for a full doc audit — use `repo-doc-evaluator` (in local-config) or a fresh `entropy-assessment` run for that
 - More than once per logical piece of work
+
+## Where things live
+
+- Authorised intent: `INTENT.md`. Steward: Justin Philpott.
+- Current state and next steps: `TODO.md`.
+- Decisions: `DECISIONS.md`.
+
+## What changed this session
+
+```bash
+git log --oneline origin/main..HEAD     # commits not yet pushed
+git status --short                      # staged, unstaged and untracked
+git diff HEAD                           # all uncommitted changes to tracked files
+```
+
+If the session started from somewhere other than `origin/main`, compare against that instead, and say so in the
+output.
 
 ## Checklist
 
@@ -65,7 +82,15 @@ If yes to any: does it appear in LEARNINGS.md? Add it if not. Insight + what val
   - Does it map entropy vectors to the appropriate enforcement depth?
   - Does it address inter-domain drift where relevant?
 
-If misaligned: update the skill, or if INTENT.md itself needs revision, update it with a dated note explaining what prompted the change.
+If the skill is misaligned with INTENT.md: fix the skill.
+
+If the work suggests INTENT.md itself should change, apply the intent-change rule in `skills/entropy-assessment/intent-pass.md`:
+
+1. Decide which it is: a defect in the work, an adaptation within what INTENT.md already allows, or a decision nobody has made.
+2. Fix a defect in the work.
+3. Record an adaptation or an unmade decision as a proposal for Justin in `DECISIONS.md`, marked as proposed.
+4. Do not edit INTENT.md to match the work unless Justin has recorded that decision.
+5. Correct INTENT.md directly only when a recorded decision of Justin's already settles it, and cite that decision in its revision note.
 
 > *Rationale*: The generator skills encode methodology. INTENT.md encodes principles. In a documentation-as-system project, this is the equivalent of code/spec drift — the most dangerous form of entropy here, because it means the project is producing guards based on stale principles.
 
@@ -85,7 +110,7 @@ If not: update the workflow docs now. In this repo, practice drift is as damagin
   - Does AGENTS.md still accurately describe working practices and key files?
   - Do skill files reference each other correctly?
 - If a concept changed, is there still one obvious canonical home for it, with other docs reduced to links or local implications rather than parallel full explanations?
-- Did you change something that another doc also describes? If so, update both.
+- Did you change something that another doc also describes? Decide which doc owns it, and reduce the other to a link or a one-line local implication. Do not keep both up to date as peers.
 
 If inconsistent: fix it now. Internal consistency drift is this project's primary entropy vector.
 
@@ -128,12 +153,18 @@ Update TODO.md to reflect the current state before committing.
 
 ## Output
 
-After working through the checklist, note briefly what was updated (or "entropy check clean"). Include this in your commit message if anything changed.
+After working through the checklist, note briefly:
+
+- what you compared against, and whether that covered all of this session's work;
+- what was updated, or "entropy check clean";
+- any proposal recorded for Justin.
+
+Include this in your commit message if anything changed.
 
 If the main issue was workflow/practice drift rather than a missing doc update, say that explicitly so future contributors can tell which part of the system needed attention.
 
 ## What This Is Not
 
-- A replacement for `doc-health-check` (a full audit of informational coverage — does not exist yet, tracked in TODO.md backlog)
+- A full documentation audit — use `repo-doc-evaluator` or a fresh `entropy-assessment` run for that
 - A reason to delay committing — if the check surfaces a large gap, file it in TODO.md and fix it in a follow-up commit rather than expanding scope mid-task
 - A static artifact — this guard should itself be re-evaluated periodically by running the generator against the project again
