@@ -140,4 +140,4 @@ Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 3. Run [skills/local/entropy-guard/](skills/local/entropy-guard/) before committing (the local reminder hook nudges, but does not block)
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
 
-To enable the reminder in a fresh clone, symlink [`.githooks/pre-commit`](.githooks/pre-commit) to `.git/hooks/pre-commit`.
+To enable the reminder in a fresh clone, run `git config core.hooksPath .githooks`. (A relative symlink from `.git/hooks/pre-commit` to `.githooks/pre-commit`, which this line used to suggest, resolves inside `.git/hooks/` and silently never runs.)

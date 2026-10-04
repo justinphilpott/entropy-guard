@@ -8,7 +8,8 @@ Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
 `explorations/2026-10-04-skills-review-synthesis.md`, on branch `revise-skills-intent-and-ownership`:
 
 - [x] Item 6, before: answer key in `explorations/2026-10-04-skills-revision-eval.md`, committed before any run
-- [ ] Item 6: the current skills (before) and the revised skills (after) run on the fixed cases; R4 guard runs follow R1
+- [x] Item 6: before and after runs done and scored; results in `explorations/2026-10-04-skills-revision-eval.md`
+- [ ] Astra's constructive critique of the revision, with an update for every point (Justin, 2026-10-04); then verify and bring back
 - [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
 - [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed
 - [x] Item 3: lifetimes for guards, packets and guard runs

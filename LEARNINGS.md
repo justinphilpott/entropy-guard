@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### An agent running a guard compensates for gaps in it, which hides them from a test
+
+**Topic**: Evaluating guards
+
+**Insight**: When the agent running a guard is capable and knows where the session started, it checks things the guard never asks for. On 4 October the old FlowBook-style guard said nothing about uncommitted work. The agent running it found the uncommitted drift anyway, by running `git status` on its own. So a test that hands the runner its starting point cannot tell a guard that defines its delta from one that does not. The guard's definition matters most for a less capable runner, or one that is not told where the session began.
+**Validated by**: R4b in `explorations/2026-10-04-skills-revision-eval.md`. Both the old and the new guard caught the stale README line.
+**Implication**: Test a guard's coverage with a runner that is given only the guard, not the session's history. Judge a guard by what it says, not only by what one run of it found.
+
+---
+
 ### A guard's own repair instruction can launder intent drift
 
 **Topic**: Guard design methodology
