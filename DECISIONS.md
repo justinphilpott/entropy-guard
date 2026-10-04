@@ -18,6 +18,13 @@ Record architectural choices so future you (and agents) understand why.
 
 Every generated guard carries the intent-change rule. The question shape follows GitHub Spec Kit's `/speckit.clarify`, the proposal shape follows OpenSpec's change proposals, and "refuse to guess" comes from `intent-architect`. The rule now applies to this repo too: Justin is the steward of `INTENT.md`.
 **Impact**: Agents can no longer resolve drift by moving the north star. Questions to the steward become rarer and sharper, because evidence settles what it can.
+**Amended**: Justin, 2026-10-04 ("yes lets start with group 1"), accepting findings 1 to 4 of Astra's critique (`explorations/2026-10-04-skills-revision-critique-astra.md`):
+- an adaptation within existing authorisation goes ahead, with its reason recorded, and only an undecided change of intent becomes a proposal; dependent work waits for the decision;
+- without the steward, recommendations are drafted, never implemented, and proposed patches must not quietly settle an open question;
+- missing attribution is not missing authority: unsigned decisions and directives are recorded as such, the system's own instruction precedence applies, a decision log is never put to the steward for block ratification, and each concern keeps its own decision owner;
+- a test or the code never becomes the authority over a documented constraint, and summaries and independent tests are not "redundant copies".
+
+The rule is now version 2, defined once in `intent-pass.md`. Generated guards carry a copy that names its version, and this repo's guard points at the file.
 
 ---
 

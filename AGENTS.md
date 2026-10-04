@@ -24,7 +24,7 @@ A collaborative research and development project exploring entropy guards — sk
 - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
 - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
 - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
+- **Consult INTENT.md for significant decisions**: Before a substantial design or structural choice, check `INTENT.md`. Resolve discrepancies through the intent-change rule in `skills/entropy-assessment/intent-pass.md`: record proposed intent changes in `DECISIONS.md`, and update `INTENT.md` only from Justin's recorded decision.
 
 ## Project Constraints
 

@@ -9,13 +9,14 @@ Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
 
 - [x] Item 6, before: answer key in `explorations/2026-10-04-skills-revision-eval.md`, committed before any run
 - [x] Item 6: before and after runs done and scored; results in `explorations/2026-10-04-skills-revision-eval.md`
-- [ ] Astra's constructive critique of the revision, with an update for every point (Justin, 2026-10-04); then verify and bring back
+- [x] Astra's constructive critique received and verified: `explorations/2026-10-04-skills-revision-critique-astra.md`
+- [x] Critique group 1 (findings 1–4, intent boundary), accepted by Justin
+- [ ] Critique groups 2–4 (findings 5–12), to discuss with Justin one group at a time
 - [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
 - [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed
 - [x] Item 3: lifetimes for guards, packets and guard runs
 - [x] Item 4: integrator counts a guard adopted only once exercised
 - [x] Item 5: theory record settled; small stale items cleared
-- [ ] Item 6, after: revised skills on the same cases; results compared and recorded
 
 ## Next Up
 

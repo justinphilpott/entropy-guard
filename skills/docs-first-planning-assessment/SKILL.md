@@ -184,7 +184,9 @@ These are the judgment checks a guard for this repo shape needs. Write each one 
 
 - **Canonical ownership**: if a concept changed, does it still have one canonical home?
 - **One owner, not two copies**: when a change touches something that two documents both describe, decide which
-  owns it and reduce the other to a link or a local implication. Do not keep both up to date as peers.
+  owns it and reduce the other to a link or a local implication. Do not keep both up to date as peers. Tell a
+  redundant copy apart from a summary, a generated projection or an independent test of the same contract: remove
+  duplicate definitions, but keep independent evidence of what the contract is meant to be.
 - **Supersession**: before restoring a deleted file, reviving an old concept, or fixing a broken reference by
   recreation, check whether the thing was intentionally superseded in `DECISIONS.md`, the current-state file, or
   another canonical artifact

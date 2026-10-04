@@ -173,8 +173,8 @@ that slowly.
 - the checks, as judgment questions and as exact commands that work in this repo;
 - pointers to where authorised intent, current state, decisions and rules owned elsewhere live;
 - the definition of what changed in a session (below);
-- the intent-change rule from `intent-pass.md`, filled in with this repo's steward, intent documents and decision
-  surface;
+- a copy of the intent-change rule from `intent-pass.md`, filled in with this repo's steward, intent documents and
+  decision surface, and naming the rule's version so a stale copy can be found;
 - the shape of the report each run produces.
 
 **A guard must not hold:**
@@ -227,6 +227,10 @@ The guard must include:
 - "When to use" and "when not to use" sections.
 - The pointers, the definition of what changed, and the intent-change rule, as described above.
 - Judgment checks tailored to the repo's handoff structures, including the checks supplied by an assessment.
+- Repair instructions checked against authorised intent. A test or the code shows what is checked or built; it does
+  not authorise weakening a documented constraint. Where a description, the code and a check disagree, the guard
+  says to establish which is wrong before making them agree. It never says "the test is the record" or "the code is
+  the record".
 - Mechanical checks with exact commands that work in this repo. Prefer the repo's existing tools, and leave anything
   CI already runs to CI.
 - Drift checks that map code areas to the docs and tests that describe them.
@@ -248,10 +252,13 @@ Avoid vague checks such as "update docs" unless paired with concrete file names.
 4. If bootstrap mode applies, create only the **Needed now** memory surfaces and stop, unless the user explicitly
    asks for a guard.
 5. Otherwise, write the guard against the repo's actual files and commands.
-6. Update the repo's operator docs to mention the guard, if that is part of its documented workflow.
-7. Run cheap validation, at minimum `git diff --check`, plus any docs or build checks the repo implies.
-8. Hand the guard to `skills/guards-integrator/SKILL.md`.
-9. Summarise what was built, what structures were found, and the open questions.
+6. Review the guard and any proposed patches against the open questions from the intent pass. A patch must not
+   quietly settle a question that is still open, and no repair instruction may make the code or a test the
+   authority over a documented constraint.
+7. Update the repo's operator docs to mention the guard, if that is part of its documented workflow.
+8. Run cheap validation, at minimum `git diff --check`, plus any docs or build checks the repo implies.
+9. Hand the guard to `skills/guards-integrator/SKILL.md`.
+10. Summarise what was built, what structures were found, and the open questions.
 
 ## Plan-Mode Workflow
 
@@ -308,18 +315,15 @@ If the start point is unknown, compare against <upstream> and report "coverage i
 
 - Does this session's change fit the authorised intent in <files>?
 - When the work and the authorised intent disagree:
-  1. Decide which it is: a defect in the work, an adaptation within what was authorised, or a decision nobody has
-     made.
-  2. Fix a defect in the work.
-  3. Record an adaptation or an unmade decision as a proposal for <steward> in <decision surface>.
-  4. Do not edit <intent documents> to match the work unless <steward> has recorded that decision.
-  5. Correct a document directly only when a recorded decision of <steward>'s already settles it, and cite that
-     decision.
+  <the intent-change rule from entropy-guard's `skills/entropy-assessment/intent-pass.md`, copied with <steward>,
+  <intent documents> and <decision surface> filled in>
+  (Intent-change rule v2, from entropy-guard `intent-pass.md`.)
 
 ## Judgment checks
 
 - <checks from the assessment, written against this repo's files>
 - When a change touches something two documents both describe, decide which owns it and reduce the other to a link.
+  Keep summaries and independent tests of the same contract; they are not redundant copies.
 - If <code area> changed: does <doc> still describe it? <one line per mapping>
 
 ## Mechanical checks

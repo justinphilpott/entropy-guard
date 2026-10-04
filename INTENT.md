@@ -143,4 +143,4 @@ The next major step for this repo is not to widen its philosophy further, but to
 
 ---
 
-*This document is a living artifact. If you find something missing, imprecise, or worth expanding — add it. Note what prompted the revision.*
+*Propose revisions through the stewardship process at the top of this document. When an approved revision lands, record the decision, its date and the reason.*

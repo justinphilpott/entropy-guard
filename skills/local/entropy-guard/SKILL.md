@@ -82,15 +82,7 @@ If yes to any: does it appear in LEARNINGS.md? Add it if not. Insight + what val
   - Does it map entropy vectors to the appropriate enforcement depth?
   - Does it address inter-domain drift where relevant?
 
-If the skill is misaligned with INTENT.md: fix the skill.
-
-If the work suggests INTENT.md itself should change, apply the intent-change rule in `skills/entropy-assessment/intent-pass.md`:
-
-1. Decide which it is: a defect in the work, an adaptation within what INTENT.md already allows, or a decision nobody has made.
-2. Fix a defect in the work.
-3. Record an adaptation or an unmade decision as a proposal for Justin in `DECISIONS.md`, marked as proposed.
-4. Do not edit INTENT.md to match the work unless Justin has recorded that decision.
-5. Correct INTENT.md directly only when a recorded decision of Justin's already settles it, and cite that decision in its revision note.
+When a skill and `INTENT.md` disagree, apply the intent-change rule in `skills/entropy-assessment/intent-pass.md` before editing either. Here the steward is Justin, the intent document is `INTENT.md`, and the decision surface is `DECISIONS.md`.
 
 > *Rationale*: The generator skills encode methodology. INTENT.md encodes principles. In a documentation-as-system project, this is the equivalent of code/spec drift — the most dangerous form of entropy here, because it means the project is producing guards based on stale principles.
 
@@ -110,7 +102,7 @@ If not: update the workflow docs now. In this repo, practice drift is as damagin
   - Does AGENTS.md still accurately describe working practices and key files?
   - Do skill files reference each other correctly?
 - If a concept changed, is there still one obvious canonical home for it, with other docs reduced to links or local implications rather than parallel full explanations?
-- Did you change something that another doc also describes? Decide which doc owns it, and reduce the other to a link or a one-line local implication. Do not keep both up to date as peers.
+- Did you change something that another doc also describes? Decide which doc owns it, and reduce the other to a link or a one-line local implication. Do not keep both up to date as peers. A summary or an independent check of the same contract is not a redundant copy: keep it.
 
 If inconsistent: fix it now. Internal consistency drift is this project's primary entropy vector.
 
