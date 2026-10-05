@@ -5,15 +5,25 @@ section per day.
 
 ---
 
-## 2026-10-05 — dating approvals, a whitespace slip, and Astra's word cap again
+## 2026-10-05 — Astra's word cap and stalls, a self-killing command, dating approvals
 
-- **Astra returned a summary instead of a report, for the second time in two days.** The size-review brief exempted
-  the report from Justin's 150-200 word reply cap in its opening paragraph. Astra still applied the cap, because it
-  ranked the global rules above the brief. **Cost:** about 5 minutes and a resumed session. Two failures from one
-  cause make this a **missing system**: there is no standing Astra brief template that states, in terms of Justin's
-  own rule ("Long tables, audits and multi-part comparisons go to a file"), why a report is exempt. Every brief is
-  still written from scratch. Astra briefs are run from the lab Scope, so the template belongs there; recorded here
-  for the morning.
+- **Astra refused to write a full report three times tonight. The cause is opencode, not the briefs.** opencode
+  loads Justin's global `AGENTS.md` into every session as system instructions, through
+  `~/.config/opencode/AGENTS.md` (a link to local-config). A brief cannot override a system instruction, so a "report
+  exempt from the 150-200 word cap" line in the brief lost every time. The same cause produced yesterday's first
+  185-word reply. **Fixed for this run** with a short review-mode file loaded through opencode's `instructions`
+  setting, as a system instruction, which says the final report is the file that the rule itself sends long audits
+  to. Justin's other rules stay loaded. **Cost:** about 20 minutes over two days. A **missing system**: Astra review
+  runs have no standing review-mode instruction. It belongs wherever Astra runs are launched from; that location is
+  Justin's decision.
+- **Astra stalled before its first output for the second time in two days** (19:12 on 4 October, and 22:36 tonight).
+  Both times the opencode log stops at `init` and the process sits idle on a connection. **Cost:** 50 minutes in
+  all. One cause twice makes this a **missing system**: no first-output timeout. Tonight's runner retries after
+  3 minutes without output. It ran once, and the attempt succeeded, so the retry path is written but not yet
+  exercised. Like the review-mode file, it belongs beside wherever Astra runs are launched from.
+- **Claude killed its own shell with `pkill -f`**, the second self-match in two days after yesterday's watcher. The
+  pattern named the very command line that ran it. **Cost:** one lost command. One cause twice: **rule** — kill by
+  process ID, never by a pattern the command itself contains. The new runner does this.
 - **Two approvals were recorded with the wrong date.** Justin accepted critique groups 2 and 3 on 5 October, at
   17:23 and 17:48. The `DECISIONS.md` amendments and both commit messages said 2026-10-04, because the date was
   carried over from the previous evening rather than read. **Cost:** two pushed commit messages that cannot be
