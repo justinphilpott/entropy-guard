@@ -192,6 +192,16 @@ Deliver:
 - **Questions for the steward**, each with a recommended answer, or "none"
 - **Uncertainties**
 
+These rules apply to the whole route: this assessment or the docs-first one, the generator's report, and the
+integration brief.
+
+- **Keep one findings list.** Give each finding an id. The intent, risk, generation and integration sections refer to
+  findings by id instead of repeating their evidence.
+- **Make a separate file only when it has its own reader**, such as a guard or a state file, or when it is a patch
+  that can be applied.
+- **Never cut these for length:** where a claim came from, what was not covered, and the difference between a
+  proposal and a decision.
+
 ## Upstream Feedback Check
 
 Before you finish, ask whether this front door itself misrouted the system or left the next step too implicit.

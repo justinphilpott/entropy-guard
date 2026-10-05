@@ -30,7 +30,7 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 ## When NOT to Run
 
 - After trivial changes (typo fixes, minor formatting) — use judgement
-- As a replacement for a full doc audit — use `repo-doc-evaluator` (in local-config) or a fresh `entropy-assessment` run for that
+- As a replacement for a fuller review — for newcomer comprehension and onboarding, use `repo-doc-evaluator` (in local-config); for a whole-repository coherence assessment, run `entropy-assessment` again
 - More than once per logical piece of work
 
 ## Where things live
@@ -164,6 +164,6 @@ If the main issue was workflow/practice drift rather than a missing doc update, 
 
 ## What This Is Not
 
-- A full documentation audit — use `repo-doc-evaluator` or a fresh `entropy-assessment` run for that
+- A fuller review — for newcomer comprehension, use `repo-doc-evaluator`; for whole-repository coherence, run `entropy-assessment` again
 - A reason to delay committing — if the check surfaces a large gap, file it in TODO.md and fix it in a follow-up commit rather than expanding scope mid-task
 - A static artifact — this guard should itself be re-evaluated periodically by running the generator against the project again

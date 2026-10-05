@@ -19,7 +19,8 @@ the owner. On a team project it may be a lead, a product owner, or a decision lo
 
 ## 1. Gather the statements
 
-Collect every statement of purpose, scope, non-goal, standing decision and rule. Look in:
+Locate the governing purpose, constraints and decision sources, then collect the statements needed to resolve the
+assessment's material gaps. Do not reproduce every rule in the repository. Look in:
 
 - top-level documents: `README.md`, `INTENT.md`, `NORTH_STAR.md`, vision or roadmap documents;
 - decision logs: `DECISIONS.md`, ADR folders, decision folders;

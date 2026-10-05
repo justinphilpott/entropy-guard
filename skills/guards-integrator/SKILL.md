@@ -169,11 +169,11 @@ recorded decision, link the plan to it rather than starting parallel work.
 
 ### Step 7: Produce an adoption plan
 
-Deliver a phased recommendation with three horizons:
+Deliver a phased recommendation, using only the horizons that have a justified next action:
 
 - **Now** — changes that can be adopted immediately with existing workflow primitives
 - **Next** — light automation or prompt changes that reduce reliance on memory
-- **Later** — deeper embedding into CI, schemas, types, or a dedicated guard runner
+- **Later** — move stable mechanical checks into the system's existing CI, schemas, types or scheduler
 
 The "Now" plan should be actionable without waiting for new infrastructure.
 
@@ -185,7 +185,7 @@ Minimal scaffold:
 Adoption plan
 - Now: add guard links to `AGENTS.md` and require a short guard note in PR descriptions
 - Next: add a PR template checkbox and a non-blocking pre-commit reminder
-- Later: move mechanical checks into CI and add a guard runner if the set grows
+- Later: move stable mechanical checks into the existing CI, schemas, types or scheduler
 ```
 
 ### Step 8: Capture upstream feedback on entropy-guard itself
@@ -206,7 +206,7 @@ Before you finish, ask whether `guards-integrator` or the surrounding entropy-gu
 
 ## Output
 
-Produce an integration brief with these sections:
+Produce an integration brief with these sections, referring to the assessment's findings by id rather than repeating them:
 
 - **Loop map** — the system's real iteration and handoff points
 - **Guard placement** — where each guard belongs and why

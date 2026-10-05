@@ -274,11 +274,8 @@ Avoid vague checks such as "update docs" unless paired with concrete file names.
 
 ## Plan-Mode Workflow
 
-1. Take the assessment's inputs or discover the same structures, but edit nothing.
-2. Report the discovered coherence system.
-3. For a young repo, report the bootstrap classification before proposing any guard.
-4. Propose the guard's path and name, with an outline or a full draft.
-5. List the exact files that would be created or updated in build mode.
+Follow the build-mode steps, but edit nothing. Report the coherence system found (for a young repo, the bootstrap
+classification first), a draft of the guard with its path, and the exact files build mode would create or change.
 
 ---
 
@@ -380,12 +377,3 @@ When this skill finishes, report:
 - Validation commands run, and their results.
 - Open questions the guard intentionally leaves visible.
 - The handoff to `guards-integrator`.
-
----
-
-## Rationale
-
-A guard built from a repo's real structures is far more useful than a generic checklist. A guard that copies the
-repo's current state, or rules owned elsewhere, goes stale as soon as those change. So the guard holds the checking
-policy and points at everything else. Its fixed reference is the steward's authorised intent. The current state of
-the code is not a reference, because checking against it would treat drift as normal.

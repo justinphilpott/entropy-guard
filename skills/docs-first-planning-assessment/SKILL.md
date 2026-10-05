@@ -146,7 +146,8 @@ refresh the value.
 
 ### Step 6: Deliver the assessment
 
-Deliver Phase 1 as a compact set of artifacts:
+Deliver Phase 1 as a compact set of artifacts, following the output rules at the end of `entropy-assessment`'s
+Output section (one findings list, referred to by id):
 
 - **Intent section**, from the intent pass
 - **Canonical truth map**
