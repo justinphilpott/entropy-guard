@@ -5,8 +5,15 @@ section per day.
 
 ---
 
-## 2026-10-05 — dating approvals, and a whitespace slip
+## 2026-10-05 — dating approvals, a whitespace slip, and Astra's word cap again
 
+- **Astra returned a summary instead of a report, for the second time in two days.** The size-review brief exempted
+  the report from Justin's 150-200 word reply cap in its opening paragraph. Astra still applied the cap, because it
+  ranked the global rules above the brief. **Cost:** about 5 minutes and a resumed session. Two failures from one
+  cause make this a **missing system**: there is no standing Astra brief template that states, in terms of Justin's
+  own rule ("Long tables, audits and multi-part comparisons go to a file"), why a report is exempt. Every brief is
+  still written from scratch. Astra briefs are run from the lab Scope, so the template belongs there; recorded here
+  for the morning.
 - **Two approvals were recorded with the wrong date.** Justin accepted critique groups 2 and 3 on 5 October, at
   17:23 and 17:48. The `DECISIONS.md` amendments and both commit messages said 2026-10-04, because the date was
   carried over from the previous evening rather than read. **Cost:** two pushed commit messages that cannot be
