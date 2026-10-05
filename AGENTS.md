@@ -10,6 +10,7 @@ A collaborative research and development project exploring entropy guards — sk
 - [TODO.md](TODO.md) - Active work
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
+- [FRICTION.md](FRICTION.md) - What broke in real use, what it cost, dated
 - [skills/](skills/) - Skills
 - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) - Specialized deep path for docs-first planning repos
 - `../entropy-immune-system/` - Sibling repo for the broader entropic-immunity exploration spun out of this project
