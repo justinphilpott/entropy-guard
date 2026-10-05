@@ -1,0 +1,2 @@
+# Saved test evidence: patches keep their context lines byte for byte, including trailing spaces.
+*.patch -whitespace

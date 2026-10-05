@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: complete; results recorded 2026-10-04
+status: complete; results recorded 2026-10-04; scoring clarified 2026-10-05
 ---
 
 # Before-and-after test of the skills revision
@@ -136,8 +136,8 @@ the target.
 R1 to R3 were scored blind. A fresh agent got each pair of outputs as X and Y in random order, with the key and the
 read-only target, and checked every finding it called right or wrong against the target. The order happened to come
 out "X = before" in all three. The blinding was imperfect, because some outputs name the skill version they
-followed. The full scoring is kept with the run outputs in the session scratchpad, not in this repository; the
-figures below are taken from it. Claude scored R4 itself, not blind, because its three cases are mechanical.
+followed. The full scoring is in `2026-10-04-skills-revision-eval/scores/`, beside every
+run's output; the figures below are taken from it. Claude scored R4 itself, not blind, because its three cases are mechanical.
 
 A key item scores 1 if met and 0.5 if partly met.
 
@@ -231,3 +231,63 @@ It costs about a third more time per assessment. Three weaknesses showed up, whi
 - one missed state contradiction;
 - one choice settled that should have been asked;
 - one inference written into a guard as fact.
+
+## Scoring clarifications, added 2026-10-05
+
+Added after GPT 6.1 Astra's critique of the revision (`2026-10-04-skills-revision-critique-astra.md`, findings 10 and
+11), with Justin's agreement. The results above are left as first written.
+
+- **R2, K10.** Both versions only partly met it, as the table shows, but the narrative above misdescribes the
+  "before" run. Its one question asked whether theory should leave `LEARNINGS.md`, not which guard model Justin
+  intends. The "after" run noticed the tension and asked nothing. Neither put the actual choice to the steward.
+- **Failing questions depend on how authority was judged.** The keys used different tests:
+  - R1 counted a question as failing if it reopened a decision "recorded with his name and date";
+  - R2's scorer counted unattributed `DECISIONS.md` entries as already settled;
+  - R3 counted a question as failing where the evidence in the target already settled it.
+
+  Under R1's stricter reading, R2's failing counts fall from 2 to 1 (before) and from 1 to 0 (after). So the overall
+  failing count is about 11 or 12 before, against 0 or 1 after. The drop in questions asked, from 29 to 11, does not
+  depend on this reading.
+- **R4a, K18.** The old guard's "not clean" came from the tests not being run, which the test conditions forced. That
+  is verification not yet done, not a false defect finding, and the new guard also listed the tests as owed.
+  Rescored as met for both versions, R4 becomes 2.5 of 3 before and 3 of 3 after.
+- **Consequential extras were not scored.** The key only checked required findings. Astra found two consequential
+  extras in the "after" outputs:
+  - **R1's proposed README correction** drops "workflow execution" from ORC's list of absent capabilities, while
+    calling that phrase "Flagged, not changed". The patch settles a question the run had left open.
+  - **R4b's report** makes strong claims about ORC's deployed configuration, which it did not read, though it labels
+    them inferred.
+
+  The "before" outputs were not examined for the same, so neither version's extras are scored.
+
+**Revised verdict.** The revision improves the explicit requirements the generated guards carry, and cuts the number
+of questions written on these cases. Useful findings outside the key are roughly even. The runs do not show a general
+improvement in finding defects, and some of the repairs the revised runs recommended were unsound. Findings 1 to 9 of
+Astra's critique addressed those repairs on 4 and 5 October.
+
+## Reproducing this test
+
+Everything needed is in `2026-10-04-skills-revision-eval/`:
+
+- `invocations.md`: the inputs (skill and target revisions), the exact instructions given to the runs and the
+  scorers, and the scoring rules, including which were fixed only after scoring;
+- `make-session.sh`: builds the constructed ORC sessions for R4;
+- `outputs/`: every run's output, unchanged, apart from the four reports saved from text, which are marked;
+- `guards/`: the two R1 guards used in R4;
+- `scores/`: the blind scoring of R1 to R3. X was the "before" run in all three.
+
+## Next checks
+
+These cases were not covered by this test. They test the behaviours the critique changed, and should be added before
+the next revision is judged:
+
+1. A question about intent that is still open must survive a proposed correction unchanged.
+2. An adaptation within existing authorisation goes ahead without a new request for approval.
+3. The code and a test agree with each other while both violate a documented constraint.
+4. A staged change and an unstaged one cancel out in the working tree.
+5. A change makes an untouched document that depends on it stale.
+6. A mixed system reuses the docs-first analysis, and a reference-only repository finishes without a replacement
+   guard.
+7. A guard run where the runner is given only the guard, not the session's start commit.
+
+Keep the real adoption exercise separate from checking that the integration advice merely mentions it.

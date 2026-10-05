@@ -13,7 +13,9 @@ Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
 - [x] Critique group 1 (findings 1–4, intent boundary), accepted by Justin
 - [x] Critique group 2 (findings 5–8, a session's change, routing, adoption evidence, lifetimes), accepted by Justin
 - [x] Critique group 3 (findings 9 and 12, repeated analysis and leftovers), accepted by Justin
-- [ ] Critique group 4 (findings 10–11, correcting the test write-up), to discuss with Justin
+- [x] Critique group 4 (findings 10–11): scoring clarified, evidence kept in `explorations/2026-10-04-skills-revision-eval/` (Justin, 2026-10-05: "yes, use the new folder")
+- [ ] Astra's independent view on whether the skills are too large (Justin, 2026-10-05: "9700 is HUGE"); verify and bring back in the morning
+- [ ] Add the seven "Next checks" in the eval file before the next revision is judged
 - [ ] After PR #13 merges: confirm issue #12 closed
 - [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
 - [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed

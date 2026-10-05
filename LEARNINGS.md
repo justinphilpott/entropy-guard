@@ -4,13 +4,13 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
-### An agent running a guard compensates for gaps in it, which hides them from a test
+### A guard can be followed beyond what it says, so test its instructions separately from its result
 
 **Topic**: Evaluating guards
 
-**Insight**: When the agent running a guard is capable and knows where the session started, it checks things the guard never asks for. On 4 October the old FlowBook-style guard said nothing about uncommitted work. The agent running it found the uncommitted drift anyway, by running `git status` on its own. So a test that hands the runner its starting point cannot tell a guard that defines its delta from one that does not. The guard's definition matters most for a less capable runner, or one that is not told where the session began.
-**Validated by**: R4b in `explorations/2026-10-04-skills-revision-eval.md`. Both the old and the new guard caught the stale README line.
-**Implication**: Test a guard's coverage with a runner that is given only the guard, not the session's history. Judge a guard by what it says, not only by what one run of it found.
+**Insight**: Both R4b runners on 4 October found the uncommitted drift, although only the revised guard explicitly required that coverage. This run does not establish why the old runner compensated: being told the start commit is one possible reason, not a shown one. A guard's result on one run does not show that its instructions are complete.
+**Validated by**: R4b in `explorations/2026-10-04-skills-revision-eval.md`, and finding 11 of Astra's critique, which pointed out that the first version of this entry claimed a cause the run did not show (corrected 2026-10-05).
+**Implication**: Check a guard's instructions for completeness separately from task success, and compare runs where the runner is given the start point with runs where it is not.
 
 ---
 

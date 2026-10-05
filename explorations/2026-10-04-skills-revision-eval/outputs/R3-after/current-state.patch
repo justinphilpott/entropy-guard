@@ -1,0 +1,65 @@
+diff --git a/ROADMAP.md b/ROADMAP.md
+index 05689fc..bfac230 100644
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,45 @@
+ # Roadmap — Current Named Version
+ 
++## Status — read this first
++
++*This section is the repository's current state. Last checked 2026-10-04 against `README.md`,
++`AGENTS.md`, `DECISIONS.md` and `architecture/INDEX.md`. It goes stale when the README.md or
++AGENTS.md status banner changes, when `DECISIONS.md` gains an entry, or when Justin answers the
++questions below: re-check it then.*
++
++- **Stage:** reference-only, per the banners at the top of `README.md` and `AGENTS.md` (undated).
++  Nothing on this roadmap is being worked on here. The last dated architecture work is the
++  2026-07-26 temporal coordinator entry in `DECISIONS.md`.
++- **Where current work lives:** Personal Agent architecture in `../personal-agent`; the Scope and
++  Project model in `../../scope` (both from the banners); the temporal coordinator implementation
++  in `../temporal-coordinator` (`components.yaml`). None of these was checked from this repository.
++- **Read first when consulting this record:** `NORTH_STAR.md`, `MODEL.md`, `DECISIONS.md`, and the
++  orchestration v1 snapshot via `architecture/INDEX.md`.
++- **Settled, not to reopen here:** every `DECISIONS.md` entry not marked superseded. The repository's
++  status itself is still a proposal: "PROPOSED, awaiting Justin: this repository is reference-only"
++  in `DECISIONS.md`.
++- **Active fronts:** none authorised here. The checkboxes below are frozen as they stood, and some
++  are out of date (see the next item).
++- **Nearby superseded material likely to mislead a fresh session:**
++  - `architecture/PICKUP.md` is a superseded pickup (2026-07-26). It is not a work queue.
++  - `components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md` (EventSink, T09 HTTP push) is
++    superseded by the 2026-07-26 pg-boss V0 entry in `DECISIONS.md`.
++  - `RUNTIME.md` still calls the scope manager a "unified" gateway; the orchestration v1 snapshot
++    decomposes it into seams.
++  - Backlog lines below that are already decided: "Communication architecture" and "Agent design:
++    what is a running agent?" (2026-04-27); "Workspace definition and lifecycle" (2026-04-27);
++    "Scheduling: core-owned deterministic temporal coordinator…" (superseded 2026-07-26).
++- **Open questions for Justin:**
++  1. Is the reference-only status authorised, and which changes may still be made here?
++  2. Does this repository stay where it is as a consulted reference, or move to `~/pro-archive/`?
++  3. Is the temporal coordinator's contract now owned by its own repository rather than
++     `components/temporal-coordinator/SPEC.md`?
++- **Next actions:**
++  1. Justin answers the three questions above.
++  2. Record the answers in `DECISIONS.md`, replacing the proposal, and update this section.
++  3. Only if the repository stays as a consulted reference: correct each superseded item listed
++     above from the `DECISIONS.md` entry it cites.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+diff --git a/architecture/INDEX.md b/architecture/INDEX.md
+index 15ce070..d5dfd84 100644
+--- a/architecture/INDEX.md
++++ b/architecture/INDEX.md
+@@ -14,7 +14,9 @@ This is a loose guide, not a validation system — bend it when clarity wins.
+ 
+ ## Current Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++None. [PICKUP.md](PICKUP.md) is a superseded historical pickup (2026-07-26; see the "Temporal
++coordinator V0 is a pg-boss one-time scheduling POC" entry in [DECISIONS.md](../DECISIONS.md)), and
++this repository is reference-only: see the status section at the top of [ROADMAP.md](../ROADMAP.md).
+ 
+ ## Snapshot Rules
+ 
