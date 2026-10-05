@@ -43,7 +43,7 @@ Gather these before recommending integration:
 When entering a repo cold, look for concrete evidence of the current loop before inferring one:
 
 - **CI / automation**: `.github/workflows/`, `.gitlab-ci.yml`, `circle.yml`, `buildkite.yml`, `azure-pipelines.yml`, `Jenkinsfile`, `Makefile`, task runners
-- **Git hooks / local prompts**: `.pre-commit-config.yaml`, `.husky/`, `.git/hooks/` (if visible), `package.json` scripts, lint-staged config
+- **Git hooks / local prompts**: `.pre-commit-config.yaml`, `.husky/`, tracked hook folders such as `.githooks/`, the effective hooks path (`git config core.hooksPath`, else `.git/hooks/`), `package.json` scripts, lint-staged config
 - **PR / review flow**: `.github/pull_request_template.md`, `.github/PULL_REQUEST_TEMPLATE/`, contribution docs, CODEOWNERS
 - **Agent instructions**: `AGENTS.md`, local wrapper prompts, slash-command docs, task templates, repo-specific contributor instructions
 - **Iteration pattern clues**: recent commit history, release notes, changelog cadence, scheduled review docs, deployment runbooks
@@ -144,11 +144,19 @@ Recommend the smallest change that makes the guard visible to the agent at the r
 
 A placement is a plan until it has been exercised. A guard counts as adopted only when both of these have happened:
 
-- **Its trigger has fired once.** For a hook, make a throwaway commit or push on a scratch branch and see the reminder
-  or check run. For a CI step, see it run on a pull request. For a scheduled run, see one run's output.
+- **Its trigger has fired once.** For a hook, see the reminder or check run on a real or scratch commit. For a CI
+  step, see it run on a pull request. For a scheduled run, see one run's output.
 - **A fresh agent session finds it.** Start a session with no prior context in the repo, ask what it must do before
-  handing off, and confirm it names the guard and where it lives. If it does not, the discovery path is broken,
-  whatever the instructions file says.
+  handing off, and confirm it names the guard and where it lives. Check each distinct way agents load instructions
+  in this repo; a pointer from an instruction file is a valid path even when the skills folder is not loaded
+  automatically. If no path leads to the guard, discovery is broken, whatever the instructions file says.
+
+Keep to the invocation's mode. When exercising a trigger needs an action that has not been approved, such as a commit
+or a push, report the check as `planned`. Building a guard or giving integration advice does not by itself authorise
+a commit or a push.
+
+Report configuration evidence separately from execution evidence: "the hooks path points at `.githooks/`" is not "the
+hook ran". For a claimed enforced invariant, record a permitted failing case that was refused.
 
 For each guard, report which of three things it actually is:
 
@@ -156,7 +164,7 @@ For each guard, report which of three things it actually is:
 - **a check that runs:** the guard or part of it executes and reports;
 - **an invariant that is enforced:** something refuses the change when the check fails.
 
-Record each guard as `verified` or `planned`, with what was exercised and when. Where a gap already has an issue or a
+Record each guard as `verified`, `planned` or `unknown`, with what was exercised and when. Where a gap already has an issue or a
 recorded decision, link the plan to it rather than starting parallel work.
 
 ### Step 7: Produce an adoption plan
@@ -203,7 +211,7 @@ Produce an integration brief with these sections:
 - **Loop map** — the system's real iteration and handoff points
 - **Guard placement** — where each guard belongs and why
 - **Adoption plan** — `Now`, `Next`, `Later`
-- **Adoption status** — for each guard: reminder, check that runs, or enforced invariant; `verified` or `planned`, with what was exercised and when
+- **Adoption status** — for each guard: reminder, check that runs, or enforced invariant; `verified`, `planned` or `unknown`, with what was exercised and when
 - **Discovery plan** — how contributors and agents find the guards
 - **Execution plan** — ordering, parallelism, and outputs
 - **Automation opportunities** — which manual checks should move deeper into tooling

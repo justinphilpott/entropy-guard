@@ -42,13 +42,19 @@ A post-work micro-ritual for this project. Run this when you finish a meaningful
 ## What changed this session
 
 ```bash
-git log --oneline origin/main..HEAD     # commits not yet pushed
-git status --short                      # staged, unstaged and untracked
-git diff HEAD                           # all uncommitted changes to tracked files
+git log --oneline origin/main..HEAD          # commits not yet pushed
+git diff origin/main HEAD                    # what those commits changed
+git status --short                           # staged, unstaged and untracked
+git diff --cached                            # staged: what the next commit will contain
+git diff                                     # unstaged
+git ls-files --others --exclude-standard     # untracked files: read the ones that matter
 ```
 
 If the session started from somewhere other than `origin/main`, compare against that instead, and say so in the
-output.
+output. If you cannot tell where it started, say "coverage incomplete" and what you compared against.
+
+A change can make an untouched file wrong, such as a renamed skill leaving a stale link elsewhere. Check what depends
+on what changed, not only the files you edited.
 
 ## Checklist
 
@@ -148,6 +154,7 @@ Update TODO.md to reflect the current state before committing.
 After working through the checklist, note briefly:
 
 - what you compared against, and whether that covered all of this session's work;
+- what you checked, and what you did not;
 - what was updated, or "entropy check clean";
 - any proposal recorded for Justin.
 

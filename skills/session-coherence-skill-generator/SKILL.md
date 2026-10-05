@@ -179,8 +179,10 @@ that slowly.
 
 **A guard must not hold:**
 
-- current direction, active work, the current tranche or stage, next tasks, PR or issue numbers, or build ids. These
-  belong in the current-state file, which the guard tells the reader to open.
+- current direction, active work, the current tranche or stage, next tasks, the status of work items, or deployed
+  build values. These belong in the current-state file, which the guard tells the reader to open. Stable links to
+  canonical sources, such as an issue that owns a policy or a decision record, are allowed; copying their changing
+  contents is not.
 - a restatement of a rule owned elsewhere, such as spending, security review or merge rules. Link to the owner
   instead, because a copied rule goes stale when the owner changes it.
 - anything a fresh agent could find from the code in a minute.
@@ -199,14 +201,24 @@ A guard checks the session's change, so it must define that change so that nothi
 Typical commands, adapted to the repo:
 
 ```bash
-git log --oneline <start>..HEAD        # commits this session
-git status --short                     # staged, unstaged and untracked, at a glance
-git diff HEAD                          # all uncommitted changes to tracked files
-git ls-files --others --exclude-standard   # untracked files to read
+git log --oneline "$START"..HEAD            # commits this session
+git diff "$START" HEAD                      # what those commits changed
+git status --short                          # staged, unstaged and untracked, at a glance
+git diff --cached                           # staged changes: what the next commit will contain
+git diff                                    # unstaged changes
+git ls-files --others --exclude-standard    # untracked files
 ```
+
+Check staged and unstaged changes separately. `git diff HEAD` alone nets them out: a change staged and then undone in
+the working tree shows nothing, yet the next commit contains it. Read the contents of untracked files that matter,
+within whatever file-access limits apply.
 
 If the starting point cannot be determined, the guard says so in its report: "coverage incomplete: compared against
 `<what was used>`".
+
+A finding belongs to this session if the session changed the relationship it is about, not only if the session
+edited the file where the symptom shows. Renaming a setting in the code makes an untouched README wrong. So check the
+documents and consumers that depend on what changed, even when they were not edited.
 
 ---
 
@@ -325,6 +337,7 @@ If the start point is unknown, compare against <upstream> and report "coverage i
 - When a change touches something two documents both describe, decide which owns it and reduce the other to a link.
   Keep summaries and independent tests of the same contract; they are not redundant copies.
 - If <code area> changed: does <doc> still describe it? <one line per mapping>
+- For each state claim this session changed in <state file>: do its other mentions in the file still agree?
 
 ## Mechanical checks
 
@@ -336,7 +349,8 @@ If the start point is unknown, compare against <upstream> and report "coverage i
 
 - Baseline compared against, and whether coverage was complete
 - What was checked, and what was not
-- Findings caused by this session; problems that were already there, listed separately
+- Findings caused by this session, judged by the relationship changed, not the file edited; problems that were
+  already there, listed separately
 - Proposals for <steward>
 - Files updated, such as the state file and decision log
 - First next action for the next session, written into <state file>, not here

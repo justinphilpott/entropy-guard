@@ -59,6 +59,8 @@ Classify the main documents into these roles:
 - **Current-state / handoff artifacts**: `TODO.md`, `STATE.md`, session notes, current work summaries, next-step
   trackers
 - **Local elaborations**: component docs, sub-area notes, local implications of system-wide constraints
+- **Product artifacts**: documents consumed as skills, templates, policies or other executable guidance. Check
+  their names, paths, inputs and handoffs as contracts.
 - **Templates / instance-shaping docs**: templates, checklists, scaffolds, example packets
 - **Historical / superseded / imported material**: docs preserved for context, merged-in packets from an earlier
   standalone system, or explicitly retired approaches
@@ -136,6 +138,11 @@ and rules. It is not an overview of the repo.
 Each claim likely to change within weeks, such as a stage, an active front or a next action, carries its source and
 the date it was last checked. The file also says what makes it stale, for example "re-check after any change to
 `ROADMAP.md`".
+
+Name the existing person, agent or workflow that refreshes this view, and the events that require a refresh. For
+each state claim you change, check the claim's other mentions in the file for a conflicting status. For live facts,
+such as which build is running, keep a fresh observation apart from an old recorded one: citing a source does not
+refresh the value.
 
 ### Step 6: Deliver the assessment
 

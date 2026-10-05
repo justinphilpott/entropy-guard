@@ -45,9 +45,12 @@ Run the intent pass in [`intent-pass.md`](intent-pass.md). It does five things:
 If there is no usable intent at all, stop guard work there. Report what can still be inventoried, and recommend an
 intent interview before any guard is built. Open questions do not block work that does not depend on them.
 
-## Step 2: Classify the system shape
+## Step 2: Lifecycle status and system shape
 
-Identify which of these best matches the target.
+First, record the system's lifecycle status, with its evidence: **active**, **reference-only or frozen**, or
+**retired**. It decides how much the rest of the route may recommend.
+
+Then identify which of these shapes best matches the target.
 
 ### A. Docs-first planning
 
@@ -87,10 +90,19 @@ If more than one shape fits, note the ambiguity and choose the one with the high
 
 ## Step 3: Route
 
-- **A, docs-first planning:** run `skills/docs-first-planning-assessment/SKILL.md`. It does the analysis and hands
-  guard building on to the generator.
-- **B, C or D:** do Step 4 below, then hand the result to `skills/session-coherence-skill-generator/SKILL.md`.
+Choose one primary route, then reuse specialised analysis where a member repository needs it. Combine the findings
+into one assessment and one handoff to the generator.
+
+- **A, docs-first planning:** run `skills/docs-first-planning-assessment/SKILL.md`. Its assessment is the assessment;
+  add only this skill's intent section and lifecycle status, and do not write a second report.
+- **B, C or D:** do Step 4 below. Where a member repository is docs-first, for example a repository that manages the
+  work rather than holding the code, also run docs-first Steps 2, 3 and 5 for it (truth map, loop map and
+  current-state update), and fold the results into the one assessment. Do not run the whole docs-first workflow a
+  second time.
 - **E, young repo:** run `skills/session-coherence-skill-generator/SKILL.md` in bootstrap mode.
+
+Before any route hands over to the generator, decide whether a guard is needed at all. A reference-only, frozen or
+retired system may finish with a correction or a demotion and no generated guard.
 
 ## Step 4: Profile for mixed, code-first and workflow-heavy systems
 
@@ -124,19 +136,25 @@ Check each of these, with evidence:
   the one used in practice.
 - **Contracts against implementation:** API reports, schemas and manifests.
 - **Workflow against reality:** declared processes, hooks and CI steps that do not run. A committed hook that is not
-  enabled counts as not running.
+  enabled counts as not running: check the effective hooks path (`git config core.hooksPath`, or `.git/hooks/` when
+  it is unset) and the tracked hook folders, such as `.githooks/` or `.husky/`.
 - **Rules against enforcement:** rules written as if enforced, which nothing enforces.
 
 Rank the top 3 to 5 risks by decay rate times recovery cost.
 
 ### 4d. Existing guard surfaces
 
-Inventory the guard surfaces, sorted into four groups:
+Inventory the guard surfaces, sorted into five groups by whether they execute:
 
 - **Runs by itself:** CI steps, enabled hooks, scheduled checks.
 - **Exists, but runs only by hand:** test suites, scripts, skills.
 - **Decided, not yet built:** usually an open issue or a decision record.
 - **Declared, but missing:** named in a doc or a process list, with nothing behind it.
+- **Unknown:** the evidence available, such as a snapshot without its git configuration, cannot show whether it
+  runs.
+
+Whether to keep, amend, replace or demote each surface is a separate question. Record it alongside only when both
+are useful.
 
 For a gap that already has an issue or a decision, connect the recommendation to that work. Do not propose a
 parallel project.
@@ -158,17 +176,18 @@ Choose the smallest useful next step:
   risks.
 - Refine an existing guard through the same generator, rather than writing a new one.
 - Stop at the assessment, because no guard change is needed. Keep it proportionate: a retired or reference-only
-  repository needs little or nothing new.
+  repository needs little or nothing new, as Step 3 already decided.
 
 ## Output
 
 Deliver:
 
 - **Intent:** the intent pass's output (see `intent-pass.md`)
+- **Lifecycle status**, with its evidence
 - **System shape**, including the repositories involved
 - **Domain and ownership map**
 - **Top entropy risks**, with evidence
-- **Guard surfaces**, in the four groups of Step 4d
+- **Guard surfaces**, in the five groups of Step 4d
 - **Recommended next step**
 - **Questions for the steward**, each with a recommended answer, or "none"
 - **Uncertainties**

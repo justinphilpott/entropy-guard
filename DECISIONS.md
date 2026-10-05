@@ -42,6 +42,11 @@ The rule is now version 2, defined once in `intent-pass.md`. Generated guards ca
 - **No separate guard runner:** the system's own loop runs the guard.
 
 **Impact**: One template to maintain. Guards stop going stale when the state or rules they copied change. Supersedes, in part, "Specialize first around docs-first planning repos" below.
+**Amended**: Justin, 2026-10-04 ("yes"), accepting findings 5 to 8 of Astra's critique:
+- **A session's change:** staged and unstaged changes are checked separately, committed patches are read, and a finding belongs to the session if the session changed the relationship it is about, even in an untouched file.
+- **Routing:** the front door records lifecycle status first, and decides before any handoff whether a guard is needed at all. A mixed system reuses docs-first Steps 2, 3 and 5 for a member repository that is docs-first, within one assessment. A routed docs-first assessment is the assessment. Docs-first analysis recognises product artifacts.
+- **Issue links:** guards may link stable canonical sources, such as an issue that owns a policy, but never copy work-item status.
+- **The current-state view:** it names who refreshes it, and each state claim that changes is checked against its other mentions.
 
 ---
 
@@ -51,6 +56,11 @@ The rule is now version 2, defined once in `intent-pass.md`. Generated guards ca
 **Context**: The lab's `FRICTION.md` records three adoption failures that a placement plan alone would not have caught. A committed pre-push hook was never enabled. Four coding rules were filed where no agent harness loads them. A Scope's Bookwhen notes never reached its agent.
 **Decision**: `guards-integrator` gains Step 6, "Verify adoption". A guard counts as adopted only once its trigger has fired and a fresh agent session has found it. Each guard is reported as a reminder, a check that runs, or an enforced invariant, and as `verified` or `planned`.
 **Impact**: Integration advice says what actually runs, not what was intended to run.
+**Amended**: Justin, 2026-10-04, as above (finding 7):
+- **No approval, no exercise:** exercising a trigger never assumes a commit or push that was not approved; the guard is reported `planned` instead.
+- **Statuses:** `unknown` is allowed, and configuration evidence is reported separately from execution evidence.
+- **Enforced invariants:** one needs a refused failing case.
+- **Discovery:** each agent loading path is checked.
 
 ---
 
