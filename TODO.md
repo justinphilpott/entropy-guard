@@ -11,8 +11,11 @@ PR #14: a claim about everything a system reaches is checked against the code wi
 `explorations/2026-10-07-reach-claims-eval.md`, key written before runs (R1 ×3, R2 and R3 once each).
 State at 23:25 on 7 October: round 8 is scored. No regression in any case; the patch check works (K36: 3 of 3
 against 1 of 3); the reach rule improves K35 by half a point where the rule asked for a whole run, so the round fails
-that criterion. No PR opened. Waiting on Justin: ship both changes, ship the patch check alone, or test further; and
-the two overnight questions (ORC assessment on a frozen `origin/main`; Astra review of this branch).
+that criterion. No PR opened.
+
+**Paused by Justin at 23:22 on 7 October until work on the orchestrator reaches a pause.** On resuming, three
+decisions wait for him: what ships from this branch (both changes, the patch check alone, or more runs); the ORC
+assessment's snapshot; and an Astra review of this branch. PR #14 (the size cut) is still open for him to merge.
 
 ## Next Up
 
