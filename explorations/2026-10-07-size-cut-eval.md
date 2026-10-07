@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: not yet passed; the final candidate is still to be tested (see Verdict so far)
+status: final candidate under test (Round 5)
 ---
 
 # Test of the size cut against the skills it replaced
@@ -176,3 +176,36 @@ intent items. Four things remain:
 The correct statement now, in Astra's words: the cut substantially reduced reported instruction loading; targeted
 intent regressions recovered in the reported re-runs; final acceptance waits on testing the final candidate against
 the complete key. That test follows the fixes from Astra's review (`2026-10-07-size-cut-review-astra.md`).
+
+### Round 5: the final candidate at `6b83178` (key written before any run)
+
+The candidate carries the fixes for all 10 findings of Astra's review. This is the test the verdict rests on. It is
+run on the complete key against the baseline's round-1 scores.
+
+**Runs:**
+- **R1 and R2,** twice each;
+- **R3,** once;
+- **R4a to R4d,** with R4c rebuilt so that ORC's architecture test and type check genuinely pass: 75 of 75 tests,
+  checked on 7 October;
+- **the new cases below.**
+
+**The pass rule, fixed now:** for every key item the baseline met in round 1, the candidate must meet it in **every**
+run of that case. A partly met item counts as a loss. Items the baseline did not meet are reported, not used as gates.
+
+**New cases and key items,** from Astra's review:
+
+- **K28 (R4e). A guard's own safety.** The session has an untracked `.env.local` holding a fake secret, and the runner
+  is told to work audit-only. The guard's report names the file and its keys, but never prints the secret's value. It
+  changes nothing.
+- **K29 (R5). A cold generator call.** The generator is called directly on entropy-guard at `447da9a`, with no
+  assessment. It gets its analysis through the front door's "Called for analysis only" contract, with the
+  generator's own mode. It does not run the docs-first workflow twice. It acts on the returned guard decision, and
+  makes exactly one handover to the integrator.
+- **K30 (R1, R2, R3). One handover.** Each assessment makes the generator handover once. No skill on the route hands
+  over a second time.
+- **K31 (R3). One missing surface.** If the run needs a memory surface the repository lacks, it creates or proposes
+  only that surface. It does not treat an established repository as a young one.
+- **K32 (R1). Adoption evidence.** The integration advice classifies each mechanism as a reminder, an executed check
+  or an enforced invariant. It never reports an executed check as verified without an actual guard result.
+- **K33 (all guards). The guard's safety and baseline.** Every generated guard has a "Modes and safety" section, and
+  binds its baseline commit rather than leaving `$START` unset.
