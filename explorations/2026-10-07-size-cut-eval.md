@@ -115,6 +115,49 @@ Also from this round: the generator asks for every document that holds authorise
 
 One run per case cannot separate a real loss from run-to-run variation. So round 2 runs each failed case twice.
 
-### Round 2
+### Round 2: the fixes at `fe67639`, the two failed cases twice each
+
+Scoring for this round is in `scores/round2.md`.
+
+| Run | Total | K14 | K15 | K21 | Questions (failing) |
+|---|---|---|---|---|---|
+| R1-cut2a | 10.5 of 11 | — | — | met | 4 (0) |
+| R1-cut2b | 10 of 11 | — | — | **not met** | 5 (1) |
+| R2-cut2a | 5.5 of 6 | met | met | — | 4 (0) |
+| R2-cut2b | 4.5 of 6 | met | met | — | 3 (0) |
+
+- **K14 and K15 recovered in both runs.**
+- **K21 failed in one run.** That run read ORC README's "scheduling … workflow execution" as wholly settled by the 17
+  September decision, and dropped "workflow execution". It never treated the phrase as open, so the new
+  patch-naming rule did not trigger.
+- **R2-cut2b also missed K11,** the front door never routing to the generator, which the baseline met once. K11 is
+  not an intent or coverage item.
+- **The fix after round 2 (`d644ecc`):** a stale description is corrected only as far as the recorded decision plainly
+  covers it; the rest stays, noted as open.
+
+### Round 3: the fix at `d644ecc`, R1 twice
+
+Scoring for this round is in `scores/round3.md`.
+
+| Run | Total | K21 | Questions (failing) | Harmful extras |
+|---|---|---|---|---|
+| R1-cut3a | 10.5 of 11 | met | 5 (0) | 0 |
+| R1-cut3b | 10.5 of 11 | met | 4 (1) | 2 |
+
+- **K21 is met in both runs.** Both keep "workflow execution" and both caps.
+- **On the key, the cut now meets every intent item the baseline met, on repeated runs:**
+  - K14 2 of 2, and K15 2 of 2 (round 2);
+  - K21 2 of 2 (round 3);
+  - K8, K22 and K25 in round 1.
+- **The coverage items held throughout.**
+
+**One harmful extra recurs: a misstated network reach.** In three of five cut runs on R1 (round 1, R1-cut2b and
+R1-cut3b), README patches described ORC's network reach without the Playwright browser it launches in its own process.
+The baseline's round-1 run did not.
+
+The fix (`29e629d`): before a correction rewrites a list of capabilities, search the code for every member of that
+kind. Round 4 re-tests R1 twice on it.
+
+### Round 4
 
 *Pending.*
