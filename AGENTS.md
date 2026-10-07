@@ -10,13 +10,14 @@ A collaborative research and development project exploring entropy guards — sk
 - [TODO.md](TODO.md) - Active work
 - [DECISIONS.md](DECISIONS.md) - Key decisions
 - [LEARNINGS.md](LEARNINGS.md) - Validated discoveries
+- [FRICTION.md](FRICTION.md) - What broke in real use, what it cost, dated
 - [skills/](skills/) - Skills
 - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) - Specialized deep path for docs-first planning repos
 - `../entropy-immune-system/` - Sibling repo for the broader entropic-immunity exploration spun out of this project
 
 ## Working Practices
 
-- **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
+- **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally with `git config core.hooksPath .githooks`.
 - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
 - **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
 - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
@@ -24,7 +25,7 @@ A collaborative research and development project exploring entropy guards — sk
 - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
 - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
 - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
+- **Consult INTENT.md for significant decisions**: Before a substantial design or structural choice, check `INTENT.md`. Resolve discrepancies through the intent-change rule in `skills/entropy-assessment/intent-pass.md`: record proposed intent changes in `DECISIONS.md`, and update `INTENT.md` only from Justin's recorded decision.
 
 ## Project Constraints
 
@@ -40,10 +41,12 @@ A collaborative research and development project exploring entropy guards — sk
 - [`.githooks/pre-commit`](.githooks/pre-commit) — non-blocking local reminder hook for running the repo's entropy guard before commit
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
 - [skills/local/entropy-guard-feedback/](skills/local/entropy-guard-feedback/) — local helper for turning assessment/integration feedback into upstream GitHub issues on entropy-guard
-- [skills/entropy-assessment/](skills/entropy-assessment/) — front door that classifies the system shape and routes to the right deeper assessment workflow
-- [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — specialized deep path for markdown-first planning/design repos; produces a canonical truth map, current-state packet, and delta guard guidance
-- [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
-- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — generates repo-specific session handoff guards or bootstraps minimal handoff memory for young repos
+- [skills/entropy-assessment/](skills/entropy-assessment/) — front door: runs the intent pass, classifies the system shape, routes it, and profiles mixed, code-first and workflow-heavy systems
+- [skills/entropy-assessment/intent-pass.md](skills/entropy-assessment/intent-pass.md) — the one definition of the intent pass and of the intent-change rule every generated guard carries
+- [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — analysis for markdown-first planning/design repos; produces a canonical truth map, brings the current-state file up to date, and supplies docs-first checks to the generator
+- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — the only guard builder: generates or amends a repo's session-end guard, or bootstraps minimal handoff memory for young repos
+- [skills/guards-integrator/](skills/guards-integrator/) — fits guards into the target system's real iteration loop and verifies they are actually adopted
+- [explorations/2026-10-04-skills-revision-eval.md](explorations/2026-10-04-skills-revision-eval.md) — known-answer cases for checking a revision of the skills, run before and after; [its folder](explorations/2026-10-04-skills-revision-eval/) holds the invocations, fixture script, outputs and scores needed to run it again
 - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
 
 ## Commands

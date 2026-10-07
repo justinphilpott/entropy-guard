@@ -4,6 +4,66 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### An intent change is a proposal, not an edit; the intent pass runs at the front door
+
+**Decided by**: Justin, 2026-10-04 ("go ahead with the revision"), approving items 1 to 6 of `explorations/2026-10-04-skills-review-synthesis.md`.
+**Context**: Two independent reviews on 2026-10-04 (Claude's and GPT 6.1 Astra's, in `explorations/`) found that the skills' only handling of intent was a 2 to 4 sentence summary, with "stop" when none existed. They also found that guards these skills produced resolve a mismatch between work and intent by rewriting the intent documents: this repo's own guard ("update it [INTENT.md] with a dated note") and FlowVoice's ("update the relevant top-level docs"). Neither asked the steward first. Making the documents agree erases the evidence that a choice was never made. The 2026-03-24 working conclusions had already separated declared intent, enacted intent and actual need.
+**Decision**: Add `skills/entropy-assessment/intent-pass.md` as the one definition of the intent pass and of the intent-change rule. The pass:
+- gathers statements with their source and kind (steward decision, description, observation, inference);
+- compares declared, enacted and authorised intent;
+- classifies each gap as a stale description, a conflict, missing, ambiguous, unauthorised drift, or a prose control;
+- settles staleness from recorded decisions without asking;
+- asks the steward at most five questions, each with readings, a concrete case and a recommended answer, and only when the answer changes what gets built;
+- records answers and proposals in the target's existing decision surface.
+
+Every generated guard carries the intent-change rule. The question shape follows GitHub Spec Kit's `/speckit.clarify`, the proposal shape follows OpenSpec's change proposals, and "refuse to guess" comes from `intent-architect`. The rule now applies to this repo too: Justin is the steward of `INTENT.md`.
+**Impact**: Agents can no longer resolve drift by moving the north star. Questions to the steward become rarer and sharper, because evidence settles what it can.
+**Amended**: Justin, 2026-10-04 ("yes lets start with group 1"), accepting findings 1 to 4 of Astra's critique (`explorations/2026-10-04-skills-revision-critique-astra.md`):
+- an adaptation within existing authorisation goes ahead, with its reason recorded, and only an undecided change of intent becomes a proposal; dependent work waits for the decision;
+- without the steward, recommendations are drafted, never implemented, and proposed patches must not quietly settle an open question;
+- missing attribution is not missing authority: unsigned decisions and directives are recorded as such, the system's own instruction precedence applies, a decision log is never put to the steward for block ratification, and each concern keeps its own decision owner;
+- a test or the code never becomes the authority over a documented constraint, and summaries and independent tests are not "redundant copies".
+
+The rule is now version 2, defined once in `intent-pass.md`. Generated guards carry a copy that names its version, and this repo's guard points at the file.
+
+---
+
+### `session-coherence-skill-generator` is the only guard builder, and guards hold only durable checking policy
+
+**Decided by**: Justin, 2026-10-04, as above.
+**Context**: Both `docs-first-planning-assessment` (Phase 2) and `session-coherence-skill-generator` built session-end guards, from templates that had diverged. The front door never routed to the generator. Deployed guards froze state that changes weekly, such as the audio-tools guard's current tranche and next issue. They also restated rules owned elsewhere: the same guard states a spending rule that the 2026-10-03 rule routing spending through ORC has since replaced. FlowBook's guard defines a session's change as `git diff origin/main..HEAD`, which misses uncommitted work. The lab's `STATE.md` showed that a current-state summary with no source or refresh rule contradicts itself.
+**Decision**:
+- **Building guards:** `session-coherence-skill-generator` owns guard construction. The docs-first skill supplies its analysis and checks. The front door routes mixed, code-first, workflow-heavy and young repos, and profiles systems spread over more than one repository.
+- **What a guard holds:** checking policy, and pointers to intent, state, decisions and rules owned elsewhere. It holds no copies of them.
+- **What a session's change covers:** uncommitted work as well as commits.
+- **What each run reports:** its baseline, and what it checked and did not check.
+- **Current state:** the docs-first "current-state packet" becomes an update to the repo's existing state file, with a source and date on claims that change often.
+- **The settled method:** a compact reusable guard, anchored on authorised intent, that picks its checks for each change. This replaces the alternative of a fresh full assessment at every handoff. Astra's reason: checks regenerated from the current system alone treat drift as normal.
+- **No separate guard runner:** the system's own loop runs the guard.
+
+**Impact**: One template to maintain. Guards stop going stale when the state or rules they copied change. Supersedes, in part, "Specialize first around docs-first planning repos" below.
+**Amended**: Justin, 2026-10-05 ("yes", 17:23), accepting findings 5 to 8 of Astra's critique. (First recorded as 2026-10-04 in error; corrected 2026-10-05.)
+- **A session's change:** staged and unstaged changes are checked separately, committed patches are read, and a finding belongs to the session if the session changed the relationship it is about, even in an untouched file.
+- **Routing:** the front door records lifecycle status first, and decides before any handoff whether a guard is needed at all. A mixed system reuses docs-first Steps 2, 3 and 5 for a member repository that is docs-first, within one assessment. A routed docs-first assessment is the assessment. Docs-first analysis recognises product artifacts.
+- **Issue links:** guards may link stable canonical sources, such as an issue that owns a policy, but never copy work-item status.
+- **The current-state view:** it names who refreshes it, and each state claim that changes is checked against its other mentions.
+
+---
+
+### A guard counts as adopted only once exercised
+
+**Decided by**: Justin, 2026-10-04, as above.
+**Context**: The lab's `FRICTION.md` records three adoption failures that a placement plan alone would not have caught. A committed pre-push hook was never enabled. Four coding rules were filed where no agent harness loads them. A Scope's Bookwhen notes never reached its agent.
+**Decision**: `guards-integrator` gains Step 6, "Verify adoption". A guard counts as adopted only once its trigger has fired and a fresh agent session has found it. Each guard is reported as a reminder, a check that runs, or an enforced invariant, and as `verified` or `planned`.
+**Impact**: Integration advice says what actually runs, not what was intended to run.
+**Amended**: Justin, 2026-10-05, as above (finding 7):
+- **No approval, no exercise:** exercising a trigger never assumes a commit or push that was not approved; the guard is reported `planned` instead.
+- **Statuses:** `unknown` is allowed, and configuration evidence is reported separately from execution evidence.
+- **Enforced invariants:** one needs a refused failing case.
+- **Discovery:** each agent loading path is checked.
+
+---
+
 ### Session-coherence generation should bootstrap young repos before generating guards
 
 **Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.
@@ -13,6 +73,8 @@ Record architectural choices so future you (and agents) understand why.
 ---
 
 ### Specialize first around docs-first planning repos, but keep entropy-assessment as the front door
+
+*Partially superseded by "`session-coherence-skill-generator` is the only guard builder" (2026-10-04): the docs-first skill no longer builds guards, and its current-state packet became an update to the repo's existing state file.*
 
 **Context**: Repeated real use of `entropy-assessment` has not converged on conventional code-heavy repositories. The strongest, most consistent signal has come from markdown-first planning/design repos where the main artifacts are architecture docs, decision logs, task state, templates, and contributor/agent workflow guidance. The recent issue cluster (`#9`-`#12`) sharpened that further: these systems need explicit canonical truth mapping, current-state session packets, supersession-aware guard checks, and caution about brittle phrase-encoded automation. This is now a distinct workflow shape, not just a few extra appendix bullets.
 **Decision**: Keep `skills/entropy-assessment/` as the single front door, but change its role to triage and routing rather than carrying all deep guidance itself. Add a specialized export, `skills/docs-first-planning-assessment/`, for markdown-first planning/design repos. Treat the current-state packet as an output of that specialized assessment rather than a separate skill for now. Keep `skills/guards-integrator/` as the separate adoption-time skill.
@@ -38,6 +100,8 @@ Record architectural choices so future you (and agents) understand why.
 
 ### Entropy assessment should support guard refinement and evidence-based bootstrap design
 
+*Partially superseded (2026-10-04): guard refinement and bootstrap now happen in `session-coherence-skill-generator`; the rule that bootstrap actions are verified against the current artifact lives in the docs-first skill's Step 6.*
+
 **Context**: Applying `entropy-assessment` to real projects exposed a cluster of related misfires. The skill framed Phase 2 primarily as generating new guards, even when the right outcome was a targeted amendment to an existing guard. It also allowed bootstrap checks to be written from indirect notes without verifying the current artifact, and it did not clearly distinguish stable guard definitions from the companion artifacts that should record bootstrap completion. Cold-start projects with no established loop likewise had no named minimum-viable integration pattern.
 **Decision**: Treat guard refinement as a first-class Phase 2 outcome alongside guard generation. Require bootstrap actions to be verified against the current artifact before they are written, require bootstrap completion to be tracked outside the guard file, and add an explicit no-existing-loop bootstrap integration pattern for early-stage projects. Also make internal docs-to-docs drift more explicit for markdown-first systems.
 **Impact**: `skills/entropy-assessment/SKILL.md` now fits existing-guard systems better, produces more trustworthy bootstrap checks, preserves guard files as stable definitions, and offers a clearer adoption path for cold-start repos. The methodology also better matches the repo's own framing that documentation-first systems often drift internally rather than primarily against code.
@@ -45,6 +109,8 @@ Record architectural choices so future you (and agents) understand why.
 ---
 
 ### Add workflow/process as a first-class assessment domain
+
+*Partially superseded: the appendix it added no longer exists; workflow and process are part of the front door's profile (Step 4) and the docs-first skill's vectors.*
 
 **Context**: Dogfooding `entropy-assessment` against this repo showed a repeatable gap. The skill already talked about collaborative workflow and inter-domain drift in principle, but its explicit Phase 1 domain map and Phase 2 appendices only covered documentation, code, tests, and API contracts. That made workflow-heavy repos awkward to classify and left no direct path to generate workflow/process guards when the main entropy risks lived in handoffs, rituals, or contributor instructions.
 **Decision**: Extend `skills/entropy-assessment/SKILL.md` with workflow/process as a first-class domain in both assessment and guard generation. Add workflow/process signals to the Phase 1 domain map and drift analysis, and add a dedicated appendix covering inventory items, entropy vectors, checklist guidance, and existing mechanisms.
@@ -128,7 +194,7 @@ Record architectural choices so future you (and agents) understand why.
 
 ### Consolidate domain generators into single skill with domain appendices
 
-*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above.*
+*Superseded. The domain appendices no longer exist: domain knowledge now lives in the docs-first skill and the front door's profile (see the 2026-10-04 entries and "Specialize first around docs-first planning repos" above).*
 
 **Context**: The four domain generators (docs, code, test, API) were ~80% identical scaffolding — Steps 0–7 with the same structure, domain-adapted. The unique domain knowledge (entropy vectors, inventory items, checklist design guidance) accounted for ~20% of their content. The assessment skill's Phase 2 existed solely as a routing/coordination layer between the entry point and the generators. This meant an agent had to read 5 files to do what one file could accomplish. The insight from the two-layer decision — that domains need different analytical lenses — was correct, but the domain-specific knowledge turned out to be reference data, not separate processes.
 **Decision**: Fold all domain knowledge into the entropy-assessment skill as reference appendices (one per domain). Delete the four standalone generator skills. The assessment skill now handles both assessment (Phase 1) and generation (Phase 2) with built-in domain references. Supersedes "Two-layer generator architecture" and "Exportable skills vs local skills" (for the generator skills specifically — the distinction still applies to local skills like entropy-guard).

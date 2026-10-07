@@ -24,9 +24,13 @@ Current strongest fit: markdown-first, docs-as-system, architecture/planning, an
 
 ### Assess a system for entropy risks
 
-The front door is [entropy assessment](skills/entropy-assessment/). It classifies the system shape, routes you to the right assessment workflow, and produces a lightweight entropy profile when no deeper specialization fits yet.
+The front door is [entropy assessment](skills/entropy-assessment/). It first runs the [intent pass](skills/entropy-assessment/intent-pass.md), which establishes what the system's steward has authorised it to be for, separately from what the docs and code currently say. It flags intent that is missing, conflicting, stale or ambiguous, settles what the evidence can settle, and asks the steward at most five questions. Then it classifies the system's shape and routes it:
 
-Today the deepest specialized path is [docs-first planning assessment](skills/docs-first-planning-assessment/), for markdown-first planning/design repos where the main artifact is evolving documentation and the main risk is repeated session drift.
+- **Docs-first planning repos** go to [docs-first planning assessment](skills/docs-first-planning-assessment/), the deepest analysis path.
+- **Mixed, code-first and workflow-heavy systems**, including systems spread over more than one repository, get the front door's own profile.
+- **Young repos** go to the guard generator's bootstrap mode.
+
+Every route that needs a guard ends at the [session coherence skill generator](skills/session-coherence-skill-generator/), the only skill that builds guards, and then the [guards integrator](skills/guards-integrator/).
 
 You don't need to know what guards you want upfront. Start at the front door unless you already know you're in the docs-first planning case.
 
@@ -37,27 +41,26 @@ Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
 then assess [your project path] for entropy risks.
 ```
 
-The front door classifies the repo and sends docs-first planning repos to the specialized workflow. That workflow produces a standalone entropy report, a canonical truth map, a compact current-state packet for fresh sessions, and guard recommendations.
+The front door runs the intent pass, classifies the repo, and routes it. The docs-first workflow produces an entropy report, a canonical truth map, an up-to-date current-state file for fresh sessions, and the checks its guard needs.
 
 **If you already know the repo is docs-first planning**: go straight to the specialized skill.
 
 ```
 Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
-then assess [your project path], produce a current-state packet,
-and generate or refine a delta guard.
+then assess [your project path] and bring its current-state file up to date.
 ```
 
 It also closes the loop on the skill itself: if the assessment misfires or creates avoidable friction, the final step is to capture a short upstream feedback note so the heuristic can improve.
 
-**To generate guards**: if you want to go further, the specialized assessment continues into guard generation or refinement — producing a delta guard skill file you place in the target project's skills directory, or targeted amendment guidance for the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
+**To generate guards**: carry the assessment through to the guard generator. It builds a session-end guard in the target project's `skills/` directory, or amends the guard you already have. The guard holds only durable checking policy. It points at the project's intent, state file, decision log and rules owned elsewhere, rather than copying them. It covers uncommitted work as well as commits, and when work and intent disagree it records a proposal for the steward instead of rewriting the intent.
 
 ```
-Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
-then assess [your project path], produce a current-state packet,
-and generate or refine the entropy guard.
+Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
+then assess [your project path] and carry the route through
+to a generated or refined guard and integration advice.
 ```
 
-**To integrate generated guards into a real loop**: run the [guards integrator](skills/guards-integrator/) skill after guard generation when you want a sharper recommendation about how those guards should fit an existing agent, commit, PR, or CI workflow.
+**To integrate generated guards into a real loop**: run the [guards integrator](skills/guards-integrator/) skill after guard generation. It fits the guard into the existing agent, commit, PR or CI workflow, and counts the guard as adopted only once its trigger has fired and a fresh agent session has found it.
 
 ```
 Read skills/guards-integrator/SKILL.md from the entropy-guard repo,
@@ -85,10 +88,10 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 | Skill | Purpose |
 |-------|---------|
-| [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
-| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
-| [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
-| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | Generates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
+| [entropy-assessment/](skills/entropy-assessment/) | Start here — runs the intent pass ([intent-pass.md](skills/entropy-assessment/intent-pass.md)), classifies the system shape, routes it, and profiles mixed, code-first and workflow-heavy systems |
+| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Analysis for markdown-first planning/design repos — maps which document owns which truth, brings the current-state file up to date, and supplies the docs-first checks to the generator |
+| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | The only guard builder — generates or amends a repo's session-end guard from an assessment's findings, or bootstraps minimal context-preservation files for young repos |
+| [guards-integrator/](skills/guards-integrator/) | Fits guards into a system's existing iteration loop (agent, commit, PR, CI, release) and verifies they are actually adopted |
 
 ### Skills (local to this project)
 
@@ -118,11 +121,11 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 ## Project status
 
-Actively evolving. The project's strongest validated use case is now docs-first planning repos: markdown-first systems where evolving design docs, decision logs, handoff docs, and agent instructions need to stay coherent across repeated sessions. This repo's own guard remains the main reference example.
+Actively evolving. The project's strongest validated use case is docs-first planning repos: markdown-first systems where evolving design docs, decision logs, handoff docs, and agent instructions need to stay coherent across repeated sessions. The October 2026 revision (see `explorations/2026-10-04-skills-review-synthesis.md`) added the intent pass, made one skill the guard builder, and added routes for mixed and multi-repository systems ahead of assessing ORC. This repo's own guard remains the main reference example.
 
 The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
 
-The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
+The next concrete phase is assessing ORC, Justin's orchestration system, together with the lab Scope that manages it, then continuing external validation on more repos. Each revision of the skills is checked against the known-answer cases in `explorations/2026-10-04-skills-revision-eval.md`.
 
 See [TODO.md](TODO.md) for current priorities.
 
@@ -137,4 +140,4 @@ Read [AGENTS.md](AGENTS.md) for working practices. The short version:
 3. Run [skills/local/entropy-guard/](skills/local/entropy-guard/) before committing (the local reminder hook nudges, but does not block)
 4. Commit with a brief note of what the entropy check surfaced (or "entropy check clean")
 
-To enable the reminder in a fresh clone, symlink [`.githooks/pre-commit`](.githooks/pre-commit) to `.git/hooks/pre-commit`.
+To enable the reminder in a fresh clone, run `git config core.hooksPath .githooks`. (A relative symlink from `.git/hooks/pre-commit` to `.githooks/pre-commit`, which this line used to suggest, resolves inside `.git/hooks/` and silently never runs.)

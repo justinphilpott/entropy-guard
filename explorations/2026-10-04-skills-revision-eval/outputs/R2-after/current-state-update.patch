@@ -1,0 +1,65 @@
+--- a/TODO.md	2026-10-04 18:53:28.231865381 +0100
++++ b/TODO.md	2026-10-04 18:53:48.792034250 +0100
+@@ -2,6 +2,45 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++Read this first. It holds only what the other docs cannot tell a fresh session quickly. Last checked 2026-10-04 against
++the files in this repo. Re-check after any change to `INTENT.md`, `DECISIONS.md`, or the set of skills under `skills/`.
++
++- **Stage:** practical guard tooling, strongest on docs-first planning repos. The external validation batch in "Next
++  Up" shows no sign of having started: "Doing Now" is empty and `LEARNINGS.md` records no validation results after the
++  docs-first entry. (Inference, checked 2026-10-04.)
++- **Trust first:** `INTENT.md` for purpose, `DECISIONS.md` for settled choices (newest at the top), `AGENTS.md` for how
++  to work, then the skill you are changing.
++- **Settled, do not reopen casually:** each of these is an entry in `DECISIONS.md`: entropy-assessment is the front door
++  and routes; docs-first planning is the deepest track; guards-integrator is a separate skill; exported skills live in
++  `skills/`, local ones in `skills/local/`; skills follow the agentskills.io format; judgment-heavy guards mature from
++  external to prompted; this repo keeps one local guard.
++- **Active front:** `skills/session-coherence-skill-generator/` and its bootstrap mode are the newest work (skill
++  metadata 2026-05-10 and 2026-05-11). It is not reached by entropy-assessment's routing and not named in `INTENT.md`'s
++  guard lifecycle. (Checked 2026-10-04.)
++- **Other state surface:** feedback from other repos arrives as GitHub issues labelled `agent-feedback` on
++  `justinphilpott/entropy-guard`. Not read on 2026-10-04.
++- **Open questions for Justin.** Work continues on the recommended answer, marked provisional:
++  1. May any contributor edit `INTENT.md` (its header; `AGENTS.md` "Consult INTENT.md"), or only Justin? Recommended:
++     only Justin's recorded decision changes it; agents propose in `DECISIONS.md`.
++  2. Do the existing `DECISIONS.md` entries stand as Justin's decisions, and how are new ones recorded? Recommended: yes
++     for all existing entries; new entries open `Justin, <date>:` or `Proposed <date> by <who>, awaiting Justin.`
++  3. Which one skill builds guards: docs-first-planning-assessment Phase 2, or session-coherence-skill-generator?
++     Recommended: the generator. Recorded as a proposed entry at the top of `DECISIONS.md`.
++  4. Is the validation batch open-source repos judged by merged PRs (`DECISIONS.md`, "Farm broader...") or docs-first
++     planning repos judged by session recovery (`INTENT.md`, "Scope boundary")? Recommended: docs-first planning repos
++     of either kind; INTENT's measures for all, merged PRs where the repo is someone else's.
++- **Historical, likely to mislead:**
++  - `explorations/` (four files). The theory continues in the sibling `entropy-immune-system` repo (`DECISIONS.md`,
++    "Farm broader...").
++  - `LEARNINGS.md` entries that cite entropy-assessment "Phase 2", "Step 0", "Step 5", "Step 7", "Step 8" or domain
++    appendices. They describe a structure since removed.
++  - The "just-in-time guard generation" and "four-component temporal hierarchy" learnings. They are long-range
++    theory; today guards are skill files (`INTENT.md`, "What the guard generator should achieve").
++- **Next actions:** (1) answer questions 1-3 and record the answers in `DECISIONS.md`; (2) work through the
++  "Bootstrap cleanup" items below; (3) choose the validation batch.
++
+ ## Doing Now
+ 
+ [empty]
+@@ -12,6 +51,16 @@
+ - [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
++## Bootstrap cleanup (from the 2026-10-04 assessment)
++
++- [ ] Replace `skills/local/entropy-guard/SKILL.md` with the refined guard (adds what-changed commands, the intent-change rule, mechanical checks; drops the dangling `doc-health-check` and "Key Documents table" references)
++- [ ] Fix the hook enable instruction in `README.md` "Contributing" and `AGENTS.md` "Working Practices": `git config core.hooksPath .githooks` (the literal symlink instruction creates a broken link and the reminder silently never fires)
++- [ ] `skills/guards-integrator/SKILL.md` lines 20 and 221 say entropy-assessment generates guards; it has not since the "Specialize first..." decision
++- [ ] `skills/docs-first-planning-assessment/SKILL.md` Step 5 "Bootstrap actions": restore the requirement to verify each action against the current artifact (`DECISIONS.md`, "Entropy assessment should support guard refinement..."); no skill carries it now
++- [ ] Mark `DECISIONS.md` entries "Rename entry point...", "Add workflow/process..." and "Entropy assessment should support guard refinement..." as partially superseded by "Specialize first..." (provisional on question 2)
++- [ ] After question 3: one guard builder; route entropy-assessment's non-docs-first shapes and young repos to it; remove the FlowBook references from `skills/session-coherence-skill-generator/SKILL.md`
++- [ ] `skills/docs-first-planning-assessment/SKILL.md` Step 8 calls the first enforcement level "Narrative / judgment-heavy"; `INTENT.md` and guards-integrator call it "External"
++
+ ## Backlog
+ 
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains

@@ -1,43 +1,56 @@
 ---
 name: entropy-assessment
-description: Front door for entropy-guard. Classify the system shape, route it to the most appropriate assessment workflow, and provide a lightweight fallback entropy profile when no deeper specialization fits yet.
+description: Front door for entropy-guard. Establish what the system's steward has authorised it to be for, classify the system's shape, route it to the right analysis, and hand guard building to the guard generator. Use first when you do not know which entropy workflow fits.
 metadata:
-  version: "0.6.0"
+  version: "0.7.0"
 ---
 
 # Skill: Entropy Assessment
 
 Use this as the first stop when you do not yet know which entropy workflow fits the target system.
 
-This skill is now a front door and router. It still produces a useful lightweight assessment on its own, but its main job is to identify the system shape and send you to the right deeper workflow.
+The skills in entropy-guard share one flow, and this skill is its first step:
 
-Today the deepest validated specialization is `skills/docs-first-planning-assessment/SKILL.md`.
+1. **This skill:** the intent pass, the system's shape, and the route.
+2. **Analysis:** `skills/docs-first-planning-assessment/SKILL.md` for docs-first planning repos, or this skill's own
+   profile (Step 4) for every other shape.
+3. **Guard building:** `skills/session-coherence-skill-generator/SKILL.md`. It is the only skill that writes guards.
+4. **Adoption:** `skills/guards-integrator/SKILL.md`.
 
 ## When to Run
 
 - You are entering a system cold and want to understand where entropy is accumulating
-- You want to know whether a specialized assessment workflow applies
-- You suspect an existing guard is stale or mismatched and want a quick fresh read before deeper work
+- You want to know which analysis and guard fit the system
+- You suspect an existing guard is stale or mismatched and want a fresh read before changing it
 
 ## When NOT to Run
 
 - As a substitute for running an existing guard that you already know is the right one
 - For trivial one-off artifacts that will not be iterated
-- When you already know the repo is a docs-first planning system; go straight to `skills/docs-first-planning-assessment/SKILL.md`
+- When you already know the repo is a docs-first planning system: go straight to
+  `skills/docs-first-planning-assessment/SKILL.md`, which runs the intent pass itself
 
 ---
 
-## Step 1: Establish intent
+## Step 1: Intent pass
 
-Before classifying the repo, determine whether it can explain itself.
+Run the intent pass in [`intent-pass.md`](intent-pass.md). It does five things:
 
-- Read the highest-level intent docs first: `README.md`, `INTENT.md`, architecture docs, or design docs.
-- Write a 2-4 sentence intent summary.
-- If there is no discernible intent, stop and treat that as the highest-priority entropy finding.
+- names the steward;
+- separates what the documents declare, what recent work enacted, and what the steward authorised;
+- classifies each gap between them;
+- settles what the evidence can settle;
+- asks the steward at most five questions, each one about a choice that changes what gets built.
 
-## Step 2: Classify the system shape
+If there is no usable intent at all, stop guard work there. Report what can still be inventoried, and recommend an
+intent interview before any guard is built. Open questions do not block work that does not depend on them.
 
-Identify which of these best matches the target system.
+## Step 2: Lifecycle status and system shape
+
+First, record the system's lifecycle status, with its evidence: **active**, **reference-only or frozen**, or
+**retired**. It decides how much the rest of the route may recommend.
+
+Then identify which of these shapes best matches the target.
 
 ### A. Docs-first planning
 
@@ -51,91 +64,143 @@ Choose this when most of these are true:
 
 ### B. Mixed docs + code
 
-Choose this when the system has both meaningful implementation and a meaningful documentation/planning surface, and the top risks likely sit between them.
+Choose this when the system has both meaningful implementation and a meaningful documentation or planning surface,
+and the top risks likely sit between them.
 
-### C. Code-first / implementation-first
+### C. Code-first
 
-Choose this when the main artifact is implementation and the top risks are architectural drift, stale tests, or API/implementation mismatch.
+Choose this when the main artifact is implementation and the top risks are architectural drift, stale tests, or
+API/implementation mismatch.
 
-### D. Workflow-heavy / ritual-heavy
+### D. Workflow-heavy
 
-Choose this when the primary entropy surface is how work is done: handoffs, release steps, contributor instructions, agent wrappers, or checklists.
+Choose this when the primary entropy surface is how work is done: handoffs, release steps, contributor instructions,
+agent wrappers, or checklists.
+
+### E. Young repo
+
+Choose this when the repo has little history and its purpose or current direction still lives mostly in
+conversation or memory, while handoffs are starting to happen.
+
+Also note whether the system spans **more than one repository**: for example, a code repository and a separate
+repository that manages its work, or a service and the packages that plug into it. If it does, assess them as one
+system.
 
 If more than one shape fits, note the ambiguity and choose the one with the highest current risk.
 
-## Step 3: Route to the right workflow
+## Step 3: Route
 
-- If the answer is **Docs-first planning**, stop here and run `skills/docs-first-planning-assessment/SKILL.md`.
-- If the answer is **Mixed docs + code**, continue below with the lightweight fallback assessment. Note the domains that need deeper follow-up.
-- If the answer is **Code-first / implementation-first**, continue below with the lightweight fallback assessment. Treat the result as provisional until a stronger code-first specialization exists.
-- If the answer is **Workflow-heavy / ritual-heavy**, continue below with the lightweight fallback assessment, paying special attention to declared loop vs real loop.
+Choose one primary route, then reuse specialised analysis where a member repository needs it. Combine the findings
+into one assessment and one handoff to the generator.
 
-## Step 4: Lightweight fallback assessment
+- **A, docs-first planning:** run `skills/docs-first-planning-assessment/SKILL.md`. Its assessment is the assessment;
+  add only this skill's intent section and lifecycle status, and do not write a second report.
+- **B, C or D:** do Step 4 below. Where a member repository is docs-first, for example a repository that manages the
+  work rather than holding the code, also run docs-first Steps 2, 3 and 5 for it (truth map, loop map and
+  current-state update), and fold the results into the one assessment. Do not run the whole docs-first workflow a
+  second time.
+- **E, young repo:** run `skills/session-coherence-skill-generator/SKILL.md` in bootstrap mode.
 
-If no deeper specialization fits yet, produce a compact entropy profile.
+Before any route hands over to the generator, decide whether a guard is needed at all. A reference-only, frozen or
+retired system may finish with a correction or a demotion and no generated guard.
 
-### 4a. Map the present domains
+## Step 4: Profile for mixed, code-first and workflow-heavy systems
 
-For each domain, note whether it is present and actively iterated:
+### 4a. Domains
+
+For each domain, note whether it is present and actively changed:
 
 - code
 - documentation
 - tests
-- API contracts
-- workflow / process
+- API and data contracts
+- workflow and process
+- live operational state: running services, deployed builds, credentials, scheduled jobs
 
-### 4b. Identify the main cross-domain drift risks
+### 4b. Repositories and ownership
 
-Ask:
+Skip this when the system is one repository.
 
-- docs vs implementation
-- docs vs docs
-- tests vs implementation
-- API spec vs implementation
-- workflow vs reality
-- workflow vs other domains
+- Which repository owns which concept? Name the concept and its home.
+- Where does one concept have two homes, such as two names for it or two implementations of it across
+  repositories? These seams are usually the costliest drift, because each side looks correct on its own.
 
-Rank the top 3 risks by decay rate x recovery cost.
+### 4c. Cross-domain drift
 
-### 4c. Assess existing guard surfaces
+Check each of these, with evidence:
 
-Inventory what the system already has:
+- **Docs against implementation:** settings, commands, paths and identifiers named in prose that the code no longer
+  reads or provides. Search the code for each one.
+- **Docs against docs:** state and handoff files that contradict themselves or each other.
+- **Tests against implementation:** tests that exist but do not run, or that test a different representation from
+  the one used in practice.
+- **Contracts against implementation:** API reports, schemas and manifests.
+- **Workflow against reality:** declared processes, hooks and CI steps that do not run. A committed hook that is not
+  enabled counts as not running: check the effective hooks path (`git config core.hooksPath`, or `.git/hooks/` when
+  it is unset) and the tracked hook folders, such as `.githooks/` or `.husky/`.
+- **Rules against enforcement:** rules written as if enforced, which nothing enforces.
 
-- skill files or checklists
-- CI steps or scripted checks
-- hooks, wrappers, templates, or contributor instructions
-- decision logs, learnings logs, ADRs, or handoff notes
+Rank the top 3 to 5 risks by decay rate times recovery cost.
 
-For each, decide:
+### 4d. Existing guard surfaces
 
-- keep as-is
-- amend
-- replace
-- no guard needed
+Inventory the guard surfaces, sorted into five groups by whether they execute:
 
-### 4d. Recommend the next move
+- **Runs by itself:** CI steps, enabled hooks, scheduled checks.
+- **Exists, but runs only by hand:** test suites, scripts, skills.
+- **Decided, not yet built:** usually an open issue or a decision record.
+- **Declared, but missing:** named in a doc or a process list, with nothing behind it.
+- **Unknown:** the evidence available, such as a snapshot without its git configuration, cannot show whether it
+  runs.
 
-Choose the smallest useful next action:
+Whether to keep, amend, replace or demote each surface is a separate question. Record it alongside only when both
+are useful.
 
-- run `docs-first-planning-assessment`
-- refine an existing guard
-- add a lightweight general post-work guard
-- hand the result to `guards-integrator`
-- stop at assessment only because the system does not yet need a guard change
+For a gap that already has an issue or a decision, connect the recommendation to that work. Do not propose a
+parallel project.
 
-If the repo is still mostly markdown-first, planning-heavy, and AI-session-driven after this fallback pass, route it to `docs-first-planning-assessment` rather than trying to force a generic answer.
+### 4e. Mechanical checks belong to tools
+
+Recommend maintained tools for anything mechanical rather than having a guard repeat it by hand:
+
+- a link checker such as lychee;
+- a linter for agent instruction files, such as ctxlint or agnix;
+- ast-grep, for identifiers named in prose;
+- the project's own tests, type checks, linters and API reports.
+
+## Step 5: Hand on
+
+Choose the smallest useful next step:
+
+- Hand to `session-coherence-skill-generator`, with three things: the intent section, the profile, and the ranked
+  risks.
+- Refine an existing guard through the same generator, rather than writing a new one.
+- Stop at the assessment, because no guard change is needed. Keep it proportionate: a retired or reference-only
+  repository needs little or nothing new, as Step 3 already decided.
 
 ## Output
 
 Deliver:
 
-- **System shape classification**
-- **Intent summary**
-- **Domain map**
-- **Top entropy risks**
-- **Existing guard surface summary**
-- **Recommended next skill or action**
+- **Intent:** the intent pass's output (see `intent-pass.md`)
+- **Lifecycle status**, with its evidence
+- **System shape**, including the repositories involved
+- **Domain and ownership map**
+- **Top entropy risks**, with evidence
+- **Guard surfaces**, in the five groups of Step 4d
+- **Recommended next step**
+- **Questions for the steward**, each with a recommended answer, or "none"
 - **Uncertainties**
+
+These rules apply to the whole route: this assessment or the docs-first one, the generator's report, and the
+integration brief.
+
+- **Keep one findings list.** Give each finding an id. The intent, risk, generation and integration sections refer to
+  findings by id instead of repeating their evidence.
+- **Make a separate file only when it has its own reader**, such as a guard or a state file, or when it is a patch
+  that can be applied.
+- **Never cut these for length:** where a claim came from, what was not covered, and the difference between a
+  proposal and a decision.
 
 ## Upstream Feedback Check
 
@@ -144,15 +209,8 @@ Before you finish, ask whether this front door itself misrouted the system or le
 Examples:
 
 - it should have sent the repo to the docs-first planning track sooner
-- the fallback profile was too shallow to be useful
-- the classification shapes need another branch
+- the profile in Step 4 missed a kind of drift this system has
+- the intent pass asked a question the evidence could have settled
 
-If yes, capture a short feedback note and use `skills/local/entropy-guard-feedback/SKILL.md` when working inside this repo.
-
----
-
-## Notes on Scope
-
-- This skill is intentionally lighter than the specialized tracks behind it.
-- The strongest validated path today is docs-first planning.
-- Code/test/API-oriented assessment remains in scope, but is currently less specialized here.
+If yes, capture a short feedback note and use `skills/local/entropy-guard-feedback/SKILL.md` when working inside this
+repo.

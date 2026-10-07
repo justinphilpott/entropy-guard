@@ -1,0 +1,44 @@
+diff --git a/DECISIONS.md b/DECISIONS.md
+index db83772..213ec6f 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -872,6 +872,39 @@ Operational rule: when a discussion turns into "this doc says X but that doc say
+ 
+ ---
+ 
++### 2026-10-04 — PROPOSED, awaiting Justin: this repository is reference-only
++
++> **Proposed, not decided.** Written by an entropy-assessment run on 2026-10-04. It becomes a
++> decision only when Justin records it, dated and attributed. Until then it changes no intent
++> document.
++
++**What is unrecorded.** The banners at the top of `README.md` and `AGENTS.md` say this repository is
++reference-only: "Current Personal Agent architecture lives in `../personal-agent`; the current Scope
++and Project model lives in `../../scope`. Do not extend or reinterpret this blueprint as current
++design without explicit authorization." No entry in this log records that change, when it was made,
++or what it still permits. The rest of the repository (AGENTS.md "Session start", ROADMAP.md,
++`skills/session-kickoff.md`, `skills/entropy-guard.md`) still runs it as the live design source.
++
++**Proposed decision** (each part is a recommendation to Justin, not an answer from him):
++
++1. This repository is a reference record of the Sol 0.x blueprint as it stood at the 2026-07-26
++   temporal coordinator entry. It is not current architecture authority.
++2. Changes permitted here: corrections that make the record accurate, each citing the entry that
++   settles it; pointers to the repository that now owns a concept; moves into `archive/`. Any other
++   change needs Justin's recorded authorisation in this file first.
++3. It stays at its current path as a consulted reference, rather than moving to `~/pro-archive/`
++   (see "Local directory structure", 2026-04-04).
++4. The temporal coordinator's contract is owned by the `temporal-coordinator` repository.
++   `components/temporal-coordinator/SPEC.md` and `SCHEDULING.md` are the last blueprint copies.
++5. The open questions below and the ROADMAP.md checkboxes are frozen as historical. Live questions
++   belong in the repositories that now own each concept.
++
++**Would supersede, once decided:** for this repository only, the description of `agentic-architecture`
++as "the bleeding-edge design source for the current named version" in "Five layers clarify
++blueprint, release, installation, runtime, and live state" (2026-04-23).
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.

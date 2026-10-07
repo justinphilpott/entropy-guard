@@ -4,17 +4,34 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-[empty]
+Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
+`explorations/2026-10-04-skills-review-synthesis.md`, on branch `revise-skills-intent-and-ownership`:
+
+- [x] Item 6, before: answer key in `explorations/2026-10-04-skills-revision-eval.md`, committed before any run
+- [x] Item 6: before and after runs done and scored; results in `explorations/2026-10-04-skills-revision-eval.md`
+- [x] Astra's constructive critique received and verified: `explorations/2026-10-04-skills-revision-critique-astra.md`
+- [x] Critique group 1 (findings 1–4, intent boundary), accepted by Justin
+- [x] Critique group 2 (findings 5–8, a session's change, routing, adoption evidence, lifetimes), accepted by Justin
+- [x] Critique group 3 (findings 9 and 12, repeated analysis and leftovers), accepted by Justin
+- [x] Critique group 4 (findings 10–11): scoring clarified, evidence kept in `explorations/2026-10-04-skills-revision-eval/` (Justin, 2026-10-05: "yes, use the new folder")
+- [x] Astra's independent size review, verified: `explorations/2026-10-05-skills-size-review-astra.md`. Verdict: too large; target about 5,200 words (from 9,729), and this repo's guard about 700 words plus a 200-word shared intent rule
+- [ ] Justin to decide: carry out the size cut in Astra's order (intent rule out to its own file and local guard first; then generator; integrator; front-door profile; intent pass last), checked against a frozen copy of the current skills
+- [ ] Justin to decide: where the Astra review-mode instruction and the stall-retry runner live (FRICTION.md, 2026-10-05)
+- [ ] Add the seven "Next checks" in the eval file before the next revision is judged
+- [ ] After PR #13 merges: confirm issue #12 closed
+- [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
+- [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed
+- [x] Item 3: lifetimes for guards, packets and guard runs
+- [x] Item 4: integrator counts a guard adopted only once exercised
+- [x] Item 5: theory record settled; small stale items cleared
 
 ## Next Up
 
-- [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
-- [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+- [ ] Assess ORC and the lab Scope together with the revised skills, read-only; bring the results and any proposed changes to Justin before anything in ORC changes
+- [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
+- [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction
 
 ## Backlog
 
-- [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
-- [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
-- [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
-- [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
+- [ ] Consider additional specialized tracks once ORC and the docs-first batch show where the front door's profile is too thin (code-first, config/infrastructure, or other recurring repo shapes)
+- [ ] Consider a blind-newcomer probe for the current-state file: a fresh agent answers fixed questions with and without it. Only if the file's value comes into question (synthesis, 2026-10-04)

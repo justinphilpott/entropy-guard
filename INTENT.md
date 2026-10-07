@@ -1,8 +1,8 @@
 # Intent Statement
 
-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
+> This document is the north star for the entropy-guard project and the meta-skill we are building. Its steward is Justin Philpott. Anyone, human or agent, can propose a change by recording it in `DECISIONS.md` as proposed; it lands here once Justin has decided it. When you update it, note the date, what prompted the revision, and the decision it follows.
 
-*Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+*Last revised: 2026-10-04 — following Justin's approval of the skills revision ("go ahead with the revision", 4 October; `explorations/2026-10-04-skills-review-synthesis.md`): intent is authorised by the steward rather than inferred, one skill builds guards, guards hold only durable checking policy, and ORC becomes the next validation target. Previous revision: 2026-04-07, docs-first planning specialization.*
 
 ---
 
@@ -48,7 +48,7 @@ A guard that only checks internal consistency within one domain will miss the mo
 
 An entropy guard — whether a skill, a ritual, a checklist, or a suite of processes — should work to preserve:
 
-1. **Continuity of intent**: the system continues to serve what it set out to serve, even as it evolves
+1. **Continuity of intent**: the system continues to serve what its steward authorised, even as it evolves. A change of intent is the steward's decision, recorded with a date. A guard never resolves a mismatch between work and intent by editing the intent to fit the work.
 2. **Internal consistency**: the parts of the system agree with each other — docs match code, names match reality, decisions are recorded and respected
 3. **Accumulated knowledge**: learnings, decisions, and hard-won insights survive across iterations and contributors
 4. **Legibility**: a new contributor (human or AI) can orient quickly — the system can explain itself
@@ -62,15 +62,21 @@ An entropy guard — whether a skill, a ritual, a checklist, or a suite of proce
 - **A blocker**: a guard that takes too long won't be run. Low burden is a design requirement, not a nice-to-have
 - **Opinionated about content**: a guard checks *coherence and completeness*, not whether the underlying decisions were wise
 - **Static**: guards themselves need to evolve as systems evolve. A guard that no longer fits the system is itself a source of entropy
+- **A copy of current state, or of rules owned elsewhere**: a guard holds durable checking policy and points at the state file, the decision log and the rules' owners. Copied state and copied rules go stale as soon as their owners change them.
 - **Always a skill file**: not all guards are checklists. Depending on the entropy vector, the right guard might be a linting rule, a CI check, an architectural constraint, or a type system invariant. Skill files are appropriate for judgment-requiring checks; mechanical checks should be embedded more deeply (see enforcement depth below)
 
 ---
 
 ## What the guard generator should achieve
 
-The front-door assessment skill (`skills/entropy-assessment/SKILL.md`) triages a system, identifies its dominant shape, and routes it into the most appropriate deeper workflow. The first specialized export in this direction is `skills/docs-first-planning-assessment/SKILL.md`, which focuses on markdown-first planning/design repos where the main artifact is evolving documentation and the main risks are repeated session drift, parallel truth, and workflow/practice misalignment.
+The skills share one flow:
 
-For that class of system, the useful output is not only a delta guard. It is a small lifecycle: an entropy profile, a canonical truth map, a compact current-state packet for fresh sessions, and a session-end guard that protects the delta before it compounds.
+1. **The front door** (`skills/entropy-assessment/SKILL.md`) runs the intent pass (`skills/entropy-assessment/intent-pass.md`), which establishes what the steward has authorised, separately from what the documents and code currently say. It then classifies the system's shape and routes it.
+2. **Analysis**: `skills/docs-first-planning-assessment/SKILL.md` for markdown-first planning and design repos; the front door's own profile for mixed, code-first and workflow-heavy systems, including systems spread over more than one repository.
+3. **Guard building**: `skills/session-coherence-skill-generator/SKILL.md` is the only skill that writes guards, and it bootstraps young repos.
+4. **Adoption**: `skills/guards-integrator/SKILL.md` places the guard and checks that it is actually adopted.
+
+For docs-first planning repos the useful output is a small lifecycle: an entropy profile, a canonical truth map, an up-to-date current-state file for fresh sessions, and a session-end guard that protects the delta before it compounds.
 
 A good output from the generator:
 
@@ -83,15 +89,15 @@ The assessment workflow is itself subject to this project's entropy guard. It sh
 
 ### The guard lifecycle: four distinct tools
 
-A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
+A complete guard system involves four distinct roles that serve different purposes. In this repo, assessment, generation and integration are explicit skills. The runner and the evaluator are not separate tools, for the reasons given under each.
 
-1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, that role is carried by the assessment workflow rooted at `skills/entropy-assessment/` and, for the strongest validated case, `skills/docs-first-planning-assessment/`.
+1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo, the assessment skills decide what is needed (`skills/entropy-assessment/` and `skills/docs-first-planning-assessment/`), and `skills/session-coherence-skill-generator/` builds the guard.
 
 2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
 
-3. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
+3. **Guard runner** (run-time) — executes guards at the correct handoff point (pre-commit, CI, PR review). A guard that exists but isn't run is dead weight. Decided on 2026-10-04 not to build a separate runner: each guard defines what changed in a session and picks its checks for that change, and the system's own loop (a hook, CI, an agent's standing instructions, or a scheduler) runs it. The integrator verifies that this actually happens.
 
-4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
+4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is a fresh assessment run against the system. For the skills themselves, the evaluator is the set of known-answer cases in `explorations/2026-10-04-skills-revision-eval.md`, run before and after each revision.
 
 These four tools have different cadences: the generator and integrator run when guards are introduced or redesigned, the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
 
@@ -126,14 +132,15 @@ This repo is now intentionally narrower than the broader conceptual work it help
 - `entropy-guard` stays focused on practical entropy protection: assessment, guard generation/refinement, integration, and eventually stronger operational validation.
 - The larger exploration into entropic immunity, layered steering, viability, and broader sociotechnical theory now continues in the sibling `entropy-immune-system` repo.
 
-The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge should be the repo shape where the methodology is already proving useful: docs-first planning systems.
+The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge was the repo shape where the methodology was already proving useful: docs-first planning systems. The next target is ORC, Justin's orchestration system, assessed together with the lab Scope that manages it (Justin, 2026-10-04: "Once we've upgraded entropy guard if that's clearly useful, we'll be ready to unleash it on the ORC"). It is a mixed code, docs and workflow system spread over more than one repository, which tests the routes beyond docs-first.
 
+- assess ORC and the lab together, read-only first, then with Justin's approval for any change
 - select a larger batch of docs-first planning / architecture / blueprint repos
-- run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
-- generate or refine guards where appropriate and use the current-state packet at session start
+- run `entropy-assessment` as the front door and follow its route
+- generate or refine guards where appropriate and keep each repo's current-state file up to date for session start
 - run those guards locally while making targeted improvements
 - track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
 
 ---
 
-*This document is a living artifact. If you find something missing, imprecise, or worth expanding — add it. Note what prompted the revision.*
+*Propose revisions through the stewardship process at the top of this document. When an approved revision lands, record the decision, its date and the reason.*
