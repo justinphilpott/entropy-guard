@@ -9,11 +9,11 @@ Size cut: done and tested; PR #14 open for Justin to merge.
 Reach claims (approved by Justin 2026-10-07, "Agreed, proceed"), on branch `reach-claims-show-search`, stacked on
 PR #14: a claim about everything a system reaches is checked against the code with a recorded search. Test:
 `explorations/2026-10-07-reach-claims-eval.md`, key written before runs (R1 ×3, R2 and R3 once each).
-State at 22:40 on 7 October: round 7 failed (reach claims found but contradicted by two of three runs' own
-patches; K13 dropped in all three docs-first runs). Justin approved the revision at 22:29: the reach rule moved to
-`mixed-profile.md`, a patch-against-findings check added, and a pass rule comparing sums over three runs of each
-version (`d34c31a`). Round 8 is running: 18 runs, the candidate against PR #14's skills, three of each on R1, R2 and
-R3; then one blind scorer per case. The PR waits for round 8's verdict.
+State at 23:05 on 7 October: round 8 (`d34c31a`: the reach rule moved to `mixed-profile.md`, a patch-against-findings
+check added, the pass rule comparing sums over three runs of each version) has 17 of 18 runs done; R2 and R3 are
+being scored blind, R1 waits for its last run. Overnight: score R1, unblind, apply the pass rule written before the
+runs, write the verdict into `explorations/2026-10-07-reach-claims-eval.md`; if it passes, open the PR stacked on
+PR #14. Skills are not changed overnight.
 
 ## Next Up
 
