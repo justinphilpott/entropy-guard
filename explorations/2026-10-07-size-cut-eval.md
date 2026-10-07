@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: answer key written; runs pending
+status: first round failed on two intent items; fixes re-tested (see Round 2)
 ---
 
 # Test of the size cut against the skills it replaced
@@ -71,5 +71,50 @@ Scoring rules, fixed now: met = 1, partly met = 0.5, not met = 0. R1 to R3 and R
 copied as X and Y in random order, and the scorer is told not to infer the version.
 
 ## Results
+
+### Round 1: the cut at `aee2208` against the baseline at `daee846`, 7 October
+
+Sixteen runs, each by a fresh Claude Opus 5.5 agent:
+- six assessments, R1 to R3 for each version;
+- ten guard runs, R4a, R4b, R4b-nostart, R4c and R4d for each version.
+
+All were scored blind: X and Y were assigned at random, and the mapping was revealed only after scoring.
+
+**Instruction words actually read,** from the runs' read logs:
+- the baseline: 9,729 to 10,269 words, five or six files;
+- the cut: 5,103 words, seven files, about half.
+
+| Case | Baseline | Cut | Notes |
+|---|---|---|---|
+| R1, ORC and the lab (K1–K9, K21, K23) | 9.5 of 11 | 9.5 of 11 | The cut was better on K2 and K9, but **failed K21**: its patches dropped "workflow execution" and picked the `STATE.md` cap while saying they settled nothing. |
+| R2, entropy-guard at `447da9a` (K10–K15) | 5 of 6 | 4 of 6 | The cut was better on K10 (0.5 against 0). It **only partly met K14**: it did not name the local guard's own intent-rewrite line. It **missed K15** ("update both"). |
+| R3, agentic-architecture (K16, K17, K24) | 2.5 of 3 | 2.5 of 3 | The cut had no wrong findings established, against four minor ones, and a lighter guard: 778 words against 1,220. |
+| R4, five guard runs (K18–K20, K22, K25–K27) | 11 of 11 | 10.5 of 11 | The cut lost half on R4a K18, for a naming nitpick filed as a session finding. Both versions caught the staged-only rename, found the uncommitted rename without a start commit, and refused "code and test agree". |
+| Generated guard size | 1,995 words | 874 words | The cut's ORC guard named fewer intent documents to protect: it left out the lab's north star. |
+| Questions (failing) | R1 4 (0), R2 3 (0), R3 3 (1) | R1 4 (0), R2 3 (0), R3 3 (1) | No difference. |
+
+**Verdict under the rule fixed before the runs: the cut fails.** It lost two intent items, K14 on R2 and K21 on R1, both
+of which the baseline met. It also lost K15. On every coverage item (K6, K19, K26, K27) it held.
+
+**Two corrections to this key, found by the scorers:**
+- **R4c's key says "even though the test passes".** It would not pass. The edited allowlist is out of the sorted order
+  that `toEqual` compares, and `src/core/analysis-tools.ts` rises above its agent-tie allowance. K25 is unaffected.
+  The runs that predicted these failures were right.
+- **The 5 October correction to K16 missed a dating clue.** `git archive` stamps every file with its commit's time, so
+  the snapshot's file dates (1 August) do date the reference-only commit.
+
+### What was changed after round 1
+
+Three targeted fixes (`fe67639`):
+- **K14, K15:** the intent pass reads every existing guard's repair instructions against the intent-change rule, and
+  records "edit intent to match" or "update both" as a finding.
+- **K21:** every proposed patch names the open questions it touches and leaves their text alone.
+- **Stray load:** the front door no longer sends docs-first runs to `mixed-profile.md`.
+
+Also from this round: the generator asks for every document that holds authorised intent, not only the README.
+
+One run per case cannot separate a real loss from run-to-run variation. So round 2 runs each failed case twice.
+
+### Round 2
 
 *Pending.*

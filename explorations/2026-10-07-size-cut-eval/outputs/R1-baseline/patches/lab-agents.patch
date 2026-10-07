@@ -1,0 +1,10 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -16,6 +16,7 @@
+ | Something true of ORC | `/home/justin-philpott/pro/orchestrator` |
+ | Something true of the generic Scope model | `/home/justin-philpott/pro/scope` |
+ | Something true of their relationship | `memory/` here |
++| A decision Justin takes about this Scope's work | `decisions/` here, one dated file each, before `STATE.md` is next overwritten |
+ | A resource joined or left this Scope | `scope.yaml`, then one line in `SCOPE.md` |
+ 
+ Do not duplicate repository facts here. Agent definitions and private context
