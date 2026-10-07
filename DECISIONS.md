@@ -4,6 +4,20 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Skills are sized from what they must hold, and load branch material only on its branch
+
+**Decided by**: Justin, 2026-10-07 ("lets go"), after Astra's independent size review (`explorations/2026-10-05-skills-size-review-astra.md`) found the October revision had grown the instruction library from 6,281 to 9,729 words, with every route loading instructions for routes it was not taking.
+**Decision**: Cut to derived budgets, in Astra's order:
+- the intent-change rule moves to its own file (`intent-change-rule.md`), so a guard can load the rule alone;
+- the mixed-system profile (`mixed-profile.md`) and young-repo bootstrap (`bootstrap.md`) load only on their routes;
+- the generator defines the guard contract once, as one annotated template, with a derived guard budget of about 450 + 36 words per justified check, plus source pointers and commands; standalone runs get missing analysis from `entropy-assessment` in assessment-only mode rather than their own discovery;
+- the integrator keeps one worked example; docs-first folds its risks and checks into one matrix; this repo's guard drops its rationale paragraphs.
+
+Kept intact: the intent distinctions, the staged/unstaged and untouched-consumer traps, adoption evidence, and the one-findings-list rules.
+**Impact**: The library falls from 9,729 to 5,448 words (target about 5,200); a docs-first route loads about 4,450, a mixed route about 3,950; this repo's guard falls from 1,644 to 604 words. The cut is checked against the skills at `daee846` on the existing cases and the critique's next checks (`explorations/2026-10-07-size-cut-eval.md`).
+
+---
+
 ### An intent change is a proposal, not an edit; the intent pass runs at the front door
 
 **Decided by**: Justin, 2026-10-04 ("go ahead with the revision"), approving items 1 to 6 of `explorations/2026-10-04-skills-review-synthesis.md`.

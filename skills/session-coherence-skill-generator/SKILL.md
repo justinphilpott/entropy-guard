@@ -2,286 +2,50 @@
 name: session-coherence-skill-generator
 description: The guard builder for entropy-guard. Generate or update a repository's session-end coherence guard from an assessment's findings, or bootstrap the smallest context-preservation structure for a young repo that is starting to need handoff memory.
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
 ---
 
 # Skill: Session Coherence Skill Generator
 
-This is the only skill in entropy-guard that writes guards. It builds or updates a repo-specific guard that an agent
-or person runs at the end of a work session. The guard leaves the repo coherent, honest about its state, and easy to
-pick up next time.
+The only skill in entropy-guard that writes guards. It builds or updates the guard an agent or person runs at the end
+of a work session, so the repo is left coherent, honest about its state, and easy to pick up.
 
-Its inputs usually come from an assessment:
+- **Inputs** come from an assessment: `skills/entropy-assessment/SKILL.md` or
+  `skills/docs-first-planning-assessment/SKILL.md`. If there was none, run `entropy-assessment` in assessment-only
+  mode first rather than discovering the repo again here.
+- **A young repo** with no stable memory yet: follow [`bootstrap.md`](bootstrap.md) instead, and build no guard.
+- **Afterwards**, hand the guard to `skills/guards-integrator/SKILL.md`, which places it and checks it is adopted.
 
-- from `skills/entropy-assessment/SKILL.md`: the intent section, the profile of a mixed, code-first or
-  workflow-heavy system, and the ranked risks;
-- from `skills/docs-first-planning-assessment/SKILL.md`: the intent section, the canonical truth map, the loop map,
-  and the docs-first checks.
+## Modes
 
-When it is run without an assessment, it does its own discovery (below), and runs the intent pass in
-[`../entropy-assessment/intent-pass.md`](../entropy-assessment/intent-pass.md) first.
+Use the mode asked for; when the runtime mode and the wording differ, the stricter wins.
 
-For young repositories, it runs in bootstrap mode instead: it finds the smallest missing memory surfaces, and does
-not build a full guard until there is a real repeated loop to guard.
+- **Plan or suggest-only:** draft the guard and report; edit nothing.
+- **Build:** write or update the guard and any directly implied doc updates.
+- **Discuss-first:** propose the guard's shape before writing. The default for cross-repo or policy changes.
+- **Audit-only:** report existing structures and risks; build nothing unless asked.
 
-After building a guard, hand it to `skills/guards-integrator/SKILL.md`, which places it and checks that it is
-actually adopted.
+## Before writing: are the inputs complete?
 
----
+The guard needs each of these. Take them from the assessment; fill any gap with an assessment-only run, never by
+guessing.
 
-## When to Use
+- the steward, the intent documents and the decision surface (`intent-pass.md`), and any open intent questions;
+- the current-state file, and who refreshes it;
+- rules the repo is bound by but does not own, such as a user-wide instructions file, a security or spending policy,
+  or merge rules;
+- the verification commands, and which of them already run by themselves;
+- each code area and the docs and tests that describe it;
+- live operational state or spend that a session can change;
+- the assessment's findings, by id.
 
-- An assessment has handed over its findings and the repo needs a new or amended guard
-- A repo has accumulated TODOs, handoff docs, ADRs, runbooks, skills, workflow docs, architecture docs or local state
-  conventions, and those structures need to stay consistent
-- A young repo has started accumulating work, the next handoff is approaching, and important context would otherwise
-  live only in chat or memory
-- An agent is being onboarded to a repo and needs to know which files preserve intent across sessions
+Never read secret values; read `.env.example`, not `.env`.
 
-## When NOT to Use
+## The guard contract
 
-- For a quick typo or formatting-only change
-- When the user only wants a one-off cleanup and not a reusable guard
-- When the repo is still fully understandable from its files and there is no realistic handoff or rediscovery cost
-  yet. If work is starting to outgrow memory, use bootstrap mode rather than building a full guard.
-
----
-
-## Invocation Modes
-
-Respect the user's requested mode. If both the runtime mode and the user's wording are available, the more
-restrictive instruction wins.
-
-- **Plan mode / suggest-only**: inspect and draft the guard or patch, but do not edit files. Return recommended
-  changes and open questions.
-- **Build mode / just do it**: inspect, build or update the guard, and make any directly implied doc updates.
-- **Bootstrap mode**: inspect a young repo, classify missing memory surfaces, and recommend or create the smallest
-  viable handoff structure. Do not build a full guard by default.
-- **Discuss-first**: inspect and propose the guard's shape before writing.
-- **Audit-only**: report existing structures, coherence risks, and whether a guard already exists; build nothing
-  unless asked.
-
-If the invocation is ambiguous, default to discuss-first for cross-repo policy or workflow changes, bootstrap mode
-for young repos approaching handoff, and build mode for an explicitly requested guard.
-
----
-
-## Bootstrap Mode for Young Repos
-
-Use bootstrap mode when a repo has started to accumulate real work but does not yet have a stable
-context-preservation system.
-
-Signals that bootstrap mode applies:
-
-- The repo has one or a few commits, and its purpose or current direction still lives mostly in conversation, memory,
-  or uncommitted notes.
-- A fresh session would need to rediscover the current task, next action, or why early choices were made.
-- A human or AI handoff is likely soon, but there is no obvious place to record live state.
-
-Bootstrap principles:
-
-- Add the next missing memory surface only when rediscovery cost is present or imminent.
-- Prefer one small file or section over several new process docs.
-- Classify missing structures as **Needed now**, **Soon**, or **Premature**.
-- Do not build `skills/session-coherence-guard/SKILL.md` until there is a real session, commit, PR, or release loop
-  worth guarding.
-- If the user asks for edits, create only the **Needed now** files or sections unless they explicitly approve more.
-
-Default maturity ladder:
-
-- **Purpose memory**: `README.md`, `INTENT.md`, or equivalent, when the repo cannot explain what it is for and who
-  decides that.
-- **Active-state memory**: a lightweight `TODO.md`, `STATE.md`, or equivalent, when current work and next steps would
-  be painful to rediscover.
-- **Decision memory**: `DECISIONS.md`, ADRs, or a short decision section, once choices exist that would be costly to
-  relitigate.
-- **Learning memory**: `LEARNINGS.md` or equivalent, once non-obvious gotchas or validated patterns have appeared.
-- **Operator memory**: `AGENTS.md`, `CONTRIBUTING.md`, or workflow notes, when humans or agents will repeatedly enter
-  the repo.
-- **Guard memory**: a session-coherence guard, only once the repo has a repeated handoff loop or recurring drift.
-
-Bootstrap output:
-
-- Existing context surfaces discovered.
-- Rediscovery risks for the next fresh session.
-- Missing memory surfaces, grouped as **Needed now**, **Soon**, and **Premature**.
-- The minimal patch plan, or the files actually created or updated in build mode.
-- A guard-readiness verdict, `not yet`, `soon` or `ready now`, with the trigger that would justify building a guard.
-
----
-
-## Discovery Pass
-
-Skip what the assessment already supplied. Otherwise, search first, then read the most relevant files.
-
-For young repos, absence is also evidence: note which memory surfaces do not exist yet, but do not treat every
-missing surface as a gap that must be filled.
-
-Look for:
-
-- **Intent and its steward**: where authorised intent lives, and who can change it.
-- **Agent and operator instructions**: `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`,
-  `.github/copilot-instructions.md`, or equivalent.
-- **Current state and handoffs**: `TODO.md`, `STATE.md`, `SESSION.md`, `NEXT.md`, roadmap or milestone docs, issue
-  trackers.
-- **Durable reasoning**: `DECISIONS.md`, `ADR/`, `docs/decisions/`, `LEARNINGS.md`, postmortems, friction logs.
-- **Rules owned elsewhere**: rules the repo is bound by but does not own, such as an organisation-wide or user-wide
-  instruction file, a security policy, a spending policy or merge rules. The guard links to these; it never restates
-  them.
-- **Architecture and workflow docs**: `ARCHITECTURE.md`, `docs/`, runbooks, deploy docs.
-- **Existing skills and automation**: `skills/**/SKILL.md`, `scripts/`, `Makefile`, `justfile`, package scripts.
-- **Verification**: tests, CI workflows, lint and type-check commands, smoke tests. Note what actually runs by itself:
-  read the CI workflow steps, and check whether committed hooks are enabled (`git config core.hooksPath`).
-- **Live operational state**: running services, deployed builds, credentials, scheduled jobs, anything that costs
-  money.
-- **Local ignored state**: `.gitignore`, `.env.example`, local config, cache and output folders.
-
-Do not read secrets. To see the shape of the environment, read `.env.example` rather than `.env`.
-
-Treat vendor-specific agent folders (`.claude/`, `.codex/`, `.cursor/`, `.continue/`, `.windsurf/`) as local tooling
-unless the repo explicitly commits them.
-
----
-
-## Analysis Pass
-
-Build a concise model of the repo's coherence system:
-
-1. **Intent** - Where does authorised intent live, who is its steward, and where are decisions recorded?
-2. **Session loop** - Where does work start, where is current state recorded, and where is richer handoff recorded?
-3. **Decision and learning loops** - Where are choices and validated discoveries captured, and in what format?
-4. **Verification loop** - Which commands prove the repo is safe to hand off, and which of them already run by
-   themselves?
-5. **Operational state** - Are there live services, deployed builds, credentials or spend that must be checked
-   before handoff?
-6. **Drift risks** - Which files are most likely to disagree after normal work? Map each changed code area to the
-   docs and tests that describe it.
-7. **Next-step clarity** - Can a fresh session find the first concrete action without rediscovering context?
-8. **Bootstrap readiness** - For a young repo: which memory surfaces are needed now, soon, or prematurely?
-
-Prefer the repo's own vocabulary and file layout.
-
----
-
-## What a Guard Holds, and What It Must Not
-
-A guard is a durable checking policy. It lasts as long as the repo's way of working, so it holds only what changes
-that slowly.
-
-**A guard holds:**
-
-- the checks, as judgment questions and as exact commands that work in this repo;
-- pointers to where authorised intent, current state, decisions and rules owned elsewhere live;
-- the definition of what changed in a session (below);
-- a copy of the intent-change rule from `intent-pass.md`, filled in with this repo's steward, intent documents and
-  decision surface, and naming the rule's version so a stale copy can be found;
-- the shape of the report each run produces.
-
-**A guard must not hold:**
-
-- current direction, active work, the current tranche or stage, next tasks, the status of work items, or deployed
-  build values. These belong in the current-state file, which the guard tells the reader to open. Stable links to
-  canonical sources, such as an issue that owns a policy or a decision record, are allowed; copying their changing
-  contents is not.
-- a restatement of a rule owned elsewhere, such as spending, security review or merge rules. Link to the owner
-  instead, because a copied rule goes stale when the owner changes it.
-- anything a fresh agent could find from the code in a minute.
-
-## What Changed in a Session
-
-A guard checks the session's change, so it must define that change so that nothing in it is missed:
-
-- **Commits:** from the point where the session started, or from the upstream branch if that is not known, to
-  `HEAD`.
-- **Uncommitted work:** staged, unstaged and untracked files. A guard that compares only commits, for example
-  `git diff origin/main..HEAD`, misses the work about to be committed.
-- **Changes outside the files:** a deployed build, a restarted service, a granted permission or an expired
-  credential, where the guard's checks depend on them. Read these from the live source, with the time read.
-
-Typical commands, adapted to the repo:
-
-```bash
-git log --oneline "$START"..HEAD            # commits this session
-git diff "$START" HEAD                      # what those commits changed
-git status --short                          # staged, unstaged and untracked, at a glance
-git diff --cached                           # staged changes: what the next commit will contain
-git diff                                    # unstaged changes
-git ls-files --others --exclude-standard    # untracked files
-```
-
-Check staged and unstaged changes separately. `git diff HEAD` alone nets them out: a change staged and then undone in
-the working tree shows nothing, yet the next commit contains it. Read the contents of untracked files that matter,
-within whatever file-access limits apply.
-
-If the starting point cannot be determined, the guard says so in its report: "coverage incomplete: compared against
-`<what was used>`".
-
-A finding belongs to this session if the session changed the relationship it is about, not only if the session
-edited the file where the symptom shows. Renaming a setting in the code makes an untouched README wrong. So check the
-documents and consumers that depend on what changed, even when they were not edited.
-
----
-
-## Generated Guard Requirements
-
-Create or update the guard under a neutral path. Default target:
-
-```text
-skills/session-coherence-guard/SKILL.md
-```
-
-If the repo already has an equivalent guard, update it in place rather than creating a duplicate. If the repo has a
-clear naming convention, follow it. If bootstrap mode's verdict is `not yet` or `soon`, do not create this file.
-
-The guard must include:
-
-- YAML front matter with `name`, `description`, and generation metadata.
-- "When to use" and "when not to use" sections.
-- The pointers, the definition of what changed, and the intent-change rule, as described above.
-- Judgment checks tailored to the repo's handoff structures, including the checks supplied by an assessment.
-- Repair instructions checked against authorised intent. A test or the code shows what is checked or built; it does
-  not authorise weakening a documented constraint. Where a description, the code and a check disagree, the guard
-  says to establish which is wrong before making them agree. It never says "the test is the record" or "the code is
-  the record".
-- Mechanical checks with exact commands that work in this repo. Prefer the repo's existing tools, and leave anything
-  CI already runs to CI.
-- Drift checks that map code areas to the docs and tests that describe them.
-- Operational state checks, if the repo has live infrastructure or spend.
-- The report shape (see the template).
-- Safety rules: do not commit unless asked, do not read or write secrets, do not modify unrelated changes, and do
-  not add vendor-specific workflow logic.
-
-Keep the guard specific enough to run without rediscovering the repo, and short enough to be read in full each time.
-Avoid vague checks such as "update docs" unless paired with concrete file names.
-
----
-
-## Build-Mode Workflow
-
-1. Record the work in the repo's current-state file, if one exists.
-2. Take the assessment's inputs, or discover the context-preservation structures yourself.
-3. Decide whether bootstrap mode applies, whether to create a new guard, or whether to update an existing one.
-4. If bootstrap mode applies, create only the **Needed now** memory surfaces and stop, unless the user explicitly
-   asks for a guard.
-5. Otherwise, write the guard against the repo's actual files and commands.
-6. Review the guard and any proposed patches against the open questions from the intent pass. A patch must not
-   quietly settle a question that is still open, and no repair instruction may make the code or a test the
-   authority over a documented constraint.
-7. Update the repo's operator docs to mention the guard, if that is part of its documented workflow.
-8. Run cheap validation, at minimum `git diff --check`, plus any docs or build checks the repo implies.
-9. Hand the guard to `skills/guards-integrator/SKILL.md`.
-10. Summarise what was built, what structures were found, and the open questions.
-
-## Plan-Mode Workflow
-
-Follow the build-mode steps, but edit nothing. Report the coherence system found (for a young repo, the bootstrap
-classification first), a draft of the guard with its path, and the exact files build mode would create or change.
-
----
-
-## Generated Guard Template
-
-Adapt this skeleton to the target repo. Replace every placeholder with concrete file names and commands.
+This template is the one definition of what a guard holds. A guard holds durable checking policy only: it points at
+current state, decisions and other owners' rules, and never copies them. Write it at the default path
+`skills/session-coherence-guard/SKILL.md`, or update the repo's existing guard in place.
 
 ````markdown
 ---
@@ -289,7 +53,7 @@ name: session-coherence-guard
 description: Check this repository's coherence at the end of a work session, before handoff.
 metadata:
   generated: "<date>"
-  source: "entropy-guard session-coherence-skill-generator v0.3.0"
+  source: "entropy-guard session-coherence-skill-generator v0.4.0"
 ---
 
 # Skill: <Repo> Session Coherence Guard
@@ -297,83 +61,81 @@ metadata:
 Run at the end of a work session, before commit or handoff. Check only this session's change.
 
 ## Where things live
-
-Read these; do not copy them into this guard.
-
+<!-- Pointers only. Never copy current direction, work status, next tasks or build ids into the guard; they belong in
+the state file. Stable links to an issue or record that owns a policy are fine. -->
 - Authorised intent: <files>. Steward: <name or role>.
 - Current state and next steps: <state file>. Read it first.
 - Decisions: <decision surface>.
-- Rules owned elsewhere: <links, e.g. spending, security review, merge rules>.
+- Rules owned elsewhere: <links>.
 
 ## What changed this session
-
 ```bash
-<repo-specific commands covering commits since the start point, plus staged, unstaged and untracked work>
+git log --oneline "$START"..HEAD          # commits
+git diff "$START" HEAD                    # what they changed
+git status --short
+git diff --cached                         # staged: what the next commit holds
+git diff                                  # unstaged
+git ls-files --others --exclude-standard  # untracked: read those that matter
 ```
-
+<!-- Check staged and unstaged separately: `git diff HEAD` nets them out, so a change staged and then undone in the
+working tree shows nothing yet still lands. Add live changes the checks depend on (a deployed build, a grant), read
+with the time. -->
 If the start point is unknown, compare against <upstream> and report "coverage incomplete".
 
-## Modes
-
-- Plan/suggest-only: inspect and report; do not edit.
-- Build/just-do-it: inspect and make coherence fixes.
-- Discuss-first: propose changes before editing.
-- Audit-only: report risks only.
-
 ## Intent
+Does this change fit the authorised intent in <files>? If not:
+<the intent-change rule from entropy-guard's `skills/entropy-assessment/intent-change-rule.md`, copied with
+<steward>, <intent documents> and <decision surface> filled in>
+(Intent-change rule v2, from entropy-guard.)
 
-- Does this session's change fit the authorised intent in <files>?
-- When the work and the authorised intent disagree:
-  <the intent-change rule from entropy-guard's `skills/entropy-assessment/intent-pass.md`, copied with <steward>,
-  <intent documents> and <decision surface> filled in>
-  (Intent-change rule v2, from entropy-guard `intent-pass.md`.)
-
-## Judgment checks
-
-- <checks from the assessment, written against this repo's files>
-- When a change touches something two documents both describe, decide which owns it and reduce the other to a link.
-  Keep summaries and independent tests of the same contract; they are not redundant copies.
-- If <code area> changed: does <doc> still describe it? <one line per mapping>
-- For each state claim this session changed in <state file>: do its other mentions in the file still agree?
-
-## Mechanical checks
-
+## Checks
+<!-- One line per justified check, each with a trigger and a named thing to check. Never write "the test is the
+record" or "the code is the record": where a description, the code and a check disagree, establish which is wrong
+first. -->
+- If <code area> changed: does <doc> still describe it?
+- When two documents describe one thing, decide which owns it and reduce the other to a link. Keep summaries and
+  independent tests of the same contract.
+- For each state claim changed in <state file>: do its other mentions still agree?
 ```bash
-<commands that work here and that CI does not already run>
+<repo commands that CI does not already run>
 ```
 
 ## Report
-
-- Baseline compared against, and whether coverage was complete
-- What was checked, and what was not
-- Findings caused by this session, judged by the relationship changed, not the file edited; problems that were
-  already there, listed separately
-- Proposals for <steward>
-- Files updated, such as the state file and decision log
-- First next action for the next session, written into <state file>, not here
+- Baseline, and whether coverage was complete; what was checked and what was not.
+- Findings caused by this session, judged by the relationship changed, not the file edited: renaming a setting in
+  the code makes an untouched README wrong. Problems that were already there, listed separately.
+- Proposals for <steward>; files updated; the next action, written into <state file>.
 ````
 
----
+## Size
 
-## Safety Rules
+A guard runs every session, so its size is derived, not picked: about **450 + 36 × J + S + C** words, where J is the
+number of justified checks, S the words of source pointers, and C the words of repo-specific commands. The 450 covers
+the common contract above; 36 words is a planning average for one complete instruction, taken from a small sample
+in Astra's size review (`explorations/2026-10-05-skills-size-review-astra.md`), not a hard limit. Report the guard's size and its J. Over budget means removing
+duplication or narrowing scope, never silent truncation.
 
-- Never commit or push unless the user explicitly asks.
-- Never read or print secret values. Use example env files and key names instead.
-- Do not overwrite unrelated user changes.
-- Do not create committed workflow logic under vendor-specific agent directories.
-- Preserve the repo's existing conventions unless they conflict with an explicit user instruction or a documented
-  policy.
+## Steps
 
----
+1. Record the work in the repo's current-state file.
+2. Check the inputs are complete.
+3. Write or update the guard to the contract.
+4. Review before handing over:
+   - every proposed patch against the open questions, so none quietly settles one;
+   - every repair instruction against authorised intent;
+   - the size against the budget.
+5. Mention the guard in the operator docs, if the repo's workflow documents its guards.
+6. Run `git diff --check`, plus any checks the repo implies.
+7. Hand to `guards-integrator`.
+
+In plan mode, follow the same steps but edit nothing, and list the files build mode would change.
+
+## Safety
+
+Never commit or push unless asked. Never read or print secrets. Leave unrelated changes alone. Commit no workflow
+logic into vendor-specific agent folders such as `.claude/` or `.cursor/`.
 
 ## Output
 
-When this skill finishes, report:
-
-- The context-preservation structures found or supplied.
-- For a young repo, the bootstrap classification and guard-readiness verdict.
-- Whether a guard was created or updated, and its path.
-- Any doc references added.
-- Validation commands run, and their results.
-- Open questions the guard intentionally leaves visible.
-- The handoff to `guards-integrator`.
+What was supplied or found; the guard's path, size and J, or the bootstrap verdict; doc references added; validation
+run; open questions the guard leaves visible; the handoff to `guards-integrator`.

@@ -5,6 +5,19 @@ section per day.
 
 ---
 
+## 2026-10-07 — the stall's real cause, and the reply cap in codex
+
+- **Correction to the stall entry of 2026-10-05.** The two Astra stalls were not a missing first-output timeout. The
+  orchestration lab's `FRICTION.md` (4 October, line 79) found that `opencode run` hangs at `init` whenever another
+  `opencode run` is going at the same time. The likely cause is contention on opencode's one shared database
+  (`~/.local/share/opencode/opencode.db`, 19 GB), which the lab has not yet proven. One of the lab's three hung runs
+  that day was colliding with this repo's run, 17 minutes in. So this session's reviews also cost the lab time.
+  Justin's `astra-review` skill (local-config, 2026-10-06) now runs Astra through codex instead. The retrying runner
+  written on 5 October treated a symptom; it is not needed.
+- **codex loads the same global rules.** `~/.codex/AGENTS.md` links to the same `AGENTS.md` that opencode loads, so
+  the 150-200 word reply cap that refused Astra's reports three times will likely apply to `astra-review`'s codex runs
+  too. Not yet tested. The skill does not mention it. A **missing system** in that skill, which is Justin's to change.
+
 ## 2026-10-05 — Astra's word cap and stalls, a self-killing command, dating approvals
 
 - **Astra refused to write a full report three times tonight. The cause is opencode, not the briefs.** opencode

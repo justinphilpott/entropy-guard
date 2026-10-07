@@ -4,26 +4,18 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
-`explorations/2026-10-04-skills-review-synthesis.md`, on branch `revise-skills-intent-and-ownership`:
+Size cut approved by Justin on 2026-10-07 ("lets go"), following `explorations/2026-10-05-skills-size-review-astra.md`,
+on branch `cut-skills-to-derived-size`. Baseline for comparison: the skills at `daee846` (PR #13 merged).
 
-- [x] Item 6, before: answer key in `explorations/2026-10-04-skills-revision-eval.md`, committed before any run
-- [x] Item 6: before and after runs done and scored; results in `explorations/2026-10-04-skills-revision-eval.md`
-- [x] Astra's constructive critique received and verified: `explorations/2026-10-04-skills-revision-critique-astra.md`
-- [x] Critique group 1 (findings 1–4, intent boundary), accepted by Justin
-- [x] Critique group 2 (findings 5–8, a session's change, routing, adoption evidence, lifetimes), accepted by Justin
-- [x] Critique group 3 (findings 9 and 12, repeated analysis and leftovers), accepted by Justin
-- [x] Critique group 4 (findings 10–11): scoring clarified, evidence kept in `explorations/2026-10-04-skills-revision-eval/` (Justin, 2026-10-05: "yes, use the new folder")
-- [x] Astra's independent size review, verified: `explorations/2026-10-05-skills-size-review-astra.md`. Verdict: too large; target about 5,200 words (from 9,729), and this repo's guard about 700 words plus a 200-word shared intent rule
-- [ ] Justin to decide: carry out the size cut in Astra's order (intent rule out to its own file and local guard first; then generator; integrator; front-door profile; intent pass last), checked against a frozen copy of the current skills
-- [ ] Justin to decide: where the Astra review-mode instruction and the stall-retry runner live (FRICTION.md, 2026-10-05)
-- [ ] Add the seven "Next checks" in the eval file before the next revision is judged
-- [ ] After PR #13 merges: confirm issue #12 closed
-- [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
-- [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed
-- [x] Item 3: lifetimes for guards, packets and guard runs
-- [x] Item 4: integrator counts a guard adopted only once exercised
-- [x] Item 5: theory record settled; small stale items cleared
+- [x] Step 1: the intent-change rule in its own file; this repo's guard to about 700 words
+- [x] Step 2: the generator to about 900 words, with bootstrap mode in its own file and one guard contract
+- [x] Step 3: the integrator to about 850 words, with one worked example
+- [x] Step 4: the front door to about 550 words, with the mixed profile in its own file; docs-first to about 950
+- [x] Step 5: the intent pass to about 800 words
+- [ ] Step 6: test against the frozen baseline on the existing cases and the seven next checks; Astra review of the PR
+- [x] Small items: stall cause corrected in `FRICTION.md`; codex loads the same global rules, so the reply cap likely applies there too (not yet tested; `astra-review` is Justin's to change)
+
+Then: assess ORC and the lab read-only with the cut skills.
 
 ## Next Up
 
