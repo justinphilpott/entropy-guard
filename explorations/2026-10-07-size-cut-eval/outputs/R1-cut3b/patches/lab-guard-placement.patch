@@ -1,0 +1,115 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 18:24:35.235400858 +0100
++++ b/AGENTS.md	2026-10-07 18:24:44.432538616 +0100
+@@ -37,6 +37,12 @@
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++At the end of every work session, before the last rewrite of `STATE.md`, run
++[`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md). It checks this Scope and ORC
++together.
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff -ruN a/skills/session-coherence-guard/SKILL.md b/skills/session-coherence-guard/SKILL.md
+--- a/skills/session-coherence-guard/SKILL.md	1970-01-01 01:00:00.000000000 +0100
++++ b/skills/session-coherence-guard/SKILL.md	2026-10-07 18:27:26.643393437 +0100
+@@ -0,0 +1,95 @@
++---
++name: session-coherence-guard
++description: Check ORC and the orchestration-lab Scope for coherence at the end of a work session, before handoff.
++metadata:
++  generated: "2026-10-07"
++  source: "entropy-guard session-coherence-skill-generator v0.4.0"
++---
++
++# Skill: ORC and Orchestration Lab Session Coherence Guard
++
++Run at the end of a work session, before commit or handoff. Check only this session's change, in each repository it
++touched: ORC (`~/pro/orchestrator`, or the worktree used) and the lab (`~/scopes/scope-orchestration-lab`).
++
++## Where things live
++- Authorised intent: lab `scope.yaml`, `SCOPE.md`, `STATE.md` "North star" and `decisions/`; lab
++  `memory/authority-rules-step-1.md`; ORC `README.md` ("Direction", "Boundary") and `AGENTS.md`. Steward: Justin.
++- Current state and next steps: lab `STATE.md`. Read it first. ORC has no state file of its own.
++- Decisions: lab `decisions/` for this Scope. For ORC: open, pending Justin's answer on where ORC's decisions live.
++  A choice about one issue goes on that issue, under orchestrator#140.
++- Rules owned elsewhere: `~/pro/local-config/home/AGENTS.md`; ORC `SECURITY-REVIEW.md` and `dangerfile.js`;
++  orchestrator#140's description; `~/pro/agentic/HOW_NOT_TO_PLAN.md`, through lab `AGENTS.md` "Pace".
++
++## What changed this session
++Run in each repository the session touched:
++```bash
++git log --oneline "$START"..HEAD          # commits
++git diff "$START" HEAD                    # what they changed
++git status --short
++git diff --cached                         # staged: what the next commit holds
++git diff                                  # unstaged
++git ls-files --others --exclude-standard  # untracked: read those that matter
++```
++Add live changes, each with the time it was read: `pnpm service:status` (the build ORC runs), `pnpm list:approval-grants`,
++`pnpm status:agent-packages`, and every card this session raised or approved.
++If the start point is unknown, compare against `origin/main` and report "coverage incomplete".
++
++## Intent
++Does this change fit the authorised intent above? If not:
++
++> When this session's work and the authorised intent disagree:
++>
++> 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of
++>    intent nobody has decided.
++> 2. Fix a defect in the work.
++> 3. Go ahead with an adaptation within existing authorisation, and record its reason where that helps. Record an
++>    undecided change of intent as a proposal for Justin in the decision record named under "Where things live",
++>    marked as awaiting him; work that depends on it waits for the decision.
++> 4. Do not edit lab `scope.yaml`, `SCOPE.md` or `STATE.md` "North star", or ORC `README.md` "Direction" and
++>    "Boundary" or `AGENTS.md`, to match the work unless Justin has recorded that decision.
++> 5. Correct a document directly only when a recorded decision of Justin's already settles it, and cite that decision.
++> 6. Before making a description, an implementation and a check agree, establish which of them is wrong. A test or
++>    the code shows what is checked or built; it does not authorise weakening a documented constraint.
++
++(Intent-change rule v2, from entropy-guard.)
++
++## Checks
++- If ORC's `src/`, `config/` or `test/architecture.test.ts` changed what a model, subprocess or network call can reach:
++  do `AGENTS.md` "Boundaries" and `README.md` "Boundary" still describe it, and does the test still assert it?
++- If an `ORCHESTRATOR_*` environment variable, a `package.json` script or a credential read changed: do `README.md`
++  "Run" and "Credentials" name only what the code reads?
++- If a path that grants, approves or activates authority, or reads credentials, was changed or added: is it in
++  `GUARDED` in `dangerfile.js`, and does the pull request carry a `## Security review` section?
++- If this session ran a `pnpm grant:*`, `revoke:*` or `request:approval-grant` command, approved a card, or edited
++  `config/installation.ts`: report each authority change, who approved it, and where it is recorded.
++- If ORC changed what a Scope package consumes (`src/package-api.ts`, a task-type declaration, a card template): name
++  each package affected, and whether it was rebuilt and its build card approved.
++- If this session opened issues or marked work on the map: does `node tools/map.mjs --check` pass, and are this
++  session's marks cleared with `node tools/map.mjs stopped`?
++- For each claim changed in `STATE.md`: do its other mentions agree, does each live fact say where and when it was read,
++  and does the file hold current state only, within its line cap? (Open: lab `AGENTS.md` and `STATE.md` state
++  different caps.)
++- If Justin decided something this session: is it in its decision record, dated and attributed, before `STATE.md`
++  links to it?
++- If something broke in real use: is it in `FRICTION.md`, newest first, marked (workshop) where only the workshop has
++  it? Is an ORC fact in ORC, a relationship fact in lab `memory/`, a new agent or tool idea committed in `AGENT_IDEAS.md`?
++- If this session added a markdown file at ORC's root: is it a description of current behaviour, or a session or
++  branch report that belongs in lab `reports/` or carries a "Historical" banner?
++- When two documents describe one thing, decide which owns it and reduce the other to a link. Keep summaries and
++  independent tests of the same contract.
++```bash
++# ORC: CI runs only Danger, so tests run here until orchestrator#144 lands
++pnpm typecheck && pnpm test
++pnpm test:e2e                                   # when web/ or src/adapters/browser/ changed
++grep -rhoE "\bORCHESTRATOR_[A-Z_]+" src config scripts | sort -u   # compare with README.md
++# lab
++node tools/map.mjs --check
++# both, only if `command -v lychee` finds it: links in the markdown this session changed
++lychee --offline <changed .md files>
++```
++
++## Report
++- Baseline for each repository, and whether coverage was complete; what was checked and what was not.
++- Findings caused by this session, judged by the relationship changed, not the file edited: renaming a setting in
++  the code makes an untouched README wrong. Problems that were already there, listed separately.
++- Proposals for Justin; files updated; the next action, written into lab `STATE.md`.

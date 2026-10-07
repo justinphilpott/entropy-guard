@@ -2,215 +2,107 @@
 name: entropy-assessment
 description: Front door for entropy-guard. Establish what the system's steward has authorised it to be for, classify the system's shape, route it to the right analysis, and hand guard building to the guard generator. Use first when you do not know which entropy workflow fits.
 metadata:
-  version: "0.7.0"
+  version: "0.9.0"
 ---
 
 # Skill: Entropy Assessment
 
-Use this as the first stop when you do not yet know which entropy workflow fits the target system.
+The first stop when you do not know which entropy workflow fits. It establishes intent, chooses the route, and keeps
+one assessment for the whole route. The other skills are:
+- `docs-first-planning-assessment`, for analysis of a docs-first repo;
+- `session-coherence-skill-generator`, the only skill that writes guards;
+- `guards-integrator`, for adoption.
 
-The skills in entropy-guard share one flow, and this skill is its first step:
+## Called for analysis only
 
-1. **This skill:** the intent pass, the system's shape, and the route.
-2. **Analysis:** `skills/docs-first-planning-assessment/SKILL.md` for docs-first planning repos, or this skill's own
-   profile (Step 4) for every other shape.
-3. **Guard building:** `skills/session-coherence-skill-generator/SKILL.md`. It is the only skill that writes guards.
-4. **Adoption:** `skills/guards-integrator/SKILL.md`.
+The generator calls this skill when it lacks analysis, and a person may ask for an assessment only. In both cases:
+- **Mode.** Every route inherits the caller's operating mode (plan, audit-only, discuss-first or build).
+- **Where it stops.** It returns before any generation or integration.
+- **What it returns:**
+  - the findings;
+  - the guard decision from Step 3;
+  - the generator's inputs, as listed in the generator's "Inputs, and the guard decision", with each one that is inapplicable or
+    unresolved marked as such.
+- **Reuse.** It reuses analysis already done and investigates only what is missing.
 
-## When to Run
+## Step 1: Intent
 
-- You are entering a system cold and want to understand where entropy is accumulating
-- You want to know which analysis and guard fit the system
-- You suspect an existing guard is stale or mismatched and want a fresh read before changing it
+Run [`intent-pass.md`](intent-pass.md). It names the steward, separates declared, enacted and authorised intent,
+settles what evidence can settle, and asks at most five questions, each one about a choice that changes what gets
+built. Open questions do not block work that does not depend on them. If there is no usable intent at all, stop guard
+work and recommend an intent interview.
 
-## When NOT to Run
+## Step 2: Lifecycle and shape
 
-- As a substitute for running an existing guard that you already know is the right one
-- For trivial one-off artifacts that will not be iterated
-- When you already know the repo is a docs-first planning system: go straight to
-  `skills/docs-first-planning-assessment/SKILL.md`, which runs the intent pass itself
+Record the **lifecycle status** first, with its evidence: active, reference-only or frozen, or retired. It limits how
+much the route may recommend.
 
----
+Then choose the shape, and note whether the system spans more than one repository, such as a code repository and a
+separate one that manages its work. If it does, assess the repositories as one system.
 
-## Step 1: Intent pass
+| Shape | When | Analysis |
+|---|---|---|
+| **A. Docs-first planning** | Markdown is the primary artifact; decision logs, TODOs and agent instructions carry state; work happens in repeated sessions. | Run `skills/docs-first-planning-assessment/SKILL.md` as a called skill: it returns to Step 3. Its assessment is the assessment; add only intent and lifecycle. |
+| **B. Mixed docs and code** | Meaningful implementation and a meaningful docs or planning surface, with risk between them. | Read [`mixed-profile.md`](mixed-profile.md). |
+| **C. Code-first** | Implementation is the main artifact; risks are architecture, tests or API drift. | As B. |
+| **D. Workflow-heavy** | The main entropy surface is how work is done: handoffs, releases, instructions, checklists. | As B. |
+| **E. Young repo** | Little history; purpose lives mostly in conversation; handoffs are starting. | Read the generator's [`bootstrap.md`](../session-coherence-skill-generator/bootstrap.md). |
 
-Run the intent pass in [`intent-pass.md`](intent-pass.md). It does five things:
+If more than one shape fits, note it and take the riskiest. For B, C or D with a member repository that is docs-first,
+such as one that manages the work rather than holding code, also run docs-first Steps 2, 3, 5 and 7 on it, and fold
+the results into the one assessment.
 
-- names the steward;
-- separates what the documents declare, what recent work enacted, and what the steward authorised;
-- classifies each gap between them;
-- settles what the evidence can settle;
-- asks the steward at most five questions, each one about a choice that changes what gets built.
+## Step 3: The guard decision
 
-If there is no usable intent at all, stop guard work there. Report what can still be inventoried, and recommend an
-intent interview before any guard is built. Open questions do not block work that does not depend on them.
+Decide one of these before any handover, with the reason:
 
-## Step 2: Lifecycle status and system shape
+- **`none`:** no guard change is needed. Use it for a retired or reference-only system, which may finish with a
+  correction or a demotion. Use it also for an active system whose existing guard and arrangements need no change.
+- **`bootstrap`:** a young repo whose memory surfaces come first (`bootstrap.md`). Build a guard only if its verdict
+  is `ready now`.
+- **`create`:** no guard exists, and the loop needs one.
+- **`update`:** an existing guard needs amendment.
 
-First, record the system's lifecycle status, with its evidence: **active**, **reference-only or frozen**, or
-**retired**. It decides how much the rest of the route may recommend.
+## Step 4: Hand on
 
-Then identify which of these shapes best matches the target.
-
-### A. Docs-first planning
-
-Choose this when most of these are true:
-
-- the repo is markdown-first or documentation-as-system
-- architecture, planning, design, or blueprint docs are the primary artifact
-- `TODO.md`, decision logs, examples, templates, or agent instructions carry meaningful state
-- the main iteration loop is repeated human/AI sessions rather than code/test/deploy alone
-- the most likely drift is docs-to-docs, workflow/practice, or stale planning state
-
-### B. Mixed docs + code
-
-Choose this when the system has both meaningful implementation and a meaningful documentation or planning surface,
-and the top risks likely sit between them.
-
-### C. Code-first
-
-Choose this when the main artifact is implementation and the top risks are architectural drift, stale tests, or
-API/implementation mismatch.
-
-### D. Workflow-heavy
-
-Choose this when the primary entropy surface is how work is done: handoffs, release steps, contributor instructions,
-agent wrappers, or checklists.
-
-### E. Young repo
-
-Choose this when the repo has little history and its purpose or current direction still lives mostly in
-conversation or memory, while handoffs are starting to happen.
-
-Also note whether the system spans **more than one repository**: for example, a code repository and a separate
-repository that manages its work, or a service and the packages that plug into it. If it does, assess them as one
-system.
-
-If more than one shape fits, note the ambiguity and choose the one with the highest current risk.
-
-## Step 3: Route
-
-Choose one primary route, then reuse specialised analysis where a member repository needs it. Combine the findings
-into one assessment and one handoff to the generator.
-
-- **A, docs-first planning:** run `skills/docs-first-planning-assessment/SKILL.md`. Its assessment is the assessment;
-  add only this skill's intent section and lifecycle status, and do not write a second report.
-- **B, C or D:** do Step 4 below. Where a member repository is docs-first, for example a repository that manages the
-  work rather than holding the code, also run docs-first Steps 2, 3 and 5 for it (truth map, loop map and
-  current-state update), and fold the results into the one assessment. Do not run the whole docs-first workflow a
-  second time.
-- **E, young repo:** run `skills/session-coherence-skill-generator/SKILL.md` in bootstrap mode.
-
-Before any route hands over to the generator, decide whether a guard is needed at all. A reference-only, frozen or
-retired system may finish with a correction or a demotion and no generated guard.
-
-## Step 4: Profile for mixed, code-first and workflow-heavy systems
-
-### 4a. Domains
-
-For each domain, note whether it is present and actively changed:
-
-- code
-- documentation
-- tests
-- API and data contracts
-- workflow and process
-- live operational state: running services, deployed builds, credentials, scheduled jobs
-
-### 4b. Repositories and ownership
-
-Skip this when the system is one repository.
-
-- Which repository owns which concept? Name the concept and its home.
-- Where does one concept have two homes, such as two names for it or two implementations of it across
-  repositories? These seams are usually the costliest drift, because each side looks correct on its own.
-
-### 4c. Cross-domain drift
-
-Check each of these, with evidence:
-
-- **Docs against implementation:** settings, commands, paths and identifiers named in prose that the code no longer
-  reads or provides. Search the code for each one.
-- **Docs against docs:** state and handoff files that contradict themselves or each other.
-- **Tests against implementation:** tests that exist but do not run, or that test a different representation from
-  the one used in practice.
-- **Contracts against implementation:** API reports, schemas and manifests.
-- **Workflow against reality:** declared processes, hooks and CI steps that do not run. A committed hook that is not
-  enabled counts as not running: check the effective hooks path (`git config core.hooksPath`, or `.git/hooks/` when
-  it is unset) and the tracked hook folders, such as `.githooks/` or `.husky/`.
-- **Rules against enforcement:** rules written as if enforced, which nothing enforces.
-
-Rank the top 3 to 5 risks by decay rate times recovery cost.
-
-### 4d. Existing guard surfaces
-
-Inventory the guard surfaces, sorted into five groups by whether they execute:
-
-- **Runs by itself:** CI steps, enabled hooks, scheduled checks.
-- **Exists, but runs only by hand:** test suites, scripts, skills.
-- **Decided, not yet built:** usually an open issue or a decision record.
-- **Declared, but missing:** named in a doc or a process list, with nothing behind it.
-- **Unknown:** the evidence available, such as a snapshot without its git configuration, cannot show whether it
-  runs.
-
-Whether to keep, amend, replace or demote each surface is a separate question. Record it alongside only when both
-are useful.
-
-For a gap that already has an issue or a decision, connect the recommendation to that work. Do not propose a
-parallel project.
-
-### 4e. Mechanical checks belong to tools
-
-Recommend maintained tools for anything mechanical rather than having a guard repeat it by hand:
-
-- a link checker such as lychee;
-- a linter for agent instruction files, such as ctxlint or agnix;
-- ast-grep, for identifiers named in prose;
-- the project's own tests, type checks, linters and API reports.
-
-## Step 5: Hand on
-
-Choose the smallest useful next step:
-
-- Hand to `session-coherence-skill-generator`, with three things: the intent section, the profile, and the ranked
-  risks.
-- Refine an existing guard through the same generator, rather than writing a new one.
-- Stop at the assessment, because no guard change is needed. Keep it proportionate: a retired or reference-only
-  repository needs little or nothing new, as Step 3 already decided.
+If this skill was called for analysis only, return now. Otherwise, for `create` or `update`, hand the findings and the
+generator's inputs to `session-coherence-skill-generator`. The generator, in turn, hands to the integrator. This skill
+makes the only handover to the generator on its route.
 
 ## Output
 
-Deliver:
+- Intent, from the intent pass.
+- Lifecycle status, shape and repositories, each with evidence.
+- Findings, each with an id, evidence and source.
+- Guard surfaces: sorted by whether they execute (`mixed-profile.md`) for routes B to D, and classified in docs-first
+  Step 7 for route A.
+- The guard decision and the generator's inputs.
+- Questions for the steward, each with a recommended answer, or "none".
+- Uncertainties.
 
-- **Intent:** the intent pass's output (see `intent-pass.md`)
-- **Lifecycle status**, with its evidence
-- **System shape**, including the repositories involved
-- **Domain and ownership map**
-- **Top entropy risks**, with evidence
-- **Guard surfaces**, in the five groups of Step 4d
-- **Recommended next step**
-- **Questions for the steward**, each with a recommended answer, or "none"
-- **Uncertainties**
+## Rules along the whole route
 
-These rules apply to the whole route: this assessment or the docs-first one, the generator's report, and the
-integration brief.
+These apply to the docs-first assessment, the generator, the guards it writes, and the integration brief.
 
-- **Keep one findings list.** Give each finding an id. The intent, risk, generation and integration sections refer to
-  findings by id instead of repeating their evidence.
-- **Make a separate file only when it has its own reader**, such as a guard or a state file, or when it is a patch
-  that can be applied.
-- **Never cut these for length:** where a claim came from, what was not covered, and the difference between a
-  proposal and a decision.
+- **Keep one findings list.** Other sections refer to findings by id rather than repeating their evidence.
+- **Make a separate file only when it has its own reader,** such as a guard or a state file, or when it is a patch that
+  can be applied.
+- **One owner per concept.** When two places define one concept independently, decide which owns it and reduce the
+  other to a link. Summaries, generated projections, versioned copies and independent tests of the same contract are
+  not competing definitions; keep them, and keep them correct.
+- **Every correction is limited by its evidence:**
+  - Before replacing a claim, identify its scope and the evidence for it.
+  - Change only what that evidence settles; keep unresolved parts visibly open.
+  - For an exhaustive list or an "only" claim, such as what the system reaches, launches or stores, check the full
+    stated scope, including delegated behaviour. Otherwise, mark the replacement as incomplete.
+  - Observed behaviour never authorises changing a prescribed boundary.
+  - Sort proposed changes by whether they touch an open question. A change touches one if it edits the question's
+    text, or states as fact what the question asks, such as describing a reach whose authorisation is open. Put those
+    in a separate patch marked provisional, naming each question, not to be applied until the steward answers. The
+    settled patch holds only changes that touch none. A change that settles an open question is a decision, not a
+    correction.
+- **Never cut these for length:** where a claim came from, what was not covered, and the difference between a proposal
+  and a decision.
 
-## Upstream Feedback Check
-
-Before you finish, ask whether this front door itself misrouted the system or left the next step too implicit.
-
-Examples:
-
-- it should have sent the repo to the docs-first planning track sooner
-- the profile in Step 4 missed a kind of drift this system has
-- the intent pass asked a question the evidence could have settled
-
-If yes, capture a short feedback note and use `skills/local/entropy-guard-feedback/SKILL.md` when working inside this
-repo.
+If this skill misrouted the system or left a step too implicit, in a way others would hit, note it.
+`skills/local/entropy-guard-feedback/SKILL.md` files it as an issue when working in this repo.

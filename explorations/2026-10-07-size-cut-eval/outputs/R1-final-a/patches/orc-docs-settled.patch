@@ -1,0 +1,83 @@
+ORC patch: corrections already settled by Justin's recorded decisions or by ORC's own enforced checks (entropy
+assessment of 2026-10-07). Not applied: the snapshot assessed was read-only. Apply from the root of orchestrator with
+`git apply orc-docs-settled.patch`. `AGENTS.md` is a guarded path in `dangerfile.js`, so this goes through a pull
+request whose description has a `## Security review` section, such as "No new authority; documentation corrected to
+match test/architecture.test.ts and decisions already recorded."
+
+Hunks, and what settles each (finding ids are in assessment.md):
+- README.md, the Bookwhen credential paragraph (F6): AGENTS.md:39-42 (Justin, 12-13 Sep: domain code such as a
+  Bookwhen connector belongs to its Scope) and test/architecture.test.ts:1314-1321 (no Bookwhen client or code in
+  ORC). Nothing in src/, config/ or scripts/ reads ORCHESTRATOR_BOOKWHEN_API_TOKEN.
+- README.md "Boundary", the slot-change plan (F5): the orchestration-lab decision of 17 Sep (Justin),
+  `decisions/2026-09-17-async-work-architecture.md`, "Consequences": Moving Stillness's apply is durable work with
+  approval required.
+- README.md "Deliberately absent" (F4): removes "scheduling" only, settled by the same decision. "Reminders",
+  "additional external data sources", "workflow execution" and "file edits" are unchanged; the second and fourth are
+  touched by Q2 and stay open.
+- AGENTS.md, what the core-ties ratchet scans (F9): test/architecture.test.ts:319-325 scans config/ as well. This
+  widens what the sentence says is checked and weakens nothing.
+- AGENTS.md, `src/bookwhen.ts` (F6): as the first hunk.
+
+Open questions touched: none settled. The ntfy sentence and the subprocess and network lists (Q2) are unchanged.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -44,7 +44,7 @@
+ In-the-box agents, such as Iris and the Researcher, are templates packaged alongside core through the
+ same interface as any Scope agent. They are not core, and core does not depend on any of them.
+ 
+-`test/core-ties.ts` ratchets all four ties in `src/` and `web/src/`, per file, at exact counts: a
++`test/core-ties.ts` ratchets all four ties in `src/`, `web/src/` and `config/`, per file, at exact counts: a
+ count may only fall, and its allowance falls in the same change. On 2026-09-13 the baseline was:
+ 
+ - Scope: 426 matches in 14 files.
+@@ -99,8 +99,8 @@
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+ ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++sends only a title, the notice's summary and the one configured tap address. No ORC module imports a
++Bookwhen client: Bookwhen code belongs to its Scope's package, and `test/architecture.test.ts` refuses it here.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+diff -ruN a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -73,10 +73,10 @@
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++Open-Friday queries and other Bookwhen work come from the Moving Stillness Scope's package, not from
++ORC: no ORC module imports a Bookwhen client, and `test/architecture.test.ts` refuses one. A package's
++connector credentials are Scope credentials, read from the Scope's own folder
++(`src/adapters/scope-credentials.ts`), and never reach the model.
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ ORC discovers agent definitions from each Scope's `agents/` directory; later entries override
+@@ -144,14 +144,16 @@
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+ open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++a code-selected Bookwhen admin entry and calculate a slot-change plan; applying a plan is durable work
++that waits for the operator's approval, given on its card or by a standing grant (`AGENTS.md`). It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++additional external data sources, workflow execution, sandboxes, shell access, and file edits.
++Scheduling was decided on 2026-09-17: durable work may run now, at a set time, or on a recurring
++schedule (orchestration-lab Scope, `decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi
+ 

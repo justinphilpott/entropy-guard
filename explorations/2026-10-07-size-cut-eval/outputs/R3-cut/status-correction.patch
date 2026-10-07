@@ -1,0 +1,183 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -5,13 +5,13 @@
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+ > authorization.
+ 
+-Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
++Blueprint for the agentic architecture, at named version Sol (0.x) when it became reference-only. It holds the architecture state as last recorded — settled decisions, component design, and the provisional shapes that were under review — as reference, not current authority.
+ 
+ Exploratory thinking and general theory live in [agentic-learning](../agentic-learning). Component design lives under `components/{name}/`. Component implementations live in their own repos.
+ 
+-## Settled — current strong positions
++## Settled — strong positions as last recorded
+ 
+-These are the current settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
++Historical since the repository became reference-only; current positions live in the successor repositories named above. Whether `components/*/template/` is still copied to make new scopes and roles is an open question for the steward (Status block in ROADMAP.md). While the repository was active, these were the settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
+ 
+ - **This repo is a blueprint (map), not a running system (territory).** Design-time artifacts describe; runtime instantiations run. Never conflate them.
+ - **Named versions, not phases.** "Phase" language is retired. Versions are assigned when work is complete, not planned ahead. Do not pre-number future versions.
+@@ -35,14 +35,14 @@
+ 
+ ## Session start
+ 
+-1. Check ROADMAP.md — know what version we're on and what's being worked towards
+-2. Read MODEL.md — understand the system model and component relationships
+-3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+-4. Check components.yaml — know component status
+-5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+-6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
++This repository is reference-only (banner above; DECISIONS.md, "agentic-architecture is reference-only").
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++1. Read the Status block at the top of ROADMAP.md — the current stage, what to trust first, open questions for the steward, and misleading material nearby
++2. For what was decided here and when, read DECISIONS.md; its entries are historical, not current authority
++3. For current architecture, go to `../personal-agent` (Personal Agent architecture) or `../../scope` (Scope and Project model)
++4. Read MODEL.md, components.yaml and `components/{name}/` only for the concept you were asked about
++
++Do not choose work from ROADMAP.md checklists, component `TODO.md` or `PLAN.md` files, or run pickups: they are not live work in this repository. Do not build the active-work packet from `skills/session-kickoff.md`.
+ 
+ ## Before making changes
+ 
+@@ -99,7 +99,7 @@
+ - [DECISIONS.md](DECISIONS.md) — system-level decision log
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+-- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
++- [skills/session-kickoff.md](skills/session-kickoff.md) — historical: start-of-session packet builder for active work; not used while the repository is reference-only
+ - [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+diff -ruN a/architecture/INDEX.md b/architecture/INDEX.md
+--- a/architecture/INDEX.md
++++ b/architecture/INDEX.md
+@@ -14,7 +14,7 @@
+ 
+ ## Current Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++None. This repository is reference-only ([README.md](../README.md); Status block in [ROADMAP.md](../ROADMAP.md)). [PICKUP.md](PICKUP.md) is a superseded historical pickup point (2026-07-26).
+ 
+ ## Snapshot Rules
+ 
+diff -ruN a/components.yaml b/components.yaml
+--- a/components.yaml
++++ b/components.yaml
+@@ -1,5 +1,9 @@
+ # Component catalog for the agentic architecture current named version
+ #
++# Reference-only: this catalog records component statuses as last edited while the repository was
++# active (latest dated decision: 2026-07-26). They are not current work. See the README.md banner and
++# the Status block in ROADMAP.md.
++#
+ # Status values:
+ #   exploratory  — proto tool, in consideration, not yet part of the architecture
+ #   planned      — confirmed as a future architecture component, not yet built
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -872,8 +872,22 @@
+ 
+ ---
+ 
++### Date not recorded — agentic-architecture is reference-only *(copied 2026-10-07 from the status banners; date and wording await the steward)*
++
++Recorded here, not decided again. This directive appears in the status banners at the top of [README.md](README.md) and [AGENTS.md](AGENTS.md) and nowhere else in this log. Its date and author are not recorded. The banners name `../personal-agent`, which no dated entry mentions, so they were probably added after the latest dated entry (2026-07-26); that is an inference from the files, not a record.
++
++- This repository is no longer current architecture authority. Do not treat decisions in it as current authority.
++- Current Personal Agent architecture lives in `../personal-agent`; the current Scope and Project model lives in `../../scope`.
++- Do not extend or reinterpret this blueprint as current design without explicit authorization.
++
++Impact: the entries above and the Open Questions below are historical. ROADMAP.md, components.yaml and the component `TODO.md`, `PLAN.md` and run pickup lists are not live work in this repository; whether any of their items move to a successor repository is open (ROADMAP.md, Status block, question 3).
++
++---
++
+ ## Open Questions
+ 
++Historical since the reference-only entry above: these were the open questions when the repository was active.
++
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+ 
+ **Genuinely open — need real workflow experience:**
+diff -ruN a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -4,9 +4,9 @@
+ > [`personal-agent`](../personal-agent), and the current generic Scope/Project model lives in
+ > [`scope`](../../scope). Do not treat decisions in this repository as current authority.
+ 
+-**Current named version: Sol 0.x**
++**Last named version: Sol 0.x**
+ 
+-Bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
++Former bleeding-edge design source for the agentic architecture, kept as reference: what it was, how it was composed, where it was headed, and which provisional shapes were under review when it became reference-only. `Sol` is the version codename, not the product or system namespace. Where it stands now: the Status block at the top of [ROADMAP.md](ROADMAP.md).
+ 
+ This repo is not the installable distribution and not a live installation. Its historical Level 2
+ distribution source lives in [agentic-architecture-distribution](../agentic-architecture-distribution).
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,37 @@
+ # Roadmap — Current Named Version
+ 
++## Status — reference-only
++
++Checked 2026-10-07 by an entropy assessment of this repository, from the status banners in README.md and
++AGENTS.md. This block goes stale when the repository's status changes, or when a successor repository takes
++over or retires something named here; whoever makes that change refreshes this block in the same commit.
++
++- **Stage:** reference-only, not current architecture authority (README.md and AGENTS.md banners; DECISIONS.md,
++  "agentic-architecture is reference-only"). Current Personal Agent architecture: `../personal-agent`. Current
++  Scope and Project model: `../../scope`. Neither path was checked from this repository on 2026-10-07.
++- **Trust first:** the banners, then DECISIONS.md for what was decided here and when. Its latest dated entry is
++  2026-07-26, "Temporal coordinator V0 is a pg-boss one-time scheduling POC".
++- **Live work in this repository:** none. The checklists below, the component `TODO.md` and `PLAN.md` files and
++  the run pickups record where work stood; they are not a queue. Whether any item moves to a successor repository
++  is open (question 3).
++- **Open questions for the steward** (raised 2026-10-07):
++  1. Are authorised edits still expected here, or is the repository frozen? This decides whether
++     `skills/entropy-guard.md` becomes a short reference-only guard or is retired.
++  2. Are `components/scope/template/` and `components/agent/template/` still copied to make new scopes and roles?
++  3. Should the open work recorded here stay frozen in place, or be carried to the successor repositories?
++- **Misleading material nearby:**
++  - `architecture/PICKUP.md` and `components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md` are superseded
++    (2026-07-26).
++  - `RUNTIME.md` still describes the scope manager's "Runtime gateway (unified for v0)", superseded on 2026-07-16
++    (note on DECISIONS.md, "Scope manager is the unified platform gateway").
++  - Several component documents call questions open that DECISIONS.md settled on 2026-04-27.
++  - `skills/session-kickoff.md` builds an active-work packet that does not apply here.
++- **Next actions:**
++  1. The steward answers the three questions above, and dates the reference-only entry in DECISIONS.md.
++  2. If edits are authorised: correct the "still open" claims in `components/agent/DECISIONS.md`,
++     `components/orchestrator/` (DECISIONS.md, PLAN.md, MODEL.md), `components/scope/` (TODO.md,
++     skills/scope-design.md), SCOPES_PLANNED.md and RUNTIME.md, citing the 2026-04-27 entries.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+diff -ruN a/skills/README.md b/skills/README.md
+--- a/skills/README.md
++++ b/skills/README.md
+@@ -4,7 +4,7 @@
+ 
+ They are not architecture primitives, live runtime skills, or generic reusable helper skills.
+ 
+-- `session-kickoff.md` builds a compact current-state packet before architecture work.
++- `session-kickoff.md` — historical: built a current-state packet before active architecture work; not used while the repository is reference-only.
+ - `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
+ 
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff -ruN a/skills/session-kickoff.md b/skills/session-kickoff.md
+--- a/skills/session-kickoff.md
++++ b/skills/session-kickoff.md
+@@ -1,5 +1,9 @@
+ # Skill: Session Kickoff
+ 
++> **Historical:** this skill builds a packet of active fronts and next actions for active blueprint work. The
++> repository is reference-only ([README.md](../README.md)), so it has no active fronts; do not run it to choose
++> work here. Start from the Status block in [ROADMAP.md](../ROADMAP.md) instead. Kept as a record of the method.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

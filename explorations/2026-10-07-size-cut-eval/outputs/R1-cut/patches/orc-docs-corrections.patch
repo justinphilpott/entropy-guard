@@ -1,0 +1,78 @@
+--- a/README.md
++++ b/README.md
+@@ -2,9 +2,10 @@
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+ adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++isolated fixed researcher child for each public-web research invocation. ORC itself reaches the
++network only to read public webpages through Jina Reader and to send operator notices through ntfy.
++Approved Scope packages reach outside services only through the connectors they declare and the
++operator grants, such as ORC's browser held to the hosts a grant names ([AGENTS.md](AGENTS.md)).
+ 
+ ## Direction
+ 
+@@ -73,10 +74,9 @@
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++Bookwhen access, including its credentials, belongs to the Moving Stillness Scope's package, not
++to ORC (AGENTS.md, "Core ships with no specific Scope, model, owner, or agent"; Justin, 2026-09-12
++and 2026-09-13). `test/architecture.test.ts` refuses a Bookwhen client in ORC's source.
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ ORC discovers agent definitions from each Scope's `agents/` directory; later entries override
+@@ -143,15 +143,17 @@
+ provider credentials, and no tool execution.
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+-open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++the tools approved Scope packages contribute, such as open Fridays from published Bookwhen events.
++A change a Scope agent makes to an outside system runs as durable work, only after the operator
++approves its card or under a standing grant (AGENTS.md, "Approval cards"). It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++additional external data sources, sandboxes, shell access, and file edits. Durable work, including
++scheduled and recurring tasks, was decided by Justin on 2026-09-17 (orchestration-lab
++`decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi
+ 
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -91,16 +91,19 @@
+ 
+ Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
++code-fixed read-only `git log` without a shell, `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server, and `src/adapters/orc-service.ts`, which runs only git's read commands in ORC's own
++checkout, a frozen-lockfile pnpm install, the build into `dist.next`, and the one systemctl call
++that restarts ORC (orchestrator#101). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+ ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++sends only a title, the notice's summary and the one configured tap address. No ORC module imports
++a Bookwhen client, and `test/architecture.test.ts` refuses one: domain code, such as a Bookwhen
++connector, belongs to the Scope that needs it.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never

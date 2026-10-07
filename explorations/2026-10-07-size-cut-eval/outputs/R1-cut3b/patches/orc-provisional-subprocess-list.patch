@@ -1,0 +1,17 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 18:18:49.618182286 +0100
++++ b/AGENTS.md	2026-10-07 18:19:17.204268615 +0100
+@@ -91,9 +91,11 @@
+ 
+ Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
++code-fixed read-only `git log` without a shell, `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server, and `src/adapters/orc-service.ts` (orchestrator#101), which runs only git's read
++commands in ORC's own checkout, a frozen-lockfile `pnpm install` and the one `systemctl`
++call that restarts ORC, for the restart card. `test/architecture.test.ts` holds the exact list. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,

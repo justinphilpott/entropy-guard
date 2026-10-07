@@ -1,0 +1,38 @@
+PROVISIONAL PATCH - waits on question Q3 "Validation measure" (questions.md).
+Do not apply until Justin Philpott has answered Q3 and the answer is recorded in DECISIONS.md, replacing
+proposal 3 of "Open proposals awaiting the steward". Written for the recommended answer.
+Apply after settled.patch, from the repository root: patch -p1 < <this file>
+
+diff -ruN -x TODO.md b/DECISIONS.md Q3/DECISIONS.md
+--- b/DECISIONS.md	2026-10-07 20:05:05.169702162 +0100
++++ Q3/DECISIONS.md	2026-10-07 20:05:05.176508067 +0100
+@@ -55,6 +55,8 @@
+ 
+ ### Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical
+ 
++*Partially superseded on how the validation is measured, by the steward's decision recorded above: `INTENT.md` "Scope boundary and next validation loop" holds the measures.*
++
+ **Context**: The March 2026 explorations on autopoiesis, layered intent, steering, viability, and entropic immunity opened a broader research program than `entropy-guard` itself needs in order to stay useful. Letting that conceptual exploration continue inside this repo risked blurring the scope of the practical guard project and making the README / INTENT / contributor guidance less clear about what this repo is actually trying to validate next.
+ **Decision**: Keep `entropy-guard` focused on practical entropy protection: assessment, guard generation/refinement, integration, and iterative validation of those workflows on real projects. Farm the broader entropic-immunity exploration into a sibling repo, `entropy-immune-system`, seeded with the exploration documents and early research scaffolding. Set the next validation loop here to: assess a larger set of open source projects, generate or refine guards, run them locally while making targeted improvements, and track whether that produces more merged PRs.
+ **Impact**: `entropy-guard` retains a clear operational center and a concrete next step. The broader theory can evolve without forcing premature architectural or philosophical expansion into this repo. Future contributors should treat `entropy-guard` as the practical ladder and `entropy-immune-system` as the larger inquiry.
+diff -ruN -x TODO.md b/README.md Q3/README.md
+--- b/README.md	2026-05-11 21:50:31.000000000 +0100
++++ Q3/README.md	2026-10-07 20:05:05.176418660 +0100
+@@ -122,7 +122,7 @@
+ 
+ The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+ 
+-The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
++The next concrete phase here is external validation on a larger set of docs-first planning repos. [INTENT.md](INTENT.md), "Scope boundary and next validation loop", sets out its steps and what it measures.
+ 
+ See [TODO.md](TODO.md) for current priorities.
+ 
+diff -U0 b/TODO.md Q3/TODO.md
+--- b/TODO.md
++++ Q3/TODO.md
+@@ -31,2 +30,0 @@
+-  - *Validation measure:* what measures the external validation, `INTENT.md`'s outcomes or "more merged PRs"
+-    (`DECISIONS.md`, "Farm…")?
+@@ -46 +44 @@
+-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
++- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track the outcomes listed in `INTENT.md` "Scope boundary and next validation loop"

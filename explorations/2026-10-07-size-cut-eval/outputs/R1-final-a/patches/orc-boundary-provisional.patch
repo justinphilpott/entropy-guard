@@ -1,0 +1,64 @@
+ORC patch, PROVISIONAL. It drafts the answer recommended for Q2 and is a proposal, not a correction. Do not apply
+until Justin has confirmed that ORC's restart service, the Playwright browser and package notices through the phone
+connector were each approved, and that confirmation is recorded. Apply after orc-docs-settled.patch, from the root of
+orchestrator, through a pull request with a `## Security review` section.
+
+Hunks (finding ids are in assessment.md):
+- README.md, the opening paragraph's list of what ORC reaches (F8).
+- AGENTS.md, where subprocess access exists: adds src/adapters/orc-service.ts and the Playwright browser (F7).
+- AGENTS.md, where direct network access exists, and who reaches the ntfy transport (F7).
+
+Completeness: checked src/ for child_process, network imports, `node:dns`, Playwright and the MCP client, and
+config/installation.ts for connectors. Not checked: what each Scope package's own connector code reaches, which lives
+outside both repositories, so the README's "further services" are examples rather than a list.
+Recommended with it, not drafted: extend test/architecture.test.ts so `playwright` imports and `node:dns` are confined
+to src/adapters/browser/, and correct the comment at test/architecture.test.ts:63.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -93,13 +93,20 @@
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+ code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server. `src/adapters/orc-service.ts` runs the restart card's fixed commands without a shell: the
++git reads a card needs, a frozen-lockfile `pnpm install`, the build, and one `systemctl --user` restart
++of ORC's unit. `src/adapters/browser/playwright.ts` launches headless Chromium through Playwright's
++library for an approved browser grant. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+-which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. No ORC module imports a
++read-only Jina Reader requests; in `src/adapters/notifications/ntfy.ts`,
++which publishes notices to the ntfy topics the operator names in ORC's
++environment file; and in `src/adapters/browser/playwright.ts`, whose Chromium
++reaches only the hosts an approved browser grant names, resolved by that module
++itself through `node:dns`. No model reaches the ntfy transport. A package reaches
++it only through the phone connector (`src/adapters/phone/`), which sends a bounded
++title and message to the topic the installation names; ORC's own durable-work
++notices send only a title, the notice's summary and the one configured tap address. No ORC module imports a
+ Bookwhen client: Bookwhen code belongs to its Scope's package, and `test/architecture.test.ts` refuses it here.
+ Workflow modules receive neither network nor subprocess access.
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -2,9 +2,12 @@
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+ adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++isolated fixed researcher child for each public-web research invocation. ORC itself reaches public
++webpages through Jina Reader, the operator's phone through ntfy, its model provider through Pi, the
++package registry when an approved restart installs changed dependencies, and, for an approved
++package, a browser kept to the hosts that package's grant names. Approved Scope packages reach further
++services, such as Bookwhen, a calendar and a mail server, through connectors the operator approves on
++a card. `AGENTS.md` ("Boundaries") holds the full list.
+ 
+ ## Direction
+ 

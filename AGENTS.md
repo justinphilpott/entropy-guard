@@ -25,7 +25,7 @@ A collaborative research and development project exploring entropy guards — sk
 - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
 - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
 - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
-- **Consult INTENT.md for significant decisions**: Before a substantial design or structural choice, check `INTENT.md`. Resolve discrepancies through the intent-change rule in `skills/entropy-assessment/intent-pass.md`: record proposed intent changes in `DECISIONS.md`, and update `INTENT.md` only from Justin's recorded decision.
+- **Consult INTENT.md for significant decisions**: Before a substantial design or structural choice, check `INTENT.md`. Resolve discrepancies through the intent-change rule in `skills/entropy-assessment/intent-change-rule.md`: record proposed intent changes in `DECISIONS.md`, and update `INTENT.md` only from Justin's recorded decision.
 
 ## Project Constraints
 
@@ -42,9 +42,11 @@ A collaborative research and development project exploring entropy guards — sk
 - [skills/local/entropy-guard/](skills/local/entropy-guard/) — mandatory pre-commit ritual; run after every meaningful work session
 - [skills/local/entropy-guard-feedback/](skills/local/entropy-guard-feedback/) — local helper for turning assessment/integration feedback into upstream GitHub issues on entropy-guard
 - [skills/entropy-assessment/](skills/entropy-assessment/) — front door: runs the intent pass, classifies the system shape, routes it, and profiles mixed, code-first and workflow-heavy systems
-- [skills/entropy-assessment/intent-pass.md](skills/entropy-assessment/intent-pass.md) — the one definition of the intent pass and of the intent-change rule every generated guard carries
+- [skills/entropy-assessment/intent-pass.md](skills/entropy-assessment/intent-pass.md) — the one definition of the intent pass, run by every assessment route
+- [skills/entropy-assessment/intent-change-rule.md](skills/entropy-assessment/intent-change-rule.md) — the one definition of the intent-change rule; every generated guard carries a versioned copy
+- [skills/entropy-assessment/mixed-profile.md](skills/entropy-assessment/mixed-profile.md) — the profile for mixed, code-first and workflow-heavy systems, read only on those routes
 - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — analysis for markdown-first planning/design repos; produces a canonical truth map, brings the current-state file up to date, and supplies docs-first checks to the generator
-- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — the only guard builder: generates or amends a repo's session-end guard, or bootstraps minimal handoff memory for young repos
+- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — the only guard builder: generates or amends a repo's session-end guard to one contract and a derived size budget; `bootstrap.md` there handles young repos and single missing memory surfaces
 - [skills/guards-integrator/](skills/guards-integrator/) — fits guards into the target system's real iteration loop and verifies they are actually adopted
 - [explorations/2026-10-04-skills-revision-eval.md](explorations/2026-10-04-skills-revision-eval.md) — known-answer cases for checking a revision of the skills, run before and after; [its folder](explorations/2026-10-04-skills-revision-eval/) holds the invocations, fixture script, outputs and scores needed to run it again
 - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard

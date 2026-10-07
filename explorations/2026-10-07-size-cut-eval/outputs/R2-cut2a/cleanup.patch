@@ -1,0 +1,146 @@
+# cleanup.patch: one-time cleanup from the 2026-10-07 entropy assessment of entropy-guard snapshot 447da9a.
+# Apply first, from the repo root: patch -p1 < cleanup.patch   (state-update.patch and integration.patch follow it)
+# Findings fixed (see assessment.md): F6 guards-integrator hand-off; F7 FlowBook residue; F8 farmed-off theory marked
+# historical; F9 supersession notes in DECISIONS.md; F13 seed residue in AGENTS.md; F14 missing distill-article skill.
+# Open questions touched: Q4 only, by the F6 edit, which names both current guard writers and chooses neither. The text
+# Q4 is about (docs-first-planning-assessment Phase 2, session-coherence-skill-generator's role, README.md "How to use
+# this repo", INTENT.md "The guard lifecycle") is unchanged. Q1, Q2 and Q3 are untouched: INTENT.md, AGENTS.md's
+# "Consult INTENT.md" and "Project Constraints" lines, and DECISIONS.md "Farm broader..." text are unchanged.
+diff -ru a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 17:50:37.349043916 +0100
++++ b/AGENTS.md	2026-10-07 17:50:53.769148799 +0100
+@@ -18,7 +18,7 @@
+ 
+ - **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
+ - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
+-- **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
++- **Commit early, commit often**: A coherent small change beats a perfect one in progress. Small commits are easy to review, revert, and understand in git log
+ - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
+ - **Docs travel with code**: If a change affects how the project works, update the relevant docs in the same commit — not later
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+diff -ru a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 17:50:37.349055076 +0100
++++ b/DECISIONS.md	2026-10-07 17:50:53.769026491 +0100
+@@ -38,6 +38,8 @@
+ 
+ ### Entropy assessment should support guard refinement and evidence-based bootstrap design
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer has the Phase 2 or the Steps 5 and 7 this entry describes.*
++
+ **Context**: Applying `entropy-assessment` to real projects exposed a cluster of related misfires. The skill framed Phase 2 primarily as generating new guards, even when the right outcome was a targeted amendment to an existing guard. It also allowed bootstrap checks to be written from indirect notes without verifying the current artifact, and it did not clearly distinguish stable guard definitions from the companion artifacts that should record bootstrap completion. Cold-start projects with no established loop likewise had no named minimum-viable integration pattern.
+ **Decision**: Treat guard refinement as a first-class Phase 2 outcome alongside guard generation. Require bootstrap actions to be verified against the current artifact before they are written, require bootstrap completion to be tracked outside the guard file, and add an explicit no-existing-loop bootstrap integration pattern for early-stage projects. Also make internal docs-to-docs drift more explicit for markdown-first systems.
+ **Impact**: `skills/entropy-assessment/SKILL.md` now fits existing-guard systems better, produces more trustworthy bootstrap checks, preserves guard files as stable definitions, and offers a clearer adoption path for cold-start repos. The methodology also better matches the repo's own framing that documentation-first systems often drift internally rather than primarily against code.
+@@ -46,6 +48,8 @@
+ 
+ ### Add workflow/process as a first-class assessment domain
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer carries domain appendices; workflow / process remains a domain in its Step 4a.*
++
+ **Context**: Dogfooding `entropy-assessment` against this repo showed a repeatable gap. The skill already talked about collaborative workflow and inter-domain drift in principle, but its explicit Phase 1 domain map and Phase 2 appendices only covered documentation, code, tests, and API contracts. That made workflow-heavy repos awkward to classify and left no direct path to generate workflow/process guards when the main entropy risks lived in handoffs, rituals, or contributor instructions.
+ **Decision**: Extend `skills/entropy-assessment/SKILL.md` with workflow/process as a first-class domain in both assessment and guard generation. Add workflow/process signals to the Phase 1 domain map and drift analysis, and add a dedicated appendix covering inventory items, entropy vectors, checklist guidance, and existing mechanisms.
+ **Impact**: The assessment now matches the repo's own framing that entropy often accumulates in practice as much as in map or territory. Workflow-heavy systems can be assessed without awkward shoehorning, and the skill can recommend either a dedicated workflow guard or a combined guard when that is the lower-burden design.
+@@ -94,6 +98,8 @@
+ 
+ ### Guard generation should produce immediate integration advice, not just guard files
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer generates guards or has a Step 8. The requirement that guard generation comes with adoption advice is unaffected.*
++
+ **Context**: The assessment skill already required an integration plan in Step 8, but the repo did not yet provide a dedicated way to examine a target system's actual agent / commit / PR / CI loop and translate generated guards into an adoption plan. That left a gap between guard design and guard use.
+ **Decision**: Add a separate exportable skill, `skills/guards-integrator/`, focused on mapping generated guards into a system's real iteration loop. Also strengthen `skills/entropy-assessment/` so guard generation always includes immediate adoption guidance and points to the integrator skill for deeper operational planning.
+ **Impact**: Running the assessment now yields not only candidate guards but also system-specific advice for how to make them valuable right away. The integrator skill clarifies that adoption is a first-class part of guard design, while still leaving room for a future guard runner implementation.
+@@ -112,6 +118,8 @@
+ 
+ ### Rename entry point from entropy-guard-generator to entropy-assessment
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer has the Phase 1 / Phase 2 structure this entry describes. The name stands.*
++
+ **Context**: The entry point skill's primary value is assessment (Steps 1–4: establish intent, survey landscape, identify drift risks, recommend generators). Guard generation (Steps 5–8) is optional delegation to domain generators. But the name "generator" framed assessment as a means to an end rather than a first-class deliverable. Agents arriving cold didn't recognize this skill as the obvious start point for reviewing a system.
+ **Decision**: Rename to `entropy-assessment`. Restructure the skill into two explicit phases: Phase 1 (Assessment, Steps 1–4) produces a standalone entropy profile; Phase 2 (Guard Generation, Steps 5–8) is optional. Add an assessment output format between the phases.
+ **Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards.
+diff -ru a/LEARNINGS.md b/LEARNINGS.md
+--- a/LEARNINGS.md	2026-10-07 17:50:37.349094854 +0100
++++ b/LEARNINGS.md	2026-10-07 17:50:53.769096414 +0100
+@@ -60,7 +60,7 @@
+ 
+ **Insight**: Conversations between humans and AI agents produce genuine intellectual work — frameworks, analyses, non-obvious insights — but this work decays instantly unless captured. The chat transcript is effectively write-only; nobody reads it again.
+ **Validated by**: Realised the discussion on entropy vectors, enforcement depth, and domain-specific guards contained publishable-quality thinking that would have been lost without a capture mechanism.
+-**Implication**: Need a systematic way to distill conversations into durable artifacts. Led to the distill-article skill.
++**Implication**: Need a systematic way to distill conversations into durable artifacts. Led to the distill-article skill, which is not in this repo; DECISIONS.md "LEARNINGS.md stays tactical; articles live elsewhere" puts articles in the separate `writing` repo.
+ 
+ ---
+ 
+@@ -122,6 +122,8 @@
+ **Validated by**: The 2026-03-19 philosophical conversation on autopoiesis and entropy guards (`explorations/2026-03-19-autopoiesis.md`).
+ **Implication**: Entropy-assessment should be designed as a generator invoked fresh at each handoff, not a template that's maintained between uses. The intermediate guard artifact is a pragmatic concession to the current state of tooling, not a design goal. The mature form collapses assess → fix with no persistent guard artifact.
+ 
++**Status**: Historical for this repo. This theory now continues in the sibling `entropy-immune-system` repo (DECISIONS.md "Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical"; the steward on 2026-03-24: "farm this new evolution off into its own repo", `explorations/2026-03-24-entropy-immune-system-conversation.md` line 713). Its implication is not current work here.
++
+ ---
+ 
+ ### The four-component temporal hierarchy of a complete guarding system
+@@ -132,6 +134,8 @@
+ **Validated by**: The 2026-03-19 philosophical conversation on autopoiesis and entropy guards.
+ **Implication**: Future entropy-assessment design should explicitly distinguish these four components and design persistence expectations accordingly. The process generator should be ephemeral. The system memory should be maintained as a first-class artifact with its own update cadence. The intent should be the most protected and slowest-changing element.
+ 
++**Status**: Historical for this repo. This theory now continues in the sibling `entropy-immune-system` repo (DECISIONS.md "Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical"; the steward on 2026-03-24: "farm this new evolution off into its own repo", `explorations/2026-03-24-entropy-immune-system-conversation.md` line 713). Its implication is not current work here.
++
+ ---
+ 
+ ### Most current guards operate at the wrong layer — representational rather than meaning
+diff -ru a/README.md b/README.md
+--- a/README.md	2026-10-07 17:50:37.349130022 +0100
++++ b/README.md	2026-10-07 17:50:53.768685360 +0100
+@@ -105,6 +105,7 @@
+ | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form reflections on entropy, self-awareness, and system design |
+ | [DECISIONS.md](DECISIONS.md) | Architectural decisions with context and rationale |
+ | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries from building and using guards |
++| [explorations/](explorations/) | Historical: the March 2026 conversations and digests that seeded the sibling `entropy-immune-system` repo. Not current direction for this repo |
+ 
+ ### Project operations
+ 
+diff -ru a/skills/guards-integrator/SKILL.md b/skills/guards-integrator/SKILL.md
+--- a/skills/guards-integrator/SKILL.md	2026-10-07 17:50:37.349305303 +0100
++++ b/skills/guards-integrator/SKILL.md	2026-10-07 17:50:53.768353254 +0100
+@@ -17,7 +17,7 @@
+ 
+ ## When to Run
+ 
+-- After `entropy-assessment` generates one or more guards
++- After a guard is generated or refined (today by `docs-first-planning-assessment` Phase 2 or `session-coherence-skill-generator`)
+ - When a system has guards on disk but no clear way they enter daily work
+ - When the team already has an agentic loop, PR flow, or CI pipeline and wants to fit guards into it with minimal disruption
+ - When an existing guard is routinely skipped, forgotten, or run too late to be useful
+@@ -218,7 +218,7 @@
+ - Assumed ... because ...
+ ```
+ 
+-If the assessment skill generated the guards in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
++If the guards were generated in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
+ 
+ ---
+ 
+diff -ru a/skills/session-coherence-skill-generator/SKILL.md b/skills/session-coherence-skill-generator/SKILL.md
+--- a/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 17:50:37.349384776 +0100
++++ b/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 17:50:53.768473212 +0100
+@@ -19,8 +19,8 @@
+ be run during or near the end of a coding session to leave the codebase coherent,
+ self-explanatory, and easy to pick up next time.
+ 
+-This is a meta skill: it does not assume the repository already has FlowBook's
+-exact files. It first discovers the repository's own context-preservation
++This is a meta skill: it does not assume any particular file layout. It first
++discovers the repository's own context-preservation
+ structures, then writes or updates a custom session-coherence skill for that
+ repository.
+ 
+@@ -190,8 +190,8 @@
+     needed now, which are soon, which are premature, and is guard generation still
+     premature?
+ 
+-Prefer the repository's existing vocabulary. Do not impose FlowBook's exact file
+-layout on another codebase.
++Prefer the repository's existing vocabulary. Do not impose another repository's
++file layout on it.
+ 
+ ---
+ 

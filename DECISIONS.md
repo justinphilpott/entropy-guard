@@ -4,6 +4,31 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### Skills are sized from what they must hold, and load branch material only on its branch
+
+**Decided by**: Justin, 2026-10-07 ("lets go"), after Astra's independent size review (`explorations/2026-10-05-skills-size-review-astra.md`) found the October revision had grown the instruction library from 6,281 to 9,729 words, with every route loading instructions for routes it was not taking.
+**Decision**: Cut to derived budgets, in Astra's order:
+- the intent-change rule moves to its own file (`intent-change-rule.md`), so a guard can load the rule alone;
+- the mixed-system profile (`mixed-profile.md`) and young-repo bootstrap (`bootstrap.md`) load only on their routes;
+- the generator defines the guard contract once, as one annotated template, with a derived guard budget of about 450 + 36 words per justified check, plus source pointers and commands; standalone runs get missing analysis from `entropy-assessment` in assessment-only mode rather than their own discovery;
+- the integrator keeps one worked example; docs-first folds its risks and checks into one matrix; this repo's guard drops its rationale paragraphs.
+
+Kept intact: the intent distinctions, the staged/unstaged and untouched-consumer traps, adoption evidence, and the one-findings-list rules.
+**Impact**: The library falls from 9,729 to 5,448 words (target about 5,200); a docs-first route loads about 4,450, a mixed route about 3,950; this repo's guard falls from 1,644 to 604 words. The cut is checked against the skills at `daee846` on the existing cases and the critique's next checks (`explorations/2026-10-07-size-cut-eval.md`).
+**Amended**: 2026-10-07, after Astra's adversarial review of the cut (`explorations/2026-10-07-size-cut-review-astra.md`, 10 findings, all verified to hold), fixed under Justin's `astra-review` rule:
+- **Guards' own safety:** generated guards carry their own "Modes and safety" section and bind their baseline commit explicitly.
+- **The analysis contract:** the front door defines one "Called for analysis only" contract, which inherits the caller's mode, returns before generation, and returns the guard decision (`none`, `bootstrap`, `create`, `update`). `none` is allowed for an active system that needs no change, and one caller owns each handover.
+- **Bootstrap:** `bootstrap.md` serves both a young repo and a single missing surface.
+- **Adoption evidence:** the integrator reports each mechanism as a reminder, an executed check or an enforced invariant, each with its own evidence, and weighs a guard's cost against its trigger.
+- **Rules defined once:** the one-owner rule and the rule that every correction is limited by its evidence are each defined once, at the front door, with generated guards carrying a copy.
+- **Supersession:** the check covers restoring, reviving and recreating.
+- **The guard budget:** its terms are counted once each, against a measured 706-word common contract, and it never cuts justified coverage.
+
+The library grows to 6,364 words: about 750 words of restored obligations, which Astra's review said belong in the budget.
+**Amended**: 2026-10-07, after round 5 of the test failed on K21 (`explorations/2026-10-07-size-cut-eval.md`): one run named the open questions its README hunk touched, then left the hunk in its settled patch. Proposed changes are now sorted, not judged: any change that touches an open question goes in a separate provisional patch. The intent pass also searches the code and commit messages before reporting that nothing records a decision. 93 words more. Round 6 then passed under the same rule, with one scorer's half point on K3 re-applied to the standard the baseline was scored by.
+
+---
+
 ### An intent change is a proposal, not an edit; the intent pass runs at the front door
 
 **Decided by**: Justin, 2026-10-04 ("go ahead with the revision"), approving items 1 to 6 of `explorations/2026-10-04-skills-review-synthesis.md`.

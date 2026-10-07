@@ -1,0 +1,35 @@
+Patch 04: PROVISIONAL. Apply only after Justin answers Q1 and Q2 (questions.md) as recommended.
+Lab AGENTS.md (apply in ~/scopes/scope-orchestration-lab with `patch -p1`, after patch 03 or alone).
+Findings: F3, F4, F17. It settles Q1 (the guard's home) and Q2 (where decisions are recorded), so it is not a
+correction and must not be applied before those answers. It needs the guard installed at
+skills/session-coherence-guard/SKILL.md first (guard/SKILL.md in this output).
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -17,6 +17,7 @@
+ | Something true of the generic Scope model | `/home/justin-philpott/pro/scope` |
+ | Something true of their relationship | `memory/` here |
+ | A resource joined or left this Scope | `scope.yaml`, then one line in `SCOPE.md` |
++| A decision Justin takes | `decisions/`: one dated file in his words, linked from `STATE.md` and the issue it serves |
+ 
+ Do not duplicate repository facts here. Agent definitions and private context
+ owned by this Scope may live here when ORC can consume them through an explicit,
+@@ -30,7 +31,8 @@
+ 
+ ## Keeping state
+ 
+-`STATE.md` is overwritten at each verified event: a commit lands, tests pass, a decision is taken.
++`STATE.md` is overwritten at each verified event: a commit lands, tests pass, a decision is taken (recorded first in
++`decisions/`, then linked).
+ It holds current state only, capped at about forty content lines. History is in `git log`; open
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+@@ -40,3 +42,8 @@
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+ commit containing that idea has landed. Commit each newly recorded idea immediately rather than
+ batching multiple ideas into a later commit.
++
++## Before handing off
++
++Run [`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md) at the end of every work
++session, in each repository the session changed, before the last commit and before rewriting `STATE.md`.

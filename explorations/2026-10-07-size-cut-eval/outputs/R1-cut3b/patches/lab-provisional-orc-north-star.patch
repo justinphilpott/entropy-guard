@@ -1,0 +1,32 @@
+diff -ruN a/decisions/2026-09-25-orc-north-star.md b/decisions/2026-09-25-orc-north-star.md
+--- a/decisions/2026-09-25-orc-north-star.md	1970-01-01 01:00:00.000000000 +0100
++++ b/decisions/2026-09-25-orc-north-star.md	2026-10-07 18:22:46.352433942 +0100
+@@ -0,0 +1,13 @@
++# Decision: ORC's north star
++
++Justin's words of 25 and 26 September 2026. Until now they were held in `STATE.md`, which is overwritten at each
++verified event; the 25 September words also appear in `reports/2026-09-30-priorities.md`. Copied here on 7 October 2026
++by the entropy-guard assessment. Copying them is not deciding them again.
++
++- **Justin, 2026-09-25:** ORC is his **ChatGPT replacement, daily tool, agentic development test ground, and eventual
++  work showpiece**.
++- **Justin, 2026-09-26:** once the six slots work, **work towards a point of consolidation**.
++
++`STATE.md` summarised the direction around those words, unattributed: "ORC is the UX surface to Justin's own agentic
++system: specialised agents, reached through Iris, with ADA creating new ones." ORC's `README.md`, "Direction", is the
++declared description it should agree with.
+diff -ruN a/STATE.md b/STATE.md
+--- a/STATE.md	2026-10-07 18:22:13.866551335 +0100
++++ b/STATE.md	2026-10-07 18:22:46.363869504 +0100
+@@ -6,10 +6,7 @@
+ 
+ ## North star
+ 
+-ORC is the UX surface to Justin's own agentic system: specialised agents, reached through Iris, with ADA
+-creating new ones. Justin, 2026-09-25: his **ChatGPT replacement, daily tool, agentic development test
+-ground, and eventual work showpiece**. Justin, 2026-09-26: once the six slots work, **work towards a point of
+-consolidation**.
++Justin's words of 25 and 26 September: `decisions/2026-09-25-orc-north-star.md`.
+ 
+ ## Read first
+ 

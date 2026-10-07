@@ -4,6 +4,16 @@ Capture discoveries as you build. Focus on what you validated, not just opinions
 
 ---
 
+### A rule that sorts by something a run already records holds better than a rule that asks for a judgement
+
+**Topic**: Writing skill instructions
+
+**Insight**: Three wordings of "a patch must not settle an open question" asked each run to judge whether its patch settled one. K21 failed in 3 of 7 R1 runs under them, and in the last failure the run had already named the questions its hunk touched. The fourth wording sorts instead: any change that touches an open question goes in a provisional patch. K21 was then met in both R1 runs, and all five round-6 runs sorted their patches by question. The cost is over-sorting: 2 of the 5 runs held back a settled correction.
+**Validated by**: rounds 1 to 6 of `explorations/2026-10-07-size-cut-eval.md`. Two runs under the new wording is a small sample.
+**Implication**: Where a skill needs a run to keep two kinds of output apart, key the split to a fact the run writes down anyway, not to a judgement it makes in passing. Say what goes on each side, so the split does not swallow settled work.
+
+---
+
 ### A guard can be followed beyond what it says, so test its instructions separately from its result
 
 **Topic**: Evaluating guards

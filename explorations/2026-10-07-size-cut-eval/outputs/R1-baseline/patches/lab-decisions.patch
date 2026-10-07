@@ -1,0 +1,66 @@
+--- /dev/null
++++ b/decisions/2026-09-25-north-star-and-merging.md
+@@ -0,0 +1,22 @@
++# Decision: what ORC is for, and when Claude merges
++
++Justin's decisions of 25 and 26 September 2026. Copied on 7 October 2026 from `STATE.md` (as updated 4 Oct 17:31,
++lines 8-11 and 17), where they were the only record and would have been lost at its next overwrite. Copied, not
++re-decided: the bold words are Justin's as `STATE.md` recorded them; nothing else here is a decision.
++
++## What ORC is for
++
++- Justin, 2026-09-25: ORC is his **ChatGPT replacement, daily tool, agentic development test ground, and eventual
++  work showpiece**.
++- Justin, 2026-09-26: once the six slots work, **work towards a point of consolidation**.
++
++`STATE.md` framed both with a description that is not Justin's recorded wording: "ORC is the UX surface to Justin's
++own agentic system: specialised agents, reached through Iris, with ADA creating new ones."
++
++## When Claude merges a pull request
++
++- Justin, 2026-09-25: Claude merges a pull request once review and tests pass.
++
++`STATE.md` added an observation alongside it: a review posted on the pull request, plus Justin's go-ahead, gets past
++Claude Code's permission classifier. Nothing yet runs the tests on a pull request (orchestrator#144), so "tests pass"
++is checked by whoever runs them, and the pull request should say which suites ran.
+--- /dev/null
++++ b/decisions/2026-10-04-lab-role-and-processes.md
+@@ -0,0 +1,38 @@
++# Decision: the lab's role, where issues live, and the processes kept
++
++Justin's decisions from his interview on the afternoon of 4 October 2026, with one more from that day and three from
++3 October. Copied on 7 October 2026 from `STATE.md` (as updated 4 Oct 17:31, lines 33-34, 38-55 and 57-58), where
++they were the only record in this Scope. Copied, not re-decided; the wording is `STATE.md`'s.
++
++## 4 October, the interview
++
++- **The lab is the central Scope** for project management, core issue tracking, code quality and security. Astra is
++  to say what else it should cover.
++- **Where issues live:** a Scope's issues stay in its own repository, on one central map (orchestrator#140). A `core`
++  label marks a Scope issue that needs ORC's core changed. Later, Scopes may track their own business logic
++  elsewhere.
++- **The processes kept, all of them:**
++  - map and label check;
++  - tests on every PR (#144);
++  - the security-review and package-API checks;
++  - daily diary;
++  - weekly adversarial review;
++  - entropy guard at session end;
++  - FRICTION into rules, monthly (#60);
++  - branch and worktree cleanup (#70);
++  - `/tmp` cleanup (#182).
++- **ORC scheduling (#166) is built first,** and the scheduled processes run through it.
++- **Astra runs entropy-guard's assessment on ORC and the lab together.** Justin was shaping the brief before it ran.
++- **Labels:** the type-label proposal waits on Astra's revisions (`reports/2026-10-04-labels-review-astra.md`).
++
++## 4 October, earlier
++
++- **Moving Stillness is paused.** Browser-stack work that touches it (#118, #52, MS #52) waits.
++
++## 3 October
++
++These belong to the issues they name. They are copied here because `STATE.md` was their only record in this Scope.
++
++- #194 keeps all six preview items: a configurable limit, and fixed tailnet links.
++- Moving Stillness's `failure-verdicts` is dropped.
++- MS #52 reads every entry-list page.

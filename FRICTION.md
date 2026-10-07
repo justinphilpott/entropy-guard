@@ -5,6 +5,25 @@ section per day.
 
 ---
 
+## 2026-10-07 — the stall's real cause, and the reply cap in codex
+
+- **A test run wrote one cache file into the live ORC checkout.** To confirm the R4c fixture's tests pass, Claude
+  linked the live `~/pro/orchestrator/node_modules` into a scratch copy of ORC at `8cee662`, read-only in intent. The
+  lockfiles were identical. vitest then rewrote its results cache, `node_modules/.vite/vitest/<hash>/results.json`, in
+  the live checkout at 19:01, while Justin had "big work underway" there. **Cost:** none known. The file is
+  git-ignored timing data that vitest rewrites on every run. An **instance**: "read-only" was assumed for a tool
+  that writes a cache. Next time, copy dependencies, never link them.
+- **Correction to the stall entry of 2026-10-05.** The two Astra stalls were not a missing first-output timeout. The
+  orchestration lab's `FRICTION.md` (4 October, line 79) found that `opencode run` hangs at `init` whenever another
+  `opencode run` is going at the same time. The likely cause is contention on opencode's one shared database
+  (`~/.local/share/opencode/opencode.db`, 19 GB), which the lab has not yet proven. One of the lab's three hung runs
+  that day was colliding with this repo's run, 17 minutes in. So this session's reviews also cost the lab time.
+  Justin's `astra-review` skill (local-config, 2026-10-06) now runs Astra through codex instead. The retrying runner
+  written on 5 October treated a symptom; it is not needed.
+- **codex loads the same global rules.** `~/.codex/AGENTS.md` links to the same `AGENTS.md` that opencode loads, so
+  the 150-200 word reply cap that refused Astra's reports three times will likely apply to `astra-review`'s codex runs
+  too. Not yet tested. The skill does not mention it. A **missing system** in that skill, which is Justin's to change.
+
 ## 2026-10-05 — Astra's word cap and stalls, a self-killing command, dating approvals
 
 - **Astra refused to write a full report three times tonight. The cause is opencode, not the briefs.** opencode

@@ -1,0 +1,35 @@
+--- a/skills/docs-first-planning-assessment/SKILL.md
++++ b/skills/docs-first-planning-assessment/SKILL.md
+@@ -111,7 +111,7 @@
+ - **Loop map**
+ - **Entropy profile**: top risks ranked by destructive potential
+ - **Recommendations**: what to consolidate, demote, mark as historical, or guard
+-- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense
++- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense, each verified against the current artifact before it is written
+ 
+ Also produce a **current-state packet** for the next fresh session. Keep it short and operational.
+ 
+--- a/skills/session-coherence-skill-generator/SKILL.md
++++ b/skills/session-coherence-skill-generator/SKILL.md
+@@ -19,8 +19,8 @@
+ be run during or near the end of a coding session to leave the codebase coherent,
+ self-explanatory, and easy to pick up next time.
+ 
+-This is a meta skill: it does not assume the repository already has FlowBook's
+-exact files. It first discovers the repository's own context-preservation
++This is a meta skill: it does not assume the repository has any particular
++file layout. It first discovers the repository's own context-preservation
+ structures, then writes or updates a custom session-coherence skill for that
+ repository.
+ 
+@@ -190,8 +190,8 @@
+     needed now, which are soon, which are premature, and is guard generation still
+     premature?
+ 
+-Prefer the repository's existing vocabulary. Do not impose FlowBook's exact file
+-layout on another codebase.
++Prefer the repository's existing vocabulary. Do not impose another repository's
++file layout on this one.
+ 
+ ---
+ 

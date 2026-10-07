@@ -1,0 +1,32 @@
+PROVISIONAL, question 3 (questions.md): where decisions about ORC's direction are recorded. Do not apply until
+Justin answers. Written for the recommended answer (a): the lab's decisions/. Apply after settled-lab.diff.
+
+--- /dev/null
++++ b/decisions/2026-09-25-north-star-and-merge-rule.md
+@@ -0,0 +1,15 @@
++# Decision: ORC's north star, and when Claude merges
++
++Decided by Justin on 25 and 26 September 2026. Copied on 7 October 2026 by the entropy-guard assessment from
++`STATE.md` (the file of 2026-10-04 17:31, "North star" and "How we work"), which was their only durable record apart
++from a quotation in `reports/2026-09-30-priorities.md`. Recording them here is not deciding them again: the wording is
++the state file's, unchanged.
++
++- **North star.** ORC is the UX surface to Justin's own agentic system: specialised agents, reached through Iris, with
++  ADA creating new ones. Justin, 2026-09-25: his **ChatGPT replacement, daily tool, agentic development test ground,
++  and eventual work showpiece**. Justin, 2026-09-26: once the six slots work, **work towards a point of
++  consolidation**.
++- **Merging.** Claude merges a PR once review and tests pass (Justin, 2026-09-25); a review posted on the PR plus
++  Justin's go-ahead gets past Claude Code's classifier.
++
++Not copied, because `STATE.md` gives it no author or date of its own: "After 22:00, work stays on branches".
+--- a/STATE.md
++++ b/STATE.md
+@@ -11,7 +11,7 @@
+ ORC is the UX surface to Justin's own agentic system: specialised agents, reached through Iris, with ADA
+ creating new ones. Justin, 2026-09-25: his **ChatGPT replacement, daily tool, agentic development test
+ ground, and eventual work showpiece**. Justin, 2026-09-26: once the six slots work, **work towards a point of
+-consolidation**. (Recorded only here and in `reports/2026-09-30-priorities.md`; its durable home is an open question.)
++consolidation**. (Recorded in `decisions/2026-09-25-north-star-and-merge-rule.md`.)
+ 
+ ## How we work
+ 

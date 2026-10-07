@@ -1,0 +1,15 @@
+PROVISIONAL, question 2 (questions.md): which file owns STATE.md's size limit. Do not apply until Justin answers.
+Written for the recommended answer: AGENTS.md owns it. Apply after settled-lab.diff, and write his number into AGENTS.md.
+
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,8 @@
+ 
+ Updated 2026-10-07 by the entropy-guard assessment, from the file of 2026-10-04 17:31.
+ **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Size: as `AGENTS.md`,
++"Keeping state", sets it.
+ **Stale when** ORC restarts, a PR merges or Justin decides something after the time above; that session overwrites
+ it. No live fact below was re-read on 7 Oct: each is as recorded, with its time.
+ 

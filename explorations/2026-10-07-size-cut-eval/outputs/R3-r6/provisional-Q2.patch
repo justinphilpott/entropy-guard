@@ -1,0 +1,174 @@
+PROVISIONAL: do not apply until the steward answers Q2 (questions.md). Apply only if the answer is (b):
+content corrections beyond signposting. The recommended answer is (a), under which this patch is not applied.
+Findings F10, F11, F13, F16, F18. Check the components.yaml sibling paths on disk first; the TC path is left alone.
+Apply after settled.patch: patch -p1 < provisional-Q2.patch
+
+diff --color '--color=never' -ruN --no-dereference settled/components/agent/DECISIONS.md q2/components/agent/DECISIONS.md
+--- settled/components/agent/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/components/agent/DECISIONS.md	2026-10-07 19:57:58.385867444 +0100
+@@ -9,7 +9,7 @@
+ - runtime state, logs, and agent status live outside git
+ - an agent is the runtime embodiment of a role; the role itself is design-time
+ - sandbox/workspace design is separate from role definition
+-- inter-agent communication and runtime setup are still open questions
++- inter-agent communication and the running-agent model are decided at system level (root DECISIONS.md, 2026-04-27: "Communication is HTTP + JSON-RPC with A2A-compatible task lifecycle" and "A running agent is a harness inside a sandbox")
+ 
+ ---
+ 
+diff --color '--color=never' -ruN --no-dereference settled/components/orchestrator/DECISIONS.md q2/components/orchestrator/DECISIONS.md
+--- settled/components/orchestrator/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/components/orchestrator/DECISIONS.md	2026-10-07 19:57:58.385780178 +0100
+@@ -10,7 +10,7 @@
+ - the orchestrator sees scope manifests only, not scope interiors
+ - infrastructure operations run through the deterministic scope manager; `scopectl` handles scope-definition file ops
+ - workflows use the `workflows/{name}/WORKFLOW.md` directory convention
+-- cross-boundary communication must be explicit, minimal, and secure by default (mechanism TBD)
++- cross-boundary communication must be explicit, minimal, and secure by default; the mechanism is HTTP + JSON-RPC with an A2A-compatible task lifecycle (root DECISIONS.md, 2026-04-27)
+ - first operational workflows are committed deliverables: daily-summary, flowbook-publish, site-rebuild
+ 
+ ---
+diff --color '--color=never' -ruN --no-dereference settled/components/orchestrator/MODEL.md q2/components/orchestrator/MODEL.md
+--- settled/components/orchestrator/MODEL.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/components/orchestrator/MODEL.md	2026-10-07 19:57:58.385738905 +0100
+@@ -81,7 +81,7 @@
+ 
+ The orchestrator's major infrastructure questions (communication, database, manifest cache, running agent model, workspace lifecycle) are now decided — see root [DECISIONS.md](../../DECISIONS.md) entries from 2026-04-27.
+ 
+-Remaining open questions tracked in root [DECISIONS.md](../../DECISIONS.md#open-questions):
++Still open for the orchestrator:
+ 
+-- **Cross-scope workflow exposure model** — direction set (Agent Card / skills pattern at runtime), but detail needed on how child scope leads declare callable capabilities in practice
+-- **Human-in-the-loop patterns** — the task lifecycle provides `input_required`, but the UX and policy need real workflows
++- Cross-scope workflow exposure: direction set in root [DECISIONS.md](../../DECISIONS.md), "Cross-scope workflow exposure uses Agent Card / skills pattern"; detail not decided.
++- Human-in-the-loop patterns: see root [DECISIONS.md](../../DECISIONS.md#open-questions).
+diff --color '--color=never' -ruN --no-dereference settled/components/orchestrator/PLAN.md q2/components/orchestrator/PLAN.md
+--- settled/components/orchestrator/PLAN.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/components/orchestrator/PLAN.md	2026-10-07 19:57:58.385819628 +0100
+@@ -25,7 +25,7 @@
+ 
+ The orchestrator moves from design to running service when the platform layer is stood up. That work will:
+ 
+-- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (format TBD — see root DECISIONS.md open questions).
++- **Read the manifest registry** — on startup, load `scope.yaml` into an in-memory cache (root DECISIONS.md, 2026-04-27: "Orchestrator manifest cache is in-memory from scope.yaml").
+ - **Connect to the cross-boundary channel** — whatever mechanism is chosen for inter-agent communication.
+ - **Call the scope manager** — invoke the deterministic service for workspace assembly, secret injection, and lifecycle ops. The scope manager component design is separate (see [components.yaml](../../components.yaml) — status `planned`, no design dir yet).
+ - **Run workflows on a schedule** — outside the V0 enqueue-only temporal coordinator boundary; the V0 pg-boss job has no production consumer and makes no delivery claim.
+diff --color '--color=never' -ruN --no-dereference settled/components.yaml q2/components.yaml
+--- settled/components.yaml	2026-10-07 19:57:21.910092437 +0100
++++ q2/components.yaml	2026-10-07 19:57:58.386307074 +0100
+@@ -36,7 +36,7 @@
+   scope:
+     status: in-progress
+     design: components/scope
+-    implementation: ../scope
++    implementation: ../../scope
+     role: Authorization primitive; resource grouping, membership, policy
+ 
+   agent:
+@@ -52,37 +52,37 @@
+ 
+   library:
+     status: exploratory
+-    repo: ../library
++    repo: ../../library
+     role: Reusable agent skills
+ 
+   seed:
+     status: exploratory
+-    repo: ../seed
++    repo: ../../seed
+     role: Project bootstrapping
+ 
+   entropy-guard:
+     status: exploratory
+-    repo: ../entropy-guard
++    repo: ../../entropy-guard
+     role: Coherence tooling for fast-iterating systems
+ 
+   entropy-immune-system:
+     status: exploratory
+-    repo: ../entropy-immune-system
++    repo: ../../entropy-immune-system
+     role: Coherence research
+ 
+   git-sync:
+     status: exploratory
+-    repo: ../git-sync
++    repo: ../../git-sync
+     role: Multi-machine dev sync
+ 
+   flowbook:
+     status: exploratory
+-    repo: ../flowbook
++    repo: ../../flowbook
+     role: Audio pipeline application
+ 
+   flowvoice:
+     status: exploratory
+-    repo: ../flowvoice
++    repo: ../../flowvoice
+     role: Voice layer application
+ 
+   agentic-colab:
+diff --color '--color=never' -ruN --no-dereference settled/README.md q2/README.md
+--- settled/README.md	2026-10-07 19:57:21.909783211 +0100
++++ q2/README.md	2026-10-07 19:57:58.386403192 +0100
+@@ -32,6 +32,8 @@
+ - [components/scope/](components/scope/) — scope component design (model, plan, decisions, template source, skills)
+ - [components/agent/](components/agent/) — agent component design (model, decisions, template source, skills)
+ - [components/orchestrator/](components/orchestrator/) — orchestrator component design (model, plan, decisions, root scope draft)
++- [components/temporal-coordinator/](components/temporal-coordinator/) — temporal coordinator design (plan and V0 spec; the interface refinement plan is superseded)
++- [archive/](archive/) — archived investigations, not current architecture
+ - [roles/](roles/) — reference role examples only, not live scope implementations
+ 
+ ## Related
+diff --color '--color=never' -ruN --no-dereference settled/runs/001-moving-stillness-status/RUN.md q2/runs/001-moving-stillness-status/RUN.md
+--- settled/runs/001-moving-stillness-status/RUN.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/runs/001-moving-stillness-status/RUN.md	2026-10-07 19:57:58.386356087 +0100
+@@ -73,7 +73,6 @@
+ - Pi's default provider is `google`, not `anthropic`. We pass `--model` explicitly to be deterministic.
+ - Pi auto-loads `AGENTS.md` and `CLAUDE.md` as context files. The cloned scope has both. We're keeping that on (more realistic for scope agents) — toggleable via `--no-context-files`.
+ 
+-_(fill in during/after Pi invocation — what happened, what worked, what didn't)_
+ 
+ ## Findings
+ 
+diff --color '--color=never' -ruN --no-dereference settled/RUNTIME.md q2/RUNTIME.md
+--- settled/RUNTIME.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/RUNTIME.md	2026-10-07 19:57:58.385997351 +0100
+@@ -64,7 +64,7 @@
+ - Issues scope-scoped auth tokens at provisioning time
+ - Manages workspace lifecycle transparently (the orchestrator submits tasks; the scope manager decides whether to provision, resume, or restart)
+ 
+-**Runtime gateway (unified for v0):**
++**Runtime seams (decomposition under review in the orchestration snapshot):**
+ - LLM proxying: receives keyless requests, adds the correct API key, forwards, logs usage per scope
+ - Task management: receives task submissions and status updates, writes to Postgres, enforces scope isolation
+ - Event logging: receives events from sandboxes, writes to Postgres with scope_id
+@@ -79,7 +79,7 @@
+ | Thing | What it is | What it touches | Typical caller |
+ |---|---|---|---|
+ | `scopectl` | Deterministic operator CLI | Scope definition files and templates | Human or local automation |
+-| `scope-manager` | Deterministic platform service and unified sandbox gateway | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
++| `scope-manager` | Deterministic platform service and single sandbox security perimeter | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
+ 
+ Rule of thumb: if the operation is "edit or validate a scope repo on disk," that is `scopectl`. If the operation crosses a trust boundary or touches runtime infrastructure, that is `scope-manager`.
+ 
+diff --color '--color=never' -ruN --no-dereference settled/SCOPES_PLANNED.md q2/SCOPES_PLANNED.md
+--- settled/SCOPES_PLANNED.md	2026-08-01 21:12:00.000000000 +0100
++++ q2/SCOPES_PLANNED.md	2026-10-07 19:57:58.385685267 +0100
+@@ -27,7 +27,7 @@
+ 
+ **Open questions**:
+ - What does the orchestrator need to do day-to-day beyond the planned workflows above?
+-- How do child scopes expose parent-callable workflows or capabilities to the root scope? See [DECISIONS.md](DECISIONS.md#open-questions).
++- How do child scopes expose parent-callable workflows or capabilities to the root scope? Direction set in [DECISIONS.md](DECISIONS.md): "Cross-scope workflow exposure uses Agent Card / skills pattern" (2026-04-27); the detail is not decided.
+ 
+ ## Child Scopes
+ 
+@@ -87,4 +87,4 @@
+ 
+ ## Cross-cutting Questions
+ 
+-Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: sandbox isolation model, workspace lifecycle triggers, agent runtime binding location, concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism.
++Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism.

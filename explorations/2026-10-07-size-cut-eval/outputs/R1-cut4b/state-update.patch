@@ -1,0 +1,169 @@
+Patch: STATE.md brought up to date (apply at the root of scope-orchestration-lab), docs-first Step 5
+Status: proposed, not applied. From the entropy assessment of 2026-10-07 (assessment.md, findings F1-F4, F13, F18).
+Apply decision-records.patch first: this version links to the two decision files it adds instead of holding the
+decisions.
+
+What it changes:
+- Removes the contradictions in F1. The older values (ORC on 369628b, "#193 ... not merged", MS main c759f96) are
+  superseded by later records in the same file, so the latest recorded value is kept with its time.
+- No live value is refreshed. Each live fact is marked "as recorded on 4 Oct: re-read before stating"; grant e9675bd9
+  is still stated as recorded, with the note that no later grant is recorded.
+- History (2 Oct and 3 Oct items, the power cut) leaves; FRICTION.md and git hold it. Steward decisions leave for
+  decisions/2026-10-04-steward-decisions-from-state.md. Open items are kept.
+- Adds the six things Step 5 asks for: stage, what to trust first, settled decisions as links, active fronts and open
+  questions (including the assessment's four), misleading material nearby, and next actions. It also says what makes
+  the file stale and who refreshes it.
+- 43 non-blank lines, 36 of them not headings (was 87).
+
+Open questions this patch touches, with the text each is about left unchanged:
+- Q4: the cap. "Target: sixty lines." in the header is kept word for word, and lab AGENTS.md line 34 ("about forty
+  content lines") is not touched. The new file meets either reading, so neither number is chosen.
+- Q1, Q2, Q3: listed under "Waiting on Justin" by reference only; nothing answers them.
+
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,98 +2,55 @@
+ 
+ Updated 2026-10-04 17:31. **Current state only.** History is in `git log`, open work in GitHub issues,
+ what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++Reshaped 2026-10-07 by an entropy assessment, with no live value re-read. Stale when ORC restarts, a PR on the map
++merges or Justin decides something; the agent whose session caused that refreshes it. Decisions go to `decisions/`.
+ 
+-## North star
++## Now
+ 
+-ORC is the UX surface to Justin's own agentic system: specialised agents, reached through Iris, with ADA
+-creating new ones. Justin, 2026-09-25: his **ChatGPT replacement, daily tool, agentic development test
+-ground, and eventual work showpiece**. Justin, 2026-09-26: once the six slots work, **work towards a point of
+-consolidation**.
+-
+-## How we work
+-
+-- Prior art before new code, peer set first. Verify a restart by process start time. State anything about a
+-  live service with where, when and what was read (`local-config/home/AGENTS.md`).
+-- Claude merges a PR once review and tests pass (Justin, 2026-09-25); a review posted on the PR plus Justin's
+-  go-ahead gets past Claude Code's classifier. After 22:00, work stays on branches; suggesting Justin stops
+-  never means Claude stops (AGENTS.md, 2026-09-27).
++- **Stage:** ORC is in daily use while it is built; the lab is the central Scope for its project management, code
++  quality and security. Decisions: `decisions/2026-10-04-steward-decisions-from-state.md` (north star, 3 and 4 Oct),
++  `decisions/2026-09-17-async-work-architecture.md`. Of record: `reports/2026-09-25-direction-review.md`, `-astra.md`.
++- **Trust first:** the user-wide rules, `~/pro/local-config/home/AGENTS.md`; ORC `AGENTS.md`, `README.md`,
++  `test/architecture.test.ts`, `SECURITY-REVIEW.md`; here `SCOPE.md`, `scope.yaml`, `decisions/`, `FRICTION.md`; the
++  map of work, orchestrator#140 (`node tools/map.mjs`).
++
++## Live, as recorded on 4 Oct: re-read before stating
++
++- **ORC:** last recorded restart 14:48:27 onto `8cee662` (#195), verified then by start time, `build.json`, health 200.
++  Read it with `pnpm service:status` in `~/pro/orchestrator`; log `journalctl --user -u orc.service` (lines before
++  16:55 hold the old, replaced token). Served at `https://athena.tail99b214.ts.net`.
++- **Moving Stillness:** paused (Justin, 4 Oct). `main` at `fc830aa` (MS #53); both build cards approved 13:40:50.
++- **Bookwhen:** login in `~/.config/scopes/scope-moving-stillness/credentials/`, password change due after the leak of
++  27 Sep. Grant `e9675bd9` was recorded as covering the test entry until 1 Oct 18:00Z; no later grant is recorded.
++
++## Active
++
++- **#193 resolve before acting is live** (ORC #200 `3989cdb`, MS #53), reviewed twice by Astra
++  (`reports/2026-10-04-resolve-before-acting-review-astra.md`). Not yet seen on real Bookwhen: Justin will try it.
++  Not closed: Playwright's readiness wait after the check (#200). Also live 4 Oct: #201, #199, #195. Filed #202.
++- **Unmerged:** orchestrator #106, #132, #133; scope-finance #1, #2. On 2 Oct, #178, #176, #133 and #132 touched
++  guarded files with no `## Security review` section.
++- **Invoicing** works (JPWL112, JPWL113; Waterlands is the test bed, generic code in Finance, ORC #51). The vault's
++  `invoicing.json` is uncommitted for Justin's review. Email is parked (finance #3; may belong in `scope-jp-woodstudio`).
++- **Map follow-ups, not urgent:** the marking rule in Codex/opencode briefs; a hook that clears a session's marks;
++  ORC's own agents on the map; more blocked-by links; close #33 on Justin's word.
++
++## Waiting on Justin
++
++- Asked 4 Oct: look into ADA (`binding_missing`) and Analyst (`connector_missing`) being unavailable? Delete the
++  leftover `.playwright-mcp/` in ORC's checkout?
++- From the 1 Oct synthesis, in order: #144 tests on every PR (GitHub Actions or a pre-push hook?); #137 bind approvals
++  to builds, before any real email; #149 authority rules step 2 (`memory/authority-rules-step-1.md`); #166's chat.
++- #196 where agent worktrees live; #42 naming; #28 close on his yes; #192 no time helper; local-config#3 push summary.
++- The entropy assessment's four questions (`decisions/2026-10-07-proposed-intent-changes.md`); its draft session-end
++  guard waits on the third, where the guard lives.
+ 
+-## Next
++## Misleading material nearby
+ 
+-**Where we are now:** #193 (resolve before acting) is built and in review, not merged. **ORC PR #200**: a package
+-resolves a target to a description (role, name, states, link, `data-` attributes) checked by Playwright's role engine,
+-and every act takes it back and acts on exactly that element, refused if it left the page or changed; a label is
+-described as the control it labels. **MS PR #53**: the executor's guards decide on those descriptions; rows are
+-identified by `data-event`, as the Bookwhen reader does; booking checks use the removed row's own event. Both must go
+-live together (MS's live build fails safely on #200's ORC). **Reviewed by Astra twice** (00:21 and 12:56), every finding verified and fixed with
+-tests that fail without it (ORC up to `73787ea`, MS up to `d59d4ad`); report `reports/2026-10-04-resolve-before-acting-review-astra.md`.
+-Tests: ORC 970 + E2E 5, MS 185. Not closed (stated in #200): Playwright's own readiness wait after the check. Filed #202
+-(packages cannot test against ORC's real parts). **#193 is live:** #200 merged as `3989cdb`, ORC restarted 13:36:37 on it (verified: start
+-time, `build.json`, health 200); MS #53 merged as `fc830aa`, its two build cards approved 13:40:50. Not yet seen live:
+-the resolve path on real Bookwhen (Justin will try it). **MS is paused** (Justin, 4 Oct): browser-stack work that
+-touches it (#118, #52, MS #52) waits. **#201 live** (`adaa127`, restarted 14:03:34, verified). **#199 live** (`6d89ce7`, restarted 14:26:04, verified; its log at once named ADA `binding_missing` and Analyst
+-`connector_missing` as unavailable). **#195 live** (`8cee662`, restarted 14:48:27, verified): from the next restart, a reply being
+-written is finished first and new messages are refused with what to do. Asked Justin: look into ADA and Analyst
+-being unavailable? Delete the leftover `.playwright-mcp/` in ORC's checkout?
+-**Decided by Justin, 4 Oct afternoon (interview):**
+-- **The lab is the central Scope** for project management, core issue tracking, code quality and security. Astra is to
+-  say what else it should cover.
+-- **Where issues live:** a Scope's issues stay in its own repository, on one central map; a `core` label marks a Scope
+-  issue that needs ORC's core changed. Later, Scopes may track their own business logic elsewhere.
+-- **The processes kept, all of them:**
+-  - map and label check;
+-  - tests on every PR (#144);
+-  - the security-review and package-API checks;
+-  - daily diary;
+-  - weekly adversarial review;
+-  - entropy guard at session end;
+-  - FRICTION into rules, monthly (#60);
+-  - branch and worktree cleanup (#70);
+-  - `/tmp` cleanup (#182).
+-- **ORC scheduling (#166) is built first,** and the scheduled ones run through it.
+-- **Astra runs entropy-guard's assessment on ORC and the lab together.** Justin is shaping the brief before it runs.
+-- **Labels:** the type-label proposal waits on Astra's revisions (`reports/2026-10-04-labels-review-astra.md`). #201: one package API version, a refusal naming both
+-versions, API Extractor's report `src/package-api.api.md` with a test and a Danger rule. A power cut rebooted athena at 11:41 on 4 Oct and emptied `/tmp`; ORC came back by itself on 369628b. Filed #201 (the package API version is written
+-out as 1 in four places). Justin's 3 Oct decisions: #194 keeps all six preview items (configurable limit, fixed
+-tailnet links); MS `failure-verdicts` dropped; MS #52 reads every entry-list page. ORC live: 369628b since 22:12:47.
+-Next on the browser stack: #118, then #52. Open for Justin: #196 where agent worktrees live.
+-
+-**The map of work is orchestrator#140** (built 2 Oct): every open issue under it as sub-issues, shown live with who is
+-working on what in the GitHub Project ORC (`github.com/users/justinphilpott/projects/4`, hierarchy view; Justin: "this
+-view is great"). Agents mark work with `node tools/map.mjs working '<ref>' --agent Claude` and clear it with
+-`stopped`; `node tools/map.mjs` draws the tree and flags strays and marks older than 14 h. Rules live in #140.
+-Map follow-ups, not urgent: the marking rule in Codex/opencode briefs; a Claude Code hook that clears a session's
+-marks; ORC's own agents on the map; more blocked-by links; close #33 on Justin's word.
+-
+-**Waiting on Justin**, in the order of the 1 Oct synthesis (`reports/2026-10-01-review-synthesis.md`):
+-- #144 tests on every PR (GitHub Actions or a pre-push hook?); #137 bind approvals to builds, before any
+-  real email; #149 authority rules step 2 (the Iris rule is ready: `reports/2026-10-01-iris-speaks-for-you.md`;
+-  step 1: `memory/authority-rules-step-1.md`); the scheduling chat (#166).
+-- Invoicing works (JPWL112, JPWL113 through ORC, real Waterlands vault). Email is parked on a woodwork domain
+-  (finance #3; may belong in `scope-jp-woodstudio`). `invoicing.json` in the vault is uncommitted for his review.
+-- Unmerged: orchestrator #106 (glossary), #132 (browser snapshots), #133 (card values); scope-finance #1, #2.
+-
+-- **Git cleanup moved to Worktrunk and gh poi (2 Oct, Justin: "yes").** `git-tidy-report` is deleted (local-config
+-  `4811698`); `wt` and `gh poi` come from local-config `scripts/install-git-tools.sh`; all five pre-push hooks print
+-  `scripts/push-summary`. The global AGENTS.md: clean up with `wt remove` and `gh poi`, only your own worktrees.
+-- **Security reviews are checked on GitHub by Danger (2 Oct, Justin: "B").** orchestrator #179 (15:54) and MS #49
+-  (15:57): a pull request changing a guarded path fails the "Security review" check until its description has a
+-  `## Security review` section; proven on GitHub (pass, fail with the section removed, pass restored). The trailer
+-  and the hook check are gone. Open orchestrator #178, #176, #133, #132 touch guarded files and have no section yet.
+-- **Phone (closed 3 Oct):** notices to ntfy topic `orc`, a tap opens its card, ORC installs from Chrome's menu
+-  (#139, #186, #187; live since the 09:23:56 restart, 3 Oct), and from Firefox (#189, closed); status on goal #34.
+-  Open: #42 (application-wide naming, now with the product's name), #28 (close on Justin's yes), #192 (no time
+-  helper, argued), local-config#3 (push summary lists the pushed branch). Reviews ask "does a maintained tool
+-  already do this?" as a standing rule (global AGENTS.md, local-config `9c29620`).
+-- **ORC:** `orc.service`, main process started 2026-10-03 22:12:47 on `369628b` (built `dist`), by Justin's restart card. `pnpm service:status` in `~/pro/orchestrator` says what runs; log:
+-  `journalctl --user -u orc.service` (lines before 16:55 hold the old, replaced token). Served at
+-  `https://athena.tail99b214.ts.net`.
+-- **Moving Stillness:** `main` `c759f96` (MS #51, the browser connector names `granted-actions`). Build cards 03-03
+-  (main agent) and 03-04 (adverts) approved by Justin on 3 Oct; both agents available.
+-- **Login and grant:** the Bookwhen login is in `~/.config/scopes/scope-moving-stillness/credentials/`; a password
+-  change is due after the leak of 27 Sep. Grant `e9675bd9` covers the test entry until 1 Oct 18:00Z.
++- ORC's root reports REWORK, SEAM, OPERATOR, FIXES, SLICE1, POLICY-STORE, GRANTS-E2E and CLASSIFY describe branch
++  states and name seven files that are gone. `memory/slots-run-walkthrough.md` predates the browser change (#76).
+ 
+-## Of record
++## Next
+ 
+-`reports/2026-09-25-direction-review.md` and `-astra.md`; `reports/2026-09-25-issue-sweep.md`. Invoicing:
+-Waterlands is the test bed, generic code in Finance (ORC #51). Generic-capability tracking: ORC #77.
++1. ORC scheduling (#166) first; the kept processes then run through it. Browser stack after MS resumes: #118, then #52.
++2. Watch #193's first real Bookwhen use, and record what it shows in `FRICTION.md` or here.

@@ -1,0 +1,91 @@
+PROVISIONAL: do not apply until the steward answers Q3 (questions.md). This drafts option (a): demote the
+guard and the session rituals written for active work. Findings F7, F8, F9.
+Apply after settled.patch: patch -p1 < provisional-Q3.patch
+
+diff --color '--color=never' -ruN --no-dereference settled/AGENTS.md q3/AGENTS.md
+--- settled/AGENTS.md	2026-10-07 19:57:21.909998554 +0100
++++ q3/AGENTS.md	2026-10-07 19:57:58.385462131 +0100
+@@ -35,14 +35,14 @@
+ 
+ ## Session start
+ 
+-1. Check ROADMAP.md — know what version we're on and what's being worked towards
+-2. Read MODEL.md — understand the system model and component relationships
+-3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+-4. Check components.yaml — know component status
+-5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+-6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
++This repository is reference-only (see the note above).
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++1. Read the "Current state" section at the top of [ROADMAP.md](ROADMAP.md).
++2. For current architecture work, go to the successors named in the note above.
++3. For history, start at [DECISIONS.md](DECISIONS.md) (dated entries) and [architecture/INDEX.md](architecture/INDEX.md).
++
++The sections "Before making changes", "Skill placement" and "Working practices" below, and the skills in
++[skills/](skills/), describe how this repo was worked on while it was current.
+ 
+ ## Before making changes
+ 
+@@ -69,7 +69,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- The former pre-commit guard, [skills/entropy-guard.md](skills/entropy-guard.md), is historical: it was written for active work on this repo
+ 
+ ## What belongs in this repo
+ 
+@@ -99,8 +99,8 @@
+ - [DECISIONS.md](DECISIONS.md) — system-level decision log
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+-- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder (historical)
++- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard (historical)
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+   - template/ — template source for new scope instances
+diff --color '--color=never' -ruN --no-dereference settled/skills/entropy-guard.md q3/skills/entropy-guard.md
+--- settled/skills/entropy-guard.md	2026-08-01 21:12:00.000000000 +0100
++++ q3/skills/entropy-guard.md	2026-10-07 19:57:58.385516854 +0100
+@@ -7,6 +7,10 @@
+ system_snapshot: "Current named version: Sol 0.1. Blueprint repo with component design under components/. Scope in components/scope/. Agent (role/binding) in components/agent/. Orchestrator in components/orchestrator/ with root-general scope draft. Five-layer stack is the single structural model in MODEL.md; RUNTIME.md has the runtime data-flow view (layers 3-5). Communication decided: HTTP + JSON-RPC, A2A-compatible task lifecycle. Scope manager is the single sandbox security perimeter; its internals decompose into seams. Postgres is the platform data store. Running agent = harness inside sandbox, communicates only through scope manager. Sandbox lifecycle transparent to orchestrator. One repo per scope (hard isolation). Manifest/interior split. Workflows: workflows/{name}/WORKFLOW.md. First scope (moving-stillness) instantiated. First orchestrator workflows committed. Scope-design and role-design skills drafted. Reference role example in roles/. No code, no CI, no hooks. Open questions reduced from 22 to 11 in DECISIONS.md."
+ ---
+ 
++> **Historical.** Written for active work on this blueprint (generated 2026-04-02, last evaluated 2026-04-27). This
++> repository is now reference-only (see README.md). Do not run this checklist for reference-only maintenance: its
++> repairs update ROADMAP progress, component statuses and open questions, which would extend the blueprint.
++
+ # Entropy Guard: agentic-architecture
+ 
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+diff --color '--color=never' -ruN --no-dereference settled/skills/README.md q3/skills/README.md
+--- settled/skills/README.md	2026-08-01 21:12:00.000000000 +0100
++++ q3/skills/README.md	2026-10-07 19:57:58.385597077 +0100
+@@ -4,7 +4,9 @@
+ 
+ They are not architecture primitives, live runtime skills, or generic reusable helper skills.
+ 
+-- `session-kickoff.md` builds a compact current-state packet before architecture work.
+-- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
++- `session-kickoff.md` builds a compact current-state packet before architecture work. Historical: written for active work.
++- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes. Historical: written for active work.
++
++This repository is now reference-only (see README.md).
+ 
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff --color '--color=never' -ruN --no-dereference settled/skills/session-kickoff.md q3/skills/session-kickoff.md
+--- settled/skills/session-kickoff.md	2026-08-01 21:12:00.000000000 +0100
++++ q3/skills/session-kickoff.md	2026-10-07 19:57:58.385562798 +0100
+@@ -1,5 +1,9 @@
+ # Skill: Session Kickoff
+ 
++> **Historical.** Written for active work on this blueprint. This repository is now reference-only (see README.md).
++> Its last step chooses next actions that would extend the blueprint; read the "Current state" section of ROADMAP.md
++> instead.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

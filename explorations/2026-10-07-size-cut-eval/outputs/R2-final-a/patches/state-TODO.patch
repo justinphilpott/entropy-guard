@@ -1,0 +1,48 @@
+State-file update for entropy-guard (snapshot 447da9a), from the entropy assessment of 2026-10-07.
+Apply from the repository root: git apply state-TODO.patch
+Open questions touched: Q1, Q2, Q3, Q4 are listed in "Current state" with their text as asked; none is settled.
+"Next Up" is unchanged, though its first two items are part of Q2.
+The doc-health-check backlog item changes only its parenthesis, because the updated guard no longer names it.
+
+--- a/TODO.md	2026-10-07 19:15:18.392867539 +0100
++++ b/TODO.md	2026-10-07 19:16:06.319275344 +0100
+@@ -2,6 +2,28 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++Read this first in a fresh session. It holds only what the other docs cannot tell you quickly. It goes stale when the stage changes, an open question is answered or a next action is done; whoever runs `skills/local/entropy-guard/SKILL.md` at the end of a session refreshes it.
++
++- **Stage** (checked 2026-10-07, by an entropy assessment of snapshot `447da9a`): the docs-first planning path is built (`skills/docs-first-planning-assessment/`, v0.1.0). The external validation batch under "Next Up" has no recorded results: none of its items is ticked, and `LEARNINGS.md` records none. The newest dated work is `skills/session-coherence-skill-generator/` (its metadata says `last_updated: 2026-05-11`), which no item here tracked.
++- **Trust first:** `INTENT.md`, then `DECISIONS.md`, then `AGENTS.md`, then the skill you are changing.
++- **Settled, not to reopen casually** (entries in `DECISIONS.md`): "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door"; "Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical"; "Keep a single local guard, but treat workflow/practice drift as first-class"; "Exportable skills vs local skills"; "Skill format: agentskills.io spec with SKILL.md + frontmatter"; "LEARNINGS.md stays tactical; articles live elsewhere".
++- **Open questions for the steward** (raised 2026-10-07; each has a recommended answer in that assessment):
++  - Q1. Which skill writes guards: `docs-first-planning-assessment` Phase 2, `session-coherence-skill-generator`, or each for its own repo shape? `INTENT.md` "The guard lifecycle" names only the assessment skills. A proposal is recorded in `DECISIONS.md`.
++  - Q2. Is the validation batch docs-first planning repos, judged by "clearer session recovery, fewer reintroduced stale ideas" (`INTENT.md`, `README.md` and "Next Up" below), or "a larger set of open source projects", judged by "more merged PRs" (`DECISIONS.md` "Farm broader entropic-immunity exploration..."), or both?
++  - Q3. May contributors, agents included, edit `INTENT.md` directly with a dated note (as its header and `AGENTS.md` "Consult INTENT.md for significant decisions" say), or are intent changes proposed in `DECISIONS.md` and made only after the steward decides? A proposal is recorded in `DECISIONS.md`.
++  - Q4. Who is the steward? Nothing in the repo says; the repository owner, Justin Philpott, is assumed.
++- **Misleading material nearby:**
++  - `explorations/`: conversation records that seeded the sibling `entropy-immune-system` repo. Not current truth.
++  - `DECISIONS.md` entries that describe `entropy-assessment` with "Phase 2", "appendices" or "Step 8": the skill is now a router, and its deep steps are in `docs-first-planning-assessment`.
++  - `LEARNINGS.md` references to "Step 0", "Step 5", "Step 7" and "Step 8": they name the old structure of `entropy-assessment`.
++  - The last three entries in `LEARNINGS.md` are theory validated by a conversation, not tactical learnings.
++- **Next actions:**
++  1. The steward answers Q1 to Q4.
++  2. Do the 2026-10-07 cleanup under "Backlog" that does not depend on them.
++  3. Start the validation batch under "Next Up" once Q2 is answered.
++
+ ## Doing Now
+ 
+ [empty]
+@@ -17,4 +39,9 @@
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
+-- [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
++- [ ] Create `doc-health-check` skill (a full audit of informational coverage; not built yet)
++- [ ] 2026-10-07 cleanup, independent of Q1 to Q4 (patch from the entropy assessment): restore the verification of bootstrap actions to `docs-first-planning-assessment` Step 5, as `DECISIONS.md` "Entropy assessment should support guard refinement..." requires; remove the FlowBook references from `skills/session-coherence-skill-generator/SKILL.md`; drop "Working code with tests" from `AGENTS.md`, since the repo has neither; mark the superseded `DECISIONS.md` entries
++- [ ] Mark `explorations/` as historical in `README.md` "What's here" or a short note in the folder; it is cited from `LEARNINGS.md` and `PHILOSOPHY.md`, so keep the files
++- [ ] Move or relabel the three theory entries at the end of `LEARNINGS.md` (validated only by the 2026-03-19 conversation), per "LEARNINGS.md stays tactical"
++- [ ] Install the updated local guard from the 2026-10-07 assessment once Q3 and Q4 are answered
++- [ ] Once Q1 is answered: align `INTENT.md` "The guard lifecycle", `README.md` (lines on the generator), `skills/guards-integrator/SKILL.md` "When to Run" ("After `entropy-assessment` generates one or more guards") and the skill that does not write guards

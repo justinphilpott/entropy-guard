@@ -1,0 +1,57 @@
+One-time cleanup for entropy-guard (snapshot 447da9a), from the entropy assessment of 2026-10-07.
+Apply from the repository root: git apply cleanup.patch
+- docs-first-planning-assessment Step 5: restores the verification of bootstrap actions that DECISIONS.md
+  "Entropy assessment should support guard refinement and evidence-based bootstrap design" requires (finding F6).
+- session-coherence-skill-generator: removes two references to FlowBook, another repository (finding F11).
+- AGENTS.md: drops "Working code with tests beats perfect code in progress"; the repo has no code or tests (F12).
+Open questions touched: none. The docs-first edit is in Phase 1 (Step 5), which Q1 does not move.
+
+--- a/AGENTS.md	2026-10-07 19:15:18.402174855 +0100
++++ b/AGENTS.md	2026-10-07 19:16:27.870238650 +0100
+@@ -18,7 +18,7 @@
+ 
+ - **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
+ - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
+-- **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log
++- **Commit early, commit often**: Small commits are easy to review, revert, and understand in git log
+ - **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
+ - **Docs travel with code**: If a change affects how the project works, update the relevant docs in the same commit — not later
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+--- a/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 19:15:18.406218854 +0100
++++ b/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 19:16:27.870047593 +0100
+@@ -111,7 +111,7 @@
+ - **Loop map**
+ - **Entropy profile**: top risks ranked by destructive potential
+ - **Recommendations**: what to consolidate, demote, mark as historical, or guard
+-- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense
++- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense. Verify each action against the current artifact before writing it; never write one from indirect notes.
+ 
+ Also produce a **current-state packet** for the next fresh session. Keep it short and operational.
+ 
+--- a/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 19:15:18.410230594 +0100
++++ b/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 19:16:27.870184035 +0100
+@@ -19,10 +19,9 @@
+ be run during or near the end of a coding session to leave the codebase coherent,
+ self-explanatory, and easy to pick up next time.
+ 
+-This is a meta skill: it does not assume the repository already has FlowBook's
+-exact files. It first discovers the repository's own context-preservation
+-structures, then writes or updates a custom session-coherence skill for that
+-repository.
++This is a meta skill: it does not assume any particular file layout. It first
++discovers the repository's own context-preservation structures, then writes or
++updates a custom session-coherence skill for that repository.
+ 
+ For young repositories, this skill can run in bootstrap mode instead: inspect the
+ repo, identify the smallest missing memory surfaces, and avoid generating a full
+@@ -190,8 +189,8 @@
+     needed now, which are soon, which are premature, and is guard generation still
+     premature?
+ 
+-Prefer the repository's existing vocabulary. Do not impose FlowBook's exact file
+-layout on another codebase.
++Prefer the repository's existing vocabulary. Do not impose another repository's
++file layout on this one.
+ 
+ ---
+ 

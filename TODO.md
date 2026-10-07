@@ -4,29 +4,14 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-Revision approved by Justin on 2026-10-04 ("go ahead with the revision"), from
-`explorations/2026-10-04-skills-review-synthesis.md`, on branch `revise-skills-intent-and-ownership`:
-
-- [x] Item 6, before: answer key in `explorations/2026-10-04-skills-revision-eval.md`, committed before any run
-- [x] Item 6: before and after runs done and scored; results in `explorations/2026-10-04-skills-revision-eval.md`
-- [x] Astra's constructive critique received and verified: `explorations/2026-10-04-skills-revision-critique-astra.md`
-- [x] Critique group 1 (findings 1–4, intent boundary), accepted by Justin
-- [x] Critique group 2 (findings 5–8, a session's change, routing, adoption evidence, lifetimes), accepted by Justin
-- [x] Critique group 3 (findings 9 and 12, repeated analysis and leftovers), accepted by Justin
-- [x] Critique group 4 (findings 10–11): scoring clarified, evidence kept in `explorations/2026-10-04-skills-revision-eval/` (Justin, 2026-10-05: "yes, use the new folder")
-- [x] Astra's independent size review, verified: `explorations/2026-10-05-skills-size-review-astra.md`. Verdict: too large; target about 5,200 words (from 9,729), and this repo's guard about 700 words plus a 200-word shared intent rule
-- [ ] Justin to decide: carry out the size cut in Astra's order (intent rule out to its own file and local guard first; then generator; integrator; front-door profile; intent pass last), checked against a frozen copy of the current skills
-- [ ] Justin to decide: where the Astra review-mode instruction and the stall-retry runner live (FRICTION.md, 2026-10-05)
-- [ ] Add the seven "Next checks" in the eval file before the next revision is judged
-- [ ] After PR #13 merges: confirm issue #12 closed
-- [x] Item 1: an intent change is a proposal, not an edit; intent pass at the front door
-- [x] Item 2: routing to `session-coherence-skill-generator`; it owns guard construction; "update both" fixed
-- [x] Item 3: lifetimes for guards, packets and guard runs
-- [x] Item 4: integrator counts a guard adopted only once exercised
-- [x] Item 5: theory record settled; small stale items cleared
+Size cut (approved by Justin 2026-10-07, "lets go") is done and tested on branch `cut-skills-to-derived-size`; its
+pull request is open for Justin to merge. Test: `explorations/2026-10-07-size-cut-eval.md` (round 6 passes).
 
 ## Next Up
 
+- [ ] Stop assessments misstating what a system reaches: 6 of 11 cut runs on ORC rewrote ORC's network reach wrongly, most often by leaving out the Chromium ORC launches itself, despite the fix at `29e629d`. Do before the ORC assessment
+- [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
+- [ ] Fix K3's wording in the eval key so it no longer conflicts with K21 on "workflow execution"
 - [ ] Assess ORC and the lab Scope together with the revised skills, read-only; bring the results and any proposed changes to Justin before anything in ORC changes
 - [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction

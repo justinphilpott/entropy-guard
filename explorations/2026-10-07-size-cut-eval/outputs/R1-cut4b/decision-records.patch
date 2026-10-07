@@ -1,0 +1,115 @@
+Patch: two new decision records for the orchestration lab (apply at the root of scope-orchestration-lab)
+Status: proposed, not applied. From the entropy assessment of 2026-10-07 (assessment.md, findings F4, F9-F12, F2).
+Apply this before state-update.patch, which links to both files and stops holding the decisions itself.
+
+- decisions/2026-10-04-steward-decisions-from-state.md copies the steward decisions found only in STATE.md (F4), with
+  each one's attribution, date and source line. Recording them is not deciding them again.
+- decisions/2026-10-07-proposed-intent-changes.md records P1-P5 as awaiting Justin. Nothing in it is decided.
+
+Open questions this patch touches: Q1, Q2 and Q4 are written down as proposals P1-P3, and the documents they are about
+(ORC README.md 152-154, ORC AGENTS.md 100-102, lab AGENTS.md 34 and STATE.md 4) are left unchanged. Q3 is not touched.
+
+--- /dev/null
++++ b/decisions/2026-10-04-steward-decisions-from-state.md
+@@ -0,0 +1,55 @@
++# Steward decisions recorded from STATE.md, as it stood on 4 October 2026
++
++Copied on 2026-10-07 from `STATE.md` at "Updated 2026-10-04 17:31". `STATE.md` is overwritten at each verified event
++(`AGENTS.md`, "Keeping state"), and in this Scope these decisions were recorded nowhere else. Recording them is not
++deciding them again: each keeps the attribution, date and wording `STATE.md` gave it, with the line it came from.
++GitHub was not read when this was written, so a decision about one issue may also be recorded on that issue.
++
++## Direction
++
++- **North star.** Justin, 2026-09-25: ORC is his "ChatGPT replacement, daily tool, agentic development test ground,
++  and eventual work showpiece". Justin, 2026-09-26: once the six slots work, "work towards a point of consolidation".
++  (`STATE.md` 9–11.) `STATE.md` 8–9 introduces these, unattributed: "ORC is the UX surface to Justin's own agentic
++  system: specialised agents, reached through Iris, with ADA creating new ones."
++
++## How work is done
++
++- Justin, 2026-09-25: Claude merges a PR once review and tests pass. A review posted on the PR plus Justin's go-ahead
++  gets past Claude Code's classifier. (`STATE.md` 17–18.)
++- After 22:00, work stays on branches; suggesting Justin stops never means Claude stops. `STATE.md` attributes this to
++  `AGENTS.md`, 2026-09-27. (`STATE.md` 18–19.)
++- Justin, 2026-10-02, "yes": git cleanup moved to Worktrunk and gh poi; `git-tidy-report` is deleted (local-config
++  `4811698`); all five pre-push hooks print `scripts/push-summary`. (`STATE.md` 76–78.)
++- Justin, 2026-10-02, "B": security reviews are checked on GitHub by Danger, and the trailer and hook check are gone.
++  Also recorded in ORC's `dangerfile.js`, line 7. (`STATE.md` 79–82.)
++
++## Decided by Justin, 3 October 2026
++
++(`STATE.md` 57–58.)
++
++- #194 keeps all six preview items (configurable limit, fixed tailnet links).
++- Moving Stillness `failure-verdicts` is dropped.
++- MS #52 reads every entry-list page.
++
++## Decided by Justin, 4 October 2026, afternoon (interview)
++
++(`STATE.md` 33 and 38–55.)
++
++- **Moving Stillness is paused.** Browser-stack work that touches it (#118, #52, MS #52) waits.
++- **The lab is the central Scope** for project management, core issue tracking, code quality and security. Astra is to
++  say what else it should cover.
++- **Where issues live:** a Scope's issues stay in its own repository, on one central map; a `core` label marks a Scope
++  issue that needs ORC's core changed. Later, Scopes may track their own business logic elsewhere.
++- **The processes kept, all of them:**
++  - map and label check;
++  - tests on every PR (#144);
++  - the security-review and package-API checks;
++  - daily diary;
++  - weekly adversarial review;
++  - entropy guard at session end;
++  - FRICTION into rules, monthly (#60);
++  - branch and worktree cleanup (#70);
++  - `/tmp` cleanup (#182).
++- **ORC scheduling (#166) is built first,** and the scheduled ones run through it.
++- **Astra runs entropy-guard's assessment on ORC and the lab together.** Justin is shaping the brief before it runs.
++- **Labels:** the type-label proposal waits on Astra's revisions (`reports/2026-10-04-labels-review-astra.md`).
+--- /dev/null
++++ b/decisions/2026-10-07-proposed-intent-changes.md
+@@ -0,0 +1,43 @@
++# Proposed intent changes, awaiting Justin
++
++**Status: awaiting Justin. Nothing here is decided.** Raised on 2026-10-07 by an entropy-guard assessment of ORC and
++this lab, made from snapshots of 2026-10-04. Each document named below stays as it is until Justin records a decision,
++here or on the issue named. The questions Q1 to Q4 are set out in full, with readings and concrete cases, in the
++assessment's `questions.md`.
++
++## P1. What ORC's "Deliberately absent" list still excludes (Q1)
++
++- **Now:** ORC `README.md` 152–154: "reminders, scheduling, additional external data sources, workflow execution,
++  sandboxes, shell access, and file edits", each needing "a decision rather than a convenience".
++- **Already settled:** "scheduling", by Justin's decision of 2026-09-17 (`2026-09-17-async-work-architecture.md`). Its
++  removal is a correction, not part of this proposal.
++- **Proposed:** keep the sentence as a standing rule. Read "file edits" as edits a model directs to files outside its
++  own Scope's memory and outbox, since README 21–22 already describes memory appends as intended. For each other item,
++  name the decision or issue that lifted it, or leave it excluded.
++
++## P2. Scope packages sending phone notices (Q2)
++
++- **Now:** ORC `AGENTS.md` 100–102: "No model or agent reaches the ntfy transport". Since 2 Oct, packages do, through
++  the phone connector (`src/adapters/phone/index.ts`, #184).
++- **Proposed:** record that a package's build card, which lists its connectors, is the explicit human choice for this.
++  Then change `AGENTS.md` 100–102 to say packages reach the ntfy sender only through the phone connector their card
++  approves.
++
++## P3. One owner for `STATE.md`'s size cap (Q4)
++
++- **Now:** `AGENTS.md` 34 says "about forty content lines"; `STATE.md` 4 says "Target: sixty lines".
++- **Proposed:** `AGENTS.md` holds the number; `STATE.md`'s header points to it. The number is Justin's to choose.
++
++## P4. `scope.yaml` owns the resource list
++
++- **Now:** `AGENTS.md` 19 says that when a resource joins or leaves, update "`scope.yaml`, then one line in
++  `SCOPE.md`". That keeps two copies of one list in step.
++- **Proposed:** `scope.yaml` alone lists resources; `SCOPE.md`'s Projects section links to it, keeping only what
++  `scope.yaml` cannot say, such as how far an archived project is authoritative.
++
++## P5. The documentation rule and ORC's intent sections
++
++- **Now:** ORC `AGENTS.md` 154–155: "Keep documentation concise and retrospective: record only what the implementation
++  and real use established." Applied to README's Direction and Boundary, or to `AGENTS.md`'s Boundaries, it directs
++  rewriting intent to match the code.
++- **Proposed:** add that those sections change only on Justin's recorded decision; the rest of the rule stands.

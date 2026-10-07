@@ -1,0 +1,114 @@
+SETTLED PATCH: touches no open question. Corrections that the status banner (README.md:3-5, AGENTS.md:3-6)
+and PICKUP.md:3 plainly settle, plus the ROADMAP.md current-state section (docs-first Step 5).
+Findings F3, F4, F5, F6 in assessment.md. Apply from the repo root: patch -p1 < settled.patch
+
+diff --color '--color=never' -ruN --no-dereference orig/AGENTS.md settled/AGENTS.md
+--- orig/AGENTS.md	2026-08-01 21:12:00.000000000 +0100
++++ settled/AGENTS.md	2026-10-07 19:57:21.909998554 +0100
+@@ -5,13 +5,13 @@
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+ > authorization.
+ 
+-Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
++Blueprint for the agentic architecture. The current named version is Sol (0.x). Until it became reference-only (see the note above), this repo held the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
+ 
+ Exploratory thinking and general theory live in [agentic-learning](../agentic-learning). Component design lives under `components/{name}/`. Component implementations live in their own repos.
+ 
+-## Settled — current strong positions
++## Settled — strong positions while this repo was current
+ 
+-These are the current settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
++These were the settled positions while this repo was current architecture authority: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
+ 
+ - **This repo is a blueprint (map), not a running system (territory).** Design-time artifacts describe; runtime instantiations run. Never conflate them.
+ - **Named versions, not phases.** "Phase" language is retired. Versions are assigned when work is complete, not planned ahead. Do not pre-number future versions.
+diff --color '--color=never' -ruN --no-dereference orig/architecture/INDEX.md settled/architecture/INDEX.md
+--- orig/architecture/INDEX.md	2026-08-01 21:12:00.000000000 +0100
++++ settled/architecture/INDEX.md	2026-10-07 19:57:21.910054314 +0100
+@@ -12,9 +12,9 @@
+ |---|---|---|
+ | orchestration | v1 | [2026-07-16-orchestration](snapshots/2026-07-16-orchestration/ARCH.md) |
+ 
+-## Current Pickup
++## Pickup (historical)
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++[PICKUP.md](PICKUP.md) is a superseded historical pickup point (its own status line, 2026-07-26), not a current work queue. This repository is reference-only: see [README.md](../README.md).
+ 
+ ## Snapshot Rules
+ 
+diff --color '--color=never' -ruN --no-dereference orig/components.yaml settled/components.yaml
+--- orig/components.yaml	2026-08-01 21:12:00.000000000 +0100
++++ settled/components.yaml	2026-10-07 19:57:21.910092437 +0100
+@@ -1,5 +1,9 @@
+ # Component catalog for the agentic architecture current named version
+ #
++# Reference-only: this repository is no longer current architecture authority
++# (see README.md). The statuses below are as last recorded here; they are not
++# current authority.
++#
+ # Status values:
+ #   exploratory  — proto tool, in consideration, not yet part of the architecture
+ #   planned      — confirmed as a future architecture component, not yet built
+diff --color '--color=never' -ruN --no-dereference orig/README.md settled/README.md
+--- orig/README.md	2026-08-01 21:12:00.000000000 +0100
++++ settled/README.md	2026-10-07 19:57:21.909783211 +0100
+@@ -6,7 +6,7 @@
+ 
+ **Current named version: Sol 0.x**
+ 
+-Bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
++Until it became reference-only (see the status note above), this repo was the bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
+ 
+ This repo is not the installable distribution and not a live installation. Its historical Level 2
+ distribution source lives in [agentic-architecture-distribution](../agentic-architecture-distribution).
+diff --color '--color=never' -ruN --no-dereference orig/ROADMAP.md settled/ROADMAP.md
+--- orig/ROADMAP.md	2026-08-01 21:12:00.000000000 +0100
++++ settled/ROADMAP.md	2026-10-07 19:58:25.704074406 +0100
+@@ -1,5 +1,46 @@
+ # Roadmap — Current Named Version
+ 
++## Current state (read this first)
++
++Checked 2026-10-07 by an entropy-guard assessment of a read-only copy of this repo, without its git history.
++
++- **Stage: reference-only.** The status notes at the top of [README.md](README.md) and [AGENTS.md](AGENTS.md) say this
++  repo is no longer current architecture authority, and must not be extended or reinterpreted as current design without
++  explicit authorization. When that call was made is not recorded in this repo (question Q1 below).
++- **Trust first, for current work:** the successors the README names: `../personal-agent` for the Personal Agent
++  architecture, and `../../scope` for the Scope and Project model. Whether they exist at those paths was not checked
++  from here.
++- **Trust first, for history in this repo:** [DECISIONS.md](DECISIONS.md) for dated decisions (the last dated entry is
++  2026-07-26, the temporal coordinator's pg-boss V0); [architecture/INDEX.md](architecture/INDEX.md) for the
++  orchestration v1 snapshot; [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md) for the
++  V0 coordinator contract.
++- **Active fronts:** none in this repo.
++- **Open questions for the steward.** These are about this repo's lifecycle, not architecture; architectural open
++  questions stay in [DECISIONS.md](DECISIONS.md#open-questions).
++  - Q1: When was the reference-only call made, and should it be logged as a dated entry in DECISIONS.md?
++  - Q2: Beyond signposting that the repo is reference-only, should it receive content corrections, such as resolved
++    questions still listed as open in SCOPES_PLANNED.md?
++  - Q3: Should the session-start steps in AGENTS.md, `skills/session-kickoff.md` and `skills/entropy-guard.md`, all
++    written for active work, be marked historical?
++- **Misleading material nearby** (not exhaustive): everything below this section;
++  [architecture/PICKUP.md](architecture/PICKUP.md) (superseded 2026-07-26);
++  [components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md](components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md)
++  (superseded 2026-07-26); the "Next Up" lists in `components/scope/TODO.md` and `components/orchestrator/TODO.md`; the
++  pickup notes in `runs/README.md` and `runs/*/RUN.md`; "Current Working Decision" in
++  [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md); the statuses in [components.yaml](components.yaml). On
++  orchestrator authority, AGENTS.md's settled list ("No secrets, no repo access") and the orchestration v1 snapshot
++  ("authority is mode-tunable") disagree.
++- **Written for active work, status pending Q3:** the session-start steps in AGENTS.md, and the two skills in
++  [skills/](skills/).
++- **Next actions:** (1) the steward answers Q1 to Q3; (2) apply only the changes those answers allow; (3) take new
++  architecture work to the successor repos, not here.
++- **Goes stale when** the README status note changes or a successor moves. Whoever changes the README status note
++  refreshes this section.
++
++Everything below this section is the roadmap as it stood while this repo was active. It is not a plan of current work.
++
++---
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated

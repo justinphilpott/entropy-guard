@@ -1,0 +1,28 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 18:24:35.233807502 +0100
++++ b/AGENTS.md	2026-10-07 18:24:44.432447565 +0100
+@@ -11,6 +11,12 @@
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
++## Before handing off
++
++At the end of every work session, before asking for a merge, run the session coherence guard:
++`~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`. It checks ORC and the orchestration-lab
++Scope together, and its report goes in the pull request's "Session coherence" section.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data
+diff -ruN a/.github/pull_request_template.md b/.github/pull_request_template.md
+--- a/.github/pull_request_template.md	2026-10-07 18:24:35.234593236 +0100
++++ b/.github/pull_request_template.md	2026-10-07 18:24:44.432493995 +0100
+@@ -5,3 +5,8 @@
+ <!-- Required when this changes a guarded path (the list is in dangerfile.js): what an agent can reach that it could
+ not before, and what you tried that was refused (SECURITY-REVIEW.md). "No new authority; <reason>" is a complete
+ answer. Delete this section if nothing guarded changed. -->
++
++## Session coherence
++
++<!-- The session coherence guard's report (orchestration-lab `skills/session-coherence-guard/SKILL.md`): what it
++checked, what it found that this change caused, and what it did not cover. -->

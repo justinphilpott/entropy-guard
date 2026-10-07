@@ -1,0 +1,45 @@
+PROVISIONAL patch: not to be applied until Justin Philpott answers Q3, which projects the validation batch uses and what it tracks (finding F4).
+It drafts the recommended answer in questions.md. Apply after settled.diff, from the repository root:
+patch -p1 < provisional-q3.diff
+
+diff '--color=never' -ruN settled/INTENT.md q3/INTENT.md
+--- settled/INTENT.md	2026-10-07 20:03:00.839336734 +0100
++++ q3/INTENT.md	2026-10-07 20:03:00.933307696 +0100
+@@ -128,11 +128,11 @@
+ 
+ The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge should be the repo shape where the methodology is already proving useful: docs-first planning systems.
+ 
+-- select a larger batch of docs-first planning / architecture / blueprint repos
++- select a larger batch of docs-first planning / architecture / blueprint repos, preferring ones that accept outside changes
+ - run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
+ - generate or refine guards where appropriate and use the current-state packet at session start
+ - run those guards locally while making targeted improvements
+-- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
++- track how many of the resulting changes are merged, and whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
+ 
+ ---
+ 
+diff '--color=never' -ruN settled/README.md q3/README.md
+--- settled/README.md	2026-10-07 20:03:00.861836320 +0100
++++ q3/README.md	2026-10-07 20:03:00.933385840 +0100
+@@ -128,7 +128,7 @@
+ 
+ The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+ 
+-The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
++The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields merged changes, clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
+ 
+ See [TODO.md](TODO.md) for current priorities.
+ 
+diff '--color=never' -ruN settled/TODO.md q3/TODO.md
+--- settled/TODO.md	2026-10-07 20:03:00.861017862 +0100
++++ q3/TODO.md	2026-10-07 20:03:00.933443948 +0100
+@@ -34,7 +34,7 @@
+ 
+ - [ ] Justin answers the three open questions above; then align the skills, `README.md` and `INTENT.md` to the answers
+ - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
+-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
++- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track which changes are merged and which prove useful
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
+ ## Backlog

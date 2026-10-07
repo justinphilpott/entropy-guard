@@ -1,0 +1,66 @@
+--- a/TODO.md
++++ b/TODO.md
+@@ -2,6 +2,47 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++Last checked 2026-10-07 against snapshot `447da9a`, whose newest dated content is
++`skills/session-coherence-skill-generator/SKILL.md` (2026-05-11). Refreshed by whoever runs
++`skills/local/entropy-guard/SKILL.md` before committing. Stale after any change to `INTENT.md`, `DECISIONS.md`, the
++skills under `skills/`, or "Next Up" below.
++
++- **Stage** (checked 2026-10-07; source: `INTENT.md` "Scope boundary and next validation loop"): active. The front
++  door `entropy-assessment` and the deeper `docs-first-planning-assessment` exist; the next step is the external
++  validation batch in "Next Up". No batch results are recorded yet.
++- **Trust first:** `INTENT.md`, then `DECISIONS.md` (newest first), then `AGENTS.md`, then the `SKILL.md` you are
++  changing.
++- **Settled, do not reopen casually** (each recorded in `DECISIONS.md`):
++  - `entropy-assessment` stays the single front door; docs-first planning is the specialised path ("Specialize first
++    around docs-first planning repos…").
++  - Broader theory lives in the sibling `entropy-immune-system` repo; `explorations/` stays here as history ("Farm
++    broader entropic-immunity exploration…").
++  - Judgment-heavy guards mature from External to Prompted; the pre-commit hook is a non-blocking reminder by design
++    ("Guard adoption should usually mature…").
++  - One local guard covers docs and workflow ("Keep a single local guard…").
++  - Skills use `SKILL.md` with frontmatter, `name` matching the folder ("Skill format…"); exportable skills in
++    `skills/`, local ones in `skills/local/`.
++- **Open questions for Justin Philpott** (checked 2026-10-07; proposals under "Proposed — awaiting Justin Philpott"
++  in `DECISIONS.md`):
++  - P1: who may change `INTENT.md`: the steward, through recorded decisions, or any contributor with a dated note
++    (`AGENTS.md`, "Consult INTENT.md for significant decisions").
++  - P2: which skill writes guards: `docs-first-planning-assessment` Phase 2 or `session-coherence-skill-generator`.
++  - P3: what the validation batch measures: merged PRs (`DECISIONS.md`, "Farm…") or session recovery and coherence
++    (`INTENT.md`).
++- **Misleading nearby material:**
++  - Step and phase numbers in older `LEARNINGS.md` and `DECISIONS.md` entries (Phase 1 and 2, appendices, Step 0,
++    domain generators) describe skill versions that no longer exist.
++  - `explorations/` is history and seed material for `entropy-immune-system`, not guidance for this repo.
++  - `doc-health-check` does not exist. For a full audit, re-run `entropy-assessment` against this repo.
++- **Work tracked elsewhere:** GitHub issues on `justinphilpott/entropy-guard`, including agent feedback labelled
++  `agent-feedback`. They are not mirrored here; check them at session start.
++- **Next actions** (checked 2026-10-07):
++  1. Answer P1 to P3 and record the answers in `DECISIONS.md`.
++  2. Work through "Coherence cleanup" in the Backlog.
++  3. Start "Next Up" item 1.
++
+ ## Doing Now
+ 
+ [empty]
+@@ -17,4 +58,14 @@
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
+-- [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
++- [ ] Create `doc-health-check` skill (a full audit of informational coverage; not built yet)
++- [ ] Coherence cleanup from the 2026-10-07 assessment (one-time; tick each when done):
++  - [ ] Supersession markers and the steward's source on the "Farm…" entry in `DECISIONS.md`
++  - [ ] Restore "verified against the current artifact" for bootstrap actions in `docs-first-planning-assessment`
++  - [ ] Remove the "FlowBook" residue from `session-coherence-skill-generator`
++  - [ ] `README.md`: describe the pre-commit hook as a reminder; list `explorations/` as history (and in `AGENTS.md`)
++  - [ ] `LEARNINGS.md`: mark stale step references and conversation-only entries
++  - [ ] Replace `skills/local/entropy-guard/SKILL.md` with the refined guard, once P1 is answered
++  - [ ] Each working clone: enable the reminder hook, as `README.md` "Contributing" describes
++  - [ ] Seed residue: `AGENTS.md` "Commit early, commit often" mentions code and tests this repo does not have;
++        `.gitignore` and `.editorconfig` carry Go and Python rules

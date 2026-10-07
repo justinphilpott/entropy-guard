@@ -1,0 +1,58 @@
+Current-state update for agentic-architecture (docs-first-planning-assessment Step 5).
+Adds a Status block at the top of ROADMAP.md, the file AGENTS.md "Session start" step 1 sends every fresh
+session to first. Findings it addresses: F2, F3, F4, F13 (see assessment.md).
+
+PROVISIONAL. Apply only if the steward answers Q1 in questions.md "maintained reference" (status corrections and
+historical labels allowed). It does not settle Q2 or Q3: it lists them as open and labels nothing they cover.
+Apply first, then bootstrap.patch:   git apply current-state.patch && git apply bootstrap.patch
+Checked 2026-10-07: applies cleanly, with --whitespace=error-all, to the read-only snapshot of the repository.
+
+diff --git a/ROADMAP.md b/ROADMAP.md
+index 05689fc..71322e9 100644
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,44 @@
+ # Roadmap — Current Named Version
+ 
++## Status — read this first
++
++This block is the repository's current-state view. Everything after it in this file is historical.
++
++- **Stage:** reference-only; not current architecture authority. Source: the status banners in `README.md` and
++  `AGENTS.md`, recorded in `DECISIONS.md` under "This repository is reference-only". Checked 2026-10-07.
++- **Where the work moved:** Personal Agent architecture to `../personal-agent`; the Scope and Project model to
++  `../../scope`. Source: the same banners. Those repositories were not read when this block was written.
++- **Changes made here:** proposed to be corrections and historical labels only, with no new design. Awaiting the
++  steward; see the `DECISIONS.md` entry. New design, decisions, open questions and roadmap items go to the
++  repositories above.
++- **Active fronts in this repository:** none. Last dated work: the 2026-07-26 temporal coordinator V0 decision in
++  `DECISIONS.md`. The manual Pi run line is paused (`runs/README.md`). Checked 2026-10-07.
++- **Open for the steward**, listed in the `DECISIONS.md` entry:
++  - which changes reference-only still permits here;
++  - whether `components/temporal-coordinator/SPEC.md` is still the temporal coordinator's authoritative V0 contract;
++  - whether anything outside this repository still copies `components/scope/template/` or
++    `components/agent/template/`. Until answered, put no labels inside those folders: whatever is in them is copied
++    into new repositories.
++- **Historical material easy to mistake for current:**
++  - the rest of this file, and the `PLAN.md` and `TODO.md` files under `components/orchestrator/` and
++    `components/scope/`: next work as it stood on or before 2026-07-26;
++  - `architecture/PICKUP.md`, superseded 2026-07-26;
++  - `skills/session-kickoff.md`, which builds next actions for an active repository;
++  - questions still described as open in `SCOPES_PLANNED.md`, `RUNTIME.md`, `components/orchestrator/MODEL.md`,
++    `components/agent/DECISIONS.md` and `components/scope/skills/scope-design.md` that `DECISIONS.md` settled on
++    2026-04-27;
++  - "due-event trigger layer" scheduling wording in this file's backlog and in `PI_AGENT_OVERVIEW.md`, superseded by
++    the 2026-07-26 temporal coordinator V0 decision;
++  - tool paths in `components.yaml` written as `../<repo>`, where `README.md` and the 2026-04-04 directory decision
++    place those repositories at `../../<repo>`.
++- **Next actions:**
++  1. The steward answers the three questions in the `DECISIONS.md` entry.
++  2. Label, or keep live, the temporal coordinator documents and the templates according to those answers.
++- **Refresh:** whoever changes this repository's status, checked by `skills/entropy-guard.md` at each commit. This
++  block is stale when either status banner, the `DECISIONS.md` entry, or the location of current authority changes.
++
++---
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
