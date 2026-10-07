@@ -1,0 +1,32 @@
+PROVISIONAL patch for the orchestration-lab Scope. Do not apply until Justin answers the questions named below
+(questions.md). Apply after settled-lab.patch.
+- AGENTS.md: a "Before handing off" section pointing at skills/session-coherence-guard/SKILL.md. Q1. Copy
+  guard/SKILL.md to that path in the same commit.
+- STATE.md: the header's size rule reduced to a pointer to AGENTS.md, Keeping state. Q5 (recommended answer (b)).
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -35,6 +35,12 @@
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++Run [`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md) at the end of every
++session that changed this Scope or ORC, before the last commit or handoff. Its report goes in that commit's
++message, or the pull request's description; a gap too large to fix now becomes an issue on the map.
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,7 @@
+ 
+ Updated 2026-10-07 by an entropy assessment, from this file as of 4 Oct 17:31; **nothing live was re-read.**
+ **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Size: `AGENTS.md`, Keeping state.
+ Stale when a merge, restart, decision or answer from Justin lands; the agent whose session caused it rewrites it then.
+ 
+ ## Read first

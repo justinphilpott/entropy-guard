@@ -1,0 +1,17 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 532cdf4..ef6d556 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -95,7 +95,11 @@ code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`
+ which delegates process transport to the official MCP SDK for a separately declared
+ server. `src/adapters/browser/playwright.ts` launches one headless Chromium for each
+ browser session through Playwright's library (orchestrator#76; Justin, 3 Oct 2026:
+-"lets use the library"). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++"lets use the library"). `src/adapters/orc-service.ts`, for the "Restart ORC onto
++<commit>" card (orchestrator#101), runs git's read commands in ORC's own checkout,
++`pnpm install --frozen-lockfile` (which downloads packages when a release adds
++them), `node scripts/build.mjs` and `systemctl --user restart orc.service`, and
++nothing else (Justin, <date of the decision>). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, in `src/adapters/browser/playwright.ts`, whose

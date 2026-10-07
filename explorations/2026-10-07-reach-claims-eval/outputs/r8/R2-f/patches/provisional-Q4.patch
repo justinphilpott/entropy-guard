@@ -1,0 +1,41 @@
+PROVISIONAL: do not apply until the steward answers Q4 (what the validation loop measures).
+Drafted for the recommended reading (b): docs-first repos, with merged changes recorded alongside the
+docs-first measures. Edits INTENT.md, so it needs the steward's recorded decision. Apply on top of
+settled.patch. Finding: F5.
+
+diff -ruN b/DECISIONS.md c4/DECISIONS.md
+--- b/DECISIONS.md	2026-10-07 22:43:18.733307422 +0100
++++ c4/DECISIONS.md	2026-10-07 22:45:55.014434102 +0100
+@@ -46,6 +46,8 @@
+ 
+ ### Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical
+ 
++*Validation loop refined by "Specialize first…" above and `INTENT.md` "Scope boundary and next validation loop": the batch is docs-first planning repos, and merged changes are recorded alongside the docs-first measures.*
++
+ **Context**: The March 2026 explorations on autopoiesis, layered intent, steering, viability, and entropic immunity opened a broader research program than `entropy-guard` itself needs in order to stay useful. Letting that conceptual exploration continue inside this repo risked blurring the scope of the practical guard project and making the README / INTENT / contributor guidance less clear about what this repo is actually trying to validate next.
+ **Decision**: Keep `entropy-guard` focused on practical entropy protection: assessment, guard generation/refinement, integration, and iterative validation of those workflows on real projects. Farm the broader entropic-immunity exploration into a sibling repo, `entropy-immune-system`, seeded with the exploration documents and early research scaffolding. Set the next validation loop here to: assess a larger set of open source projects, generate or refine guards, run them locally while making targeted improvements, and track whether that produces more merged PRs.
+ **Impact**: `entropy-guard` retains a clear operational center and a concrete next step. The broader theory can evolve without forcing premature architectural or philosophical expansion into this repo. Future contributors should treat `entropy-guard` as the practical ladder and `entropy-immune-system` as the larger inquiry.
+diff -ruN b/INTENT.md c4/INTENT.md
+--- b/INTENT.md	2026-05-11 21:50:31.000000000 +0100
++++ c4/INTENT.md	2026-10-07 22:45:55.014560427 +0100
+@@ -132,7 +132,7 @@
+ - run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
+ - generate or refine guards where appropriate and use the current-state packet at session start
+ - run those guards locally while making targeted improvements
+-- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
++- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, suggested changes that get merged, and sharper feedback on what the methodology gets right or wrong
+ 
+ ---
+ 
+diff -ruN b/TODO.md c4/TODO.md
+--- b/TODO.md	2026-10-07 22:43:18.733357956 +0100
++++ c4/TODO.md	2026-10-07 22:45:55.014624078 +0100
+@@ -30,7 +30,7 @@
+ ## Next Up
+ 
+ - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
+-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
++- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful and which suggested changes were merged
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
+ ## Backlog

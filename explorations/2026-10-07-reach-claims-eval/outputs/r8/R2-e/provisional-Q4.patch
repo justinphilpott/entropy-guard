@@ -1,0 +1,15 @@
+PROVISIONAL, on question Q4 (which part of 'Consolidate domain generators' was superseded?). Do not apply until the steward answers Q4.
+Written for the recommended answer (a). Applies on top of settled.patch.
+
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 22:45:51.326510188 +0100
++++ b/DECISIONS.md	2026-10-07 22:48:00.301339997 +0100
+@@ -150,7 +150,7 @@
+ 
+ ### Consolidate domain generators into single skill with domain appendices
+ 
+-*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above.*
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: the domain appendices left entropy-assessment when it became a router, and code/test/API guidance waits for a code-first track (TODO.md Backlog). Deleting the four standalone domain generators still stands.*
+ 
+ **Context**: The four domain generators (docs, code, test, API) were ~80% identical scaffolding — Steps 0–7 with the same structure, domain-adapted. The unique domain knowledge (entropy vectors, inventory items, checklist design guidance) accounted for ~20% of their content. The assessment skill's Phase 2 existed solely as a routing/coordination layer between the entry point and the generators. This meant an agent had to read 5 files to do what one file could accomplish. The insight from the two-layer decision — that domains need different analytical lenses — was correct, but the domain-specific knowledge turned out to be reference data, not separate processes.
+ **Decision**: Fold all domain knowledge into the entropy-assessment skill as reference appendices (one per domain). Delete the four standalone generator skills. The assessment skill now handles both assessment (Phase 1) and generation (Phase 2) with built-in domain references. Supersedes "Two-layer generator architecture" and "Exportable skills vs local skills" (for the generator skills specifically — the distinction still applies to local skills like entropy-guard).

@@ -1,0 +1,50 @@
+# PROVISIONAL PATCH: do not apply until the steward answers Q1 (questions.md).
+# Q1: When was the reference-only status decided, so DECISIONS.md can record it as a dated decision?
+# Written for the recommended answer. Replace every <DATE> and <STEWARD> with the steward's answer first.
+# Adds the dated entry at the top of DECISIONS.md, removes Q1 from its Open Questions, and links both banners to it.
+#
+# Apply after settled.patch, from the repository root. Verified on 2026-10-07 against the snapshot: this patch applies
+# alone or together with the other provisional patches in any order using `patch -p1` (some orders rely on patch's
+# fuzz), and every order gives the same tree; `git apply -p1` works in the order Q1, Q2, Q3.
+#
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -2,3 +2,3 @@
+ 
+-> **Reference-only:** this repository is no longer current architecture authority. Current Personal
++> **Reference-only (DECISIONS.md, <DATE>):** this repository is no longer current architecture authority. Current Personal
+ > Agent architecture lives in `../personal-agent`; the current Scope and Project model lives in
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -1,6 +1,16 @@
+ # Decisions
+ 
+ System-level conclusions. Deliberation and reasoning live in [agentic-learning](../agentic-learning) and are candidates for promotion there over time.
++
++---
++
++### <DATE> — This repository is reference-only
++
++Decided by <STEWARD> on <DATE>. Recorded from the status banners in README.md and AGENTS.md, which stated it without a date.
++
++This repository is no longer current architecture authority. Current Personal Agent architecture lives in `../personal-agent`; the current generic Scope/Project model lives in `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit authorization.
++
++Impact: the entries below remain the record of how the architecture reached Sol 0.x; they do not bind current work. The README.md and AGENTS.md banners summarise this entry.
+ 
+ ---
+ 
+@@ -880,4 +890,2 @@
+ 
+-- **Reference-only status: date and record.** In this repository the status is stated only in the banners in README.md and AGENTS.md, without a date, and this log has no entry for it. When was it decided, so it can be recorded here as a dated decision?
+-
+ - **What reference-only permits.** Is this repository frozen (corrections of factual errors and historical marking only) or maintained as a coherent reference (its entropy guard keeps running before commits and its state files stay current)?
+diff -ruN a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -2,3 +2,3 @@
+ 
+-> **Status:** Reference-only. Current Personal Agent architecture lives in
++> **Status:** Reference-only (DECISIONS.md, <DATE>). Current Personal Agent architecture lives in
+ > [`personal-agent`](../personal-agent), and the current generic Scope/Project model lives in

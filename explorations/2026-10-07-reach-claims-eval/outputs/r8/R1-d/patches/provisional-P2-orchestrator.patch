@@ -1,0 +1,32 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 532cdf4..83e1eed 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -102,8 +102,12 @@ read-only Jina Reader requests, in `src/adapters/browser/playwright.ts`, whose
+ Chromium reaches only the hosts a browser grant names and which looks those hosts
+ up in DNS before launching it, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. No
++ORC's environment file. ORC's own notices send a title, the notice's summary and
++the one configured tap address. An approved package reaches the same transport only
++through the phone connector (`src/adapters/phone/index.ts`), which sends its title,
++text, up to five tags and <the tap address Justin's decision allows> to the
++installation's topic (Justin, <date of the decision>); a package tool that passes
++model-written text or a link there adds an outbound channel. No
+ ORC module imports a Bookwhen client: Bookwhen code belongs to the Scope that
+ needs it (above), and `test/architecture.test.ts` keeps it out.
+ Workflow modules receive neither network nor subprocess access.
+diff --git a/test/architecture.test.ts b/test/architecture.test.ts
+index 7bd5632..53f315a 100644
+--- a/test/architecture.test.ts
++++ b/test/architecture.test.ts
+@@ -60,7 +60,7 @@ import { CAUSE_DISCARD_ALLOWANCES } from "./cause-discard-allowances.js";
+ const SRC_DIR = new URL("../src/", import.meta.url).pathname;
+ const CHILD_AGENT_PROCESS = "core/child-agent-process.ts";
+ const RESEARCH_TOOLS = "core/research-tools.ts";
+-/** Publishes durable-work notices to the operator's own ntfy server; no model or agent reaches it. */
++/** Publishes ORC's durable-work notices, and approved packages' through the phone connector, to the operator's ntfy server. */
+ const NTFY_TRANSPORT = "adapters/notifications/ntfy.ts";
+ const ANALYSIS_TOOLS = "core/analysis-tools.ts";
+ const TOOL_RESOLVER = "core/tool-resolver.ts";

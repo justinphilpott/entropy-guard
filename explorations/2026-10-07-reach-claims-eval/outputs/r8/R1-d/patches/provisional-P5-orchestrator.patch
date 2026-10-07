@@ -1,0 +1,17 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 532cdf4..4054ad5 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -4,6 +4,12 @@ Read [README.md](README.md) and the executable checks in
+ `test/architecture.test.ts` before changing this repository. The code supplies
+ any further context.
+ 
++## Decisions
++
++Justin's decisions about ORC are recorded in the orchestration lab's `decisions/`
++(`/home/justin-philpott/scopes/scope-orchestration-lab/decisions/`). The rules below quote the ones that constrain
++changes here.
++
+ ## The map of work
+ 
+ All work on ORC and its Scopes is one tree of GitHub issues, rooted at

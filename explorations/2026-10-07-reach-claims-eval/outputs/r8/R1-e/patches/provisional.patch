@@ -1,0 +1,280 @@
+Provisional patch from the entropy assessment of ORC and the orchestration lab, 2026-10-07.
+NOT TO BE APPLIED until Justin answers the questions named below (assessment.md, "Questions for the steward").
+Apply after settled.patch, from the directory holding both repositories:  patch -p1 < provisional.patch
+
+Which hunks wait on which question:
+- orchestrator/AGENTS.md, "Boundaries" (subprocess and network lists, the ntfy sentence): Q1.
+- orchestrator/README.md, opening reach summary, credentials' last sentence, "Deliberately absent": Q1.
+- orchestrator/test/architecture.test.ts (browser driver approved for subprocess and network): Q1. Not run:
+  the snapshot has no node_modules.
+- scope-orchestration-lab/STATE.md header ("Size: as AGENTS.md says") and its "Also asked" line: Q3 and Q5.
+- scope-orchestration-lab/AGENTS.md and orchestrator/AGENTS.md "Before handing off", and the new
+  scope-orchestration-lab/skills/session-coherence-guard/SKILL.md: Q5 (where the guard lives).
+  orchestrator/AGENTS.md is a Danger-guarded path: its pull request needs a "## Security review" section.
+
+diff --color -ruN settled/orchestrator/AGENTS.md provisional/orchestrator/AGENTS.md
+--- settled/orchestrator/AGENTS.md	2026-10-07 22:45:19.406996948 +0100
++++ provisional/orchestrator/AGENTS.md	2026-10-07 22:48:01.685406959 +0100
+@@ -91,15 +91,23 @@
+ 
+ Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
++code-fixed read-only `git log` without a shell, `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server, `src/adapters/orc-service.ts`, which runs git's read commands in ORC's own checkout, a
++frozen-lockfile pnpm install and `systemctl --user restart orc.service` (#101), and
++`src/adapters/browser/playwright.ts`, which launches one headless Chromium for each approved browser
++session (#76). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. ORC imports no Bookwhen client:
++ORC's environment file, and in `src/adapters/browser/playwright.ts`, whose Chromium reaches only
++the hosts a package's approved browser grant names and which looks up those hosts' addresses (#197).
++ORC's own notices carry only a title, the notice's summary and the one configured tap address; a
++package's agent reaches the ntfy transport only through the built-in phone connector its approved
++package declares (`src/adapters/phone/index.ts`, #184), which never lets the package choose the topic
++or server. What the libraries ORC delegates to reach was not checked (Pi's model provider, any MCP
++server), so this list is incomplete. ORC imports no Bookwhen client:
+ `test/architecture.test.ts` refuses one, and open Fridays come from an approved Scope package's contribution.
+ Workflow modules receive neither network nor subprocess access.
+ 
+@@ -149,6 +157,12 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++At the end of every work session, before committing or handing off, run the session-end guard that the
++orchestration-lab Scope keeps for ORC and the lab: `skills/session-coherence-guard/SKILL.md` in
++`~/scopes/scope-orchestration-lab`.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and
+diff --color -ruN settled/orchestrator/README.md provisional/orchestrator/README.md
+--- settled/orchestrator/README.md	2026-10-07 22:45:37.432383562 +0100
++++ provisional/orchestrator/README.md	2026-10-07 22:48:01.683953001 +0100
+@@ -1,10 +1,9 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++adapter, and per-conversation model controls. ORC runs in one parent process. It launches an
++isolated fixed researcher child for each public-web research invocation and a headless Chromium for
++each approved browser session; everything it reaches is listed in AGENTS.md, "Boundaries".
+ 
+ ## Direction
+ 
+@@ -104,7 +103,8 @@
+ ORC's settings (the operator, 2026-09-28: logins "should DEFINITELY NOT be centralised"). Each is
+ handed to the narrow connector that needs it. This list comes from a search of `src/` and `config/`
+ on 2026-10-07; model-provider credentials, which Pi reads itself, were not checked, so it may be
+-incomplete. No subprocess ORC launches receives one.
++incomplete. No subprocess ORC launches receives one, except that the Chromium of an approved browser
++session is given that session's approved login (#197).
+ 
+ ### As a service, restarted from a card
+ 
+@@ -156,7 +156,7 @@
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-additional external data sources, workflow execution, sandboxes, shell access, and file
++external data sources beyond those AGENTS.md lists, workflow execution, sandboxes, shell access, and file
+ edits. Scheduling was decided on 2026-09-17 (lab `decisions/2026-09-17-async-work-architecture.md`):
+ durable work runs now, at a set time, or on a recurring schedule.
+ 
+diff --color -ruN settled/orchestrator/test/architecture.test.ts provisional/orchestrator/test/architecture.test.ts
+--- settled/orchestrator/test/architecture.test.ts	2026-10-07 22:44:36.557856041 +0100
++++ provisional/orchestrator/test/architecture.test.ts	2026-10-07 22:48:01.685131429 +0100
+@@ -66,6 +66,7 @@
+ const TOOL_RESOLVER = "core/tool-resolver.ts";
+ const MCP_CLIENT = "adapters/mcp/client.ts";
+ const ORC_SERVICE = "adapters/orc-service.ts";
++const BROWSER_DRIVER = "adapters/browser/playwright.ts";
+ 
+ /**
+  * Every source file, at any depth, as a path relative to src/.
+@@ -834,6 +835,9 @@
+       CHILD_AGENT_PROCESS,
+     ]);
+     expect(filesMatching(/StdioClientTransport/), "MCP subprocess transport escaped its adapter").toEqual([MCP_CLIENT]);
++    expect(filesMatching(/["']playwright["']|\bchromium\s*\.\s*launch/), "a browser launch escaped the browser driver").toEqual([
++      BROWSER_DRIVER,
++    ]);
+     const mcpClient = readOptionalSource(MCP_CLIENT);
+     expect(mcpClient, "the MCP adapter does not use the official SDK stdio transport")
+       .toContain('@modelcontextprotocol/sdk/client/stdio.js');
+@@ -1299,12 +1303,14 @@
+       /(?:import|export)\s*\{[^}]*(?:\brequest\b|\bget\b|\bconnect\b|\bcreateConnection\b|\bcreateSocket\b|\bAgent\b|\bSocket\b|\bTLSSocket\b)[^}]*\}\s*from\s*["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+       /import\s+(?:\*\s+as\s+[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*)\s+from\s+["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+       /(?:import\s*\(\s*|require\s*\(\s*)["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
++      /["'](?:node:)?dns(?:\/promises)?["']|["']playwright["']/,
+     ];
+     const directNetwork = sourceFiles().filter((name) => {
+       const source = readSource(name);
+       return directNetworkPatterns.some((pattern) => pattern.test(source));
+     });
+     expect(directNetwork, "direct network access escaped, or an approved module no longer reaches it").toEqual([
++      BROWSER_DRIVER,
+       NTFY_TRANSPORT,
+       RESEARCH_TOOLS,
+     ]);
+diff --color -ruN settled/scope-orchestration-lab/AGENTS.md provisional/scope-orchestration-lab/AGENTS.md
+--- settled/scope-orchestration-lab/AGENTS.md	2026-10-07 22:44:36.551709944 +0100
++++ provisional/scope-orchestration-lab/AGENTS.md	2026-10-07 22:48:01.685336245 +0100
+@@ -35,6 +35,12 @@
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++At the end of every work session here or in ORC, before committing or handing off, run
++[skills/session-coherence-guard/SKILL.md](skills/session-coherence-guard/SKILL.md) and put its report in the
++commit message or the hand-off.
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff --color -ruN settled/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md provisional/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md
+--- settled/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md	1970-01-01 01:00:00.000000000 +0100
++++ provisional/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md	2026-10-07 22:49:36.914150206 +0100
+@@ -0,0 +1,108 @@
++---
++name: session-coherence-guard
++description: Check this repository's coherence at the end of a work session, before handoff.
++metadata:
++  generated: "2026-10-07"
++  source: "entropy-guard session-coherence-skill-generator v0.5.0"
++---
++
++# Skill: ORC and Orchestration Lab Session Coherence Guard
++
++Run at the end of a work session, before commit or handoff. Check only this session's change. One guard covers both
++repositories: ORC (`~/pro/orchestrator`) and the lab Scope that manages its work (`~/scopes/scope-orchestration-lab`).
++
++## Modes and safety
++- Follow the invocation's mode: plan, audit-only and discuss-first inspect and report without editing; build permits
++  scoped repairs.
++- Never commit or push unless asked. Never read, print or write secret values; inspect examples and key names instead.
++- Leave unrelated changes alone, and keep committed workflow logic out of vendor-specific agent folders.
++
++## Where things live
++- Authorised intent: lab `scope.yaml`, `SCOPE.md` and `decisions/`; ORC `README.md` ("Direction") and `AGENTS.md`.
++  Steward: Justin. Open intent questions: lab `decisions/2026-10-07-proposals-awaiting-justin.md`.
++- Current state and next steps: lab `STATE.md`. Read it first.
++- Decisions: lab `decisions/`; a decision about one issue goes on that issue, under orchestrator#140.
++- Rules owned elsewhere: local-config `home/AGENTS.md`; orchestrator#140's description; ORC `SECURITY-REVIEW.md` and
++  `dangerfile.js`; lab `memory/authority-rules-step-1.md`; `~/pro/agentic/HOW_NOT_TO_PLAN.md`.
++
++## What changed this session
++In each repository the session touched, find the commit the session started from, and write it in place of `<start>`
++below. If you cannot, use `origin/main` and report "coverage incomplete". If neither exists, report committed changes
++as not covered, and still inspect staged, unstaged and untracked work.
++```bash
++git log --oneline <start>..HEAD           # commits
++git diff <start> HEAD                     # what they changed
++git status --short
++git diff --cached                         # staged: what the next commit holds
++git diff                                  # unstaged
++git ls-files --others --exclude-standard  # untracked: read those that matter
++```
++Also list, each with a time read from `date`: ORC restarts, package and grant cards approved, standing grants, and
++map marks this session made or relied on.
++
++## Intent
++Does this change fit the authorised intent in lab `scope.yaml`, `SCOPE.md` and `decisions/`, and ORC `README.md`
++("Direction") and `AGENTS.md`? If not:
++
++> When this session's work and the authorised intent disagree:
++>
++> 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of
++>    intent nobody has decided.
++> 2. Fix a defect in the work.
++> 3. Go ahead with an adaptation within existing authorisation, and record its reason where that helps. Record an
++>    undecided change of intent as a proposal for Justin in the lab's `decisions/`; work that depends on it waits
++>    for the decision.
++> 4. Do not edit the lab's `scope.yaml`, `SCOPE.md` or `decisions/`, or ORC's `README.md` "Direction" or `AGENTS.md`,
++>    to match the work unless Justin has recorded that decision.
++> 5. Correct a document directly only when a recorded decision of Justin's already settles it, and cite that
++>    decision.
++> 6. Before making a description, an implementation and a check agree, establish which of them is wrong. A test or
++>    the code shows what is checked or built; it does not authorise weakening a documented constraint.
++
++(Intent-change rule v2, from entropy-guard.)
++
++## Checks
++- If ORC's reach changed (a subprocess, network call, DNS lookup, credential read, connector, or tool given to a model
++  or package): does ORC `AGENTS.md` "Boundaries" list it, does `test/architecture.test.ts` detect it, and does the
++  pull request carry `## Security review`? A reach no recorded decision covers is a proposal, not a doc edit.
++- If an allowance in ORC `test/core-ties.ts` rose: which recorded decision of Justin's covers it? None means a
++  proposal, and the rise waits.
++- If ORC code changed a command, setting, path, port, environment variable, tool name or file name: search ORC
++  `README.md`, `AGENTS.md`, `MCP.md`, `SECURITY-REVIEW.md`, agent definitions and lab `STATE.md` for the old name.
++- If a source module's behaviour changed: does its header (Owns, Never, Today) still describe it? The header test
++  checks only that one exists.
++- If what `src/package-api.ts` exports changed: was `pnpm api:report` run, does the pull request carry
++  `## Package API`, and was the version raised if built packages break?
++- If the session took a decision with Justin: is it in lab `decisions/` or on its issue, dated and attributed, and
++  not only in `STATE.md`?
++- For each state claim changed in lab `STATE.md`: do its other mentions still agree, does each live fact say when
++  and where it was read, was every time written read from `date`, and is the file within the size `AGENTS.md` sets?
++- If the session opened, moved or worked an issue: is it on the map, and are this session's marks cleared
++  (`node tools/map.mjs stopped <ref>`)?
++- If something broke in real use: is it in lab `FRICTION.md`, at the top, called an instance or a missing system?
++- If the session wrote a one-off report or branch note: is it dated, and kept out of the documents that describe
++  current behaviour?
++- If ORC's state directory or a connector's setting names changed: report the copies outside ORC (lab
++  `tools/collect.mjs`, package manifests) for reduction to one owner, rather than editing both.
++```bash
++# ORC, ~/pro/orchestrator. CI runs none of these; Danger checks only the pull request's description.
++pnpm typecheck
++pnpm test
++pnpm test:e2e              # when web/, e2e/, the browser or the web server changed
++# Lab, ~/scopes/scope-orchestration-lab
++node tools/map.mjs --check
++```
++
++## Repairs
++- One owner per concept: when two places define one concept independently, reduce one to a link. Keep summaries,
++  generated projections, versioned copies and independent tests, and keep them correct.
++- Limit every correction by its evidence. Change only what the evidence settles, and leave open parts visibly open.
++  For an exhaustive list or an "only" claim, check the full scope, including delegated behaviour. Never change a
++  prescribed boundary because of observed behaviour, and never treat a test or the code as the record: where a
++  description, the code and a check disagree, establish which is wrong first.
++
++## Report
++- Baseline, and whether coverage was complete; what was checked and what was not.
++- Findings caused by this session, judged by the relationship changed, not the file edited: renaming a setting in
++  the code makes an untouched README wrong. Problems that were already there, listed separately.
++- Proposals for Justin; files updated; the next action, written into lab `STATE.md`.
+diff --color -ruN settled/scope-orchestration-lab/STATE.md provisional/scope-orchestration-lab/STATE.md
+--- settled/scope-orchestration-lab/STATE.md	2026-10-07 22:47:19.026692013 +0100
++++ provisional/scope-orchestration-lab/STATE.md	2026-10-07 22:48:01.685288396 +0100
+@@ -2,7 +2,7 @@
+ 
+ Updated 2026-10-07 22:46 by the entropy assessment: structure and decision links only; no live fact re-read since
+ 2026-10-04 17:31. **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Size: as `AGENTS.md`, "Keeping state", says.
+ Stale after any merge, restart or decision: whoever causes one rewrites the lines it changes, reading the clock
+ (`date`) for every time written.
+ 
+@@ -36,8 +36,7 @@
+ ## Open for Justin
+ 
+ - The entropy assessment's proposals P1 (what ORC may reach) and P2 (core-tie rises):
+-  `decisions/2026-10-07-proposals-awaiting-justin.md`. Also asked: which cap this file keeps (forty in
+-  `AGENTS.md`, sixty above); whether ORC's root reports move or go; where the session-end guard lives.
++  `decisions/2026-10-07-proposals-awaiting-justin.md`. Also asked: whether ORC's root reports move or go.
+ - #144 tests on every PR (GitHub Actions or a pre-push hook?); #137 bind approvals to builds, before any real
+   email; #149 authority rules step 2 (`reports/2026-10-01-iris-speaks-for-you.md`); #196 where agent worktrees live.
+ - #199's log on 4 Oct named ADA (`binding_missing`) and Analyst (`connector_missing`) unavailable: look into it?

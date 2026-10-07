@@ -1,0 +1,141 @@
+Provisional patch: NOT to be applied until Justin answers the question each hunk names (questions.md). Each hunk
+encodes the recommended answer. Apply on top of patch-settled.diff with `patch -p1 < patch-provisional.diff`;
+checked on 2026-10-07 that both apply cleanly in that order. The test change was NOT run (no node_modules).
+
+Hunks and the question each depends on:
+- orchestrator/AGENTS.md, network paragraph and the delegated-reach list: Q1. Replaces the settled patch's
+  "incomplete" note.
+- orchestrator/test/architecture.test.ts, DNS pattern and BROWSER_DRIVER in the network check: Q1.
+- orchestrator/AGENTS.md, "Before handing off": Q2 (names the guard's path).
+- scope-orchestration-lab/AGENTS.md, "Before handing off": Q2.
+- scope-orchestration-lab/STATE.md, line 4 ("Target: sixty lines." replaced by a pointer to AGENTS.md): Q3.
+- scope-orchestration-lab/STATE.md, removal of the "three open questions" bullet and the new next action 2:
+  Q1, Q2 and Q3 together; apply only once all three are answered, or edit the bullet to drop the answered ones.
+- The guard itself, guard/SKILL.md in this output, is installed at the path Q2 settles; it is not in this patch.
+
+diff -ruN a/orchestrator/AGENTS.md b/orchestrator/AGENTS.md
+--- a/orchestrator/AGENTS.md
++++ b/orchestrator/AGENTS.md
+@@ -99,18 +99,29 @@
+ which launches one headless Chromium per approved browser session through Playwright's library
+ (orchestrator#76, decided 3 Oct 2026). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service. Their code runs inside ORC's process, outside the architecture test's scan of `src/`.
+ 
+-Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
++Direct network access from ORC's own code exists only in `src/core/research-tools.ts`, for
++read-only Jina Reader requests; in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. No ORC module
+-imports a Bookwhen client: published Bookwhen events reach ORC through an approved Scope package,
+-and `test/architecture.test.ts` checks the client stays out of ORC's source and dependencies.
+-Workflow modules receive neither network nor subprocess access.
+-
+-The network list above is incomplete: ORC's own code in `src/adapters/browser/playwright.ts` also
+-resolves each approved browser host through `node:dns` before a session starts, and the architecture
+-test's network patterns do not include `dns`.
++ORC's environment file (no model or agent reaches the ntfy transport, and it
++sends only a title, the notice's summary and the one configured tap address); and in
++`src/adapters/browser/playwright.ts`, which resolves each approved browser host through `node:dns`
++before a session starts. No ORC module imports a Bookwhen client: published Bookwhen events reach
++ORC through an approved Scope package, and `test/architecture.test.ts` checks the client stays out
++of ORC's source and dependencies. Workflow modules receive neither network nor subprocess access.
++
++Reach that a library or a launched process performs on ORC's behalf counts too. Each is listed with
++the process that runs it:
++
++- the model provider, through Pi: from ORC's own process (`src/runtime.ts`, `src/app/conversations.ts`,
++  `src/backends/pi/task-execution.ts`) and from each researcher child;
++- the approved hosts of a browser grant, with that Scope's stored login: from the session's headless
++  Chromium (`src/adapters/browser/playwright.ts`), kept to those hosts by a request handler and a proxy
++  where nothing listens;
++- the package registry: from `pnpm install --frozen-lockfile` on an approved restart card, when a
++  package is missing from pnpm's store (`src/adapters/orc-service.ts`);
++- whatever a declared MCP server reaches: from that server's process (`src/adapters/mcp/client.ts`);
++- the services an approved Scope package's connectors reach: from ORC's own process
++  (`src/app/agent-packages.ts`), declared in the package and bound on its card.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+ included in prompts, tool inputs, tool results, model-visible data, or browser
+@@ -158,6 +169,11 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++At the end of a work session, before commit or handoff, run the session guard kept in the
++orchestration-lab Scope: `~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and
+diff -ruN a/orchestrator/test/architecture.test.ts b/orchestrator/test/architecture.test.ts
+--- a/orchestrator/test/architecture.test.ts
++++ b/orchestrator/test/architecture.test.ts
+@@ -1295,9 +1295,11 @@
+     );
+   });
+ 
+-  it("limits core network I/O to the approved modules: Jina reads and ntfy notices", () => {
++  it("limits core network I/O to the approved modules: Jina reads, ntfy notices and browser host lookups", () => {
+     const directNetworkPatterns = [
+       /\bfetchImpl\b|\bfetch\s*\(|\bnew\s+(?:globalThis\.)?WebSocket\s*\(/,
++      // A DNS lookup is an outbound channel too (AGENTS.md, "Boundaries").
++      /(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:node:)?dns(?:\/promises)?["']/,
+       /(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:axios|undici|node-fetch|got|ws)["']/,
+       /(?:import|export)\s*\{[^}]*(?:\brequest\b|\bget\b|\bconnect\b|\bcreateConnection\b|\bcreateSocket\b|\bAgent\b|\bSocket\b|\bTLSSocket\b)[^}]*\}\s*from\s*["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+       /import\s+(?:\*\s+as\s+[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*)\s+from\s+["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+@@ -1308,6 +1310,7 @@
+       return directNetworkPatterns.some((pattern) => pattern.test(source));
+     });
+     expect(directNetwork, "direct network access escaped, or an approved module no longer reaches it").toEqual([
++      BROWSER_DRIVER,
+       NTFY_TRANSPORT,
+       RESEARCH_TOOLS,
+     ]);
+diff -ruN a/scope-orchestration-lab/AGENTS.md b/scope-orchestration-lab/AGENTS.md
+--- a/scope-orchestration-lab/AGENTS.md
++++ b/scope-orchestration-lab/AGENTS.md
+@@ -39,6 +39,11 @@
+ goes, dated and attributed in his words, to `decisions/` or to the issue that owns it on the map, and
+ `STATE.md` links to it.
+ 
++## Before handing off
++
++At the end of every work session in this Scope or in ORC, before commit or handoff, run
++[`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md).
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff -ruN a/scope-orchestration-lab/STATE.md b/scope-orchestration-lab/STATE.md
+--- a/scope-orchestration-lab/STATE.md
++++ b/scope-orchestration-lab/STATE.md
+@@ -1,7 +1,7 @@
+ # State — orchestration-lab
+ 
+ Updated 2026-10-04 17:31; restructured 2026-10-07 from that version, no fact re-read. **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Size: `AGENTS.md`, "Keeping state".
+ Stale when ORC restarts, a pull request merges, a card is decided or Justin decides something; the agent that saw it
+ overwrites the lines it changes. Decisions go to `decisions/`, never only here.
+ 
+@@ -39,9 +39,6 @@
+   rules step 2 (`memory/authority-rules-step-1.md`); #196 where agent worktrees live; type labels wait on Astra.
+ - Unmerged: orchestrator #106, #132, #133; scope-finance #1, #2. ORC PRs #178, #176, #133, #132 touch guarded files
+   and have no `## Security review` section (2 Oct). Close #28 and #33 on his word.
+-- Entropy assessment, 7 Oct, three open questions, each with a recommended answer: do ORC's reach lists cover what a
+-  library reaches for it (recommended: yes); where the session guard lives (recommended: this Scope's `skills/`);
+-  which state-file cap holds, forty or sixty (recommended: `AGENTS.md` owns it).
+ 
+ ## Misleading nearby
+ 
+@@ -53,6 +50,7 @@
+ ## Next
+ 
+ 1. #166, ORC scheduling.
+-2. Justin answers the assessment's three questions; then the session guard is placed and run once.
++2. Run the session guard once at a session end, and ask a fresh session in each repository what it must do before
++   handing off.
+ 3. File the map follow-ups not known to be issues: the marking rule in Codex and opencode briefs, a Claude Code hook
+    that clears a session's marks, ORC's own agents on the map, more blocked-by links.

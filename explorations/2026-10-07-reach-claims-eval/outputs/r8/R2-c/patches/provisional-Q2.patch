@@ -1,0 +1,90 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:43:52.420698388 +0100
++++ b/AGENTS.md	2026-10-07 22:46:46.008938073 +0100
+@@ -44,7 +44,7 @@
+ - [skills/entropy-assessment/](skills/entropy-assessment/) — front door that classifies the system shape and routes to the right deeper assessment workflow
+ - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — specialized deep path for markdown-first planning/design repos; produces a canonical truth map, current-state packet, and delta guard guidance
+ - [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
+-- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — generates repo-specific session handoff guards or bootstraps minimal handoff memory for young repos
++- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — the one skill that writes or updates a repo's guard, from the checks an assessment supplies; also bootstraps minimal handoff memory for young repos
+ - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
+ 
+ ## Commands
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-10-07 22:43:17.691722179 +0100
++++ b/INTENT.md	2026-10-07 22:46:46.008654715 +0100
+@@ -85,7 +85,7 @@
+ 
+ A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
+ 
+-1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, that role is carried by the assessment workflow rooted at `skills/entropy-assessment/` and, for the strongest validated case, `skills/docs-first-planning-assessment/`.
++1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, the assessment workflow rooted at `skills/entropy-assessment/` (and, for the strongest validated case, `skills/docs-first-planning-assessment/`) decides which checks a system needs, and `skills/session-coherence-skill-generator/` is the one skill that writes or updates the guard from them.
+ 
+ 2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:43:52.420782050 +0100
++++ b/README.md	2026-10-07 22:46:46.008864118 +0100
+@@ -49,7 +49,7 @@
+ 
+ It also closes the loop on the skill itself: if the assessment misfires or creates avoidable friction, the final step is to capture a short upstream feedback note so the heuristic can improve.
+ 
+-**To generate guards**: if you want to go further, the specialized assessment continues into guard generation or refinement — producing a delta guard skill file you place in the target project's skills directory, or targeted amendment guidance for the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
++**To generate guards**: if you want to go further, the specialized assessment designs the guard's checks and hands them to [session-coherence-skill-generator](skills/session-coherence-skill-generator/), which writes a delta guard skill file you place in the target project's skills directory, or updates the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
+ 
+ ```
+ Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
+@@ -86,9 +86,9 @@
+ | Skill | Purpose |
+ |-------|---------|
+ | [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
+-| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
++| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and designs the docs/workflow checks the guard generator builds in |
+ | [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
+-| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | Generates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
++| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | The one skill that writes or updates a repo's session-end guard, from the checks an assessment supplies; also bootstraps minimal context-preservation files for young repos before a full guard is justified |
+ 
+ ### Skills (local to this project)
+ 
+diff -ruN a/skills/docs-first-planning-assessment/SKILL.md b/skills/docs-first-planning-assessment/SKILL.md
+--- a/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 22:43:17.691902773 +0100
++++ b/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 22:46:46.009552845 +0100
+@@ -1,6 +1,6 @@
+ ---
+ name: docs-first-planning-assessment
+-description: Assess markdown-first planning and design repos for entropy risks, map canonical truth ownership, produce a compact current-state packet for fresh sessions, and generate or refine docs/workflow delta guards.
++description: Assess markdown-first planning and design repos for entropy risks, map canonical truth ownership, produce a compact current-state packet for fresh sessions, and design the docs/workflow delta-guard checks that session-coherence-skill-generator writes into the guard.
+ metadata:
+   version: "0.1.0"
+ ---
+@@ -131,7 +131,7 @@
+ 
+ ## Phase 2: Guard Generation / Refinement
+ 
+-Use this phase when the repo needs a new guard or the existing guard needs amendment.
++Use this phase when the repo needs a new guard or the existing guard needs amendment. This phase designs the checks; `skills/session-coherence-skill-generator/SKILL.md` writes or updates the guard file from them.
+ 
+ ### Step 6: Inventory existing guard surfaces
+ 
+@@ -193,7 +193,7 @@
+ 
+ Deliver:
+ 
+-- the refined or generated guard
++- the guard's checks and the existing guard surfaces, handed to `skills/session-coherence-skill-generator/SKILL.md`, which writes or updates the guard
+ - the current-state packet
+ - the canonical truth map
+ - immediate integration advice
+diff -ruN a/skills/session-coherence-skill-generator/SKILL.md b/skills/session-coherence-skill-generator/SKILL.md
+--- a/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 22:43:52.421066023 +0100
++++ b/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 22:46:46.009614393 +0100
+@@ -42,6 +42,9 @@
+   pattern captured as a reusable skill.
+ - You are onboarding an agent to a repo and need it to understand which files
+   preserve intent across sessions.
++- An assessment (`skills/docs-first-planning-assessment/SKILL.md` Phase 2) has
++  designed a repo's checks; write or update the guard from them, using them as
++  its judgment checks.
+ 
+ ## When NOT to Use
+ 

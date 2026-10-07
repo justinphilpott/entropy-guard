@@ -1,0 +1,52 @@
+SETTLED patch for agentic-architecture (entropy assessment 2026-10-07). Touches no open question.
+Hunks: S1 ROADMAP.md status note (state file; F2, F4, F5, F11, F12, F20, Q1 listed as open); S2 architecture/INDEX.md current pickup (F5).
+Apply from the repository root: patch -p1 < settled.patch
+
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,34 @@
+ # Roadmap — Current Named Version
+ 
++> **Repository status — read this first.** [README.md](README.md) and [AGENTS.md](AGENTS.md) mark this
++> repository reference-only: current Personal Agent architecture lives in `../personal-agent`, and the
++> current Scope/Project model in `../../scope`. Both banners are undated and name no author, and
++> [DECISIONS.md](DECISIONS.md) has no entry recording the change. Checked 2026-10-07 against this
++> repository's files only; the two successor repositories were not read.
++>
++> - **Stage:** reference-only. The checklists below are the record as of this repository's latest dated
++>   entry (2026-07-26, DECISIONS.md and architecture/PICKUP.md), not a work queue. Per the AGENTS.md
++>   banner, do not extend or reinterpret this blueprint as current design without explicit authorization.
++> - **Trust first:** the README.md status banner; for orchestration anatomy,
++>   [architecture/INDEX.md](architecture/INDEX.md); for decisions, the dated entries in DECISIONS.md. They
++>   disagree on how far the orchestrator may reach: MODEL.md and the snapshot make its authority
++>   mode-tunable, while DECISIONS.md "Orchestrator has no secrets and no scope repo access" (2026-04-06) is
++>   not marked superseded. That point is unsettled here.
++> - **Misleading material nearby includes** (not a complete list): [architecture/PICKUP.md](architecture/PICKUP.md)
++>   (superseded 2026-07-26); the "Scope manager" and "`scopectl` vs `scope-manager`" sections of
++>   [RUNTIME.md](RUNTIME.md), which still describe the unified gateway that the orchestration v1 snapshot
++>   replaced; the "Next Up" and "Current Focus"
++>   sections of `components/*/TODO.md` and `components/*/PLAN.md`, frozen like this file; the "Current
++>   Working Decision" (direct API keys) in [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md), whereas
++>   runs 001-003 used Pi's own subscription login.
++> - **Open, awaiting the steward:** whether the session-start steps in AGENTS.md,
++>   [skills/session-kickoff.md](skills/session-kickoff.md) and [skills/entropy-guard.md](skills/entropy-guard.md)
++>   are demoted to explicitly authorized edits, retired, or kept as they are.
++> - **Next:** new architecture work goes to the successor repositories named in README.md. In this
++>   repository, only the steward's answer to the open question above.
++> - **Stale when:** the steward revives or retires this repository, or answers the open question.
++>   Whoever applies that change updates this note.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+--- a/architecture/INDEX.md
++++ b/architecture/INDEX.md
+@@ -14,7 +14,7 @@
+ 
+ ## Current Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++None. [PICKUP.md](PICKUP.md) is a superseded historical pickup point (its status line, 2026-07-26). For this repository's status, see [README.md](../README.md).
+ 
+ ## Snapshot Rules
+ 

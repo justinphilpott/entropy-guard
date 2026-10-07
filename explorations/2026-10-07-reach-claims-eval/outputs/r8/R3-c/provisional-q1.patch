@@ -1,0 +1,119 @@
+PROVISIONAL patch. Do not apply until the steward answers Q1 in questions.md: whether the session-start ritual and
+the pre-commit guard stay in force while the repository is reference-only. Drafted on the recommended answer
+(demote both to dormant). Finding F5 in assessment.md. Apply after settled.patch:  patch -p1 < provisional-q1.patch
+Then fill in <steward> and <date> in ROADMAP.md. Independent of provisional-q2.patch.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:42:51.917600947 +0100
++++ b/AGENTS.md	2026-10-07 22:45:41.667018468 +0100
+@@ -35,14 +35,13 @@
+ 
+ ## Session start
+ 
+-1. Check ROADMAP.md — know what version we're on and what's being worked towards
+-2. Read MODEL.md — understand the system model and component relationships
+-3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+-4. Check components.yaml — know component status
+-5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+-6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
++This repository is reference-only (banner above). Read "Status of this repository" at the top of [ROADMAP.md](ROADMAP.md) first, then:
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++- For current architecture work, go to `../personal-agent` or `../../scope`. Do not build a current-state packet or choose next work here.
++- To consult this repository as a reference, start from the dated entries in DECISIONS.md and the current snapshot listed in architecture/INDEX.md.
++- Edit this repository only with explicit authorization, and then only to keep its status and pointers accurate.
++
++[skills/session-kickoff.md](skills/session-kickoff.md) is dormant while this repository is reference-only.
+ 
+ ## Before making changes
+ 
+@@ -69,7 +68,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- [skills/entropy-guard.md](skills/entropy-guard.md) is dormant while this repository is reference-only; it applies again only if the repository is reactivated
+ 
+ ## What belongs in this repo
+ 
+@@ -99,8 +98,8 @@
+ - [DECISIONS.md](DECISIONS.md) — system-level decision log
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+-- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder (dormant while reference-only)
++- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard (dormant while reference-only)
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+   - template/ — template source for new scope instances
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:42:47.189607578 +0100
++++ b/README.md	2026-10-07 22:45:41.667076961 +0100
+@@ -26,7 +26,7 @@
+ - [PI_AGENT_OVERVIEW.md](PI_AGENT_OVERVIEW.md) — Pi agent framework evaluation
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis for early agent work
+ - [runs/](runs/) — runtime experiment records and planned Pi evaluations
+-- [skills/](skills/) — blueprint project-maintenance skills including session kickoff and entropy guard
++- [skills/](skills/) — blueprint project-maintenance skills including session kickoff and entropy guard (both dormant while reference-only)
+ - [RUNTIME.md](RUNTIME.md) — runtime architecture model (platform components, sandbox lifecycle, communication patterns, pipelines)
+ - [SCOPES_PLANNED.md](SCOPES_PLANNED.md) — planned scope inventory and open questions
+ - [components/scope/](components/scope/) — scope component design (model, plan, decisions, template source, skills)
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md	2026-10-07 22:45:41.617600702 +0100
++++ b/ROADMAP.md	2026-10-07 22:45:41.667364108 +0100
+@@ -27,8 +27,8 @@
+   - Documents that still describe since-resolved questions as open: `components/orchestrator/PLAN.md`,
+     `components/orchestrator/MODEL.md`, `components/orchestrator/DECISIONS.md`, `components/agent/DECISIONS.md`,
+     `components/scope/TODO.md`, `components/scope/skills/scope-design.md` and `SCOPES_PLANNED.md`.
+-- **Open question about the working loop:** whether the session-start ritual and the pre-commit guard in AGENTS.md
+-  stay in force while this repository is reference-only.
++- **Working loop:** the session-start ritual and the pre-commit guard in AGENTS.md are dormant while this repository
++  is reference-only (decided by <steward>, <date>).
+ - **Next actions here:** none are authorised in the record; the AGENTS.md banner says not to extend or reinterpret this
+   blueprint as current design without explicit authorization. Current architecture work starts in
+   `../personal-agent` or `../../scope`.
+diff -ruN a/skills/entropy-guard.md b/skills/entropy-guard.md
+--- a/skills/entropy-guard.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/entropy-guard.md	2026-10-07 22:45:41.667249229 +0100
+@@ -1,6 +1,6 @@
+ ---
+ name: entropy-guard
+-description: Delta-scoped coherence check for the agentic-architecture blueprint repo. Run before committing non-trivial changes.
++description: Dormant while this repository is reference-only. Delta-scoped coherence check for the agentic-architecture blueprint repo, written for committing non-trivial changes during active blueprint work.
+ generated: 2026-04-02
+ generated_by: entropy-assessment v0.5.2
+ last_evaluated: 2026-04-27
+@@ -9,6 +9,10 @@
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Dormant.** This repository is reference-only (status in the root README.md). This guard was written for active
++> blueprint work and last evaluated on 2026-04-27; do not run it while the repository is reference-only. If the
++> repository is reactivated, re-assess it before relying on this checklist.
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+diff -ruN a/skills/README.md b/skills/README.md
+--- a/skills/README.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/README.md	2026-10-07 22:45:41.667119737 +0100
+@@ -7,4 +7,6 @@
+ - `session-kickoff.md` builds a compact current-state packet before architecture work.
+ - `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
+ 
++Both are dormant while this repository is reference-only (see the status in the root README.md). They were written for active blueprint work.
++
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff -ruN a/skills/session-kickoff.md b/skills/session-kickoff.md
+--- a/skills/session-kickoff.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/session-kickoff.md	2026-10-07 22:45:41.667303330 +0100
+@@ -1,5 +1,8 @@
+ # Skill: Session Kickoff
+ 
++> **Dormant.** This repository is reference-only (status in the root README.md). Do not build a current-state
++> packet or choose next work here; current architecture work starts in `../personal-agent` or `../../scope`.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

@@ -1,0 +1,22 @@
+--- a/components/temporal-coordinator/SPEC.md
++++ b/components/temporal-coordinator/SPEC.md
+@@ -1,6 +1,7 @@
+ # Temporal Coordinator Spec
+ 
+-Status: V0 pg-boss POC implementation spec
++Status: V0 pg-boss POC implementation spec. Historical in this reference-only repository; the current contract is
++owned by <OWNER NAMED BY THE STEWARD> (DECISIONS.md, "<entry recording the steward's answer>").
+ 
+ The temporal coordinator V0 owns one-time schedule intent, deterministic logical occurrence identity,
+ the immutable route-free `schedule_due` payload, and an inspectable record that the occurrence was
+--- a/SCHEDULING.md
++++ b/SCHEDULING.md
+@@ -17,7 +17,7 @@
+    -> no V0 consumer
+ ```
+ 
+-The authoritative event and data contract is [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md).
++The event and data contract was [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md); it is now owned by <OWNER NAMED BY THE STEWARD>.
+ 
+ V0 application state is limited to one-time `schedules` and `schedule_runs`. The logical occurrence
+ identity is application-owned and independent of the pg-boss job UUID. pg-boss owns delayed-job

@@ -1,0 +1,26 @@
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 22:48:45.619469175 +0100
++++ b/DECISIONS.md	2026-10-07 22:48:45.681996498 +0100
+@@ -102,6 +102,8 @@
+ 
+ ### Upstream feedback should be embedded in assessment and integration flows
+ 
++*Partially superseded by the steward's decision on when an agent may file an issue (<date>): the helper files issues only when working inside entropy-guard; elsewhere the note stays in the output.*
++
+ **Context**: The repo had a local `entropy-guard-feedback` helper for creating upstream issues, but agents only found it if they separately noticed the helper existed. The main exportable workflows (`entropy-assessment` and `guards-integrator`) did not explicitly ask whether the skills themselves had misfired, so the improvement loop depended on extra initiative rather than being part of normal use.
+ **Decision**: Keep the dedicated local feedback helper, but move the feedback prompt into the main exportable skills. `skills/entropy-assessment/` and `skills/guards-integrator/` should both end with an explicit upstream feedback check, and use the local helper when available to turn that note into a GitHub issue on entropy-guard.
+ **Impact**: The feedback path stays lightweight, but becomes part of the default workflow. Agents using the exported skills now have a built-in moment to surface reusable issues and suggestions, which tightens the loop between real-world use and methodology improvement.
+diff -ruN a/skills/guards-integrator/SKILL.md b/skills/guards-integrator/SKILL.md
+--- a/skills/guards-integrator/SKILL.md	2026-10-07 22:43:52.420936117 +0100
++++ b/skills/guards-integrator/SKILL.md	2026-10-07 22:46:46.009964433 +0100
+@@ -171,8 +171,8 @@
+   - **What I observed** — the concrete misfire or friction
+   - **Suggestion** — what should change
+   - **Project context** — enough context to judge whether the issue is general or niche
+-- When working inside the entropy-guard repo, or whenever the local feedback helper is available, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
+-- When that helper is not available, leave the formatted feedback note in your final output so the maintainer can submit it manually.
++- When working inside the entropy-guard repo, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
++- Otherwise, leave the formatted feedback note in your final output so the maintainer can submit it manually.
+ 
+ ---
+ 

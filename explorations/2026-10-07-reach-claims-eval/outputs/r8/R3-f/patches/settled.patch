@@ -1,0 +1,307 @@
+# SETTLED patch for agentic-architecture (entropy assessment, 2026-10-07).
+# Touches no open steward question (Q1-Q3 in questions.md). Each hunk is a correction settled by a dated
+# DECISIONS.md entry, a document's own dated status line, or the README/AGENTS banners; see assessment.md,
+# 'Patches' for hunk -> finding -> evidence. Apply from the repository root: git apply -p1 settled.patch
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/AGENTS.md	2026-10-07 22:46:08.790989571 +0100
+@@ -5,7 +5,7 @@
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+ > authorization.
+ 
+-Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
++Blueprint for the agentic architecture, named version Sol (0.x). It records the settled decisions, component design and clearly labeled provisional shapes as they stood before this repository became reference-only (see the banner above).
+ 
+ Exploratory thinking and general theory live in [agentic-learning](../agentic-learning). Component design lives under `components/{name}/`. Component implementations live in their own repos.
+ 
+diff -ruN a/architecture/INDEX.md b/architecture/INDEX.md
+--- a/architecture/INDEX.md	2026-08-01 21:12:00.000000000 +0100
++++ b/architecture/INDEX.md	2026-10-07 22:46:08.791391586 +0100
+@@ -12,9 +12,9 @@
+ |---|---|---|
+ | orchestration | v1 | [2026-07-16-orchestration](snapshots/2026-07-16-orchestration/ARCH.md) |
+ 
+-## Current Pickup
++## Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++[PICKUP.md](PICKUP.md) is a superseded historical pickup point (its own status line, 2026-07-26). It is not a current work queue.
+ 
+ ## Snapshot Rules
+ 
+diff -ruN a/AUTH_OPTIONS_ANALYSIS.md b/AUTH_OPTIONS_ANALYSIS.md
+--- a/AUTH_OPTIONS_ANALYSIS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/AUTH_OPTIONS_ANALYSIS.md	2026-10-07 22:46:08.792388911 +0100
+@@ -176,6 +176,11 @@
+ Pi is not, by itself, the auth answer here.
+ Pi can consume credentials and run agents, but a separate provider/auth layer still needs to exist if the system is not simply delegating to Codex.
+ 
++> Observed in [runs 001-003](runs/README.md) (2026-04-28 to 2026-05-13): Pi 0.70.5's own `/login` offered a
++> ChatGPT Plus/Pro (Codex) provider, and all three runs used `openai-codex/gpt-5.5` through it with no separate
++> auth layer. The runs do not show whether that route suits unattended or sandboxed agents, and they do not change
++> the working decision above; Run 001 calls its model choice "not a long-term commitment".
++
+ So the real architectural choice is not "Pi or no Pi."
+ It is:
+ 
+diff -ruN a/components/agent/DECISIONS.md b/components/agent/DECISIONS.md
+--- a/components/agent/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/agent/DECISIONS.md	2026-10-07 22:46:08.791843962 +0100
+@@ -9,7 +9,7 @@
+ - runtime state, logs, and agent status live outside git
+ - an agent is the runtime embodiment of a role; the role itself is design-time
+ - sandbox/workspace design is separate from role definition
+-- inter-agent communication and runtime setup are still open questions
++- inter-agent communication and the running-agent model were decided at the root on 2026-04-27 (HTTP + JSON-RPC task lifecycle; a running agent is a harness inside a sandbox)
+ 
+ ---
+ 
+diff -ruN a/components/orchestrator/DECISIONS.md b/components/orchestrator/DECISIONS.md
+--- a/components/orchestrator/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/orchestrator/DECISIONS.md	2026-10-07 22:46:08.791802653 +0100
+@@ -10,7 +10,7 @@
+ - the orchestrator sees scope manifests only, not scope interiors
+ - infrastructure operations run through the deterministic scope manager; `scopectl` handles scope-definition file ops
+ - workflows use the `workflows/{name}/WORKFLOW.md` directory convention
+-- cross-boundary communication must be explicit, minimal, and secure by default (mechanism TBD)
++- cross-boundary communication must be explicit, minimal, and secure by default (mechanism decided 2026-04-27: HTTP + JSON-RPC with an A2A-compatible task lifecycle)
+ - first operational workflows are committed deliverables: daily-summary, flowbook-publish, site-rebuild
+ 
+ ---
+diff -ruN a/components/orchestrator/MODEL.md b/components/orchestrator/MODEL.md
+--- a/components/orchestrator/MODEL.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/orchestrator/MODEL.md	2026-10-07 22:46:08.791886863 +0100
+@@ -81,7 +81,7 @@
+ 
+ The orchestrator's major infrastructure questions (communication, database, manifest cache, running agent model, workspace lifecycle) are now decided — see root [DECISIONS.md](../../DECISIONS.md) entries from 2026-04-27.
+ 
+-Remaining open questions tracked in root [DECISIONS.md](../../DECISIONS.md#open-questions):
++Remaining open items. The second is in the root [open-questions registry](../../DECISIONS.md#open-questions); the first has a direction set in root [DECISIONS.md](../../DECISIONS.md) ("Cross-scope workflow exposure uses Agent Card / skills pattern", 2026-04-27) and is not in the registry:
+ 
+ - **Cross-scope workflow exposure model** — direction set (Agent Card / skills pattern at runtime), but detail needed on how child scope leads declare callable capabilities in practice
+ - **Human-in-the-loop patterns** — the task lifecycle provides `input_required`, but the UX and policy need real workflows
+diff -ruN a/components/orchestrator/PLAN.md b/components/orchestrator/PLAN.md
+--- a/components/orchestrator/PLAN.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/orchestrator/PLAN.md	2026-10-07 22:46:08.791766905 +0100
+@@ -25,8 +25,8 @@
+ 
+ The orchestrator moves from design to running service when the platform layer is stood up. That work will:
+ 
+-- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (format TBD — see root DECISIONS.md open questions).
+-- **Connect to the cross-boundary channel** — whatever mechanism is chosen for inter-agent communication.
++- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (in memory — see root DECISIONS.md, "Orchestrator manifest cache is in-memory from scope.yaml", 2026-04-27).
++- **Connect to the cross-boundary channel** — HTTP + JSON-RPC with an A2A-compatible task lifecycle (root DECISIONS.md, 2026-04-27).
+ - **Call the scope manager** — invoke the deterministic service for workspace assembly, secret injection, and lifecycle ops. The scope manager component design is separate (see [components.yaml](../../components.yaml) — status `planned`, no design dir yet).
+ - **Run workflows on a schedule** — outside the V0 enqueue-only temporal coordinator boundary; the V0 pg-boss job has no production consumer and makes no delivery claim.
+ - **Speak to interaction surfaces** — first Telegram, later others.
+diff -ruN a/components/scope/skills/scope-design.md b/components/scope/skills/scope-design.md
+--- a/components/scope/skills/scope-design.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/scope/skills/scope-design.md	2026-10-07 22:46:08.791946353 +0100
+@@ -152,7 +152,7 @@
+ 
+ ## Notes
+ 
+-- **Skill injection is an open question** — see DECISIONS.md. Where this skill itself lives at runtime (orchestrator? pushed by scope manager?) is unresolved.
++- **Skill injection** has a direction set in root [DECISIONS.md](../../../DECISIONS.md) ("Skills are injected into sandboxes at assembly time", 2026-04-27): a scope's `skills/` are cloned into its sandboxes. Where this skill itself lives at runtime (orchestrator? pushed by scope manager?) is unresolved.
+ - **Workflow directory convention** (`workflows/{name}/WORKFLOW.md`) is the standard — see decision in root [DECISIONS.md](../../../DECISIONS.md). Filesystem is the manifest.
+ - **Workflow stubs are sparse on purpose.** A future workflow-design skill (TBD) does the deeper dive on a single workflow: "use tools X and Y to achieve Z" or "find a tool to do A, B, and C."
+ 
+diff -ruN a/components.yaml b/components.yaml
+--- a/components.yaml	2026-08-01 21:12:00.000000000 +0100
++++ b/components.yaml	2026-10-07 22:46:08.792299259 +0100
+@@ -1,5 +1,8 @@
+ # Component catalog for the agentic architecture current named version
+ #
++# Reference-only: this repository is no longer current architecture authority (README.md banner;
++# DECISIONS.md, "This repository is reference-only"). Do not read these statuses as current.
++#
+ # Status values:
+ #   exploratory  — proto tool, in consideration, not yet part of the architecture
+ #   planned      — confirmed as a future architecture component, not yet built
+@@ -32,7 +35,7 @@
+   scope:
+     status: in-progress
+     design: components/scope
+-    implementation: ../scope
++    implementation: ../../scope
+     role: Authorization primitive; resource grouping, membership, policy
+ 
+   agent:
+@@ -48,37 +51,37 @@
+ 
+   library:
+     status: exploratory
+-    repo: ../library
++    repo: ../../library
+     role: Reusable agent skills
+ 
+   seed:
+     status: exploratory
+-    repo: ../seed
++    repo: ../../seed
+     role: Project bootstrapping
+ 
+   entropy-guard:
+     status: exploratory
+-    repo: ../entropy-guard
++    repo: ../../entropy-guard
+     role: Coherence tooling for fast-iterating systems
+ 
+   entropy-immune-system:
+     status: exploratory
+-    repo: ../entropy-immune-system
++    repo: ../../entropy-immune-system
+     role: Coherence research
+ 
+   git-sync:
+     status: exploratory
+-    repo: ../git-sync
++    repo: ../../git-sync
+     role: Multi-machine dev sync
+ 
+   flowbook:
+     status: exploratory
+-    repo: ../flowbook
++    repo: ../../flowbook
+     role: Audio pipeline application
+ 
+   flowvoice:
+     status: exploratory
+-    repo: ../flowvoice
++    repo: ../../flowvoice
+     role: Voice layer application
+ 
+   agentic-colab:
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/DECISIONS.md	2026-10-07 22:46:08.791299248 +0100
+@@ -872,6 +872,16 @@
+ 
+ ---
+ 
++### Date not recorded — This repository is reference-only *(copied here on 2026-10-07 from the README.md and AGENTS.md banners)*
++
++The status banner in [README.md](README.md) says: "Reference-only. Current Personal Agent architecture lives in `personal-agent`, and the current generic Scope/Project model lives in `scope`. Do not treat decisions in this repository as current authority."
++
++The banner in [AGENTS.md](AGENTS.md) says: "this repository is no longer current architecture authority. Current Personal Agent architecture lives in `../personal-agent`; the current Scope and Project model lives in `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit authorization."
++
++No entry in this log recorded that change, and neither banner carries a date or an author. This entry copies them so that the conflict rule in "Docs serve intent; no doc-lawyering" (use the snapshot index and dated decisions) can find the repository's status. Copying it is not deciding it again. Its date and author are not recorded, and this entry does not settle which documents the banners cover.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+diff -ruN a/PI_AGENT_OVERVIEW.md b/PI_AGENT_OVERVIEW.md
+--- a/PI_AGENT_OVERVIEW.md	2026-08-01 21:12:00.000000000 +0100
++++ b/PI_AGENT_OVERVIEW.md	2026-10-07 22:46:08.792351209 +0100
+@@ -96,5 +96,5 @@
+ | Scope-aware tooling | Extensions (TypeScript) — read scope.yaml, emit runtime event/action logs, query git |
+ | Guardrails | `beforeToolCall` hooks — block forbidden operations |
+ | Runtime event/action log | Agent event stream → structured JSONL |
+-| Scheduling | External due-event scheduler invoking Pi or the scope manager in non-interactive mode |
++| Scheduling | Not specified here: as recorded in DECISIONS.md on 2026-07-26, the temporal coordinator V0 only enqueues route-free `schedule_due` jobs and has no consumer, so no path from a due event to Pi is defined |
+ | Model flexibility | `pi-ai` — different models for different agents, switch without code changes |
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-08-01 21:12:00.000000000 +0100
++++ b/README.md	2026-10-07 22:46:08.791046997 +0100
+@@ -6,7 +6,7 @@
+ 
+ **Current named version: Sol 0.x**
+ 
+-Bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
++Design source for the agentic architecture as it stood before this repository became reference-only (see the status above): what it is, how it's composed, and which provisional shapes were under review. `Sol` is the current version codename, not the product or system namespace.
+ 
+ This repo is not the installable distribution and not a live installation. Its historical Level 2
+ distribution source lives in [agentic-architecture-distribution](../agentic-architecture-distribution).
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md	2026-08-01 21:12:00.000000000 +0100
++++ b/ROADMAP.md	2026-10-07 22:46:08.791353683 +0100
+@@ -1,5 +1,24 @@
+ # Roadmap — Current Named Version
+ 
++> **Reference-only.** Checked on 2026-10-07 against a snapshot of this repository. This repository is no longer
++> current architecture authority (README.md and AGENTS.md banners; DECISIONS.md, "This repository is
++> reference-only"). The lists below are the roadmap as last maintained here and are not a plan of current work. The
++> latest dated entry anywhere in the repository is 2026-07-26. The banners say current work lives in
++> `../personal-agent` and `../../scope`; that was not checked.
++>
++> - **Trust first:** the banners; DECISIONS.md for what was settled and when; [architecture/INDEX.md](architecture/INDEX.md)
++>   for orchestration anatomy.
++> - **Open, awaiting the steward:** whether the banners cover the temporal coordinator contract that
++>   `components/temporal-coordinator/SPEC.md` and `SCHEDULING.md` call authoritative; whether the session-start
++>   procedure and the commit-time guard in AGENTS.md still apply here; the banners' date and author.
++> - **Misleading nearby (not exhaustive):** `architecture/PICKUP.md` and
++>   `components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md` (both superseded on 2026-07-26); the unchecked
++>   items below and in `components/*/TODO.md` "Next Up"; the system snapshot in `skills/entropy-guard.md` (last
++>   evaluated 2026-04-27).
++> - **Next action:** the steward answers the open items above.
++> - **Stale when:** the steward answers an open item, or a banner changes. Whoever records that answer in
++>   DECISIONS.md refreshes this block.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+diff -ruN a/RUNTIME.md b/RUNTIME.md
+--- a/RUNTIME.md	2026-08-01 21:12:00.000000000 +0100
++++ b/RUNTIME.md	2026-10-07 22:46:08.791608559 +0100
+@@ -24,7 +24,7 @@
+ |-----------|-------------|------|
+ | Temporal coordinator | V0 one-time enqueue core: stores schedule intent and immutable run records, then enqueues route-free delayed jobs through pg-boss; no production consumer or delivery claim | Persistent service/container |
+ | Data store | Logs, task state, agent outputs — queryable | Persistent container |
+-| Scope manager | Single sandbox security perimeter; seams: lifecycle ops, LLM proxy, task mgmt, event log, comms (HTTP + JSON-RPC) | Persistent service |
++| Scope manager | Single sandbox security perimeter; its seams are under review in the orchestration snapshot (see [architecture/INDEX.md](architecture/INDEX.md)) | Persistent service |
+ | Orchestrator | Routes intent to scopes via manifests, feeds flowbook, answers status queries | Persistent container |
+ | Telegram bot | Human interaction surface (queries, alerts, commands) | Persistent container |
+ 
+@@ -64,7 +64,7 @@
+ - Issues scope-scoped auth tokens at provisioning time
+ - Manages workspace lifecycle transparently (the orchestrator submits tasks; the scope manager decides whether to provision, resume, or restart)
+ 
+-**Runtime gateway (unified for v0):**
++**Runtime gateway responsibilities** (not a complete seam list; how these decompose into seams is under review in the orchestration snapshot):
+ - LLM proxying: receives keyless requests, adds the correct API key, forwards, logs usage per scope
+ - Task management: receives task submissions and status updates, writes to Postgres, enforces scope isolation
+ - Event logging: receives events from sandboxes, writes to Postgres with scope_id
+@@ -79,7 +79,7 @@
+ | Thing | What it is | What it touches | Typical caller |
+ |---|---|---|---|
+ | `scopectl` | Deterministic operator CLI | Scope definition files and templates | Human or local automation |
+-| `scope-manager` | Deterministic platform service and unified sandbox gateway | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
++| `scope-manager` | Deterministic platform service and the single sandbox security perimeter | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log (seam list under review in the orchestration snapshot) | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
+ 
+ Rule of thumb: if the operation is "edit or validate a scope repo on disk," that is `scopectl`. If the operation crosses a trust boundary or touches runtime infrastructure, that is `scope-manager`.
+ 
+@@ -123,7 +123,7 @@
+ - Default-deny: nothing is visible unless explicitly mounted
+ - OS-level enforcement: the agent cannot see outside its mounts
+ 
+-Sandbox provider selection must treat filesystem isolation as a hard requirement. See open questions in DECISIONS.md.
++Sandbox provider selection must treat filesystem isolation as a hard requirement. See [DECISIONS.md](DECISIONS.md): "Sandbox provider: evaluate E2B and Daytona against first real workflow" (direction set 2026-04-27).
+ 
+ ## Pipeline patterns
+ 
+diff -ruN a/SCOPES_PLANNED.md b/SCOPES_PLANNED.md
+--- a/SCOPES_PLANNED.md	2026-08-01 21:12:00.000000000 +0100
++++ b/SCOPES_PLANNED.md	2026-10-07 22:46:08.791987078 +0100
+@@ -23,11 +23,11 @@
+ - **flowbook-publish** — generate audio from the daily summary, publish to podcast feed. Trigger: schedule (chained after daily-summary). Hand-off: flowbook binary (pipeline already exists in `~/pro/flowbook`); RunPod for voice; podcast feed for distribution.
+ - **site-rebuild** — trigger scheduled site rebuilds for governed sites (Netlify build hooks etc.). Trigger: schedule (per site). Hand-off: pure binary call — Netlify API.
+ 
+-These workflows live in the orchestrator scope's `workflows/` directory once the orchestrator scope is instantiated. Until then, they are commitments tracked here. Each will be designed in detail via the scope-design skill (workflow section) and then a follow-on workflow-design skill.
++These workflows live in the orchestrator scope's `workflows/` directory once the orchestrator scope is instantiated. Until then, they are commitments tracked here, with drafts in [components/orchestrator/scope/workflows/](components/orchestrator/scope/workflows/) (see [components/orchestrator/DECISIONS.md](components/orchestrator/DECISIONS.md), 2026-04-23). Each will be designed in detail via the scope-design skill (workflow section) and then a follow-on workflow-design skill.
+ 
+ **Open questions**:
+ - What does the orchestrator need to do day-to-day beyond the planned workflows above?
+-- How do child scopes expose parent-callable workflows or capabilities to the root scope? See [DECISIONS.md](DECISIONS.md#open-questions).
++- How do child scopes expose parent-callable workflows or capabilities to the root scope? Direction set in [DECISIONS.md](DECISIONS.md): "Cross-scope workflow exposure uses Agent Card / skills pattern" (2026-04-27); detail is still open.
+ 
+ ## Child Scopes
+ 
+@@ -87,4 +87,4 @@
+ 
+ ## Cross-cutting Questions
+ 
+-Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: sandbox isolation model, workspace lifecycle triggers, agent runtime binding location, concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism.
++Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism. The sandbox isolation model (2026-04-05), workspace lifecycle triggers and agent runtime binding location (both 2026-04-27) are decided or have a direction set in DECISIONS.md.

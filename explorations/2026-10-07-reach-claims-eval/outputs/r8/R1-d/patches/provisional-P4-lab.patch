@@ -1,0 +1,137 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 1853ee2..34c2153 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -37,6 +37,11 @@ It holds current state only, capped at about forty content lines. History is in
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++Run [`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md) at the end of every work
++session on ORC or this Scope, before committing or handing off. It checks this session's change in both repositories.
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff --git a/skills/session-coherence-guard/SKILL.md b/skills/session-coherence-guard/SKILL.md
+new file mode 100644
+index 0000000..0a229f1
+--- /dev/null
++++ b/skills/session-coherence-guard/SKILL.md
+@@ -0,0 +1,115 @@
++---
++name: session-coherence-guard
++description: Check this repository's coherence at the end of a work session, before handoff.
++metadata:
++  generated: "2026-10-07"
++  source: "entropy-guard session-coherence-skill-generator v0.5.0"
++---
++
++# Skill: ORC and Orchestration Lab Session Coherence Guard
++
++Run at the end of a work session, before commit or handoff. Check only this session's change.
++
++## Modes and safety
++- Follow the invocation's mode: plan, audit-only and discuss-first inspect and report without editing; build permits
++  scoped repairs.
++- Never commit or push unless asked. Never read, print or write secret values; inspect examples and key names instead.
++- Leave unrelated changes alone, and keep committed workflow logic out of vendor-specific agent folders.
++
++## Where things live
++- Authorised intent: lab `SCOPE.md`, `scope.yaml`, `decisions/`, `memory/authority-rules-step-1.md` and the north star
++  in `STATE.md`; ORC `README.md` ("Direction", "Boundary") and `AGENTS.md`. Steward: Justin (`scope.yaml`).
++- Current state and next steps: lab `STATE.md`. Read it first.
++- Decisions: lab `decisions/`; issue-level ones on their issues, all on the map orchestrator#140. Open: whether
++  decisions about ORC itself belong in ORC's repository (lab `decisions/2026-10-07-proposals-from-entropy-assessment.md`, P5).
++- Rules owned elsewhere: `~/pro/local-config/home/AGENTS.md`; ORC `SECURITY-REVIEW.md` and `dangerfile.js`; the map's
++  rules in orchestrator#140; `~/pro/agentic/HOW_NOT_TO_PLAN.md`; `~/pro/scope/docs/MODEL.md`.
++
++Here "lab" is `~/scopes/scope-orchestration-lab`, and "ORC" is the checkout or worktree of `~/pro/orchestrator` the
++session worked in.
++
++## What changed this session
++Find the commit the session started from, and write it in place of `<start>` below. If you cannot, use `origin/main`
++and report "coverage incomplete". If neither exists, report committed changes as not covered, and still inspect staged,
++unstaged and untracked work. Run this in each repository the session touched.
++```bash
++git log --oneline <start>..HEAD           # commits
++git diff <start> HEAD                     # what they changed
++git status --short
++git diff --cached                         # staged: what the next commit holds
++git diff                                  # unstaged
++git ls-files --others --exclude-standard  # untracked: read those that matter
++```
++<!-- Check staged and unstaged separately: `git diff HEAD` nets them out, so a change staged and then undone in the
++working tree shows nothing yet still lands. Add live changes the checks depend on (a deployed build, a grant), read
++with the time. -->
++Live changes: what ORC runs (`pnpm service:status`), cards approved and grants made this session, each read with the time.
++
++## Intent
++Does this change fit the authorised intent in the files above? If not:
++
++> When this session's work and the authorised intent disagree:
++>
++> 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of
++>    intent nobody has decided.
++> 2. Fix a defect in the work.
++> 3. Go ahead with an adaptation within existing authorisation, and record its reason where that helps. Record an
++>    undecided change of intent as a proposal for Justin in the lab's `decisions/`; work that depends on it waits
++>    for the decision.
++> 4. Do not edit the intent documents listed under "Where things live" to match the work unless Justin has recorded
++>    that decision.
++> 5. Correct a document directly only when a recorded decision of Justin's already settles it, and cite that
++>    decision.
++> 6. Before making a description, an implementation and a check agree, establish which of them is wrong. A test or
++>    the code shows what is checked or built; it does not authorise weakening a documented constraint.
++
++(Intent-change rule v2, from entropy-guard: `skills/entropy-assessment/intent-change-rule.md`.)
++
++## Checks
++- If an ORC module changed what it does: do its own header (Owns / Never / Today), and any line about it in ORC
++  `README.md` or `AGENTS.md`, still describe it? `pnpm codemap --today` lists the headers.
++- For each state claim changed in lab `STATE.md`: do its other mentions, there, in `decisions/` and in ORC's docs,
++  still agree?
++- If ORC's `src/`, `package.json` or a connector changed what ORC launches or contacts (`child_process`, `.launch(`,
++  `fetch`, `node:http`, `node:https`, `node:net`, `node:dns`, `WebSocket`, `.goto(`, a new dependency that opens a
++  process or socket): do the subprocess and network lists in ORC `AGENTS.md` name it, including reach delegated to a
++  library, Pi, an MCP server or a package, and would `test/architecture.test.ts` fail if it moved? A reach no
++  recorded decision covers goes to Justin as a proposal, not into the list.
++- If lab `STATE.md` changed: is it within the cap in lab `AGENTS.md` ("Keeping state")? Does each live fact (what ORC
++  runs, grants, test counts) say when and where it was read? Does `node tools/map.mjs` still mark the
++  `**Where we are now:**` issue with ★?
++- If Justin decided something this session: is it in lab `decisions/`, or on the issue that owns it, dated and in his
++  words, and not only in `STATE.md`?
++- If ORC's durable-work store (`src/adapters/async-store/sqlite.ts`), its state directory or `src/core/*.md` changed:
++  do lab `tools/collect.mjs`'s readers still find them? They return nothing rather than fail.
++- If the session opened issues: are they on the map? `node tools/map.mjs --check` covers only the repositories in
++  `tools/collect.mjs` and passes when a read fails; check any other repository's issue on GitHub.
++- Before reviving or citing an ORC root report (`REWORK.md`, `SEAM.md`, `OPERATOR.md`, `FIXES.md` and the like) or a
++  dated lab report: does `STATE.md`, ORC `README.md` or `AGENTS.md` still treat it as current?
++- If a connector's configuration or credential names changed in ORC: does every package manifest that declares it
++  use the new names (orchestrator#198)?
++- If a path in ORC `dangerfile.js` `GUARDED` changed: is it going through a pull request, not a direct push to `main`,
++  which Danger never sees?
++```bash
++# ORC, if it changed. CI runs only Danger.
++pnpm typecheck && pnpm test
++pnpm test:e2e      # only if web/ or the durable-work surface changed
++# lab
++node tools/map.mjs --check
++node --input-type=module -e "const m = await import('./tools/collect.mjs'); console.log((await m.durableWork()) ? 'durable work read' : 'durable work NOT read', m.agents().length, 'agents')"
++grep -cv '^\s*$' STATE.md   # against the cap in AGENTS.md
++```
++
++## Repairs
++- One owner per concept: when two places define one concept independently, reduce one to a link. Keep summaries,
++  generated projections, versioned copies and independent tests, and keep them correct.
++- Limit every correction by its evidence. Change only what the evidence settles, and leave open parts visibly open.
++  For an exhaustive list or an "only" claim, check the full scope, including delegated behaviour. Never change a
++  prescribed boundary because of observed behaviour, and never treat a test or the code as the record: where a
++  description, the code and a check disagree, establish which is wrong first.
++
++## Report
++- Baseline, and whether coverage was complete; what was checked and what was not.
++- Findings caused by this session, judged by the relationship changed, not the file edited: renaming a setting in
++  the code makes an untouched README wrong. Problems that were already there, listed separately.
++- Proposals for Justin; files updated; the next action, written into lab `STATE.md`.

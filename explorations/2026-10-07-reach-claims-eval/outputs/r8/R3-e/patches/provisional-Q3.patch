@@ -1,0 +1,81 @@
+# PROVISIONAL PATCH: do not apply until the steward answers Q3 (questions.md).
+# Q3: Do components/scope/template/, components/agent/template/ and roles/ remain the source for new scope
+#     definitions and roles, or does another repository own them now?
+# Written for the recommended answer: the scope template's source is ../../scope; the role and binding template's
+# home is named by the steward. Replace every <DATE>, <STEWARD> and <HOME NAMED BY STEWARD> first.
+# Marks the templates and the reference role as dated reference copies and points scaffolding at the new source;
+# records the change against the 2026-04-01/04-03 template decision and removes Q3 from Open Questions.
+#
+# Apply after settled.patch, from the repository root. Verified on 2026-10-07 against the snapshot: this patch applies
+# alone or together with the other provisional patches in any order using `patch -p1` (some orders rely on patch's
+# fuzz), and every order gives the same tree; `git apply -p1` works in the order Q1, Q2, Q3.
+#
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -18,3 +18,3 @@
+ - **Version codenames are not system namespaces.** `Sol` names the current version/codename only. Do not use `Sol` as the product name, system name, platform name, component prefix, or actor that owns/does things. Use version-neutral architecture terms for durable concepts.
+-- **Template source lives in the design repo.** `components/{name}/template/` is the single source. No separate template repos — the sync overhead outweighs the convenience. New instances are created by copying the template directory (manually now, CLI tooling later).
++- **Template source** *(changed <DATE>, see DECISIONS.md)*: the scope template's source is now `../../scope`, and the role and binding template's source is <HOME NAMED BY STEWARD>. `components/{name}/template/` here are reference copies as of <DATE>; do not scaffold new instances from them.
+ - **Skills are pushed, not pulled.** Agents are given skills from a library — they do not browse it.
+@@ -107,3 +107,3 @@
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+-  - template/ — template source for new scope instances
++  - template/ — reference copy of the scope template (source: `../../scope`)
+   - skills/ — scope component/layer pattern skills
+@@ -111,3 +111,3 @@
+   - MODEL.md, DECISIONS.md
+-  - template/ — template source for new role definitions and runtime bindings
++  - template/ — reference copy of the role and binding template (source: <HOME NAMED BY STEWARD>)
+   - skills/ — agent-component design skills
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -56,3 +56,3 @@
+ 
+-**Superseded**: The separate template repo created a sync obligation and drift vector that outweighed the convenience of GitHub's "Use this template" button. The `template/` directory under `components/{name}/` is now the single source. New instances are created by copying it directly (manually now, CLI tooling later). The `scope-template` repo has been deleted.
++**Superseded**: The separate template repo created a sync obligation and drift vector that outweighed the convenience of GitHub's "Use this template" button. The `template/` directory under `components/{name}/` is now the single source. New instances are created by copying it directly (manually now, CLI tooling later). The `scope-template` repo has been deleted. **Superseded for current work (<DATE>)**, decided by <STEWARD>: the scope template's source is now `../../scope`, and the role and binding template's source is <HOME NAMED BY STEWARD>. The `template/` directories under `components/{name}/` here, and `roles/`, are reference copies as of <DATE>.
+ 
+@@ -884,4 +884,2 @@
+ 
+-- **Template and reference-role ownership.** Do `components/scope/template/`, `components/agent/template/` and `roles/` remain the source for new scope definitions and roles, or does another repository, such as `../../scope`, own them now?
+-
+ - **Location.** Does this repository stay in `~/pro/agentic/`, or move to `~/pro-archive/`, which the 2026-04-04 layout decision reserves for completed or superseded projects?
+diff -ruN a/components/agent/MODEL.md b/components/agent/MODEL.md
+--- a/components/agent/MODEL.md
++++ b/components/agent/MODEL.md
+@@ -83,3 +83,3 @@
+ 
+-- `components/agent/template/` is the versioned source of the role and runtime-binding templates
++- `components/agent/template/` is a reference copy as of <DATE>; the versioned source of the role and runtime-binding templates is <HOME NAMED BY STEWARD> (DECISIONS.md, <DATE>)
+ - any `roles/<role-id>/` placed in this repository are reference or test roles only
+@@ -120,3 +120,3 @@
+ 
+-This component directory contains `template/` as the versioned source of the role and runtime-binding schemas and structure. New role definitions and bindings are created by copying the template manually now, and later by deterministic tooling if that becomes useful.
++This component directory's `template/` is a reference copy as of <DATE>; the versioned source of the role and runtime-binding schemas and structure is <HOME NAMED BY STEWARD>. New role definitions and bindings are created by copying the template manually now, and later by deterministic tooling if that becomes useful.
+ 
+diff -ruN a/components/scope/MODEL.md b/components/scope/MODEL.md
+--- a/components/scope/MODEL.md
++++ b/components/scope/MODEL.md
+@@ -80,3 +80,3 @@
+ 
+-This component directory contains `template/` as the versioned source of the scope schema and structure. New scope definition repos are scaffolded by copying the template directory manually or via `scopectl create`. Registering a managed scope with the orchestrator and provisioning its workspaces is a scope-manager operation.
++This component directory's `template/` is a reference copy as of <DATE>; the versioned source of the scope schema and structure is now `../../scope` (DECISIONS.md, <DATE>). New scope definition repos are scaffolded from there, manually or via `scopectl create`. Registering a managed scope with the orchestrator and provisioning its workspaces is a scope-manager operation.
+ 
+diff -ruN a/components/scope/skills/scope-design.md b/components/scope/skills/scope-design.md
+--- a/components/scope/skills/scope-design.md
++++ b/components/scope/skills/scope-design.md
+@@ -121,3 +121,3 @@
+ 
+-Then `scopectl create` (when it exists) or manual copy from `components/scope/template/` to scaffold the scope definition repo. Root-manifest registration and workspace provisioning remain scope-manager steps.
++Then `scopectl create` (when it exists) or a manual copy of the scope template in `../../scope` (DECISIONS.md, <DATE>) to scaffold the scope definition repo. Root-manifest registration and workspace provisioning remain scope-manager steps.
+ 
+diff -ruN a/roles/README.md b/roles/README.md
+--- a/roles/README.md
++++ b/roles/README.md
+@@ -11,3 +11,5 @@
+ - seed later scope-local role definitions
+ 
+ Live role definitions belong in scope repos later, using the same `roles/{role-id}/` shape.
++
++`professional-presence-profile-editor` here is a reference copy as of <DATE>. The live role is owned by `~/scopes/scope-professional-presence/roles/professional-presence-profile-editor/` (run 002); change it there, and do not keep this copy in step.

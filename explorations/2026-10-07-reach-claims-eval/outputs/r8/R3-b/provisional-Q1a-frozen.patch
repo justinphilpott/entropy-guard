@@ -1,0 +1,60 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -69,7 +69,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- This repository is a frozen reference record (DECISIONS.md, "Reference-only means a frozen record"): make only status and pointer corrections. [skills/entropy-guard.md](skills/entropy-guard.md) is demoted and is not run before commits.
+ 
+ ## What belongs in this repo
+ 
+@@ -100,7 +100,7 @@
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+ - [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/entropy-guard.md](skills/entropy-guard.md) — demoted coherence checklist, kept as a record
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+   - template/ — template source for new scope instances
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -886,6 +886,14 @@
+ 
+ ---
+ 
++### <date of the steward's answer> — Reference-only means a frozen record
++
++Decided by <steward>: this repository is kept as a frozen record. Only status and pointer corrections are made here.
++Known inconsistencies between its documents are not fixed.
++`skills/entropy-guard.md` is demoted: it is kept as a record and no longer runs before commits.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+--- a/skills/entropy-guard.md
++++ b/skills/entropy-guard.md
+@@ -9,6 +9,10 @@
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Demoted.** This repository is a frozen reference record (DECISIONS.md, "Reference-only means a frozen record").
++> This checklist describes the blueprint as it stood when last evaluated (2026-04-27). It is kept as a record and is
++> not run before commits.
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+--- a/skills/README.md
++++ b/skills/README.md
+@@ -5,6 +5,6 @@
+ They are not architecture primitives, live runtime skills, or generic reusable helper skills.
+ 
+ - `session-kickoff.md` builds a compact current-state packet before architecture work.
+-- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
++- `entropy-guard.md` is a demoted coherence checklist, kept as a record; it is not run before commits (DECISIONS.md, "Reference-only means a frozen record").
+ 
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.

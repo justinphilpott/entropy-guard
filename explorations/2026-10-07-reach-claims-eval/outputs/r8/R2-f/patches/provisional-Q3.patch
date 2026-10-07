@@ -1,0 +1,93 @@
+PROVISIONAL: do not apply until the steward answers Q3 (status of explorations/ and the three
+autopoiesis-derived LEARNINGS.md entries). Drafted for the recommended reading (b): keep the files,
+mark them historical seed material. Apply on top of settled.patch. Finding: F6.
+
+diff -ruN b/explorations/2026-03-19-autopoiesis.md c3/explorations/2026-03-19-autopoiesis.md
+--- b/explorations/2026-03-19-autopoiesis.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/explorations/2026-03-19-autopoiesis.md	2026-10-07 22:45:44.756442660 +0100
+@@ -11,6 +11,8 @@
+ 
+ # On Autopoiesis and Entropy Guards: A Conversation
+ 
++> **Status here:** historical seed material. This line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS "Farm broader entropic-immunity exploration…"); nothing in this file directs entropy-guard's design.
++
+ *Justin Philpott and Claude Sonnet 4.6 — 2026-03-19*
+ 
+ *A philosophical and strategic exploration that began as an evaluation of the entropy-assessment skill and ended with a framework for self-maintaining systems. Preserved in full.*
+diff -ruN b/explorations/2026-03-24-entropic-immunity-systems.md c3/explorations/2026-03-24-entropic-immunity-systems.md
+--- b/explorations/2026-03-24-entropic-immunity-systems.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/explorations/2026-03-24-entropic-immunity-systems.md	2026-10-07 22:45:44.756584137 +0100
+@@ -11,6 +11,8 @@
+ 
+ # Entropic Immunity Systems
+ 
++> **Status here:** historical seed material. This line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS "Farm broader entropic-immunity exploration…"); nothing in this file directs entropy-guard's design.
++
+ *A digested exploration building on `explorations/2026-03-19-autopoiesis.md` and the follow-on conversation preserved at `explorations/2026-03-24-entropy-immune-system-conversation.md`.*
+ 
+ ---
+diff -ruN b/explorations/2026-03-24-entropy-immune-system-conversation.md c3/explorations/2026-03-24-entropy-immune-system-conversation.md
+--- b/explorations/2026-03-24-entropy-immune-system-conversation.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/explorations/2026-03-24-entropy-immune-system-conversation.md	2026-10-07 22:45:44.756772142 +0100
+@@ -11,6 +11,8 @@
+ 
+ # On Entropy Immune Systems: A Conversation
+ 
++> **Status here:** historical seed material. This line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS "Farm broader entropic-immunity exploration…"); nothing in this file directs entropy-guard's design.
++
+ *Justin Philpott and OpenCode (gpt-5.4) - 2026-03-24*
+ 
+ *A follow-on exploration from `explorations/2026-03-19-autopoiesis.md`, preserved from the visible user/assistant exchange. Internal tool calls are omitted.*
+diff -ruN b/explorations/2026-03-24-entropy-immune-system-working-conclusions.md c3/explorations/2026-03-24-entropy-immune-system-working-conclusions.md
+--- b/explorations/2026-03-24-entropy-immune-system-working-conclusions.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/explorations/2026-03-24-entropy-immune-system-working-conclusions.md	2026-10-07 22:45:44.756863152 +0100
+@@ -11,6 +11,8 @@
+ 
+ # Entropy Immune System: Working Conclusions
+ 
++> **Status here:** historical seed material. This line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS "Farm broader entropic-immunity exploration…"); nothing in this file directs entropy-guard's design.
++
+ *A compact digest of tentative learnings, distinctions, and open questions emerging from the conversation preserved at `explorations/2026-03-24-entropy-immune-system-conversation.md`.*
+ 
+ ---
+diff -ruN b/LEARNINGS.md c3/LEARNINGS.md
+--- b/LEARNINGS.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/LEARNINGS.md	2026-10-07 22:45:44.757121015 +0100
+@@ -116,6 +116,8 @@
+ 
+ ### Just-in-time guard generation is a better model than pre-generated guard artifacts
+ 
++*Exploratory: from the 2026-03-19 conversation, a line of thought that continues in `entropy-immune-system` (DECISIONS "Farm broader…"). Not a design directive for entropy-guard.*
++
+ **Topic**: Guard generation methodology
+ 
+ **Insight**: A pre-generated guard encodes system state at time A and drifts from time B onward. A process generator that produces fresh guards from current state + cached memory + intent is fundamentally more robust — not because it's a better implementation but because it's a different category of thing. The generator makes claims about how to assess *any state of this system*; the guard makes claims about *a specific past state*. The analogy: DNA repair enzymes aren't pre-stocked patches — they're proteins that recognise and respond to damage classes, whatever form the damage takes.
+@@ -126,6 +128,8 @@
+ 
+ ### The four-component temporal hierarchy of a complete guarding system
+ 
++*Exploratory: from the 2026-03-19 conversation, a line of thought that continues in `entropy-immune-system` (DECISIONS "Farm broader…"). Not a design directive for entropy-guard.*
++
+ **Topic**: Guard system architecture
+ 
+ **Insight**: A complete guarding system has four components with fundamentally different persistence expectations: (1) intent — slowest to change, constitutional core; (2) system memory — the cached entropy profile, analogous to immune memory, updates with major architectural shifts; (3) process generator — freshly instantiated at each handoff from the other three, never persisted; (4) delta — what changed this iteration, consumed immediately. The error in current guard design is treating all four as having the same persistence profile. The stability hierarchy maps directly to the biological analogy: the repair enzyme genes (intent) are ancient; the enzymes themselves (memory) persist in the cell; the specific repair action (process) is immediate and consumed.
+@@ -136,6 +140,8 @@
+ 
+ ### Most current guards operate at the wrong layer — representational rather than meaning
+ 
++*Exploratory: from the 2026-03-19 conversation, a line of thought that continues in `entropy-immune-system` (DECISIONS "Farm broader…"). Not a design directive for entropy-guard.*
++
+ **Topic**: Guard design methodology
+ 
+ **Insight**: There is a layer hierarchy from representational consistency (layer 5: docs agree with each other) down to actual-meaning integrity (layer 1: the effect still serves what motivated building it). Current entropy guards almost entirely operate at layers 4–5. Test suites operate at layer 3 — checking against a static behavioral baseline. Almost nothing guards layers 1–2. A system can be perfectly internally consistent, pass all tests, and be doing the wrong thing — intent drift at layer 1 is invisible to every representational guard. This is the cancer pattern: local coherence, global harm.
+diff -ruN b/README.md c3/README.md
+--- b/README.md	2026-05-11 21:50:31.000000000 +0100
++++ c3/README.md	2026-10-07 22:45:44.757189570 +0100
+@@ -105,6 +105,7 @@
+ | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form reflections on entropy, self-awareness, and system design |
+ | [DECISIONS.md](DECISIONS.md) | Architectural decisions with context and rationale |
+ | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries from building and using guards |
++| [explorations/](explorations/) | Historical conversations and digests that seeded the sibling `entropy-immune-system` repo |
+ 
+ ### Project operations
+ 

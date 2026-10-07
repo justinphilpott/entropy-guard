@@ -1,0 +1,12 @@
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 22:48:45.619469175 +0100
++++ b/DECISIONS.md	2026-10-07 22:48:45.668069093 +0100
+@@ -58,6 +58,8 @@
+ 
+ ### Farm broader entropic-immunity exploration into a sibling repo; keep entropy-guard practical
+ 
++*Validation loop partially superseded by the steward's decision on what the validation batch measures (<date>): the batch runs on docs-first planning repos and tracks session recovery and coherence, recording merged-PR outcomes where a target has a pull-request flow.*
++
+ **Context**: The March 2026 explorations on autopoiesis, layered intent, steering, viability, and entropic immunity opened a broader research program than `entropy-guard` itself needs in order to stay useful. Letting that conceptual exploration continue inside this repo risked blurring the scope of the practical guard project and making the README / INTENT / contributor guidance less clear about what this repo is actually trying to validate next.
+ **Decision**: Keep `entropy-guard` focused on practical entropy protection: assessment, guard generation/refinement, integration, and iterative validation of those workflows on real projects. Farm the broader entropic-immunity exploration into a sibling repo, `entropy-immune-system`, seeded with the exploration documents and early research scaffolding. Set the next validation loop here to: assess a larger set of open source projects, generate or refine guards, run them locally while making targeted improvements, and track whether that produces more merged PRs.
+ **Impact**: `entropy-guard` retains a clear operational center and a concrete next step. The broader theory can evolve without forcing premature architectural or philosophical expansion into this repo. Future contributors should treat `entropy-guard` as the practical ladder and `entropy-immune-system` as the larger inquiry.

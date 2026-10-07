@@ -1,0 +1,13 @@
+diff --git a/STATE.md b/STATE.md
+index 7fb279b..6c5b30b 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,7 @@
+ 
+ Updated 2026-10-07 by the entropy assessment, from this file as it stood at 2026-10-04 17:31; nothing here was re-read
+ on the machine since. **Current state only.** History is in `git log`, open work in GitHub issues, what broke in real
+-use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines. Stale after any merge,
++use in `FRICTION.md`. Overwrite at each verified event; do not append; the cap is in `AGENTS.md`. Stale after any merge,
+ restart, approved card or decision of Justin's; whoever causes one rewrites the lines it changes.
+ 
+ ## North star

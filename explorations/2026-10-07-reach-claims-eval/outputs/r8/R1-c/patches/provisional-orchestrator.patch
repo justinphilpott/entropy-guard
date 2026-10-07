@@ -1,0 +1,146 @@
+PROVISIONAL patch for ORC (~/pro/orchestrator). Do not apply until Justin answers the questions named below
+(questions.md). Apply after settled-orchestrator.patch. Each hunk is written for the recommended answer.
+- AGENTS.md, after "every new issue is placed on the map": pointer to the lab's STATE.md and session guard. Q1.
+- AGENTS.md, Boundaries: the reach lists rewritten from the recorded search (assessment.md, F7), replacing the
+  settled correction note. Q2 (the browser and package connectors), Q3 (package phone notices; the wording assumes
+  answer (b), which also needs a code change in src/adapters/phone/index.ts to limit the tap address to hosts the
+  card names).
+- README.md: the intro, the Moving Stillness apply, the browser login and "Deliberately absent". Q2.
+The "Known defect" line about src/adapters/orc-service.ts (F25) stays until the code passes an explicit
+environment; it is a defect in the work, not a question.
+Guarded paths: the pull request needs a "## Security review" section.
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -11,6 +11,9 @@
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
++Where the work stands is in the orchestration-lab Scope's `STATE.md` (`~/scopes/scope-orchestration-lab`). Before
++handing off a session, run that Scope's session guard, `skills/session-coherence-guard/SKILL.md`.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data
+@@ -89,28 +92,37 @@
+ its outcome by an independent read (#74); the Moving Stillness apply does, and a
+ new grantable type should not be declared without one.
+ 
+-Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+-code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
+-which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+-
+-Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+-which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++Five modules of `src/` launch processes. They were found on 2026-10-07 by searching `src/` for Node's process
++primitives, the MCP stdio transport and Playwright's browser launch; libraries' own internals, such as Pi's, were
++not searched.
++- `src/core/child-agent-process.ts` launches one code-fixed Pi child without a shell, for the researcher;
++- `src/core/analysis-tools.ts` launches a code-fixed read-only `git log` without a shell;
++- `src/adapters/mcp/client.ts` delegates process transport to the official MCP SDK for a separately declared server;
++- `src/adapters/orc-service.ts`, for the restart card, runs git's read commands in ORC's own checkout, a
++  frozen-lockfile `pnpm install`, ORC's build and `systemctl --user restart` of ORC's own unit (orchestrator#101);
++- `src/adapters/browser/playwright.ts` launches one headless Chromium per browser session through Playwright's
++  library, for a package whose approved card grants it a browser connector (orchestrator#76).
++
++Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++A package's code is not in this repository, and what it launches, such as Moving Stillness's Bookwhen ops tool, is
++reviewed with that package.
++
++Direct network access from ORC's own code, found by the same search for Node's network modules and `fetch`, exists in:
++- `src/core/research-tools.ts`, for read-only Jina Reader requests, in the researcher child;
++- `src/adapters/notifications/ntfy.ts`, ORC's one ntfy sender. It publishes durable-work notices to the topic the
++  operator names in ORC's environment file, with a title, the notice's summary and the one configured tap address.
++  It also carries a package's phone notices (`src/adapters/phone/index.ts`, orchestrator#184): the package's own
++  title, text and tags, to that package's own topic on the same server, as its card names it, with a tap address
++  on a host the card names;
++- `src/adapters/browser/playwright.ts`, which looks up a host's address before a session may reach it. The Chromium
++  it launches is confined to the hosts its card grants: every other request goes to a proxy where nothing listens;
++- `src/web-server.ts` and `src/web-cli.ts`, which serve the operator's API on the loopback address.
++
++Libraries reach the network on ORC's behalf: Pi, for the model provider an agent's model names, and the restart
++card's `pnpm install`, for the package registry. No model chooses a destination. ORC imports no Bookwhen client:
++`test/architecture.test.ts` refuses one, as the rule that domain code belongs to the Scope that needs it requires.
+ Workflow modules receive neither network nor subprocess access.
+ 
+-Corrections to the two paragraphs above, recorded 2026-10-07 by an entropy assessment. `src/bookwhen.ts` no longer
+-exists and ORC imports no Bookwhen client: `test/architecture.test.ts` refuses one, as the rule that domain code
+-belongs to the Scope that needs it requires. `src/adapters/orc-service.ts` also launches subprocesses, for the
+-restart card described under "Security review": git's read commands in ORC's own checkout, a frozen-lockfile
+-`pnpm install`, ORC's build, and `systemctl --user restart` of ORC's own unit (orchestrator#101). Beyond this, both
+-lists are known to be incomplete: the code launches and reaches more than they name, and which of those are
+-authorised awaits Justin's decision.
+-
+ Credentials stay in composition roots and narrowed connectors. They are never
+ included in prompts, tool inputs, tool results, model-visible data, or browser
+ DTOs.
+--- a/README.md
++++ b/README.md
+@@ -1,11 +1,13 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process. Among the processes
+-it launches is one isolated fixed researcher child for each public-web research invocation. Its
+-read-only external data paths include published Bookwhen events, fixed Bookwhen admin inspection and
+-planning operations, and public webpages through Jina Reader. Neither is a complete list (entropy
+-assessment, 2026-10-07); see AGENTS.md, Boundaries.
++adapter, and per-conversation model controls. ORC runs in one parent process. It launches one
++isolated fixed researcher child for each public-web research invocation, a headless Chromium for each
++browser session an approved package opens, and, for the restart card, git, pnpm, its own build and
++systemctl; AGENTS.md, Boundaries, lists each one. It reads public webpages through Jina Reader
++itself; every other outside service, published Bookwhen events included, is reached through an
++approved Scope package whose card names that connector, such as Bookwhen's admin pages through a
++browser.
+ 
+ ## Direction
+ 
+@@ -101,12 +103,12 @@
+ ```
+ 
+ A credential ORC holds itself is read in one place, `src/runtime.ts`, and handed to the narrow connector
+-that needs it. No subprocess ORC launches receives one.
++that needs it. No subprocess ORC launches receives one, except the Chromium a browser connector launches, which
++is loaded with the stored login (`storage-state`) its card names.
+ A credential a Scope holds is read from that Scope's own folder by `src/adapters/scope-credentials.ts`, when its
+ package activates (the operator, 2026-09-28, quoted there: "logins available through it should DEFINITELY NOT be centralised").
+ Known defect in the work, recorded 2026-10-07: the restart card's commands (`src/adapters/orc-service.ts`) are
+ launched with ORC's whole environment, credentials included, until that module passes them an explicit one.
+-Whether "No subprocess ORC launches receives one" holds otherwise is under question (entropy assessment, 2026-10-07).
+ 
+ ### As a service, restarted from a card
+ 
+@@ -149,19 +151,18 @@
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+ open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++a code-selected Bookwhen admin entry and calculate a slot-change plan; applying one is durable work that waits for
++the operator's card or a standing grant (AGENTS.md, Boundaries). It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
+-
+-Scheduling has since been decided: on 2026-09-17 Justin decided that ORC owns a general durable-work capability,
+-with work run now, at a time, or on a recurring schedule (orchestration-lab
+-`decisions/2026-09-17-async-work-architecture.md`). Whether the rest of the list above still holds against what
+-approved Scope packages do is under question (entropy assessment, 2026-10-07).
++Deliberately absent from core, and each requiring a decision rather than a convenience: reminders, workflow
++execution, sandboxes and shell access. Additional external data sources, and files written outside an agent's own
++memory, reach an agent only through an approved Scope package whose card names them; the operator's approval of
++that card is the decision. Scheduling was decided on 2026-09-17: ORC owns a general durable-work capability, with
++work run now, at a time, or on a recurring schedule (orchestration-lab
++`decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi
+ 

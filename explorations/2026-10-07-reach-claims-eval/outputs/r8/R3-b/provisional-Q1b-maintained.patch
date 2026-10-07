@@ -1,0 +1,185 @@
+--- a/components/agent/DECISIONS.md
++++ b/components/agent/DECISIONS.md
+@@ -9,7 +9,7 @@
+ - runtime state, logs, and agent status live outside git
+ - an agent is the runtime embodiment of a role; the role itself is design-time
+ - sandbox/workspace design is separate from role definition
+-- inter-agent communication and runtime setup are still open questions
++- inter-agent communication and the running-agent model are decided in root DECISIONS.md (2026-04-27 entries)
+ 
+ ---
+ 
+--- a/components/orchestrator/MODEL.md
++++ b/components/orchestrator/MODEL.md
+@@ -83,5 +83,5 @@
+ 
+ Remaining open questions tracked in root [DECISIONS.md](../../DECISIONS.md#open-questions):
+ 
+-- **Cross-scope workflow exposure model** — direction set (Agent Card / skills pattern at runtime), but detail needed on how child scope leads declare callable capabilities in practice
++- **Cross-scope workflow exposure model** — direction set in root DECISIONS.md ("Cross-scope workflow exposure uses Agent Card / skills pattern"), not in the open-questions registry; detail needed on how child scope leads declare callable capabilities in practice
+ - **Human-in-the-loop patterns** — the task lifecycle provides `input_required`, but the UX and policy need real workflows
+--- a/components/orchestrator/PLAN.md
++++ b/components/orchestrator/PLAN.md
+@@ -25,7 +25,7 @@
+ 
+ The orchestrator moves from design to running service when the platform layer is stood up. That work will:
+ 
+-- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (format TBD — see root DECISIONS.md open questions).
++- **Read the manifest registry** — on startup, load `scope.yaml` into an in-memory cache, re-read on a change signal (see root DECISIONS.md: "Orchestrator manifest cache is in-memory from scope.yaml").
+ - **Connect to the cross-boundary channel** — whatever mechanism is chosen for inter-agent communication.
+ - **Call the scope manager** — invoke the deterministic service for workspace assembly, secret injection, and lifecycle ops. The scope manager component design is separate (see [components.yaml](../../components.yaml) — status `planned`, no design dir yet).
+ - **Run workflows on a schedule** — outside the V0 enqueue-only temporal coordinator boundary; the V0 pg-boss job has no production consumer and makes no delivery claim.
+--- a/components/scope/skills/scope-design.md
++++ b/components/scope/skills/scope-design.md
+@@ -152,7 +152,7 @@
+ 
+ ## Notes
+ 
+-- **Skill injection is an open question** — see DECISIONS.md. Where this skill itself lives at runtime (orchestrator? pushed by scope manager?) is unresolved.
++- **Skill injection is decided** — see root DECISIONS.md: "Skills are injected into sandboxes at assembly time". Where this skill itself lives at runtime (orchestrator? pushed by scope manager?) is unresolved.
+ - **Workflow directory convention** (`workflows/{name}/WORKFLOW.md`) is the standard — see decision in root [DECISIONS.md](../../../DECISIONS.md). Filesystem is the manifest.
+ - **Workflow stubs are sparse on purpose.** A future workflow-design skill (TBD) does the deeper dive on a single workflow: "use tools X and Y to achieve Z" or "find a tool to do A, B, and C."
+ 
+--- a/components/scope/TODO.md
++++ b/components/scope/TODO.md
+@@ -36,7 +36,7 @@
+ - [ ] Define the role of `prosync` as a repo-telemetry input to future scope/work overview tooling
+ - [ ] Define a minimal fast structured `prosync` output contract (likely JSON) for downstream consumers such as FlowBook and future technical-update summaries
+ - [ ] Keep the default `prosync` structured export shallow and fast; make richer data such as recent commit history an explicit detail mode
+-- [ ] Design workspace lifecycle (cold start / warm resume / teardown) — workspace primitive's core design problem
++- [ ] Design workspace lifecycle (cold start / warm resume / teardown) — workspace primitive's core design problem; triggers decided 2026-04-27 (root DECISIONS.md, "Workspace lifecycle is transparent to the orchestrator")
+ - [ ] Evaluate sandbox providers against zero-trust filesystem isolation requirement (explicit mount lists, OS-level enforcement)
+ - [ ] Workflow-design follow-on skill: deeper-dive on a single workflow ("use tools X and Y to achieve Z")
+ - [ ] Decide whether `OPEN_QUESTIONS.md` becomes a standard scope file
+--- a/components.yaml
++++ b/components.yaml
+@@ -32,7 +32,7 @@
+   scope:
+     status: in-progress
+     design: components/scope
+-    implementation: ../scope
++    implementation: ../../scope
+     role: Authorization primitive; resource grouping, membership, policy
+ 
+   agent:
+@@ -48,37 +48,37 @@
+ 
+   library:
+     status: exploratory
+-    repo: ../library
++    repo: ../../library
+     role: Reusable agent skills
+ 
+   seed:
+     status: exploratory
+-    repo: ../seed
++    repo: ../../seed
+     role: Project bootstrapping
+ 
+   entropy-guard:
+     status: exploratory
+-    repo: ../entropy-guard
++    repo: ../../entropy-guard
+     role: Coherence tooling for fast-iterating systems
+ 
+   entropy-immune-system:
+     status: exploratory
+-    repo: ../entropy-immune-system
++    repo: ../../entropy-immune-system
+     role: Coherence research
+ 
+   git-sync:
+     status: exploratory
+-    repo: ../git-sync
++    repo: ../../git-sync
+     role: Multi-machine dev sync
+ 
+   flowbook:
+     status: exploratory
+-    repo: ../flowbook
++    repo: ../../flowbook
+     role: Audio pipeline application
+ 
+   flowvoice:
+     status: exploratory
+-    repo: ../flowvoice
++    repo: ../../flowvoice
+     role: Voice layer application
+ 
+   agentic-colab:
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -907,4 +907,4 @@
+ - **Mobile/remote interaction surface**: decide after the first interaction surface (Telegram) works.
+ - **Standard scope file `OPEN_QUESTIONS.md`**: decide after more scope-design interviews.
+ - **Scope health metric**: how does the orchestrator detect stale or incomplete scope definitions? Decide when the orchestrator is running.
+-- **Layer 2 distribution form**: build step vs separate distribution repo for usable artifacts without design weight. Decide after templates stabilize from real agent usage. Must avoid the sync/drift problem that killed per-component template repos.
++- ~~**Layer 2 distribution form**: build step vs separate distribution repo for usable artifacts without design weight.~~ Resolved 2026-05-14: a separate repo, `agentic-architecture-distribution`, with built artifacts produced by a human-triggered release process (see "Level 2 distribution source lives in `agentic-architecture-distribution`"). The caution stands: avoid the sync/drift problem that killed per-component template repos.
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -66,16 +66,16 @@
+ - [ ] Instantiate planned scopes (see [SCOPES_PLANNED.md](SCOPES_PLANNED.md))
+ - [x] Scope storage resolved: one repo per scope — hard isolation boundary (see DECISIONS.md)
+ - [ ] Mobile/remote interaction surface: on-the-go planning, autonomous operation
+-- [ ] Agent design: what is a running agent in this architecture?
++- [x] Agent design: what is a running agent in this architecture? (decided 2026-04-27: DECISIONS.md, "A running agent is a harness inside a sandbox, communicating only through the scope manager")
+ - [ ] Agent memory model: what persists where, at what tier
+ - [ ] Scheduling: core-owned deterministic temporal coordinator, due-event trigger layer, then workflow-specific collection (see [SCHEDULING.md](SCHEDULING.md))
+ - [ ] Awareness loop research: compare OpenClaw heartbeat, Hermes cron/no-agent gates, Symphony reconcile loops, Temporal timers, and LangGraph crons before deciding whether proactive awareness belongs in core runtime
+-- [ ] Workspace definition and lifecycle — cold start / warm resume / explicit teardown; who triggers each transition
++- [ ] Workspace definition and lifecycle — cold start / warm resume / explicit teardown (triggers decided 2026-04-27: DECISIONS.md, "Workspace lifecycle is transparent to the orchestrator")
+ - [ ] Human-in-the-loop patterns: approval gates, budget limits, destructive action confirmation (see DECISIONS.md)
+ - [ ] Privilege escalation mechanism: scoped grants for cross-boundary access (see DECISIONS.md)
+ - [ ] Task-level checkpointing: in-flight work recovery when an agent crashes mid-task
+ - [ ] Concurrency on governed repos: coordination model when multiple agents touch the same repo
+-- [ ] Communication architecture: choose secure-by-default inter-agent and cross-boundary communication patterns
++- [x] Communication architecture: choose secure-by-default inter-agent and cross-boundary communication patterns (decided 2026-04-27: DECISIONS.md, "Communication is HTTP + JSON-RPC with A2A-compatible task lifecycle")
+ - [ ] Host surface model (deny-by-default)
+ - [ ] Scope lead role
+ - [ ] Reporting / digest
+--- a/RUNTIME.md
++++ b/RUNTIME.md
+@@ -64,7 +64,7 @@
+ - Issues scope-scoped auth tokens at provisioning time
+ - Manages workspace lifecycle transparently (the orchestrator submits tasks; the scope manager decides whether to provision, resume, or restart)
+ 
+-**Runtime gateway (unified for v0):**
++**Runtime seams** (behind the single perimeter; which seams, and where they sit, is under review in the orchestration snapshot):
+ - LLM proxying: receives keyless requests, adds the correct API key, forwards, logs usage per scope
+ - Task management: receives task submissions and status updates, writes to Postgres, enforces scope isolation
+ - Event logging: receives events from sandboxes, writes to Postgres with scope_id
+@@ -79,7 +79,7 @@
+ | Thing | What it is | What it touches | Typical caller |
+ |---|---|---|---|
+ | `scopectl` | Deterministic operator CLI | Scope definition files and templates | Human or local automation |
+-| `scope-manager` | Deterministic platform service and unified sandbox gateway | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
++| `scope-manager` | Deterministic platform service; the single sandbox security perimeter | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
+ 
+ Rule of thumb: if the operation is "edit or validate a scope repo on disk," that is `scopectl`. If the operation crosses a trust boundary or touches runtime infrastructure, that is `scope-manager`.
+ 
+@@ -123,7 +123,7 @@
+ - Default-deny: nothing is visible unless explicitly mounted
+ - OS-level enforcement: the agent cannot see outside its mounts
+ 
+-Sandbox provider selection must treat filesystem isolation as a hard requirement. See open questions in DECISIONS.md.
++Sandbox provider selection must treat filesystem isolation as a hard requirement. See [DECISIONS.md](DECISIONS.md): "Sandbox provider: evaluate E2B and Daytona against first real workflow" (direction set).
+ 
+ ## Pipeline patterns
+ 
+--- a/SCOPES_PLANNED.md
++++ b/SCOPES_PLANNED.md
+@@ -27,7 +27,7 @@
+ 
+ **Open questions**:
+ - What does the orchestrator need to do day-to-day beyond the planned workflows above?
+-- How do child scopes expose parent-callable workflows or capabilities to the root scope? See [DECISIONS.md](DECISIONS.md#open-questions).
++- How do child scopes expose parent-callable workflows or capabilities to the root scope? Direction set in [DECISIONS.md](DECISIONS.md): "Cross-scope workflow exposure uses Agent Card / skills pattern"; the detail is still open.
+ 
+ ## Child Scopes
+ 
+@@ -87,4 +87,4 @@
+ 
+ ## Cross-cutting Questions
+ 
+-Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: sandbox isolation model, workspace lifecycle triggers, agent runtime binding location, concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism.
++Architectural open questions affecting all scopes are tracked in the canonical registry: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions). Key ones for scope planning: concurrency on governed repos, human-in-the-loop patterns, privilege escalation mechanism.

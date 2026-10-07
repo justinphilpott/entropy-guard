@@ -1,0 +1,178 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 418a451..532cdf4 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -18,7 +18,7 @@ boundaries. Exclude data before returning it, and withhold authority by not
+ providing a tool.
+ 
+ The parent model receives `capture_item`, `close_day`, `current_time`,
+-`design_research_agent`, `list_captures`, `list_open_fridays`, one derived
++`design_research_agent`, `list_captures`, one derived
+ delegate tool for each discovered agent, and one handoff tool for each available
+ agent. Pi's built-in tools and ambient
+ resources stay disabled.
+@@ -93,16 +93,27 @@ Subprocess access exists in `src/core/child-agent-process.ts`, which launches on
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+ code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server. `src/adapters/browser/playwright.ts` launches one headless Chromium for each
++browser session through Playwright's library (orchestrator#76; Justin, 3 Oct 2026:
++"lets use the library"). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
++read-only Jina Reader requests, in `src/adapters/browser/playwright.ts`, whose
++Chromium reaches only the hosts a browser grant names and which looks those hosts
++up in DNS before launching it, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+ ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++sends only a title, the notice's summary and the one configured tap address. No
++ORC module imports a Bookwhen client: Bookwhen code belongs to the Scope that
++needs it (above), and `test/architecture.test.ts` keeps it out.
+ Workflow modules receive neither network nor subprocess access.
+ 
++These two lists are incomplete. Checked against `src/` on 2026-10-07: reaches
++there that await Justin's decision are not listed until he decides (orchestration
++lab, `decisions/2026-10-07-proposals-from-entropy-assessment.md`, P1 and P2), and
++what Pi, MCP servers, approved package bundles and OpenTelemetry's
++environment-configured exporters reach on their own was not checked.
++
+ Credentials stay in composition roots and narrowed connectors. They are never
+ included in prompts, tool inputs, tool results, model-visible data, or browser
+ DTOs.
+diff --git a/README.md b/README.md
+index 64b6075..2aba1d2 100644
+--- a/README.md
++++ b/README.md
+@@ -1,10 +1,10 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++adapter, and per-conversation model controls. ORC runs in one parent process. It launches one
++isolated fixed researcher child for each public-web research invocation, and one headless Chromium
++for each browser session a Scope package's grant allows. What ORC launches and what it reaches are
++listed once, in [AGENTS.md](AGENTS.md) under "Boundaries".
+ 
+ ## Direction
+ 
+@@ -73,10 +73,9 @@ pnpm build && pnpm start:web    # built loopback host
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++ORC reads no Bookwhen API token: the published-events connector this section used to describe left
++ORC's source, and `test/architecture.test.ts` ("keeps Bookwhen implementations out of ORC source")
++keeps it out. Bookwhen code belongs to the Scope that needs it ([AGENTS.md](AGENTS.md)).
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ ORC discovers agent definitions from each Scope's `agents/` directory; later entries override
+@@ -142,16 +141,19 @@ action evidence. Pi owns model integration, the context/tool loop, and a linked
+ audit. The React/Vite client is a replaceable operator surface: it owns no persistence, no
+ provider credentials, and no tool execution.
+ 
+-Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+-open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++Wide eyes, narrow hands. The model sees its own conversation, a clock, and captured summary items.
++Its Moving Stillness specialist plans Bookwhen slot changes; Justin decided on 2026-09-17 that they
++are applied as durable work the operator approves (orchestration lab,
++`decisions/2026-09-17-async-work-architecture.md`), and a standing grant ([AGENTS.md](AGENTS.md), #67)
++is the one approval that does not show each change. It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++additional external data sources, workflow execution, sandboxes, shell access, and file
++edits. Scheduled durable work is not absent: Justin decided on 2026-09-17 that ORC's async work
++capability owns it (orchestration lab, `decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi
+ 
+@@ -162,7 +164,7 @@ pnpm pi:check    # current vs latest, changes nothing
+ pnpm pi:update   # moves all four, installs, typechecks, tests
+ ```
+ 
+-Currently on Pi Coding Agent `0.82.1`.
++`package.json` holds the version ORC is on; `pnpm pi:check` prints it beside the latest.
+ 
+ ## Working on this
+ 
+diff --git a/SECURITY-REVIEW.md b/SECURITY-REVIEW.md
+index 83dc168..482dd6d 100644
+--- a/SECURITY-REVIEW.md
++++ b/SECURITY-REVIEW.md
+@@ -176,9 +176,9 @@ Anything that merely tells the model which tools it should not use is advice.
+ 
+ ## Which changes ask for this
+ 
+-Everything under `src/`, plus AGENTS.md, this file, the architecture test, and
+-the check itself (`dangerfile.js`, `.github/`, `.githooks/`). A short exemption
+-list in `dangerfile.js` covers paths known not to change what an agent can reach.
++The list is `GUARDED` in `dangerfile.js`: everything under `src/` and `config/`,
++plus the files that change or check what an agent can reach, this one included.
++Its `EXEMPT` list covers paths known not to change what an agent can reach.
+ 
+ That way round on purpose: a new directory under `src/` is guarded the day it
+ appears, rather than the day someone remembers to add it. Adding to the
+diff --git a/scripts/orc-service.ts b/scripts/orc-service.ts
+index 20bf33e..b3a98ed 100644
+--- a/scripts/orc-service.ts
++++ b/scripts/orc-service.ts
+@@ -38,7 +38,7 @@ export function orcServiceUnit(input: Readonly<{ checkout: string; node: string;
+     `# Written by \`pnpm service:install\` in ${input.checkout}. Run it again rather than editing this file.`,
+     "[Unit]",
+     "Description=ORC, the agent system: its backend and web interface",
+-    `Documentation=file://${input.checkout}/OPERATOR.md`,
++    `Documentation=file://${input.checkout}/README.md`,
+     "After=network-online.target",
+     "Wants=network-online.target",
+     // A start takes at most about 30 s even at load 11 (scripts/dev-web-readiness.ts), so five failed starts in five
+diff --git a/test/architecture.test.ts b/test/architecture.test.ts
+index 2fa82a3..7bd5632 100644
+--- a/test/architecture.test.ts
++++ b/test/architecture.test.ts
+@@ -66,6 +66,8 @@ const ANALYSIS_TOOLS = "core/analysis-tools.ts";
+ const TOOL_RESOLVER = "core/tool-resolver.ts";
+ const MCP_CLIENT = "adapters/mcp/client.ts";
+ const ORC_SERVICE = "adapters/orc-service.ts";
++/** Launches Chromium through Playwright's library and looks up the hosts a browser grant names (orchestrator#76). */
++const BROWSER_DRIVER = "adapters/browser/playwright.ts";
+ 
+ /**
+  * Every source file, at any depth, as a path relative to src/.
+@@ -1316,6 +1318,22 @@ describe("topology", () => {
+     expect(manifest.dependencies?.["@jphil/bookwhen-client"]).toBeUndefined();
+   });
+ 
++  /**
++   * A library can launch a process or open a connection without any Node primitive the two checks above look for:
++   * Playwright launches Chromium and navigates it, and a DNS lookup is an outbound channel (AGENTS.md). Both stay in
++   * the browser driver, which confines Chromium to the hosts a grant names.
++   */
++  it("confines browser launches and DNS lookups to the browser driver", () => {
++    expect(
++      filesMatching(/(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:playwright|playwright-core|@playwright\/[^"']+)["']/),
++      "a browser library escaped the browser driver",
++    ).toEqual([BROWSER_DRIVER]);
++    expect(
++      filesMatching(/(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:node:)?dns(?:\/promises)?["']/),
++      "DNS lookups escaped the browser driver",
++    ).toEqual([BROWSER_DRIVER]);
++  });
++
+   it("keeps Bookwhen implementations out of ORC source", () => {
+     expect(filesMatching(/BookwhenCalendar|OpenFridays|workflows\/bookwhen-event-admin/)).toEqual([]);
+   });

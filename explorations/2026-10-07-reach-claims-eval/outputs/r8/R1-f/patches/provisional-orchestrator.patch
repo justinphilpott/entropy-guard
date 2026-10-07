@@ -1,0 +1,95 @@
+PROVISIONAL patch for ORC (~/pro/orchestrator). Do not apply until Justin answers the question each hunk names.
+Apply on top of settled-orchestrator.patch: git apply provisional-orchestrator.patch (or only the hunks whose
+question was answered as recommended). Record each answer, dated, in the decision record Q3 settles first, and fill
+the <date> placeholder. Each hunk is written to the recommended answer in questions.md.
+
+- AGENTS.md, new "Decisions" section: Q3 (recommended: the lab's decisions/ records ORC's decisions too).
+- AGENTS.md, ntfy sentence: Q1 (recommended: packages' phone notices are authorised as built); edits the text Q1
+  quotes, and drops "one further path is under an open question".
+- AGENTS.md, new "Before handing off": Q4 (recommended: one guard, in the lab, for sessions in both repositories).
+- README.md, "Deliberately absent": Q5 (recommended reading (b)). The removal of "scheduling" alone is settled by the
+  decision of 2026-09-17, but it sits in the sentence Q5 quotes, so it waits here with the rest.
+- test/architecture.test.ts, NTFY_TRANSPORT comment: Q1. A guarded path: the pull request needs a Security review
+  section.
+
+diff --git a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -11,6 +11,11 @@
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
++## Decisions
++
++Justin's decisions about ORC are recorded in the orchestration-lab Scope's `decisions/`, one dated file each
++(`~/scopes/scope-orchestration-lab`); open work stays in issues under orchestrator#140.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data
+@@ -103,16 +108,19 @@
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address.
++ORC's environment file, and, through the phone connector (`src/adapters/phone/`),
++notices from approved packages that declare it, to a topic the installation names on
++the package's card. No model reaches the ntfy transport directly. A durable-work notice
++carries a title, the notice's summary and the one configured tap address; a package's
++notice carries its own title, text, up to five tags and any `http` or `https` tap
++address (operator's answer to Q1 of the 2026-10-07 entropy assessment, <date>).
+ ORC also reaches the network through what it starts or loads: Chromium, kept to a session's
+ approved hosts (`src/adapters/browser/playwright.ts`); Pi's model calls, in ORC's process and in the
+ Pi child; the restart card's `pnpm install`; separately declared MCP servers; and approved packages'
+ connectors inside ORC's process, such as the mail connector `config/installation.ts` points at SMTP. It listens on loopback for its web
+ interface. No ORC module imports a Bookwhen client (`test/architecture.test.ts`). These lists come
+ from a pattern search of `src/`, `web/src/`, `scripts/` and `config/` on 2026-10-07 and are
+-incomplete: they do not cover what packages and these libraries do internally, and one further path
+-is under an open question to the operator, listed in the orchestration-lab Scope's `STATE.md`.
++incomplete: they do not cover what packages and these libraries do internally.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+@@ -161,6 +169,12 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++At the end of every work session here, before committing or handing off, run the session-coherence guard in the
++orchestration-lab Scope, `~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`, and put its report
++in your final message. It reads that Scope's `STATE.md`, which records where ORC's work stands.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and
+diff --git a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -172,9 +172,10 @@
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++Deliberately absent, and each requires a decision rather than a convenience: reminders, sandboxes,
++and shell access. A Scope's further data sources, file access and durable work arrive only through
++its package, approved on a card (AGENTS.md, Boundaries). Scheduling and durable work are the
++async-work decision of 2026-09-17, in the orchestration-lab Scope's `decisions/`.
+ 
+ ## Pi
+ 
+diff --git a/test/architecture.test.ts b/test/architecture.test.ts
+--- a/test/architecture.test.ts
++++ b/test/architecture.test.ts
+@@ -60,7 +60,7 @@
+ const SRC_DIR = new URL("../src/", import.meta.url).pathname;
+ const CHILD_AGENT_PROCESS = "core/child-agent-process.ts";
+ const RESEARCH_TOOLS = "core/research-tools.ts";
+-/** Publishes durable-work notices to the operator's own ntfy server; no model or agent reaches it. */
++/** Publishes durable-work notices, and approved packages' notices through the phone connector, to the operator's own ntfy server. */
+ const NTFY_TRANSPORT = "adapters/notifications/ntfy.ts";
+ const ANALYSIS_TOOLS = "core/analysis-tools.ts";
+ const TOOL_RESOLVER = "core/tool-resolver.ts";

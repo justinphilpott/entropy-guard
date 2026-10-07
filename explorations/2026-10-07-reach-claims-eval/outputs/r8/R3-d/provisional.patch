@@ -1,0 +1,174 @@
+# PROVISIONAL PATCH: do not apply until the steward answers. It implements the recommended answers.
+# Target: agentic-architecture. Apply after settled-orientation.patch (settled-accuracy.patch is optional):
+#   git apply provisional.patch, then replace every <YYYY-MM-DD> and <steward> placeholder.
+# Question 2 (record the reference-only status): the first DECISIONS.md entry, the "Recorded in DECISIONS.md" lines
+#   added to the README.md and AGENTS.md banners, and the "Source" bullet of the ROADMAP.md status block.
+#   It states as fact who decided and when, which question 2 asks.
+# Question 1 (retire the session-start ritual and the pre-commit guard): the second DECISIONS.md entry, AGENTS.md
+#   "Session start", the pre-commit line and the two Key files lines, skills/README.md, the historical banners on
+#   skills/entropy-guard.md and skills/session-kickoff.md, and the rest of the ROADMAP.md status block.
+#   If the answer to question 1 is "keep them for corrections", drop these hunks: the guard decision becomes
+#   `update` and session-coherence-skill-generator rewrites skills/entropy-guard.md instead.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:43:15.964542257 +0100
++++ b/AGENTS.md	2026-10-07 22:44:43.691774032 +0100
+@@ -3,7 +3,7 @@
+ > **Reference-only:** this repository is no longer current architecture authority. Current Personal
+ > Agent architecture lives in `../personal-agent`; the current Scope and Project model lives in
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+-> authorization.
++> authorization. Recorded in [DECISIONS.md](DECISIONS.md), <YYYY-MM-DD>.
+ 
+ Blueprint for the agentic architecture. The current named version is Sol (0.x). Until it became reference-only (see the banner above), this repo held the architecture state — settled decisions, component design, and clearly labeled provisional shapes under review.
+ 
+@@ -37,14 +37,13 @@
+ 
+ ## Session start
+ 
+-1. Check ROADMAP.md — know what version we're on and what's being worked towards
+-2. Read MODEL.md — understand the system model and component relationships
+-3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+-4. Check components.yaml — know component status
+-5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+-6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
++This repository is reference-only (banner above), so it has no session-start ritual any more:
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++1. Read the banner above and the status block at the top of [ROADMAP.md](ROADMAP.md).
++2. Start current architecture work in the repositories the banner names, not here.
++3. Limit edits here to corrections and historical markers. Anything else needs the steward's explicit authorization.
++
++[skills/session-kickoff.md](skills/session-kickoff.md) is historical: it built a current-state packet while this repository was current.
+ 
+ ## Before making changes
+ 
+@@ -71,7 +70,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- [skills/entropy-guard.md](skills/entropy-guard.md) is historical: it was the pre-commit coherence check while this repository was current, and is no longer run (DECISIONS.md, <YYYY-MM-DD>)
+ 
+ ## What belongs in this repo
+ 
+@@ -101,8 +100,8 @@
+ - [DECISIONS.md](DECISIONS.md) — system-level decision log
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+-- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/session-kickoff.md](skills/session-kickoff.md) — historical start-of-session current-state packet builder; not run
++- [skills/entropy-guard.md](skills/entropy-guard.md) — historical pre-commit coherence guard; not run
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+   - template/ — template source for new scope instances
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 22:43:30.230725157 +0100
++++ b/DECISIONS.md	2026-10-07 22:44:43.691379313 +0100
+@@ -872,6 +872,27 @@
+ 
+ ---
+ 
++### <YYYY-MM-DD> — agentic-architecture is reference-only
++
++*Decided by <steward>. Recorded from the Status banner in README.md and the Reference-only banner in AGENTS.md, which
++carried it before this entry existed.*
++
++This repository is no longer current architecture authority. Current Personal Agent architecture lives in
++`../personal-agent`; the current Scope and Project model lives in `../../scope`. Decisions recorded here are history.
++Do not extend or reinterpret this blueprint as current design without explicit authorization.
++
++---
++
++### <YYYY-MM-DD> — Session-start ritual and pre-commit guard retired while reference-only
++
++*Decided by <steward>.*
++
++`skills/session-kickoff.md` and `skills/entropy-guard.md` are historical and are no longer run. A session in this
++repository reads the reference-only banner and the status block at the top of ROADMAP.md, and limits its edits to
++corrections and historical markers.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:43:15.964655882 +0100
++++ b/README.md	2026-10-07 22:44:43.691484772 +0100
+@@ -3,6 +3,7 @@
+ > **Status:** Reference-only. Current Personal Agent architecture lives in
+ > [`personal-agent`](../personal-agent), and the current generic Scope/Project model lives in
+ > [`scope`](../../scope). Do not treat decisions in this repository as current authority.
++> Recorded in [DECISIONS.md](DECISIONS.md), <YYYY-MM-DD>.
+ 
+ **Current named version: Sol 0.x**
+ 
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md	2026-10-07 22:43:15.964371116 +0100
++++ b/ROADMAP.md	2026-10-07 22:44:43.692182494 +0100
+@@ -3,8 +3,8 @@
+ > **Status (checked 2026-10-07 against this repository's files): reference-only.** This roadmap is a historical
+ > record. Nothing below is active work in this repository.
+ >
+-> - **Source:** the Status banner in [README.md](README.md) and the Reference-only banner in [AGENTS.md](AGENTS.md).
+->   Neither is dated or attributed, and [DECISIONS.md](DECISIONS.md) has no entry for it yet (open question 2).
++> - **Source:** [DECISIONS.md](DECISIONS.md), "agentic-architecture is reference-only" (<YYYY-MM-DD>), also shown in
++>   the banners in [README.md](README.md) and [AGENTS.md](AGENTS.md).
+ > - **Current work, per those banners:** Personal Agent architecture in `../personal-agent`; the Scope and Project
+ >   model in `../../scope`. Neither was checked from this repository.
+ > - **Trust first, as history:** [DECISIONS.md](DECISIONS.md) for what was decided and when;
+@@ -15,13 +15,9 @@
+ >   2026-07-26); the "Pickup — start here next session" section of
+ >   [runs/001](runs/001-moving-stillness-status/RUN.md); the "Next Up" lists in `components/*/TODO.md`;
+ >   [skills/session-kickoff.md](skills/session-kickoff.md) and [skills/entropy-guard.md](skills/entropy-guard.md),
+->   which still assume active development (open question 1).
+-> - **Open, awaiting the steward:**
+->   1. Are the session-start ritual and the pre-commit guard in [AGENTS.md](AGENTS.md) retired now that the
+->      repository is reference-only, or kept for corrections?
+->   2. When was the reference-only status set, and by whom, so that [DECISIONS.md](DECISIONS.md) can record it?
+-> - **Next actions:** answer questions 1 and 2; do new architecture work in the repositories named above, not here.
+-> - **Goes stale when** either banner changes or question 1 or 2 is answered. Whoever makes that change updates this
++>   both retired (DECISIONS.md, <YYYY-MM-DD>).
++> - **Next action:** do new architecture work in the repositories named above, not here.
++> - **Goes stale when** the reference-only decision or either banner changes. Whoever makes that change updates this
+ >   block in the same commit.
+ 
+ ## Last named version recorded here: Sol 0.1 — Blueprint
+diff -ruN a/skills/entropy-guard.md b/skills/entropy-guard.md
+--- a/skills/entropy-guard.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/entropy-guard.md	2026-10-07 22:44:43.691893739 +0100
+@@ -7,6 +7,10 @@
+ system_snapshot: "Current named version: Sol 0.1. Blueprint repo with component design under components/. Scope in components/scope/. Agent (role/binding) in components/agent/. Orchestrator in components/orchestrator/ with root-general scope draft. Five-layer stack is the single structural model in MODEL.md; RUNTIME.md has the runtime data-flow view (layers 3-5). Communication decided: HTTP + JSON-RPC, A2A-compatible task lifecycle. Scope manager is the single sandbox security perimeter; its internals decompose into seams. Postgres is the platform data store. Running agent = harness inside sandbox, communicates only through scope manager. Sandbox lifecycle transparent to orchestrator. One repo per scope (hard isolation). Manifest/interior split. Workflows: workflows/{name}/WORKFLOW.md. First scope (moving-stillness) instantiated. First orchestrator workflows committed. Scope-design and role-design skills drafted. Reference role example in roles/. No code, no CI, no hooks. Open questions reduced from 22 to 11 in DECISIONS.md."
+ ---
+ 
++> **Historical, not run.** Retired when the repository became reference-only ([DECISIONS.md](../DECISIONS.md),
++> <YYYY-MM-DD>). Its checks assume active development; lines such as "update ROADMAP.md progress" would extend the
++> blueprint, which the banner in [AGENTS.md](../AGENTS.md) forbids.
++
+ # Entropy Guard: agentic-architecture
+ 
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+diff -ruN a/skills/README.md b/skills/README.md
+--- a/skills/README.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/README.md	2026-10-07 22:44:43.691825821 +0100
+@@ -7,4 +7,6 @@
+ - `session-kickoff.md` builds a compact current-state packet before architecture work.
+ - `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
+ 
++Both are historical since the repository became reference-only ([DECISIONS.md](../DECISIONS.md), <YYYY-MM-DD>). They are kept as a record and are not run.
++
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff -ruN a/skills/session-kickoff.md b/skills/session-kickoff.md
+--- a/skills/session-kickoff.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/session-kickoff.md	2026-10-07 22:44:43.692051812 +0100
+@@ -1,5 +1,8 @@
+ # Skill: Session Kickoff
+ 
++> **Historical, not run.** Retired when the repository became reference-only ([DECISIONS.md](../DECISIONS.md),
++> <YYYY-MM-DD>). Start from the banner in [AGENTS.md](../AGENTS.md) and the status block in [ROADMAP.md](../ROADMAP.md).
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

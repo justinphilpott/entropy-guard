@@ -1,0 +1,124 @@
+# SETTLED PATCH 1 of 2: orientation corrections (recommended).
+# Target: agentic-architecture. Apply from its root: git apply settled-orientation.patch
+# Touches no open question. Each change is settled by a directive already recorded in the repository:
+#   ROADMAP.md: the current-state status block (docs-first Step 5), and its headings made consistent with it. F2, F7.
+#   AGENTS.md line 8 and lines 12-14: "current" claims, settled by AGENTS.md's own reference-only banner (lines 3-6). F2.
+#   README.md lines 9 and 43: "current" claims, settled by README.md's Status banner (lines 3-5). F2.
+#   architecture/INDEX.md lines 15-17: "Current Pickup", settled by PICKUP.md line 3 (superseded, 2026-07-26). F7.
+# Deliberately left unchanged, because neither banner settles them: "Sol is the current version codename"
+# (README.md lines 7 and 9, AGENTS.md line 8); MODEL.md lines 31-32, which name this repository as layer 1 of the
+# five-layer stack; and "Current Snapshots" in architecture/INDEX.md, which is the snapshot system's own vocabulary.
+# The status block lists questions 1 and 2 as open; it does not answer them.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/AGENTS.md	2026-10-07 22:43:15.964542257 +0100
+@@ -5,13 +5,15 @@
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+ > authorization.
+ 
+-Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
++Blueprint for the agentic architecture. The current named version is Sol (0.x). Until it became reference-only (see the banner above), this repo held the architecture state — settled decisions, component design, and clearly labeled provisional shapes under review.
+ 
+ Exploratory thinking and general theory live in [agentic-learning](../agentic-learning). Component design lives under `components/{name}/`. Component implementations live in their own repos.
+ 
+-## Settled — current strong positions
++## Settled — strong positions recorded while this repo was current
+ 
+-These are the current settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
++> Historical since the repository became reference-only (banner above): read these as the record, not as current authority.
++
++These were the settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
+ 
+ - **This repo is a blueprint (map), not a running system (territory).** Design-time artifacts describe; runtime instantiations run. Never conflate them.
+ - **Named versions, not phases.** "Phase" language is retired. Versions are assigned when work is complete, not planned ahead. Do not pre-number future versions.
+diff -ruN a/architecture/INDEX.md b/architecture/INDEX.md
+--- a/architecture/INDEX.md	2026-08-01 21:12:00.000000000 +0100
++++ b/architecture/INDEX.md	2026-10-07 22:43:15.964703969 +0100
+@@ -12,9 +12,9 @@
+ |---|---|---|
+ | orchestration | v1 | [2026-07-16-orchestration](snapshots/2026-07-16-orchestration/ARCH.md) |
+ 
+-## Current Pickup
++## Pickup (historical)
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++[PICKUP.md](PICKUP.md) is a superseded historical pickup point (its own status line, 2026-07-26), and this repository is reference-only (see [README.md](../README.md)). It is not a work queue.
+ 
+ ## Snapshot Rules
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-08-01 21:12:00.000000000 +0100
++++ b/README.md	2026-10-07 22:43:15.964655882 +0100
+@@ -6,7 +6,7 @@
+ 
+ **Current named version: Sol 0.x**
+ 
+-Bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
++Formerly the bleeding-edge design source for the agentic architecture's named version: what it is, how it's composed, where it was headed, and which provisional shapes were under review when it became reference-only. `Sol` is the current version codename, not the product or system namespace.
+ 
+ This repo is not the installable distribution and not a live installation. Its historical Level 2
+ distribution source lives in [agentic-architecture-distribution](../agentic-architecture-distribution).
+@@ -40,7 +40,7 @@
+ |------|------|
+ | [agentic-learning](../agentic-learning) | General conceptual foundations; ongoing dialogue about agentic systems |
+ | [agentic-architecture-distribution](../agentic-architecture-distribution) | Historical Level 2 distribution source derived from this design repo |
+-| [scope](../../scope) | Scope implementation (`scopectl` CLI and tooling); design docs live in [components/scope/](components/scope/) |
++| [scope](../../scope) | Scope implementation (`scopectl` CLI and tooling) and, per the Status banner above, the current Scope and Project model; [components/scope/](components/scope/) here holds the earlier design |
+ | [library](../../library) | Reusable agent skills |
+ | [seed](../../seed) | Project bootstrapping |
+ | [entropy-guard](../../entropy-guard) | Coherence tooling for fast-iterating systems |
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md	2026-08-01 21:12:00.000000000 +0100
++++ b/ROADMAP.md	2026-10-07 22:43:15.964371116 +0100
+@@ -1,6 +1,30 @@
+-# Roadmap — Current Named Version
++# Roadmap — Historical Record
+ 
+-## Current named version: Sol 0.1 — Blueprint
++> **Status (checked 2026-10-07 against this repository's files): reference-only.** This roadmap is a historical
++> record. Nothing below is active work in this repository.
++>
++> - **Source:** the Status banner in [README.md](README.md) and the Reference-only banner in [AGENTS.md](AGENTS.md).
++>   Neither is dated or attributed, and [DECISIONS.md](DECISIONS.md) has no entry for it yet (open question 2).
++> - **Current work, per those banners:** Personal Agent architecture in `../personal-agent`; the Scope and Project
++>   model in `../../scope`. Neither was checked from this repository.
++> - **Trust first, as history:** [DECISIONS.md](DECISIONS.md) for what was decided and when;
++>   [architecture/INDEX.md](architecture/INDEX.md) for the last orchestration snapshot (v1, 2026-07-16);
++>   [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md) for the last scheduling
++>   contract (2026-07-26).
++> - **Misleading nearby:** the unchecked items below; [architecture/PICKUP.md](architecture/PICKUP.md) (superseded
++>   2026-07-26); the "Pickup — start here next session" section of
++>   [runs/001](runs/001-moving-stillness-status/RUN.md); the "Next Up" lists in `components/*/TODO.md`;
++>   [skills/session-kickoff.md](skills/session-kickoff.md) and [skills/entropy-guard.md](skills/entropy-guard.md),
++>   which still assume active development (open question 1).
++> - **Open, awaiting the steward:**
++>   1. Are the session-start ritual and the pre-commit guard in [AGENTS.md](AGENTS.md) retired now that the
++>      repository is reference-only, or kept for corrections?
++>   2. When was the reference-only status set, and by whom, so that [DECISIONS.md](DECISIONS.md) can record it?
++> - **Next actions:** answer questions 1 and 2; do new architecture work in the repositories named above, not here.
++> - **Goes stale when** either banner changes or question 1 or 2 is answered. Whoever makes that change updates this
++>   block in the same commit.
++
++## Last named version recorded here: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+ - [x] Scope rethought: policy/grouping primitive, not a runtime unit
+@@ -9,7 +33,7 @@
+ - [x] System-level decisions recorded
+ - [x] Pi agent framework chosen as runtime
+ 
+-## Working towards next
++## Was working towards next (not active here)
+ 
+ A scope you can use — a structured project context that humans and agents can read, navigate, and build on.
+ 
+@@ -26,7 +50,7 @@
+ - [ ] Runtime event/action log schema
+ - [ ] `scopectl` CLI: create, validate, status, add-resource, add-member (scope-definition repo ops)
+ 
+-## Working towards after that
++## Was working towards after that (not active here)
+ 
+ The current version's first operational workflows — orchestrator-level, scope-spanning, run as scheduled or on-command jobs. Details in [SCOPES_PLANNED.md](SCOPES_PLANNED.md) under the orchestrator/root scope section.
+ 

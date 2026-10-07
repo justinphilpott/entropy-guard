@@ -9,11 +9,10 @@ Size cut: done and tested; PR #14 open for Justin to merge.
 Reach claims (approved by Justin 2026-10-07, "Agreed, proceed"), on branch `reach-claims-show-search`, stacked on
 PR #14: a claim about everything a system reaches is checked against the code with a recorded search. Test:
 `explorations/2026-10-07-reach-claims-eval.md`, key written before runs (R1 ×3, R2 and R3 once each).
-State at 23:05 on 7 October: round 8 (`d34c31a`: the reach rule moved to `mixed-profile.md`, a patch-against-findings
-check added, the pass rule comparing sums over three runs of each version) has 17 of 18 runs done; R2 and R3 are
-being scored blind, R1 waits for its last run. Overnight: score R1, unblind, apply the pass rule written before the
-runs, write the verdict into `explorations/2026-10-07-reach-claims-eval.md`; if it passes, open the PR stacked on
-PR #14. Skills are not changed overnight.
+State at 23:25 on 7 October: round 8 is scored. No regression in any case; the patch check works (K36: 3 of 3
+against 1 of 3); the reach rule improves K35 by half a point where the rule asked for a whole run, so the round fails
+that criterion. No PR opened. Waiting on Justin: ship both changes, ship the patch check alone, or test further; and
+the two overnight questions (ORC assessment on a frozen `origin/main`; Astra review of this branch).
 
 ## Next Up
 

@@ -1,0 +1,131 @@
+PROVISIONAL patch: do NOT apply until the steward answers Q1 (questions.md), and only for answer (a) "demote".
+Hunks: AGENTS.md session start and guard rule; skills/entropy-guard.md demotion plus F6/F7/F9 fixes; skills/session-kickoff.md.
+Fill in the demotion date placeholder in skills/entropy-guard.md frontmatter from the steward's recorded answer.
+Apply from the repository root: patch -p1 < provisional-Q1.patch
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -35,6 +35,9 @@
+ 
+ ## Session start
+ 
++This repository is reference-only (banner above). Follow these steps only for a task the steward has
++explicitly authorized here; for any other request, point to the successor repositories named in the banner.
++
+ 1. Check ROADMAP.md — know what version we're on and what's being worked towards
+ 2. Read MODEL.md — understand the system model and component relationships
+ 3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+@@ -42,7 +45,7 @@
+ 5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+ 6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then carry out the authorized task from that compressed view; do not choose new work in this repository.
+ 
+ ## Before making changes
+ 
+@@ -69,7 +72,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- Before committing a non-trivial change the steward has explicitly authorized, run [skills/entropy-guard.md](skills/entropy-guard.md)
+ 
+ ## What belongs in this repo
+ 
+--- a/skills/entropy-guard.md
++++ b/skills/entropy-guard.md
+@@ -1,21 +1,23 @@
+ ---
+ name: entropy-guard
+-description: Delta-scoped coherence check for the agentic-architecture blueprint repo. Run before committing non-trivial changes.
++description: Delta-scoped coherence check for the reference-only agentic-architecture blueprint repo. Run only before committing a non-trivial change the steward has explicitly authorized.
+ generated: 2026-04-02
+ generated_by: entropy-assessment v0.5.2
+ last_evaluated: 2026-04-27
+-system_snapshot: "Current named version: Sol 0.1. Blueprint repo with component design under components/. Scope in components/scope/. Agent (role/binding) in components/agent/. Orchestrator in components/orchestrator/ with root-general scope draft. Five-layer stack is the single structural model in MODEL.md; RUNTIME.md has the runtime data-flow view (layers 3-5). Communication decided: HTTP + JSON-RPC, A2A-compatible task lifecycle. Scope manager is the single sandbox security perimeter; its internals decompose into seams. Postgres is the platform data store. Running agent = harness inside sandbox, communicates only through scope manager. Sandbox lifecycle transparent to orchestrator. One repo per scope (hard isolation). Manifest/interior split. Workflows: workflows/{name}/WORKFLOW.md. First scope (moving-stillness) instantiated. First orchestrator workflows committed. Scope-design and role-design skills drafted. Reference role example in roles/. No code, no CI, no hooks. Open questions reduced from 22 to 11 in DECISIONS.md."
++demoted: "<date of the steward's recorded answer> — repository is reference-only (README.md status); see ROADMAP.md status note"
++system_snapshot_historical: "As of 2026-04-27, superseded; current status lives in ROADMAP.md. Current named version: Sol 0.1. Blueprint repo with component design under components/. Scope in components/scope/. Agent (role/binding) in components/agent/. Orchestrator in components/orchestrator/ with root-general scope draft. Five-layer stack is the single structural model in MODEL.md; RUNTIME.md has the runtime data-flow view (layers 3-5). Communication decided: HTTP + JSON-RPC, A2A-compatible task lifecycle. Scope manager is the single sandbox security perimeter; its internals decompose into seams. Postgres is the platform data store. Running agent = harness inside sandbox, communicates only through scope manager. Sandbox lifecycle transparent to orchestrator. One repo per scope (hard isolation). Manifest/interior split. Workflows: workflows/{name}/WORKFLOW.md. First scope (moving-stillness) instantiated. First orchestrator workflows committed. Scope-design and role-design skills drafted. Reference role example in roles/. No code, no CI, no hooks. Open questions reduced from 22 to 11 in DECISIONS.md."
+ ---
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Demoted:** this repository is reference-only (README.md status). Run this guard only before committing an
++> edit the steward has explicitly authorized. Report issues to the steward instead of extending the blueprint.
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+ 
+-- Before committing non-trivial changes to this repo
+-- After syncing decisions or state from a component (check `components/` directories)
+-- At the start of an architecture session, if the last session was more than a few days ago
++- Before committing a non-trivial change the steward has explicitly authorized in this repo
+ 
+ ## When NOT to Run
+ 
+@@ -35,7 +37,7 @@
+ - [ ] Does README.md navigation list match the actual files in the repo?
+ - [ ] Does the five-layer stack in MODEL.md align with the runtime data flow diagram in RUNTIME.md? (RUNTIME.md shows layers 3-5 zoomed in — check both when either changes.)
+ - [ ] Does the "Two governance levels" section in MODEL.md align with the orchestrator and scope lead descriptions in RUNTIME.md?
+-- [ ] Is the scope manager consistently described across MODEL.md, RUNTIME.md, and components.yaml?
++- [ ] Does any doc other than the current orchestration snapshot (via architecture/INDEX.md) restate scope-manager anatomy? Reduce it to a link (DECISIONS.md, 2026-07-16: "Architecture snapshots are the source of truth for anatomy").
+ - [ ] Does the orchestrator description consistently state it has no secrets and no scope repo access across all files?
+ - [ ] Are manifest/interior references consistent across MODEL.md, RUNTIME.md, SCOPES_PLANNED.md, and components/scope/MODEL.md?
+ - [ ] Is the workflow primitive (`workflows/{name}/WORKFLOW.md` directory convention) consistently described across MODEL.md (scope role), RUNTIME.md (pipeline patterns), components/scope/MODEL.md (directory layout), and components/scope/DECISIONS.md?
+@@ -76,7 +78,7 @@
+ - [ ] Does the `template/` directory under each component reflect current model decisions? (e.g. the scope template should include `workflows/` and should not include runtime-only `activity/`.)
+ - [ ] Check `components/` directories for decisions with system-level implications not yet in root DECISIONS.md
+ - [ ] Check root DECISIONS.md for decisions that affect components but aren't reflected in component docs
+-- [ ] If a component's status has changed, update components.yaml
++- [ ] If an explicit instruction changed a component's status, update components.yaml; never infer a status change from the work (AGENTS.md: "only elevate status when explicitly instructed")
+ - [ ] If a component has shipped deliverables, update ROADMAP.md progress
+ 
+ ### Reference integrity
+@@ -95,7 +97,7 @@
+ 
+ ## Output
+ 
+-After running, note any issues found and fixed. If issues were found that require discussion rather than immediate fix, add them to DECISIONS.md Open Questions.
++After running, note any issues found and fixed. Report issues that require discussion rather than immediate fix to the steward; do not add new open questions to DECISIONS.md unless the steward authorizes it.
+ 
+ ## Rationale
+ 
+@@ -113,6 +115,6 @@
+ 
+ **Current enforcement:** External (discipline-based). Run manually or by AI agent before committing.
+ 
+-**Standing instruction for agents:** If you are committing non-trivial changes to this repo, run this checklist before committing. You do not need to be asked.
++**Standing instruction for agents:** If you are committing a non-trivial change the steward has explicitly authorized in this repo, run this checklist before committing. You do not need to be asked.
+ 
+-**Next maturity step:** Prompted — add a non-blocking reminder that nudges the committer to run this guard. Only mechanize durable, low-churn invariants if a small stable set emerges; avoid encoding volatile terminology or transitional architecture phrasing into repo-local scripts by default.
++**Next maturity step:** None while the repository is reference-only.
+--- a/skills/session-kickoff.md
++++ b/skills/session-kickoff.md
+@@ -2,12 +2,15 @@
+ 
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
++> **Reference-only repository** (README.md status): build the packet only for a task the steward has
++> explicitly authorized here. Answer "what's next?" by pointing to the successor repositories named in
++> README.md, not by choosing work from this repository.
++
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.
+ 
+ ## When to Run
+ 
+-- At the start of a fresh work session in this repo
+-- When the user asks "what's next?"
++- At the start of a session carrying out an explicitly authorized task in this repo
+ - When resuming after a gap of a few days or more
+ - Before making architecture proposals that span multiple files or components
+ 
+@@ -83,7 +86,7 @@
+ 
+ After the packet:
+ 
+-- if the user asked "what's next?", recommend the best next action from the packet
++- if the user asked "what's next?", say that this repository is reference-only and point to the successor repositories named in README.md
+ - if the user gave a concrete task, anchor that task to the packet and proceed
+ - if contradictions remain, stop and resolve the canonical owner before editing
+ 

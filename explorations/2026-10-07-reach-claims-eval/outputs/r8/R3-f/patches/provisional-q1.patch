@@ -1,0 +1,42 @@
+# PROVISIONAL patch: depends on steward question Q1 (does the reference-only banner cover the temporal
+# coordinator contract in components/temporal-coordinator/SPEC.md?). Implements the recommended answer (A).
+# Do not apply until the steward answers Q1. Applies on top of settled.patch; independent of provisional-q2.patch.
+# The placeholder '<location the steward records with the Q1 answer>' stays until the steward names the live owner.
+
+diff -ruN a/components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md b/components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md
+--- a/components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/temporal-coordinator/INTERFACE_REFINEMENT_PLAN.md	2026-10-07 22:46:08.814225779 +0100
+@@ -3,8 +3,9 @@
+ Status: superseded historical plan (2026-07-26).
+ 
+ The selected pg-boss V0 ground-up replacement does not implement the former `EventSink` reliability
+-kernel described below. Current authority is [SPEC.md](SPEC.md) and the one-time POC implementation
++kernel described below. At supersession, authority passed to [SPEC.md](SPEC.md) and the one-time POC implementation
+ plan in [the sibling implementation repository](../../../temporal-coordinator/docs/03-pg-boss-poc-rewrite-plan-openai-gpt-5.6-sol.md).
++SPEC.md is now a reference copy (see its status line).
+ 
+ Purpose: historical record of the former temporal coordinator boundary. It is not implementation
+ guidance for the selected enqueue-only POC.
+diff -ruN a/components/temporal-coordinator/SPEC.md b/components/temporal-coordinator/SPEC.md
+--- a/components/temporal-coordinator/SPEC.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/temporal-coordinator/SPEC.md	2026-10-07 22:46:08.814036693 +0100
+@@ -1,6 +1,6 @@
+ # Temporal Coordinator Spec
+ 
+-Status: V0 pg-boss POC implementation spec
++Status: reference copy of the V0 pg-boss POC implementation spec, as recorded here on 2026-07-26. This repository is reference-only (README.md); the live contract is owned outside it, at <location the steward records with the Q1 answer>.
+ 
+ The temporal coordinator V0 owns one-time schedule intent, deterministic logical occurrence identity,
+ the immutable route-free `schedule_due` payload, and an inspectable record that the occurrence was
+diff -ruN a/SCHEDULING.md b/SCHEDULING.md
+--- a/SCHEDULING.md	2026-08-01 21:12:00.000000000 +0100
++++ b/SCHEDULING.md	2026-10-07 22:46:08.814081871 +0100
+@@ -17,7 +17,7 @@
+    -> no V0 consumer
+ ```
+ 
+-The authoritative event and data contract is [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md).
++The event and data contract as recorded here is [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md), now a reference copy (see its status line).
+ 
+ V0 application state is limited to one-time `schedules` and `schedule_runs`. The logical occurrence
+ identity is application-owned and independent of the pg-boss job UUID. pg-boss owns delayed-job

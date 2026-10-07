@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: round 7 fails; variance measured
+status: round 8 fails on its K35 criterion; patch check shown to work
 ---
 
 # Test of the rule that a claim about everything a system reaches shows its search
@@ -200,3 +200,31 @@ and it was the weakest item for every version in every round.
 **R3 (`scores/round8-R3.md`):** all six runs score 5 of 5, so K16 and K24 are 3 and 3 for each version, and the rule
 holds. Every run chose `none` and handed nothing to the generator. The runs differ in patch size, from 2 files to 16,
 which the key does not score.
+
+**R1 (`scores/round8-R1.md`):**
+
+| Item | Candidate | Reference | Rule | Result |
+|---|---|---|---|---|
+| K1, K3, K4, K5, K6, K8, K21, K23 | 3 each | 3 each | no drop over 0.5 | hold |
+| **K35** | **2** | **1.5** | **at least the reference plus 1** | **fails** |
+| K36 | 3 | 1 | at least the reference | holds |
+| K32 (reported) | 2.5 | 1.5 | – | – |
+| K2 (reported) | 2 | 2.5 | – | – |
+
+### Verdict under the rule fixed before the runs
+
+**Round 8 fails on one criterion: K35 improves by half a point, and the rule asked for a whole run.** Everything else
+holds:
+- **No regression** on any gate in any of the three cases.
+- **The patch check works:** K36 is 3 of 3 for the candidate against 1 of 3 for the reference. The reference's two
+  failures are settled hunks that re-assert sentences their own findings call false.
+- **The reach rule's effect is small:** the candidate met K35 in two of three runs; the reference, with no reach rule,
+  met it in one and a half. The reference did better than the earlier record suggested (6 of 11 runs misstated reach
+  in rounds 1 to 6), so three runs cannot show whether the rule helps.
+- **One failure is shared by both versions:** a README rewrite that credits the browser's reach to Scope packages (one
+  candidate run, one reference run). The finding is right in both; the prose that summarises it is wrong.
+
+Three runs per version can show large differences only. What the evidence supports: the patch check is a clear gain;
+the reach rule costs nothing now that it sits in the mixed profile, and its benefit is not shown.
+
+**Not opened as a PR.** Whether to ship both changes, ship the patch check alone, or test further is Justin's call.

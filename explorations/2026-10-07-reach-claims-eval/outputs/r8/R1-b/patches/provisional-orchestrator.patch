@@ -1,0 +1,71 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:46:15.916296238 +0100
++++ b/AGENTS.md	2026-10-07 22:49:04.823054802 +0100
+@@ -10,6 +10,14 @@
+ [orchestrator#140](https://github.com/justinphilpott/orchestrator/issues/140). It is the reference point for every
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
++Decisions about ORC are recorded in the orchestration-lab Scope's `decisions/`, dated and attributed; one about a
++single issue goes on that issue.
++
++## Before handing off
++
++At the end of a session, before a commit or pull request, run the session-coherence guard kept in the
++orchestration-lab Scope, `~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`, and put its
++report in the pull request description under `## Coherence`.
+ 
+ ## Boundaries
+ 
+@@ -98,8 +106,10 @@
+ (orchestrator#101), and `src/adapters/browser/playwright.ts`, which launches a headless Chromium
+ through Playwright's library for an approved browser connector (orchestrator#76). Approved Scope
+ packages may implement separately declared connectors: the backends that reach an outside service.
+-What package code itself may launch or reach is not covered by this list (an open question for the
+-operator, recorded in the orchestration-lab Scope's `STATE.md`).
++Package code is not confined by this list. An approved package bundle runs in ORC's process and may
++import any `node:` built-in and the packages in its declared dependency tree
++(`src/adapters/agent-files/bundle-imports.ts`), so what it may launch or reach is bounded by the
++operator's approval of that exact build, not by these modules.
+ 
+ In ORC's own source, direct network requests are made only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:45:41.428350029 +0100
++++ b/README.md	2026-10-07 22:47:42.821080696 +0100
+@@ -1,10 +1,13 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++adapter, and per-conversation model controls. ORC runs in one parent process. It launches isolated
++Pi children for the researcher and the analyst, and the other processes `AGENTS.md` lists under
++Boundaries. Beyond the machine it reaches the configured model provider through Pi, public webpages
++through Jina Reader, the operator's ntfy server, and what approved Scope packages' connectors reach,
++each approved on its package's build card. Today those are the Moving Stillness Scope's published
++calendar, operations tool and admin browser, which reads and writes entries on
++`movingstillness.bookwhen.com`, and the Finance Scope's client folders and mail.
+ 
+ ## Direction
+ 
+@@ -149,13 +152,15 @@
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+ open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++a code-selected Bookwhen admin entry and calculate a slot-change plan; applying it is durable work
++that waits for the operator's approval card or a standing grant. It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-additional external data sources, workflow execution, sandboxes, shell access, and file edits.
++Deliberately absent, and each requires a decision rather than a convenience: reminders, workflow
++execution, sandboxes, shell access, external sources or destinations beyond those a package card
++approves, and file edits beyond Scope memory and the folders a package card approves.
+ Scheduling was decided on 2026-09-17: ORC owns durable work that runs now, at a time, or on a
+ recurring schedule (orchestration-lab Scope, `decisions/2026-09-17-async-work-architecture.md`).
+ 

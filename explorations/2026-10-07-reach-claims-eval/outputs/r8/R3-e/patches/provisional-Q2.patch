@@ -1,0 +1,99 @@
+# PROVISIONAL PATCH: do not apply until the steward answers Q2 (questions.md).
+# Q2: Is the reference-only repository frozen (corrections and historical marking only) or maintained as a coherent
+#     reference (its guard keeps running and its state files stay current)?
+# Written for the recommended answer, FROZEN. Replace every <DATE> and <STEWARD> first. If the answer is MAINTAINED,
+# discard this patch: the guard decision becomes `update` instead (assessment.md section 12).
+# Demotes skills/entropy-guard.md and the AGENTS.md mandate to run it; marks ROADMAP.md and components.yaml as not
+# kept current; records the decision in DECISIONS.md and removes Q2 from its Open Questions.
+#
+# Apply after settled.patch, from the repository root. Verified on 2026-10-07 against the snapshot: this patch applies
+# alone or together with the other provisional patches in any order using `patch -p1` (some orders rely on patch's
+# fuzz), and every order gives the same tree; `git apply -p1` works in the order Q1, Q2, Q3.
+#
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -61,6 +61,8 @@
+ 
+ ## Working practices
+ 
++This repository is frozen as a reference (DECISIONS.md, <DATE>): the practices below record how it was maintained. Only corrections of factual errors, each citing the decision or evidence that settles it, and marking material historical apply now.
++
+ - Changes here should be deliberate. This repo may record settled conclusions and clearly labeled provisional architecture orientations, but raw deliberation and general theory belong in agentic-learning.
+ - If you find yourself writing raw deliberation, general theory, or canonical open-question entries outside DECISIONS.md, that belongs elsewhere before it belongs here.
+ - If you find yourself litigating what old docs imply, stop. Identify the current intent, current snapshot, and latest dated decision; then either make a clarifying update or return to proving the model.
+@@ -73,3 +75,3 @@
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- [skills/entropy-guard.md](skills/entropy-guard.md) is kept as a record and is not run while this repository is frozen
+ 
+@@ -104,3 +106,3 @@
+ - [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard (demoted; not run while this repository is frozen)
+ - [components/scope/](components/scope/) — scope component design
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -872,6 +872,12 @@
+ 
+ ---
+ 
++### <DATE> — The reference-only repository is frozen
++
++Decided by <STEWARD>. Changes here are limited to corrections of factual errors, each citing the decision or evidence that settles it, and to marking material historical. State files (ROADMAP.md, components.yaml, and component TODO.md and PLAN.md files) are not kept current. The entropy guard (`skills/entropy-guard.md`) is kept as a record and is not run before commits.
++
++---
++
+ ## Open Questions
+ 
+ This is this repository's canonical registry for architectural open questions. Since the status banner in README.md made the repository reference-only, it is not the registry for current architecture work; whether these questions carried over to `../personal-agent` is not recorded here. Other files may reference these questions but should not duplicate them — link here instead.
+@@ -882,4 +888,2 @@
+ 
+-- **What reference-only permits.** Is this repository frozen (corrections of factual errors and historical marking only) or maintained as a coherent reference (its entropy guard keeps running before commits and its state files stay current)?
+-
+ - **Template and reference-role ownership.** Do `components/scope/template/`, `components/agent/template/` and `roles/` remain the source for new scope definitions and roles, or does another repository, such as `../../scope`, own them now?
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -23,6 +23,8 @@
+ > - **Contradictions no decision here settles:** the orchestrator has "no secrets and no scope repo access"
+ >   (DECISIONS.md 2026-04-06, AGENTS.md), but its "scope access" is "mode-tunable" (MODEL.md, orchestration v1);
+ >   and both DECISIONS.md and the orchestration snapshot's "Under Review" claim to own open questions.
++> - **Frozen** (DECISIONS.md, <DATE>): corrections of factual errors and historical marking only; this file is not
++>   kept current.
+ > - **Next action:** the steward answers the status questions in DECISIONS.md.
+ > - **This block goes stale** when the banners change or those questions are answered; whoever records the answers
+ >   refreshes it.
+diff -ruN a/components.yaml b/components.yaml
+--- a/components.yaml
++++ b/components.yaml
+@@ -1,4 +1,7 @@
+ # Component catalog for the agentic architecture current named version
++#
++# Statuses below are as this repository recorded them. It is frozen as a reference and does not maintain them
++# (DECISIONS.md, <DATE>).
+ #
+ # Status values:
+ #   exploratory  — proto tool, in consideration, not yet part of the architecture
+diff -ruN a/skills/README.md b/skills/README.md
+--- a/skills/README.md
++++ b/skills/README.md
+@@ -7,3 +7,3 @@
+ - `session-kickoff.md` builds a compact current-state packet before architecture work.
+-- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
++- `entropy-guard.md` checked coherence before committing blueprint changes; it is kept as a record and not run while the repository is frozen (DECISIONS.md, <DATE>).
+ 
+diff -ruN a/skills/entropy-guard.md b/skills/entropy-guard.md
+--- a/skills/entropy-guard.md
++++ b/skills/entropy-guard.md
+@@ -8,6 +8,9 @@
+ ---
+ 
+ # Entropy Guard: agentic-architecture
++
++> **Demoted <DATE>.** This repository is reference-only and frozen (DECISIONS.md, <DATE>). This checklist is kept as a
++> record and is not run before commits. Check a correction only against the decision or evidence it cites.
+ 
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 

@@ -1,0 +1,15 @@
+PROVISIONAL, on question Q3 (is 'more merged PRs' still a validation measure?). Do not apply until the steward answers Q3.
+Written for the recommended answer. Applies on top of settled.patch.
+
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-10-07 22:44:28.790526593 +0100
++++ b/INTENT.md	2026-10-07 22:48:00.269440753 +0100
+@@ -132,7 +132,7 @@
+ - run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
+ - generate or refine guards where appropriate and use the current-state packet at session start
+ - run those guards locally while making targeted improvements
+-- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
++- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong, and, where the target is an open-source project, more merged PRs (DECISIONS.md, "Farm broader entropic-immunity exploration")
+ 
+ ---
+ 

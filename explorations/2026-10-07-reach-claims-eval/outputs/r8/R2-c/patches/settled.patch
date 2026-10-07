@@ -1,0 +1,244 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:43:17.690062884 +0100
++++ b/AGENTS.md	2026-10-07 22:43:52.420698388 +0100
+@@ -13,6 +13,7 @@
+ - [skills/](skills/) - Skills
+ - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) - Specialized deep path for docs-first planning repos
+ - `../entropy-immune-system/` - Sibling repo for the broader entropic-immunity exploration spun out of this project
++- [explorations/](explorations/) - March 2026 conversations and drafts that seeded `../entropy-immune-system`, where that work continues; kept here as history, not as this repo's direction
+ 
+ ## Working Practices
+ 
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-10-07 22:43:17.690090109 +0100
++++ b/DECISIONS.md	2026-10-07 22:48:45.619469175 +0100
+@@ -4,6 +4,42 @@
+ 
+ ---
+ 
++## Proposed, awaiting the steward
++
++These are proposals, not decisions. Each was recorded on 2026-10-07 by an agent running `entropy-assessment` on this repo. When the steward decides one, record the decision as a dated, attributed entry below and remove the proposal. Until then the existing instructions stand, and the changes that depend on a proposal are drafted, not applied.
++
++### Proposed: who may change INTENT.md, and who the steward is
++
++**Question**: `INTENT.md` (opening note and closing line), `AGENTS.md` ("Consult INTENT.md for significant decisions") and `skills/local/entropy-guard/SKILL.md` (check 3) each tell a contributor to edit `INTENT.md` when work challenges it. No file names a steward or who decides. Justin Philpott makes the recorded scope decisions in `explorations/2026-03-24-entropy-immune-system-conversation.md` and owns the GitHub repositories this repo links to.
++**Readings**: (a) any contributor, human or agent, may revise `INTENT.md` on their own judgement, noting the date and reason; (b) contributors propose, and `INTENT.md` changes only when the steward decides.
++**Where they diverge**: `INTENT.md`'s lifecycle section does not mention `session-coherence-skill-generator`. Under (a) the next agent edits it; under (b) it records a proposal, as below, and waits.
++**Recommendation**: (b), naming Justin Philpott as steward. `LEARNINGS.md` ("The four-component temporal hierarchy") says intent "should be the most protected and slowest-changing element", and `PHILOSOPHY.md` ranks "intent > machinery > content".
++**Depends on it**: replacing the edit-INTENT instruction in `INTENT.md`, `AGENTS.md` and the local guard (drafted).
++
++### Proposed: which skill writes guards
++
++**Question**: `docs-first-planning-assessment` Phase 2 (Steps 6–8) designs and produces guards; `session-coherence-skill-generator` writes guards to its own requirements at `skills/session-coherence-guard/SKILL.md`. Neither mentions the other, `entropy-assessment` routes only to the first, and `INTENT.md` ("The guard lifecycle") names only the assessment workflow as the generator, while `README.md` and `AGENTS.md` list the second as generating guards. No entry records why `session-coherence-skill-generator` was added.
++**Readings**: (a) each writes guards for its own kind of repo; (b) `session-coherence-skill-generator` is the one guard writer, and `docs-first-planning-assessment` supplies the checks it builds in; (c) `docs-first-planning-assessment` writes guards, and `session-coherence-skill-generator` only bootstraps young repos.
++**Where they diverge**: an external docs-first repo with no guard. Under (a) or (c) Phase 2 produces a combined checklist with no set path; under (b) the generator writes `skills/session-coherence-guard/SKILL.md` with modes, exact commands and safety rules, from Phase 2's checks.
++**Recommendation**: (b). "Consolidate domain generators into single skill" below found that domain knowledge is reference data, not a separate process; the newest entry, "Session-coherence generation should bootstrap young repos", invests in the generator.
++**Depends on it**: `INTENT.md`'s lifecycle section, the `README.md` and `AGENTS.md` rows for the generator, and the handoff in `docs-first-planning-assessment` Phase 2 (drafted).
++
++### Proposed: what the validation batch measures
++
++**Question**: "Farm broader entropic-immunity exploration" below sets the loop as "assess a larger set of open source projects ... and track whether that produces more merged PRs". `INTENT.md` ("Scope boundary and next validation loop"), `README.md` ("Project status") and `TODO.md` set it on docs-first planning repos, tracking clearer session recovery, fewer reintroduced stale ideas and more coherent docs.
++**Readings**: (a) merged PRs on open-source projects; (b) session recovery and coherence on docs-first repos, which may be private.
++**Where they diverge**: a private docs-first planning repo with no pull-request flow counts under (b) and yields nothing under (a).
++**Recommendation**: (b), also recording merged-PR outcomes where a target has a PR flow. `INTENT.md`, `README.md` and `TODO.md` agree on (b), and "Specialize first" narrowed the track to docs-first repos.
++
++### Proposed: when an agent may file an issue on justinphilpott/entropy-guard
++
++**Question**: `skills/entropy-assessment/SKILL.md`, `skills/docs-first-planning-assessment/SKILL.md` and `AGENTS.md` file upstream feedback only when working inside this repo. `skills/guards-integrator/SKILL.md` (Step 7) and "Upstream feedback should be embedded" below also allow it "whenever the local feedback helper is available". The helper runs `gh issue create` against the public repository.
++**Readings**: (a) only when working inside entropy-guard; (b) whenever the helper can be reached, including while assessing another project with entropy-guard checked out.
++**Where they diverge**: `README.md`'s own usage, "Read skills/entropy-assessment/SKILL.md from the entropy-guard repo, then assess [your project path]". At the integrator's last step the agent files a public issue under (b), and not under (a).
++**Recommendation**: (a). Elsewhere, leave the formatted note in the output, as `skills/guards-integrator/SKILL.md` already does when the helper is unavailable. Three of the five places say (a).
++
++---
++
+ ### Session-coherence generation should bootstrap young repos before generating guards
+ 
+ **Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.
+@@ -38,6 +74,8 @@
+ 
+ ### Entropy assessment should support guard refinement and evidence-based bootstrap design
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer has a Phase 2. The preference for refining an existing guard, and the rule against tracking bootstrap completion in the guard, now appear in `skills/docs-first-planning-assessment/SKILL.md` (Step 6 and Output).*
++
+ **Context**: Applying `entropy-assessment` to real projects exposed a cluster of related misfires. The skill framed Phase 2 primarily as generating new guards, even when the right outcome was a targeted amendment to an existing guard. It also allowed bootstrap checks to be written from indirect notes without verifying the current artifact, and it did not clearly distinguish stable guard definitions from the companion artifacts that should record bootstrap completion. Cold-start projects with no established loop likewise had no named minimum-viable integration pattern.
+ **Decision**: Treat guard refinement as a first-class Phase 2 outcome alongside guard generation. Require bootstrap actions to be verified against the current artifact before they are written, require bootstrap completion to be tracked outside the guard file, and add an explicit no-existing-loop bootstrap integration pattern for early-stage projects. Also make internal docs-to-docs drift more explicit for markdown-first systems.
+ **Impact**: `skills/entropy-assessment/SKILL.md` now fits existing-guard systems better, produces more trustworthy bootstrap checks, preserves guard files as stable definitions, and offers a clearer adoption path for cold-start repos. The methodology also better matches the repo's own framing that documentation-first systems often drift internally rather than primarily against code.
+@@ -46,6 +84,8 @@
+ 
+ ### Add workflow/process as a first-class assessment domain
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer generates guards or carries domain appendices. Workflow/process remains a domain in its Step 4a and its shape D.*
++
+ **Context**: Dogfooding `entropy-assessment` against this repo showed a repeatable gap. The skill already talked about collaborative workflow and inter-domain drift in principle, but its explicit Phase 1 domain map and Phase 2 appendices only covered documentation, code, tests, and API contracts. That made workflow-heavy repos awkward to classify and left no direct path to generate workflow/process guards when the main entropy risks lived in handoffs, rituals, or contributor instructions.
+ **Decision**: Extend `skills/entropy-assessment/SKILL.md` with workflow/process as a first-class domain in both assessment and guard generation. Add workflow/process signals to the Phase 1 domain map and drift analysis, and add a dedicated appendix covering inventory items, entropy vectors, checklist guidance, and existing mechanisms.
+ **Impact**: The assessment now matches the repo's own framing that entropy often accumulates in practice as much as in map or territory. Workflow-heavy systems can be assessed without awkward shoehorning, and the skill can recommend either a dedicated workflow guard or a combined guard when that is the lower-burden design.
+@@ -94,6 +134,8 @@
+ 
+ ### Guard generation should produce immediate integration advice, not just guard files
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: `entropy-assessment` no longer generates guards; immediate integration advice is now an output of `skills/docs-first-planning-assessment/SKILL.md`. `skills/guards-integrator/` stands.*
++
+ **Context**: The assessment skill already required an integration plan in Step 8, but the repo did not yet provide a dedicated way to examine a target system's actual agent / commit / PR / CI loop and translate generated guards into an adoption plan. That left a gap between guard design and guard use.
+ **Decision**: Add a separate exportable skill, `skills/guards-integrator/`, focused on mapping generated guards into a system's real iteration loop. Also strengthen `skills/entropy-assessment/` so guard generation always includes immediate adoption guidance and points to the integrator skill for deeper operational planning.
+ **Impact**: Running the assessment now yields not only candidate guards but also system-specific advice for how to make them valuable right away. The integrator skill clarifies that adoption is a first-class part of guard design, while still leaving room for a future guard runner implementation.
+@@ -112,6 +154,8 @@
+ 
+ ### Rename entry point from entropy-guard-generator to entropy-assessment
+ 
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: the name stands; `entropy-assessment` no longer has a Phase 2 (Guard Generation).*
++
+ **Context**: The entry point skill's primary value is assessment (Steps 1–4: establish intent, survey landscape, identify drift risks, recommend generators). Guard generation (Steps 5–8) is optional delegation to domain generators. But the name "generator" framed assessment as a means to an end rather than a first-class deliverable. Agents arriving cold didn't recognize this skill as the obvious start point for reviewing a system.
+ **Decision**: Rename to `entropy-assessment`. Restructure the skill into two explicit phases: Phase 1 (Assessment, Steps 1–4) produces a standalone entropy profile; Phase 2 (Guard Generation, Steps 5–8) is optional. Add an assessment output format between the phases.
+ **Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards.
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:43:17.690149514 +0100
++++ b/README.md	2026-10-07 22:43:52.420782050 +0100
+@@ -75,7 +75,7 @@
+ 
+ ### Adapt the project's own guard
+ 
+-This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual backed by a non-blocking local reminder hook in [`.githooks/pre-commit`](.githooks/pre-commit). The guard checks decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and how a guard can mature from manual instructions to prompted workflow support.
++[AGENTS.md](AGENTS.md) asks every contributor to run the project's [own entropy guard](skills/local/entropy-guard/) after meaningful work, before committing — a post-work micro-ritual prompted by a non-blocking reminder hook in [`.githooks/pre-commit`](.githooks/pre-commit) that each clone enables for itself. The guard checks decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and how a guard can mature from manual instructions to prompted workflow support.
+ 
+ ---
+ 
+diff -ruN a/skills/guards-integrator/SKILL.md b/skills/guards-integrator/SKILL.md
+--- a/skills/guards-integrator/SKILL.md	2026-10-07 22:43:17.690338891 +0100
++++ b/skills/guards-integrator/SKILL.md	2026-10-07 22:43:52.420936117 +0100
+@@ -17,7 +17,7 @@
+ 
+ ## When to Run
+ 
+-- After `entropy-assessment` generates one or more guards
++- After one or more guards are generated or amended
+ - When a system has guards on disk but no clear way they enter daily work
+ - When the team already has an agentic loop, PR flow, or CI pipeline and wants to fit guards into it with minimal disruption
+ - When an existing guard is routinely skipped, forgotten, or run too late to be useful
+@@ -218,7 +218,7 @@
+ - Assumed ... because ...
+ ```
+ 
+-If the assessment skill generated the guards in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
++If the guards were generated or amended in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
+ 
+ ---
+ 
+diff -ruN a/skills/local/entropy-guard/SKILL.md b/skills/local/entropy-guard/SKILL.md
+--- a/skills/local/entropy-guard/SKILL.md	2026-10-07 22:43:17.690390193 +0100
++++ b/skills/local/entropy-guard/SKILL.md	2026-10-07 22:43:52.421337131 +0100
+@@ -1,6 +1,6 @@
+ ---
+ name: entropy-guard
+-description: Post-work micro-ritual for the entropy-guard project itself. Run before committing after meaningful work. Checks decision capture, workflow/practice alignment, internal consistency, cross-references, and honest state. A reference example of what the guard generators produce.
++description: Post-work micro-ritual for the entropy-guard project itself. Run before committing after meaningful work. Checks decision capture, workflow/practice alignment, internal consistency, cross-references, and honest state. A reference example of a generated guard.
+ metadata:
+   version: "0.2.3"
+ ---
+@@ -30,7 +30,7 @@
+ ## When NOT to Run
+ 
+ - After trivial changes (typo fixes, minor formatting) — use judgement
+-- As a replacement for a full doc audit — use doc-health-check for that
++- As a replacement for a full doc audit — that is out of scope here (a `doc-health-check` skill is planned in TODO.md Backlog)
+ - More than once per logical piece of work
+ 
+ ## Checklist
+@@ -85,18 +85,18 @@
+   - Does AGENTS.md still accurately describe working practices and key files?
+   - Do skill files reference each other correctly?
+ - If a concept changed, is there still one obvious canonical home for it, with other docs reduced to links or local implications rather than parallel full explanations?
+-- Did you change something that another doc also describes? If so, update both.
++- Did you change something that another doc also describes? Keep one owner: if both define it independently, reduce one to a link; if the other is a summary (README.md "What's here", AGENTS.md "Key Files"), keep it and correct it.
+ 
+ If inconsistent: fix it now. Internal consistency drift is this project's primary entropy vector.
+ 
+-> *Rationale*: With 20+ markdown files cross-referencing each other, any structural change (like renaming skills or reorganising folders) creates a wave of stale references. The more the project grows, the more surfaces for inconsistency.
++> *Rationale*: With every core doc and skill cross-referencing others, any structural change (like renaming skills or reorganising folders) creates a wave of stale references. The more the project grows, the more surfaces for inconsistency.
+ 
+ ### 6. Key Files / Architecture
+ - Were any files added, removed, or renamed?
+ - Was a significant responsibility moved from one file to another?
+ - Did the skill directory structure change?
+ 
+-If yes: is this reflected in AGENTS.md (Key Files section), README.md (Key Documents table), and any other docs that list project structure? Update if not.
++If yes: is this reflected in AGENTS.md (Key Files section), README.md ("What's here" tables), and any other docs that list project structure? Update if not.
+ 
+ > *Rationale*: Structural changes propagate — a renamed file needs updating in every doc that references it.
+ 
+diff -ruN a/skills/session-coherence-skill-generator/SKILL.md b/skills/session-coherence-skill-generator/SKILL.md
+--- a/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 22:43:17.690418806 +0100
++++ b/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 22:43:52.421066023 +0100
+@@ -19,8 +19,8 @@
+ be run during or near the end of a coding session to leave the codebase coherent,
+ self-explanatory, and easy to pick up next time.
+ 
+-This is a meta skill: it does not assume the repository already has FlowBook's
+-exact files. It first discovers the repository's own context-preservation
++This is a meta skill: it does not assume any particular file layout in the
++target repository. It first discovers the repository's own context-preservation
+ structures, then writes or updates a custom session-coherence skill for that
+ repository.
+ 
+@@ -190,8 +190,8 @@
+     needed now, which are soon, which are premature, and is guard generation still
+     premature?
+ 
+-Prefer the repository's existing vocabulary. Do not impose FlowBook's exact file
+-layout on another codebase.
++Prefer the repository's existing vocabulary. Do not impose another repository's
++file layout on it.
+ 
+ ---
+ 
+diff -ruN a/TODO.md b/TODO.md
+--- a/TODO.md	2026-10-07 22:43:17.690161457 +0100
++++ b/TODO.md	2026-10-07 22:43:36.758536984 +0100
+@@ -2,6 +2,39 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++*Checked 2026-10-07 against this repo's files. Stale when a skill is added, renamed or re-scoped, when a `DECISIONS.md`
++entry is added or one of its proposals is decided, or when a Next Up item closes. Whoever ends a session refreshes it,
++through `skills/local/entropy-guard/SKILL.md`.*
++
++- **Stage:** see README.md "Project status". All three Next Up items below were open on 2026-10-07.
++- **Read first:** `AGENTS.md`, then this file, then `INTENT.md`. `DECISIONS.md` is the only decision log. Its entries
++  carry no dates and are not in date order, so check an entry's supersession note before relying on it.
++- **Settled; do not reopen casually** (all in `DECISIONS.md`): "Specialize first around docs-first planning repos, but
++  keep entropy-assessment as the front door"; "Farm broader entropic-immunity exploration into a sibling repo";
++  "Keep a single local guard"; "Guard adoption should usually mature from external to prompted"; "Exportable skills vs
++  local skills"; "Skill format: agentskills.io spec".
++- **Open questions**, each recorded as a proposal under "Proposed, awaiting the steward" in `DECISIONS.md`:
++  - who may change `INTENT.md`, and who the steward is;
++  - which skill writes guards: `docs-first-planning-assessment` Phase 2 or `session-coherence-skill-generator`;
++  - what the validation batch measures;
++  - when an agent may file a GitHub issue on `justinphilpott/entropy-guard`.
++- **Misleading material nearby:**
++  - `explorations/`: March 2026 seed material for the sibling `entropy-immune-system` repo, where that work continues.
++  - Three `LEARNINGS.md` entries are validated only by the 2026-03-19 conversation: "Just-in-time guard generation...",
++    "The four-component temporal hierarchy..." and "Most current guards operate at the wrong layer...". The first
++    describes a future with no persistent guard file; `DECISIONS.md` ("Guards need closed-loop integration") and this
++    repo's practice keep guard files.
++  - `DECISIONS.md` entries that describe a Phase 2, Steps 5–8 or domain appendices in `entropy-assessment`: that skill
++    no longer has them.
++  - `skills/session-coherence-skill-generator/` (metadata dated 2026-05-10) came from another repository. Nothing yet
++    records how it relates to `docs-first-planning-assessment` Phase 2 (open question above).
++- **Next actions:**
++  1. Get the steward's answers to the first two open questions. The changes that depend on them are drafted, not applied.
++  2. Start Next Up item 1.
++  3. Work through the cleanup items in Backlog.
++
+ ## Doing Now
+ 
+ [empty]
+@@ -18,3 +51,7 @@
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
+ - [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
++- [ ] Once the steward answers the proposals in `DECISIONS.md`, apply the changes drafted for them (2026-10-07 assessment)
++- [ ] Date new `DECISIONS.md` entries; recover dates for the existing 17 from git history
++- [ ] Link the GitHub issues that carry active work from this file: `DECISIONS.md` cites issues #9–#12, and this file mentions none
++- [ ] Check whether the seed scaffolding that assumes code still fits: `AGENTS.md` "Commit early, commit often" and "Docs travel with code", the Go section of `.gitignore`, the Python/Go/Makefile rules in `.editorconfig`

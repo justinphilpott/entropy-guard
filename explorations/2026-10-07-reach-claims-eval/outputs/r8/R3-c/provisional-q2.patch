@@ -1,0 +1,42 @@
+PROVISIONAL patch. Do not apply until the steward answers Q2 in questions.md: when the reference-only decision was
+made, by whom, and whether DECISIONS.md should record it. Drafted on the recommended answer (record it). Finding F1
+in assessment.md. Apply after settled.patch:  patch -p1 < provisional-q2.patch
+Then fill in <date> and <steward> in DECISIONS.md and ROADMAP.md. Independent of provisional-q1.patch.
+
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/DECISIONS.md	2026-10-07 22:45:41.667711496 +0100
+@@ -872,6 +872,20 @@
+ 
+ ---
+ 
++### <date> — This repository is reference-only
++
++*Decided by <steward>. Recorded on 2026-10-07 from the status banners in README.md and AGENTS.md, which carry no date; the date, the attribution and any reason are the steward's to supply.*
++
++The banners say:
++
++> Reference-only. Current Personal Agent architecture lives in `personal-agent`, and the current generic Scope/Project model lives in `scope`. Do not treat decisions in this repository as current authority. (README.md, links removed)
++
++> this repository is no longer current architecture authority. Current Personal Agent architecture lives in `../personal-agent`; the current Scope and Project model lives in `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit authorization. (AGENTS.md)
++
++Impact: per the banners, the entries in this log are not current authority.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+diff -ruN a/ROADMAP.md b/ROADMAP.md
+--- a/ROADMAP.md	2026-10-07 22:45:41.617600702 +0100
++++ b/ROADMAP.md	2026-10-07 22:45:41.667824347 +0100
+@@ -7,8 +7,7 @@
+ 
+ - **Stage: reference-only.** Source: the status banners in [README.md](README.md) and [AGENTS.md](AGENTS.md), read
+   2026-10-07. Current Personal Agent architecture lives in `../personal-agent`, and the current Scope/Project model in
+-  `../../scope`. The banners carry no date, and [DECISIONS.md](DECISIONS.md) has no entry for the change. Open
+-  question: when the reference-only decision was made, and whether DECISIONS.md should record it.
++  `../../scope`. Recorded in [DECISIONS.md](DECISIONS.md) as "<date> — This repository is reference-only".
+ - **This roadmap is a record, not a work queue.** It shows where the work stood when the repository stopped being
+   current. Whether each unchecked item below moved to `../personal-agent` or `../../scope`, or was dropped, is not
+   recorded here.

@@ -1,0 +1,96 @@
+Provisional patch for the entropy-guard snapshot 447da9a. Do not apply until the steward answers the questions named
+for each hunk (questions.md). Apply only the hunks whose questions were answered as recommended; redraft the others.
+
+Apply after settled.patch, from the repository root:   patch -p1 < provisional.patch
+
+Hunks, by file, with the questions they touch:
+- AGENTS.md "Consult INTENT.md for significant decisions": Q1
+- INTENT.md preamble (names the steward; how intent changes): Q1, Q2
+- README.md "Adapt the project's own guard" (summary of what the guard checks): goes with the guard replacement below
+- skills/guards-integrator/SKILL.md Step 7 and skills/local/entropy-guard-feedback/SKILL.md: Q5
+- TODO.md "Next Up" (what the validation batch tracks): Q4
+
+Not in the diff, because the guard is delivered whole:
+- Guard replacement (Q1, Q2, Q5): cp guard/SKILL.md skills/local/entropy-guard/SKILL.md
+  Then, for each answered question, remove its marker from the guard: "unresolved" after the steward's name (Q2),
+  the "Open until the steward answers TODO.md Q1" paragraph (Q1), "When it may be used from other projects is open" (Q5).
+
+After each answer: move the proposal from DECISIONS.md "Proposed, awaiting the steward" into a dated, attributed entry,
+and remove the question from TODO.md "Open questions for the steward".
+
+Q3 (which skill builds guards) has no hunk: its answer restructures INTENT.md "The guard lifecycle", the front door's
+routes, docs-first Phase 2, README.md "What's here" and AGENTS.md "Key Files", and the text differs for each reading.
+The work for the recommended answer is listed in assessment.md, "Recommendations".
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:44:57.587723143 +0100
++++ b/AGENTS.md	2026-10-07 22:47:58.319713382 +0100
+@@ -24,7 +24,7 @@
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+ - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
++- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, record it as a proposal for the steward in DECISIONS.md "Proposed, awaiting the steward"; INTENT.md changes only after the steward's recorded decision.
+ 
+ ## Project Constraints
+ 
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-05-11 21:50:31.000000000 +0100
++++ b/INTENT.md	2026-10-07 22:47:58.319811804 +0100
+@@ -1,6 +1,6 @@
+ # Intent Statement
+ 
+-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
++> This document is the north star for the entropy-guard project and the meta-skill we are building. Its steward is Justin Philpott. Humans and AI agents propose refinements in `DECISIONS.md` as our understanding deepens; this document changes after the steward records the decision there. When you update it, note the date and the decision.
+ 
+ *Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-05-11 21:50:31.000000000 +0100
++++ b/README.md	2026-10-07 22:47:58.319888677 +0100
+@@ -75,7 +75,7 @@
+ 
+ ### Adapt the project's own guard
+ 
+-This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual backed by a non-blocking local reminder hook in [`.githooks/pre-commit`](.githooks/pre-commit). The guard checks decision capture, workflow/practice alignment, internal consistency, stale references, and honest state. It's a concrete example of what the generator produces and how a guard can mature from manual instructions to prompted workflow support.
++This project runs its [own entropy guard](skills/local/entropy-guard/) before every commit — a post-work micro-ritual backed by a non-blocking local reminder hook in [`.githooks/pre-commit`](.githooks/pre-commit). The guard checks intent fit, skill contracts and routing, `TODO.md` state, decision and learning capture, superseded material, workflow/practice alignment, upstream issues filed, and stale references. It's a concrete example of what the generator produces and how a guard can mature from manual instructions to prompted workflow support.
+ 
+ ---
+ 
+diff -ruN a/skills/guards-integrator/SKILL.md b/skills/guards-integrator/SKILL.md
+--- a/skills/guards-integrator/SKILL.md	2026-10-07 22:44:43.616572091 +0100
++++ b/skills/guards-integrator/SKILL.md	2026-10-07 22:47:58.320034313 +0100
+@@ -171,8 +171,8 @@
+   - **What I observed** — the concrete misfire or friction
+   - **Suggestion** — what should change
+   - **Project context** — enough context to judge whether the issue is general or niche
+-- When working inside the entropy-guard repo, or whenever the local feedback helper is available, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
+-- When that helper is not available, leave the formatted feedback note in your final output so the maintainer can submit it manually.
++- When working inside the entropy-guard repo, use [`skills/local/entropy-guard-feedback/SKILL.md`](../local/entropy-guard-feedback/SKILL.md) to turn that note into a GitHub issue on `justinphilpott/entropy-guard`.
++- Elsewhere, leave the formatted feedback note in your final output, so the user can decide whether to submit it.
+ 
+ ---
+ 
+diff -ruN a/skills/local/entropy-guard-feedback/SKILL.md b/skills/local/entropy-guard-feedback/SKILL.md
+--- a/skills/local/entropy-guard-feedback/SKILL.md	2026-05-11 21:50:31.000000000 +0100
++++ b/skills/local/entropy-guard-feedback/SKILL.md	2026-10-07 22:47:58.320104633 +0100
+@@ -24,6 +24,7 @@
+ - Don't submit feedback about your specific project's guards — fix those directly
+ - Don't submit vague or speculative suggestions — focus on concrete observations from real usage
+ - Don't use this as a workaround for fixing your own guards — fix those directly
++- Don't file from a session working on another project: the issue is public and carries that project's context. Leave the drafted issue in your output for the user (DECISIONS.md)
+ 
+ ## Process
+ 
+diff -ruN a/TODO.md b/TODO.md
+--- a/TODO.md	2026-10-07 22:47:31.587139015 +0100
++++ b/TODO.md	2026-10-07 22:47:58.320163543 +0100
+@@ -43,7 +43,7 @@
+ ## Next Up
+ 
+ - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
+-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
++- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful: the measures in `INTENT.md` "Scope boundary and next validation loop", and merged PRs where a repo takes outside PRs
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
+ ## Backlog

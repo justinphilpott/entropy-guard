@@ -1,0 +1,78 @@
+PROVISIONAL patch for the orchestration-lab Scope (~/scopes/scope-orchestration-lab). Do not apply until Justin
+answers the question each hunk names. Apply on top of settled-lab.patch: git apply provisional-lab.patch (or only
+the hunks whose question was answered as recommended). Each hunk is written to the recommended answer in
+questions.md. After applying, remove each answered question's line from STATE.md's open list.
+
+- AGENTS.md, "Where a learning goes", decisions row widened to ORC's decisions: Q3.
+- AGENTS.md, "Keeping state", cap of sixty lines owned here: Q2. STATE.md is 85 lines after the settled patch, so
+  the next refresh must condense it to the cap.
+- AGENTS.md, "Before handing off", sessions in this Scope or in ORC: Q4.
+- decisions/2026-10-04-lab-role-and-processes.md, #194's preview items: Q3.
+- STATE.md line 4, "Target: sixty lines." replaced by a pointer to AGENTS.md: Q2 (edits the text Q2 quotes).
+- STATE.md, 3 Oct decisions: Q3 (#194 moves to decisions/; the Moving Stillness ones await that Scope's record).
+
+diff --git a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -17,7 +17,7 @@
+ | Something true of the generic Scope model | `/home/justin-philpott/pro/scope` |
+ | Something true of their relationship | `memory/` here |
+ | What broke in real use, and what it cost | `FRICTION.md` here, newest first, under a `## YYYY-MM-DD — title` heading (`tools/collect.mjs` reads it) |
+-| A decision Justin took about this Scope, its processes or its relationship to ORC | `decisions/` here, one dated file, never only in `STATE.md` |
++| A decision Justin took about this Scope, its processes, ORC, or their relationship | `decisions/` here, one dated file, never only in `STATE.md` |
+ | A resource joined or left this Scope | `scope.yaml`, then one line in `SCOPE.md` |
+ 
+ Do not duplicate repository facts here. Agent definitions and private context
+@@ -33,13 +33,13 @@
+ ## Keeping state
+ 
+ `STATE.md` is overwritten at each verified event: a commit lands, tests pass, a decision is taken.
+-It holds current state only, capped at about forty content lines. History is in `git log`; open
++It holds current state only, capped at sixty lines. History is in `git log`; open
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
+ ## Before handing off
+ 
+-At the end of every work session started from this Scope, before committing or handing off, run
++At the end of every work session, in this Scope or in ORC, before committing or handing off, run
+ [`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md) and put its
+ report in your final message (Justin, 4 Oct 2026: "entropy guard at session end",
+ `decisions/2026-10-04-lab-role-and-processes.md`).
+diff --git a/decisions/2026-10-04-lab-role-and-processes.md b/decisions/2026-10-04-lab-role-and-processes.md
+--- a/decisions/2026-10-04-lab-role-and-processes.md
++++ b/decisions/2026-10-04-lab-role-and-processes.md
+@@ -30,6 +30,10 @@
+ 
+ - **MS is paused:** browser-stack work that touches it (#118, #52, MS #52) waits.
+ 
++## Justin, 3 October 2026
++
++- **#194 keeps all six preview items** (configurable limit, fixed tailnet links).
++
+ ## Justin, 2 October 2026
+ 
+ - **Git cleanup moved to Worktrunk and gh poi** (Justin: "yes"). `git-tidy-report` is deleted (local-config
+diff --git a/STATE.md b/STATE.md
+--- a/STATE.md
++++ b/STATE.md
+@@ -1,7 +1,7 @@
+ # State — orchestration-lab
+ 
+ Updated 2026-10-04 17:31. **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Its cap is in `AGENTS.md`.
+ Corrected 2026-10-07 from this file's own later records, with no live fact re-read. Each live fact below says when
+ it was read; the session that causes a verified event overwrites this file (`AGENTS.md`, Keeping state).
+ 
+@@ -34,8 +34,8 @@
+ `.playwright-mcp/` in ORC's checkout? Open for Justin: #196 where agent worktrees live.
+ **Decided by Justin, 25 Sep to 4 Oct:** the lab as central Scope, where issues live, the processes kept (an entropy
+ guard at session end among them), scheduling (#166) first, Astra's entropy assessment, labels, Danger, Worktrunk,
+-merging: `decisions/2026-10-04-lab-role-and-processes.md`. Justin's 3 Oct decisions: #194 keeps all six preview items
+-(configurable limit, fixed tailnet links); MS `failure-verdicts` dropped; MS #52 reads every entry-list page.
++merging, #194's preview items: `decisions/2026-10-04-lab-role-and-processes.md`. Justin's 3 Oct Moving Stillness
++decisions, to be copied to that Scope's own record: MS `failure-verdicts` dropped; MS #52 reads every entry-list page.
+ 
+ **The map of work is orchestrator#140**, shown live in the GitHub Project ORC (`github.com/users/justinphilpott/projects/4`,
+ hierarchy view). Its rules live in #140; `tools/map.mjs` says how to mark and clear work. Map follow-ups, not urgent:

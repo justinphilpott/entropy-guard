@@ -1,0 +1,17 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 532cdf4..a110aab 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -160,6 +160,12 @@ Enable it once per clone:
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++Run the session guard in the orchestration lab,
++`/home/justin-philpott/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`, at the end of every
++work session here, worktrees included, before committing or handing off.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and

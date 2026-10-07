@@ -1,0 +1,108 @@
+# PROVISIONAL patch: depends on steward question Q2 (demote the session-start procedure and the commit-time
+# guard in AGENTS.md?). Implements the recommended answer (b). Do not apply until the steward answers Q2.
+# Applies on top of settled.patch; independent of provisional-q1.patch.
+
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:46:08.790989571 +0100
++++ b/AGENTS.md	2026-10-07 22:46:08.831182738 +0100
+@@ -33,16 +33,13 @@
+ - **Postgres is the platform data store.** Event log, task state. Only platform services read/write Postgres directly. Currently: scope manager and temporal coordinator. Sandboxes never receive database access.
+ - **A running agent is a harness inside a sandbox.** Tool calls execute locally (fast). LLM calls and events go through the scope manager. The scope manager declares sandbox config to the provider — it never reaches inside a running sandbox.
+ 
+-## Session start
++## Session start (reference-only)
+ 
+-1. Check ROADMAP.md — know what version we're on and what's being worked towards
+-2. Read MODEL.md — understand the system model and component relationships
+-3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+-4. Check components.yaml — know component status
+-5. If working on a component, also read its `MODEL.md` and `DECISIONS.md` under `components/{name}/`, plus `PLAN.md` if that component has one
+-6. Run [skills/session-kickoff.md](skills/session-kickoff.md) or follow its procedure: synthesize a compact current-state packet in the conversation with current version, settled invariants, active fronts, open questions, nearby superseded concepts that could mislead the session, and the 1-3 most plausible next actions
++1. Read the banner above. Current work belongs in `../personal-agent` or `../../scope`, not here.
++2. Read the state block at the top of ROADMAP.md.
++3. Here, make only corrections that a dated entry in DECISIONS.md already settles, and cite that entry. Do not choose next work from ROADMAP.md or the component TODO files; they are historical.
+ 
+-Do not start cold from "what's next?" against the whole repo. Build the current-state packet first, then choose work from that compressed view.
++The former procedure, a current-state packet built with [skills/session-kickoff.md](skills/session-kickoff.md), is retained as history and is not run.
+ 
+ ## Before making changes
+ 
+@@ -69,7 +66,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- Before committing a correction, check that each changed line cites the DECISIONS.md entry that settles it. [skills/entropy-guard.md](skills/entropy-guard.md) is retained as history and is not run.
+ 
+ ## What belongs in this repo
+ 
+@@ -99,8 +96,8 @@
+ - [DECISIONS.md](DECISIONS.md) — system-level decision log
+ - [MANIFEST.md](MANIFEST.md) — tool and version manifest
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis
+-- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder
+-- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard
++- [skills/session-kickoff.md](skills/session-kickoff.md) — start-of-session current-state packet builder (historical; not run)
++- [skills/entropy-guard.md](skills/entropy-guard.md) — coherence guard (historical; not run)
+ - [components/scope/](components/scope/) — scope component design
+   - MODEL.md, PLAN.md, DECISIONS.md, LEARNINGS.md, TODO.md
+   - template/ — template source for new scope instances
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:46:08.791046997 +0100
++++ b/README.md	2026-10-07 22:46:08.831225018 +0100
+@@ -26,7 +26,7 @@
+ - [PI_AGENT_OVERVIEW.md](PI_AGENT_OVERVIEW.md) — Pi agent framework evaluation
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis for early agent work
+ - [runs/](runs/) — runtime experiment records and planned Pi evaluations
+-- [skills/](skills/) — blueprint project-maintenance skills including session kickoff and entropy guard
++- [skills/](skills/) — blueprint project-maintenance skills including session kickoff and entropy guard (historical; not run since this repository became reference-only)
+ - [RUNTIME.md](RUNTIME.md) — runtime architecture model (platform components, sandbox lifecycle, communication patterns, pipelines)
+ - [SCOPES_PLANNED.md](SCOPES_PLANNED.md) — planned scope inventory and open questions
+ - [components/scope/](components/scope/) — scope component design (model, plan, decisions, template source, skills)
+diff -ruN a/skills/entropy-guard.md b/skills/entropy-guard.md
+--- a/skills/entropy-guard.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/entropy-guard.md	2026-10-07 22:46:08.831360035 +0100
+@@ -1,6 +1,6 @@
+ ---
+ name: entropy-guard
+-description: Delta-scoped coherence check for the agentic-architecture blueprint repo. Run before committing non-trivial changes.
++description: Historical, not run. Delta-scoped coherence check for the agentic-architecture blueprint repo, from before it became reference-only.
+ generated: 2026-04-02
+ generated_by: entropy-assessment v0.5.2
+ last_evaluated: 2026-04-27
+@@ -9,6 +9,10 @@
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Demoted.** This repository is reference-only (README.md banner), and this guard is not run. It was last
++> evaluated on 2026-04-27 and does not cover the `architecture/` snapshots, the temporal coordinator, or the
++> reference-only status. Corrections made here cite the DECISIONS.md entry that settles them instead (AGENTS.md).
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+diff -ruN a/skills/README.md b/skills/README.md
+--- a/skills/README.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/README.md	2026-10-07 22:46:08.831260489 +0100
+@@ -4,7 +4,7 @@
+ 
+ They are not architecture primitives, live runtime skills, or generic reusable helper skills.
+ 
+-- `session-kickoff.md` builds a compact current-state packet before architecture work.
+-- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
++- `session-kickoff.md` builds a compact current-state packet before architecture work. Historical; not run since this repository became reference-only.
++- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes. Historical; not run since this repository became reference-only.
+ 
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff -ruN a/skills/session-kickoff.md b/skills/session-kickoff.md
+--- a/skills/session-kickoff.md	2026-08-01 21:12:00.000000000 +0100
++++ b/skills/session-kickoff.md	2026-10-07 22:46:08.831397821 +0100
+@@ -1,5 +1,8 @@
+ # Skill: Session Kickoff
+ 
++> **Demoted.** This repository is reference-only (README.md banner). Do not use this skill to choose work here; it
++> is retained as history. AGENTS.md "Session start" says what to read instead.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

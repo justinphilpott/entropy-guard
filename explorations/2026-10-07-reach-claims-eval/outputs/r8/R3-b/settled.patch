@@ -1,0 +1,99 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -5,13 +5,13 @@
+ > `../../scope`. Do not extend or reinterpret this blueprint as current design without explicit
+ > authorization.
+ 
+-Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the current architecture state — settled decisions, active component design, and clearly labeled provisional shapes under review.
++Blueprint for the agentic architecture. The current named version is Sol (0.x). This repo holds the architecture state as it stood when it became reference-only (see the note above) — decisions, component design, and provisional shapes that were under review. It is no longer current architecture authority.
+ 
+ Exploratory thinking and general theory live in [agentic-learning](../agentic-learning). Component design lives under `components/{name}/`. Component implementations live in their own repos.
+ 
+-## Settled — current strong positions
++## Settled positions, as recorded here
+ 
+-These are the current settled positions: a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
++These were the settled positions while this repository was current; they are not current authority (see the note above). When they were current, they were a high bar to re-open, not to be relitigated casually. But nothing here is sacred — anything can be revisited with strong enough reasoning, and when it changes we update this list in the same pass. Nothing is "never revisit".
+ 
+ - **This repo is a blueprint (map), not a running system (territory).** Design-time artifacts describe; runtime instantiations run. Never conflate them.
+ - **Named versions, not phases.** "Phase" language is retired. Versions are assigned when work is complete, not planned ahead. Do not pre-number future versions.
+--- a/architecture/INDEX.md
++++ b/architecture/INDEX.md
+@@ -14,7 +14,7 @@
+ 
+ ## Current Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++None. This repository is reference-only ([DECISIONS.md](../DECISIONS.md), "This repository is reference-only"), and [PICKUP.md](PICKUP.md) is a superseded historical pickup point (its own status line, 2026-07-26).
+ 
+ ## Snapshot Rules
+ 
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -872,6 +872,20 @@
+ 
+ ---
+ 
++### 2026-10-07 — This repository is reference-only (recorded from its status banners)
++
++Recorded, not decided again. The status banners at the top of README.md and AGENTS.md say this repository is
++reference-only: current Personal Agent architecture lives in `../personal-agent`, and the current Scope and Project
++model lives in `../../scope`. Decisions here are not current authority, and this blueprint is not to be extended or
++reinterpreted as current design without explicit authorization.
++
++The banners record neither who set this status nor when it took effect; this entry is dated by when it was recorded
++(an entropy assessment on 2026-10-07). The two successors named above do not cover every concept here: the banners do
++not say whether the temporal coordinator contract (`components/temporal-coordinator/SPEC.md`) and the `template/`
++sources moved, or to where.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+--- a/README.md
++++ b/README.md
+@@ -6,7 +6,7 @@
+ 
+ **Current named version: Sol 0.x**
+ 
+-Bleeding-edge design source for the current named version of the agentic architecture: what it is, how it's composed, where it's headed, and which provisional shapes are under active review. `Sol` is the current version codename, not the product or system namespace.
++Reference-only design source for the Sol 0.x named version of the agentic architecture (see the status note above): what it was, how it was composed, and which provisional shapes were under review when it stopped being current authority. `Sol` is the current version codename, not the product or system namespace.
+ 
+ This repo is not the installable distribution and not a live installation. Its historical Level 2
+ distribution source lives in [agentic-architecture-distribution](../agentic-architecture-distribution).
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,20 @@
+ # Roadmap — Current Named Version
+ 
++> **Status, recorded 2026-10-07 from the README.md and AGENTS.md banners** (DECISIONS.md, "This repository is
++> reference-only"): this repository is reference-only. Current Personal Agent architecture lives in
++> `../personal-agent`; the current Scope and Project model lives in `../../scope`. That list is incomplete: the
++> banners do not say whether the temporal coordinator contract and the `template/` sources moved, or to where.
++>
++> The lists below record where this blueprint stood when it stopped being current authority. They are not current
++> work here: the banners say not to extend this blueprint as current design without explicit authorization.
++>
++> - Misleading nearby, including: `architecture/PICKUP.md` (superseded 2026-07-26), the `Next Up` lists in
++>   `components/*/TODO.md`, and the `in-progress` statuses in `components.yaml`.
++> - Open, for the steward: what maintenance reference-only permits here; which repository owns the temporal
++>   coordinator contract and the `template/` sources.
++> - This note goes stale when the steward answers either question or a successor repository moves; whoever records
++>   the answer refreshes it.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+--- a/skills/session-kickoff.md
++++ b/skills/session-kickoff.md
+@@ -1,5 +1,9 @@
+ # Skill: Session Kickoff
+ 
++> This repository is reference-only (DECISIONS.md, "This repository is reference-only"). Use the packet to orient a
++> reader in the historical record. Do not use it to choose new design work here; that needs the steward's explicit
++> authorization.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

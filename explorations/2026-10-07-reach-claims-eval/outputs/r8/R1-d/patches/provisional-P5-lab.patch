@@ -1,0 +1,26 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 1853ee2..e332f9e 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -19,6 +19,7 @@ the repositories listed in `tools/collect.mjs`, and it passes when one of them c
+ | Something true of the generic Scope model | `/home/justin-philpott/pro/scope` |
+ | Something true of their relationship | `memory/` here |
+ | A resource joined or left this Scope | `scope.yaml`, then one line in `SCOPE.md` |
++| A decision of Justin's about ORC or this Scope | `decisions/` here, dated and attributed |
+ 
+ Do not duplicate repository facts here. Agent definitions and private context
+ owned by this Scope may live here when ORC can consume them through an explicit,
+diff --git a/decisions/2026-09-25-orc-north-star.md b/decisions/2026-09-25-orc-north-star.md
+new file mode 100644
+index 0000000..2e3d953
+--- /dev/null
++++ b/decisions/2026-09-25-orc-north-star.md
+@@ -0,0 +1,8 @@
++# Decision: ORC's north star
++
++Decided by Justin on 2026-09-25 and 2026-09-26. Copied on <date P5 is answered> from `STATE.md`, where it was the only
++record; copying it decides nothing again.
++
++ORC is the UX surface to Justin's own agentic system: specialised agents, reached through Iris, with ADA creating new
++ones. Justin, 2026-09-25: his **ChatGPT replacement, daily tool, agentic development test ground, and eventual work
++showpiece**. Justin, 2026-09-26: once the six slots work, **work towards a point of consolidation**.

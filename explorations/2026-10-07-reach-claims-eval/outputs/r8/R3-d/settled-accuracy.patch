@@ -1,0 +1,92 @@
+# SETTLED PATCH 2 of 2: accuracy corrections (optional; independent of patch 1).
+# Target: agentic-architecture. Apply from its root: git apply settled-accuracy.patch
+# Touches no open question. Each change brings a description into line with a dated decision that plainly covers it:
+#   DECISIONS.md line 896: deferred "Layer 2 distribution form", decided by the 2026-05-14 entry (lines 156-162). F9.
+#   RUNTIME.md lines 67 and 82: "unified" gateway wording, superseded by the 2026-07-16 snapshot decision
+#     (DECISIONS.md lines 575 and 855-857). Only the wording changes; the seam bullets are left, because which seams
+#     exist is still under review in the orchestration snapshot. F8.
+#   components/agent/DECISIONS.md line 12, components/orchestrator/DECISIONS.md line 13,
+#   components/orchestrator/PLAN.md lines 28-29: "open"/"TBD" claims resolved by the 2026-04-27 root decisions. F11.
+#   MODEL.md line 3: "the pro-agentic directory", replaced by the 2026-04-04 directory decision. The replacement says
+#     "under ~/pro/" rather than "flat in ~/pro/", because agentic-colab, one of the proto tools, sits in ~/pro/agentic/. F14.
+# Because the repository is reference-only, this patch is worth applying only if the reference is to stay accurate.
+
+diff -ruN a/components/agent/DECISIONS.md b/components/agent/DECISIONS.md
+--- a/components/agent/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/agent/DECISIONS.md	2026-10-07 22:43:30.230983016 +0100
+@@ -9,7 +9,7 @@
+ - runtime state, logs, and agent status live outside git
+ - an agent is the runtime embodiment of a role; the role itself is design-time
+ - sandbox/workspace design is separate from role definition
+-- inter-agent communication and runtime setup are still open questions
++- inter-agent communication and runtime setup are decided at the root: see root [DECISIONS.md](../../DECISIONS.md) "Communication is HTTP + JSON-RPC with A2A-compatible task lifecycle" and "A running agent is a harness inside a sandbox, communicating only through the scope manager" (both 2026-04-27)
+ 
+ ---
+ 
+diff -ruN a/components/orchestrator/DECISIONS.md b/components/orchestrator/DECISIONS.md
+--- a/components/orchestrator/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/orchestrator/DECISIONS.md	2026-10-07 22:43:30.231037956 +0100
+@@ -10,7 +10,7 @@
+ - the orchestrator sees scope manifests only, not scope interiors
+ - infrastructure operations run through the deterministic scope manager; `scopectl` handles scope-definition file ops
+ - workflows use the `workflows/{name}/WORKFLOW.md` directory convention
+-- cross-boundary communication must be explicit, minimal, and secure by default (mechanism TBD)
++- cross-boundary communication must be explicit, minimal, and secure by default (mechanism: HTTP + JSON-RPC with an A2A-compatible task lifecycle, root DECISIONS.md, 2026-04-27)
+ - first operational workflows are committed deliverables: daily-summary, flowbook-publish, site-rebuild
+ 
+ ---
+diff -ruN a/components/orchestrator/PLAN.md b/components/orchestrator/PLAN.md
+--- a/components/orchestrator/PLAN.md	2026-08-01 21:12:00.000000000 +0100
++++ b/components/orchestrator/PLAN.md	2026-10-07 22:43:37.455114393 +0100
+@@ -25,8 +25,8 @@
+ 
+ The orchestrator moves from design to running service when the platform layer is stood up. That work will:
+ 
+-- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (format TBD — see root DECISIONS.md open questions).
+-- **Connect to the cross-boundary channel** — whatever mechanism is chosen for inter-agent communication.
++- **Read the manifest registry** — on startup, load `scope.yaml` into a runtime cache (in memory, re-read on a change signal — root DECISIONS.md "Orchestrator manifest cache is in-memory from scope.yaml", 2026-04-27).
++- **Connect to the cross-boundary channel** — HTTP + JSON-RPC with an A2A-compatible task lifecycle (root DECISIONS.md, 2026-04-27).
+ - **Call the scope manager** — invoke the deterministic service for workspace assembly, secret injection, and lifecycle ops. The scope manager component design is separate (see [components.yaml](../../components.yaml) — status `planned`, no design dir yet).
+ - **Run workflows on a schedule** — outside the V0 enqueue-only temporal coordinator boundary; the V0 pg-boss job has no production consumer and makes no delivery claim.
+ - **Speak to interaction surfaces** — first Telegram, later others.
+diff -ruN a/DECISIONS.md b/DECISIONS.md
+--- a/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ b/DECISIONS.md	2026-10-07 22:43:30.230725157 +0100
+@@ -893,4 +893,4 @@
+ - **Mobile/remote interaction surface**: decide after the first interaction surface (Telegram) works.
+ - **Standard scope file `OPEN_QUESTIONS.md`**: decide after more scope-design interviews.
+ - **Scope health metric**: how does the orchestrator detect stale or incomplete scope definitions? Decide when the orchestrator is running.
+-- **Layer 2 distribution form**: build step vs separate distribution repo for usable artifacts without design weight. Decide after templates stabilize from real agent usage. Must avoid the sync/drift problem that killed per-component template repos.
++- ~~**Layer 2 distribution form**: build step vs separate distribution repo for usable artifacts without design weight. Decide after templates stabilize from real agent usage.~~ Resolved by "Level 2 distribution source lives in `agentic-architecture-distribution`" (2026-05-14): a separate repo. Its caution still applies: avoid the sync/drift problem that killed per-component template repos.
+diff -ruN a/MODEL.md b/MODEL.md
+--- a/MODEL.md	2026-08-01 21:12:00.000000000 +0100
++++ b/MODEL.md	2026-10-07 22:43:53.379160186 +0100
+@@ -1,6 +1,6 @@
+ # System Model
+ 
+-The model describes relationships between confirmed architecture components. Proto tools under exploration live in the pro-agentic directory and are tracked in [components.yaml](components.yaml) — they are not part of the model until explicitly promoted.
++The model describes relationships between confirmed architecture components. Proto tools under exploration live under `~/pro/` (see DECISIONS.md "Local directory structure", 2026-04-04) and are tracked in [components.yaml](components.yaml) — they are not part of the model until explicitly promoted.
+ 
+ ## Relationships
+ 
+diff -ruN a/RUNTIME.md b/RUNTIME.md
+--- a/RUNTIME.md	2026-08-01 21:12:00.000000000 +0100
++++ b/RUNTIME.md	2026-10-07 22:43:30.230911738 +0100
+@@ -64,7 +64,7 @@
+ - Issues scope-scoped auth tokens at provisioning time
+ - Manages workspace lifecycle transparently (the orchestrator submits tasks; the scope manager decides whether to provision, resume, or restart)
+ 
+-**Runtime gateway (unified for v0):**
++**Runtime seams** (the unified v0 gateway of 2026-04-27 was superseded on 2026-07-16; which seams exist and where they sit is under review in the orchestration snapshot via [architecture/INDEX.md](architecture/INDEX.md)):
+ - LLM proxying: receives keyless requests, adds the correct API key, forwards, logs usage per scope
+ - Task management: receives task submissions and status updates, writes to Postgres, enforces scope isolation
+ - Event logging: receives events from sandboxes, writes to Postgres with scope_id
+@@ -79,7 +79,7 @@
+ | Thing | What it is | What it touches | Typical caller |
+ |---|---|---|---|
+ | `scopectl` | Deterministic operator CLI | Scope definition files and templates | Human or local automation |
+-| `scope-manager` | Deterministic platform service and unified sandbox gateway | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
++| `scope-manager` | Deterministic platform service and single sandbox security perimeter | Lifecycle, secrets, manifest, LLM proxy, task mgmt, event log | Orchestrator (lifecycle) and sandboxes (runtime gateway) |
+ 
+ Rule of thumb: if the operation is "edit or validate a scope repo on disk," that is `scopectl`. If the operation crosses a trust boundary or touches runtime infrastructure, that is `scope-manager`.
+ 
