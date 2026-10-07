@@ -4,14 +4,15 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-Size cut (approved by Justin 2026-10-07, "lets go") is done and tested on branch `cut-skills-to-derived-size`; its
-pull request is open for Justin to merge. Test: `explorations/2026-10-07-size-cut-eval.md` (round 6 passes).
+Size cut: done and tested; PR #14 open for Justin to merge.
+
+Reach claims (approved by Justin 2026-10-07, "Agreed, proceed"), on branch `reach-claims-show-search`, stacked on
+PR #14: a claim about everything a system reaches is checked against the code with a recorded search. Test:
+`explorations/2026-10-07-reach-claims-eval.md`, key written before runs (R1 ×3, R2 and R3 once each); then a PR.
 
 ## Next Up
 
-- [ ] Stop assessments misstating what a system reaches: 6 of 11 cut runs on ORC rewrote ORC's network reach wrongly, most often by leaving out the Chromium ORC launches itself, despite the fix at `29e629d`. Do before the ORC assessment
 - [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
-- [ ] Fix K3's wording in the eval key so it no longer conflicts with K21 on "workflow execution"
 - [ ] Assess ORC and the lab Scope together with the revised skills, read-only; bring the results and any proposed changes to Justin before anything in ORC changes
 - [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction

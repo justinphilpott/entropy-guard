@@ -106,7 +106,8 @@ Does this change fit the authorised intent in <files>? If not:
 - One owner per concept: when two places define one concept independently, reduce one to a link. Keep summaries,
   generated projections, versioned copies and independent tests, and keep them correct.
 - Limit every correction by its evidence. Change only what the evidence settles, and leave open parts visibly open.
-  For an exhaustive list or an "only" claim, check the full scope, including delegated behaviour. Never change a
+  For a claim about everything of a kind, such as what the system reaches or launches, search the code rather than
+  trusting a document and a test that agree, and record the search. Never change a
   prescribed boundary because of observed behaviour, and never treat a test or the code as the record: where a
   description, the code and a check disagree, establish which is wrong first.
 
@@ -122,7 +123,7 @@ Does this change fit the authorised intent in <files>? If not:
 A guard runs every session, so its size is derived, not picked. Its terms are counted once each:
 
 - **The common contract:** the template above with the intent-change rule copied in, before any repo-specific content.
-  Measured on 2026-10-07 at 706 words (`wc -w` on the template with the rule copied in, placeholders included).
+  Measured on 2026-10-07 at 724 words (`wc -w` on the template with the rule copied in, placeholders included).
 - **Checks:** each justified repo-specific check beyond the template's two standing ones, at a planning average of 36
   words. That average was taken from a small sample in Astra's size review
   (`explorations/2026-10-05-skills-size-review-astra.md`); it is not a limit.

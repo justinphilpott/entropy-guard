@@ -21,9 +21,8 @@ Skip this for a single repository.
 Check each of these with evidence:
 
 - **Docs against implementation:** settings, commands, paths and identifiers named in prose that the code no longer
-  reads or provides. Search the code for each one. Any correction follows "Every correction is limited by its
-  evidence" in `SKILL.md`: for a list of what the system reaches, launches or stores, search for every member of that
-  kind, including what it delegates.
+  reads or provides. Search the code for each one. Corrections follow "Every correction is limited by its evidence"
+  in `SKILL.md`, and claims about everything the system reaches, launches or stores follow the rule after it.
 - **Docs against docs:** state and handoff files that contradict themselves or each other.
 - **Tests against implementation:** tests that exist but never run, or that test a different representation from the
   one used in practice.
@@ -54,7 +53,7 @@ Recommend maintained tools rather than hand-run checks:
 
 - a link checker such as lychee;
 - an instruction-file linter such as ctxlint or agnix;
-- ast-grep, for identifiers named in prose;
+- ast-grep or Semgrep, for identifiers named in prose and for calls that connect or launch;
 - the project's own tests, type checks, linters and API reports.
 
 Check that a tool is installed before a guard depends on it.
