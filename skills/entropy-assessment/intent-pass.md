@@ -25,6 +25,10 @@ Record decisions and directives even when their author or date is unknown, and k
 attribution does not make a statement an inference, or mean there is no usable intent. If nothing says who the
 steward is, that is a finding.
 
+Read every existing guard's repair instructions against [`intent-change-rule.md`](intent-change-rule.md). An
+instruction to edit intent documents to match the work, or to keep two copies of one thing in step ("update both"),
+is a path for unauthorised drift: record it as a finding, quoting the line.
+
 ## 2. Compare three readings
 
 - **Declared:** what the documents say the system is for.

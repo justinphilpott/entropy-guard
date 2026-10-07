@@ -60,7 +60,8 @@ stop here.
 - Intent, from the intent pass.
 - Lifecycle status, shape and repositories, each with evidence.
 - Findings, each with an id, evidence and source.
-- Guard surfaces, sorted by whether they execute (`mixed-profile.md`).
+- Guard surfaces: for routes B to D, sorted by whether they execute, as in `mixed-profile.md`; a docs-first
+  assessment classifies them in its own Step 7.
 - The next step, and the questions for the steward, each with a recommended answer, or "none".
 - Uncertainties.
 
@@ -70,6 +71,8 @@ integration brief:
 - **Keep one findings list.** Other sections refer to findings by id rather than repeating their evidence.
 - **Make a separate file only when it has its own reader,** such as a guard or a state file, or when it is a patch that
   can be applied.
+- **Every proposed patch names the open questions it touches,** and leaves the text each one is about unchanged. A
+  patch that settles an open question, even as a side effect of a correction, is a decision, not a correction.
 - **Never cut these for length:** where a claim came from, what was not covered, and the difference between a proposal
   and a decision.
 

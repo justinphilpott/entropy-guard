@@ -30,7 +30,8 @@ Use the mode asked for; when the runtime mode and the wording differ, the strict
 The guard needs each of these. Take them from the assessment; fill any gap with an assessment-only run, never by
 guessing.
 
-- the steward, the intent documents and the decision surface (`intent-pass.md`), and any open intent questions;
+- the steward, every document that holds authorised intent (a north star, a scope definition, a README's direction:
+  not only the README), the decision surface, and any open intent questions (`intent-pass.md`);
 - the current-state file, and who refreshes it;
 - rules the repo is bound by but does not own, such as a user-wide instructions file, a security or spending policy,
   or merge rules;
