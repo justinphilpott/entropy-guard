@@ -2,7 +2,7 @@
 title: "Adversarial review of the size cut: GPT 6.1 Astra"
 date: 2026-10-07
 type: review
-status: received; findings not yet verified by Claude
+status: all 10 findings verified by Claude against the files on 2026-10-07, and all hold; fixes follow
 ---
 
 # Adversarial review of the size cut: GPT 6.1 Astra, 7 October 2026

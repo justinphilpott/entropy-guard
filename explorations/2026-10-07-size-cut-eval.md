@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: first round failed on two intent items; fixes re-tested (see Round 2)
+status: not yet passed; the final candidate is still to be tested (see Verdict so far)
 ---
 
 # Test of the size cut against the skills it replaced
@@ -145,7 +145,7 @@ Scoring for this round is in `scores/round3.md`.
 | R1-cut3b | 10.5 of 11 | met | 4 (1) | 2 |
 
 - **K21 is met in both runs.** Both keep "workflow execution" and both caps.
-- **On the key, the cut now meets every intent item the baseline met, on repeated runs:**
+- **On the key, the cut meets every intent item the baseline met, on repeated runs:**
   - K14 2 of 2, and K15 2 of 2 (round 2);
   - K21 2 of 2 (round 3);
   - K8, K22 and K25 in round 1.
@@ -161,3 +161,18 @@ kind. Round 4 re-tests R1 twice on it.
 ### Round 4
 
 *Pending.*
+
+### Verdict so far (corrected on 2026-10-07 after Astra's review)
+
+The "passes under the rule" claim made to Justin earlier on 7 October was too strong, and is withdrawn. The rule fixed
+before the runs requires the cut to score at least as well on **every** key item the baseline met, not only on the
+intent items. Four things remain:
+- **R4a K18:** a half-point loss in round 1, not re-tested.
+- **R2 K11:** missed in one round-2 run.
+- **No full test of the final candidate:** no revision since `aee2208` has been run on the complete key.
+- **Repeated cases are regression repair, not general evidence.** They show the targeted behaviours recovered on these
+  runs; they do not show the behaviours are reliable in general.
+
+The correct statement now, in Astra's words: the cut substantially reduced reported instruction loading; targeted
+intent regressions recovered in the reported re-runs; final acceptance waits on testing the final candidate against
+the complete key. That test follows the fixes from Astra's review (`2026-10-07-size-cut-review-astra.md`).
