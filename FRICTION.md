@@ -24,6 +24,20 @@ section per day.
   the 150-200 word reply cap that refused Astra's reports three times will likely apply to `astra-review`'s codex runs
   too. Not yet tested. The skill does not mention it. A **missing system** in that skill, which is Justin's to change.
 
+- **The test's pass rule failed a round on a miss the change could not explain.** Round 7 of the reach-claims test
+  (`explorations/2026-10-07-reach-claims-eval.md`) requires every run to meet every item the old skills met. One R2
+  run missed half of K13 (a dead `distill-article` reference), which the new rule about reach claims does not touch.
+  The old skills were run once per case, so nothing measures how often they meet each item, and an unrelated miss
+  cannot be told from a regression. **Cost:** a failed round, and four extra runs overnight to measure the variation.
+  A **missing system**: the evaluation compares against one baseline run per case.
+- **Scorers read one key item two ways.** In round 1 the baseline met K3 without examining "workflow execution"; in
+  round 6 a run was marked down for the same thing. K3's wording predates K21, which requires "workflow execution" to
+  stay open. **Cost:** one score re-applied by hand, with the reasoning in the size-cut eval doc. An **instance**:
+  K3's wording, now clarified in the reach-claims key.
+- **A scorer was started before the run it scored had finished writing** (round 5, R1-final-a). It reported scoring
+  the final files, and its quotes match them. **Cost:** a check. An **instance** of Claude's sequencing; scorers now
+  start only after every run's last file is written.
+
 ## 2026-10-05 — Astra's word cap and stalls, a self-killing command, dating approvals
 
 - **Astra refused to write a full report three times tonight. The cause is opencode, not the briefs.** opencode

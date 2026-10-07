@@ -69,4 +69,25 @@ Added:
 
 ## Results
 
+### R2 and R3 (`scores/round7-R2-R3.md`)
+
+| Run | Total | Gate items missed | Questions (failing) | Wrong findings | Consequential extras |
+|---|---|---|---|---|---|
+| R2-r7 | 6.5 of 8 | **K13** (0.5) | 4 (1) | 0 | 1 |
+| R3-r7 | 5 of 5 | none | 2 (0) | 0 | 0 |
+
+**R2-r7 misses a gate: K13 is partly met.** It reports `doc-health-check` as a missing skill but never mentions
+`distill-article`, the other dead reference. K13 was met in all four earlier runs of the cut skills (rounds 5 and 6).
+The change under test adds a rule about reach claims to the front door, which this run read; the rule says nothing
+about stale references, so the miss is more likely run-to-run variation than an effect of the change, but one run
+cannot show which. The rule fixed before the runs does not allow for that: under it, **this round
+fails on K13**, whatever R1 shows.
+
+**What was added after this result, and why.** The baseline was run once per case, so nothing measures how often it
+meets each item. Without that, an unrelated miss cannot be told from a regression. Two more R2 runs of the candidate
+and two of the baseline (`daee846`) were started on 7 October at about 22:10, scored blind on K10 to K15. They
+measure variation; they do not change this round's verdict under its rule.
+
+### R1
+
 *Pending.*
