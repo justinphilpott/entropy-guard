@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: round 7 fails; variance runs being scored
+status: round 7 fails; variance measured
 ---
 
 # Test of the rule that a claim about everything a system reaches shows its search
@@ -117,6 +117,28 @@ reviews its patches for open questions only, and the assessment has no review st
 - **K34 is met in two of three runs.**
 - **Over-sorting is in all three runs,** mostly listing Chromium or the restart service held behind a question that the
   code already settles.
+
+### The variance runs (`scores/round7-R2-variance.md`, blind; mapping in `scores/r7-variance-mapping.json`)
+
+| Version | Run | K10 | K11 | K12 | K13 | K14 | K15 |
+|---|---|---|---|---|---|---|---|
+| candidate | R2-r7 | 0 | 1 | 1 | **0.5** | 1 | 1 |
+| candidate | R2-v1 | 1 | 1 | 1 | **0.5** | 1 | 1 |
+| candidate | R2-v2 | 0.5 | **0** | 1 | **0.5** | 1 | 1 |
+| baseline | R2-v3 | 0.5 | 1 | 1 | 1 | 1 | **0** |
+| baseline | R2-v4 | 0.5 | 1 | 1 | 1 | 1 | **0** |
+
+**Revised, with this evidence:** the K13 miss is probably not chance, as the R2 section above suggested. The candidate
+missed half of K13 in all three of its round-7 runs; the round-6 skills, without the reach rule, met it in all four
+runs of rounds 5 and 6, and the old skills met it in both runs here. A likely cause is visible: R2-v2 ran a full
+pattern search for what a markdown-only repository "reaches or launches". The rule sits in the front door, so every
+route loads it, including docs-first routes where such claims rarely exist. Moving it to `mixed-profile.md`, which only
+mixed, code-first and workflow-heavy routes read, follows the size cut's own principle of loading branch material
+only on its branch.
+
+**The baseline fails its own gate.** The old skills missed K15 ("update both") in both new runs, though their single
+round-1 run met it. So the pass rule, which holds every candidate run to items the baseline met once, is stricter than
+the baseline itself can pass. A fair rule compares rates across several runs of each version.
 
 ### Verdict under the rule fixed before the runs
 

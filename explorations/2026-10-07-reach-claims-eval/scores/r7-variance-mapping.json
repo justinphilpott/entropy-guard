@@ -1,0 +1,18 @@
+{
+ "Q": {
+  "run": "R2-v1",
+  "version": "candidate"
+ },
+ "P": {
+  "run": "R2-v2",
+  "version": "candidate"
+ },
+ "R": {
+  "run": "R2-v3",
+  "version": "baseline"
+ },
+ "S": {
+  "run": "R2-v4",
+  "version": "baseline"
+ }
+}
