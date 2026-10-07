@@ -12,7 +12,7 @@ on branch `cut-skills-to-derived-size`. Baseline for comparison: the skills at `
 - [x] Step 3: the integrator to about 850 words, with one worked example
 - [x] Step 4: the front door to about 550 words, with the mixed profile in its own file; docs-first to about 950
 - [x] Step 5: the intent pass to about 800 words
-- [ ] Step 6: test against the frozen baseline on the existing cases and the seven next checks; Astra review of the PR
+- [ ] Step 6: answer key committed (`explorations/2026-10-07-size-cut-eval.md`); runs, blind scoring and an Astra review of the PR to follow
 - [x] Small items: stall cause corrected in `FRICTION.md`; codex loads the same global rules, so the reply cap likely applies there too (not yet tested; `astra-review` is Justin's to change)
 
 Then: assess ORC and the lab read-only with the cut skills.
