@@ -143,3 +143,35 @@ the baseline itself can pass. A fair rule compares rates across several runs of 
 ### Verdict under the rule fixed before the runs
 
 **Round 7 fails:** K35 in two of three R1 runs, K21 in one, and K13 in the R2 run. The change is not ready to merge.
+
+## Round 8: the revised change, against PR #14's skills (key written before any run)
+
+Approved by Justin on 7 October at 22:29 ("agreed"), after round 7.
+
+**What changed since round 7:**
+- **The reach rule moved to `mixed-profile.md`,** which only mixed, code-first and workflow-heavy routes read. The front
+  door keeps its earlier, shorter line on exhaustive claims, as in PR #14.
+- **A new rule in the front door: check every patch against the findings and the questions before delivering it.** A
+  settled hunk may not state what a finding contradicts or edit text a question quotes, and a hunk restating a list a
+  finding calls incomplete adds what is missing or marks it incomplete. The generator's review step points at it.
+
+**Versions:** the candidate is this branch's next commit. The reference is PR #14's skills, the version this change
+modifies (`b73b10d`, whose skills are identical to `e7f0b6e`'s).
+
+**Runs:** three of each version on each of R1, R2 and R3: 18 runs. Each case's six runs are scored by one scorer,
+blind, labelled in random order.
+
+**Added key item:**
+- **K36 (R1, R2). Patches agree with the run's own findings.** No settled hunk states what one of the run's findings
+  contradicts, edits text one of its open questions quotes, or restates a list a finding calls incomplete without
+  adding what is missing or marking it incomplete.
+
+**The pass rule, fixed now:** each item is compared as a sum over three runs, scored as before (1, 0.5, 0).
+- **No regression:** for every gate item (R1: K1, K3, K4, K5, K6, K8, K21, K23; R2: K11 to K15; R3: K16 and K24), the
+  candidate's sum is at least the reference's sum minus 0.5. Half a point is one partly met run, the smallest step
+  the scoring has. Tonight two runs of the same old skills differed from their earlier run by a whole point on K15,
+  so three runs cannot separate smaller differences from chance; a drop of a whole run or more fails.
+- **Improvement on the item under test:** for K35 the candidate's sum is at least the reference's plus 1, a whole run
+  better. For K36 the candidate's sum is at least the reference's.
+- **Reported, not gates:** every other item, questions, wrong findings, consequential extras, over-sorting, and the
+  words each run read.

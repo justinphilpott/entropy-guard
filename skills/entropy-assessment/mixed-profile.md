@@ -22,7 +22,15 @@ Check each of these with evidence:
 
 - **Docs against implementation:** settings, commands, paths and identifiers named in prose that the code no longer
   reads or provides. Search the code for each one. Corrections follow "Every correction is limited by its evidence"
-  in `SKILL.md`, and claims about everything the system reaches, launches or stores follow the rule after it.
+  in `SKILL.md`.
+- **What the system reaches, launches or stores:** check any list or "only" claim of what the system reaches over the
+  network, launches, stores, or reads credentials from against the code, whether the run keeps it, rewrites it or
+  reports it consistent.
+  - A document and a test that agree with each other are not evidence of completeness.
+  - Search the code with a pattern search (ripgrep, ast-grep or Semgrep), including calls that connect or launch on
+    the system's behalf, such as a library that starts a browser.
+  - Beside the finding, record the patterns, the paths searched, and each hit with the process that runs it.
+  - Mark a claim without that record as incomplete.
 - **Docs against docs:** state and handoff files that contradict themselves or each other.
 - **Tests against implementation:** tests that exist but never run, or that test a different representation from the
   one used in practice.

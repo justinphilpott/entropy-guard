@@ -93,20 +93,18 @@ These apply to the docs-first assessment, the generator, the guards it writes, a
 - **Every correction is limited by its evidence:**
   - Before replacing a claim, identify its scope and the evidence for it.
   - Change only what that evidence settles; keep unresolved parts visibly open.
+  - For an exhaustive list or an "only" claim, such as what the system reaches, launches or stores, check the full
+    stated scope, including delegated behaviour. Otherwise, mark the replacement as incomplete.
   - Observed behaviour never authorises changing a prescribed boundary.
   - Sort proposed changes by whether they touch an open question. A change touches one if it edits the question's
     text, or states as fact what the question asks, such as describing a reach whose authorisation is open. Put those
     in a separate patch marked provisional, naming each question, not to be applied until the steward answers. The
     settled patch holds only changes that touch none. A change that settles an open question is a decision, not a
     correction.
-- **Check a claim about everything of a kind against the code, and show the search.** This covers any list or "only"
-  claim of what the system reaches over the network, launches, stores, or reads credentials from, whether the run
-  keeps it, rewrites it or reports it consistent:
-  - A document and a test that agree with each other are not evidence of completeness.
-  - Search the code with a pattern search (ripgrep, ast-grep or Semgrep), including calls that connect or launch on
-    the system's behalf, such as a library that starts a browser.
-  - Beside the finding, record the patterns, the paths searched, and each hit with the process that runs it.
-  - Mark a claim without that record as incomplete.
+- **Check every patch against the findings and the questions before delivering it.** Read each hunk against the
+  findings list and the open questions. A settled hunk may not state what a finding contradicts, or edit text a
+  question quotes. Where a finding says a list is incomplete, every hunk that restates that list adds what is missing
+  or marks the list incomplete.
 - **Never cut these for length:** where a claim came from, what was not covered, and the difference between a proposal
   and a decision.
 
