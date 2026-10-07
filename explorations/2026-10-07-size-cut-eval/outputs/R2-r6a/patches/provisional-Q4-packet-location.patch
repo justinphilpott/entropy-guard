@@ -1,0 +1,43 @@
+PROVISIONAL PATCH - waits on question Q4 "Packet location" (questions.md).
+Do not apply until Justin Philpott has answered Q4 and the answer is recorded in DECISIONS.md, replacing
+proposal 4 of "Open proposals awaiting the steward". Written for the recommended answer.
+Apply after settled.patch, from the repository root: patch -p1 < <this file>
+
+diff -ruN -x TODO.md b/README.md Q4/README.md
+--- b/README.md	2026-05-11 21:50:31.000000000 +0100
++++ Q4/README.md	2026-10-07 20:05:05.178490186 +0100
+@@ -37,7 +37,7 @@
+ then assess [your project path] for entropy risks.
+ ```
+ 
+-The front door classifies the repo and sends docs-first planning repos to the specialized workflow. That workflow produces a standalone entropy report, a canonical truth map, a compact current-state packet for fresh sessions, and guard recommendations.
++The front door classifies the repo and sends docs-first planning repos to the specialized workflow. That workflow produces a standalone entropy report, a canonical truth map, a compact current-state packet for fresh sessions (written into the repo's existing state file), and guard recommendations.
+ 
+ **If you already know the repo is docs-first planning**: go straight to the specialized skill.
+ 
+diff -ruN -x TODO.md b/skills/docs-first-planning-assessment/SKILL.md Q4/skills/docs-first-planning-assessment/SKILL.md
+--- b/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 20:05:05.170679252 +0100
++++ Q4/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 20:05:05.178428543 +0100
+@@ -113,7 +113,7 @@
+ - **Recommendations**: what to consolidate, demote, mark as historical, or guard
+ - **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense, each verified against the current file before it is written
+ 
+-Also produce a **current-state packet** for the next fresh session. Keep it short and operational.
++Also produce a **current-state packet** for the next fresh session, written into the repo's existing state file (such as `TODO.md`, or whichever file a fresh session reads first); create a file only when there is none. Keep it short and operational.
+ 
+ The packet should include:
+ 
+@@ -183,7 +183,7 @@
+ 
+ If AI agents participate, make the lifecycle explicit:
+ 
+-- session start: read the current-state packet first
++- session start: read the current-state packet in the state file first
+ - during work: update the canonical home, not every nearby mention
+ - session end / before commit: run the delta guard
+ 
+diff -U0 b/TODO.md Q4/TODO.md
+--- b/TODO.md
++++ Q4/TODO.md
+@@ -33 +32,0 @@
+-  - *Packet location:* where does the docs-first current-state packet live in an assessed repo?

@@ -1,0 +1,15 @@
+PROVISIONAL, question 3 (questions.md): where decisions about ORC's direction are recorded. Do not apply until
+Justin answers. Written for the recommended answer (a). Apply after settled-orchestrator.diff.
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -9,7 +9,8 @@
+ All work on ORC and its Scopes is one tree of GitHub issues, rooted at
+ [orchestrator#140](https://github.com/justinphilpott/orchestrator/issues/140). It is the reference point for every
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+-every new issue is placed on the map, as a sub-issue of the branch it serves.
++every new issue is placed on the map, as a sub-issue of the branch it serves. Decisions about ORC's direction are
++recorded in the orchestration lab's `decisions/` (`~/scopes/scope-orchestration-lab`).
+ 
+ ## Boundaries
+ 

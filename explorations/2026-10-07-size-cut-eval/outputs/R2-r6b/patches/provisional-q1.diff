@@ -1,0 +1,127 @@
+PROVISIONAL patch: not to be applied until Justin Philpott answers Q1, which skill writes and amends guards (finding F5).
+It drafts the recommended answer in questions.md. Apply after settled.diff, from the repository root:
+patch -p1 < provisional-q1.diff
+
+diff '--color=never' -ruN settled/AGENTS.md q1/AGENTS.md
+--- settled/AGENTS.md	2026-10-07 20:03:00.862049728 +0100
++++ q1/AGENTS.md	2026-10-07 20:03:00.885588083 +0100
+@@ -45,7 +45,7 @@
+ - [skills/entropy-assessment/](skills/entropy-assessment/) — front door that classifies the system shape and routes to the right deeper assessment workflow
+ - [skills/docs-first-planning-assessment/](skills/docs-first-planning-assessment/) — specialized deep path for markdown-first planning/design repos; produces a canonical truth map, current-state packet, and delta guard guidance
+ - [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
+-- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — generates repo-specific session handoff guards or bootstraps minimal handoff memory for young repos
++- [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — the one skill that writes or amends guards, from an assessment's findings; also bootstraps minimal handoff memory for young repos
+ - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
+ - [explorations/](explorations/) — historical: the March 2026 conversations that seeded `entropy-immune-system`; not live guidance
+ 
+diff '--color=never' -ruN settled/INTENT.md q1/INTENT.md
+--- settled/INTENT.md	2026-10-07 20:03:00.839336734 +0100
++++ q1/INTENT.md	2026-10-07 20:03:00.885320943 +0100
+@@ -85,13 +85,13 @@
+ 
+ A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
+ 
+-1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, that role is carried by the assessment workflow rooted at `skills/entropy-assessment/` and, for the strongest validated case, `skills/docs-first-planning-assessment/`.
++1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, the assessment workflow rooted at `skills/entropy-assessment/` (and, for the strongest validated case, `skills/docs-first-planning-assessment/`) analyses the system, and `skills/session-coherence-skill-generator/` writes or amends the guards from that analysis.
+ 
+ 2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
+ 
+ 3. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
+ 
+-4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
++4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the generation metadata (generated date and source) that each guard carries.
+ 
+ These four tools have different cadences: the generator and integrator run when guards are introduced or redesigned, the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
+ 
+diff '--color=never' -ruN settled/README.md q1/README.md
+--- settled/README.md	2026-10-07 20:03:00.861836320 +0100
++++ q1/README.md	2026-10-07 20:03:00.885529278 +0100
+@@ -49,7 +49,7 @@
+ 
+ It also closes the loop on the skill itself: if the assessment misfires or creates avoidable friction, the final step is to capture a short upstream feedback note so the heuristic can improve.
+ 
+-**To generate guards**: if you want to go further, the specialized assessment continues into guard generation or refinement — producing a delta guard skill file you place in the target project's skills directory, or targeted amendment guidance for the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
++**To generate guards**: if you want to go further, the specialized assessment hands its checks to the [session-coherence skill generator](skills/session-coherence-skill-generator/), which writes a delta guard skill file you place in the target project's skills directory, or amends the guard you already have, along with first-pass advice on how to integrate it into the workflow you already use.
+ 
+ ```
+ Read skills/docs-first-planning-assessment/SKILL.md from the entropy-guard repo,
+@@ -86,9 +86,9 @@
+ | Skill | Purpose |
+ |-------|---------|
+ | [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
+-| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
++| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and designs the docs/workflow checks the guard generator builds in |
+ | [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
+-| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | Generates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
++| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | The one skill that writes or amends guards, from an assessment's findings; or bootstraps minimal context-preservation files for young repos before a full guard is justified |
+ 
+ ### Skills (local to this project)
+ 
+diff '--color=never' -ruN settled/skills/docs-first-planning-assessment/SKILL.md q1/skills/docs-first-planning-assessment/SKILL.md
+--- settled/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 20:03:00.839507919 +0100
++++ q1/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 20:03:00.885855439 +0100
+@@ -1,6 +1,6 @@
+ ---
+ name: docs-first-planning-assessment
+-description: Assess markdown-first planning and design repos for entropy risks, map canonical truth ownership, produce a compact current-state packet for fresh sessions, and generate or refine docs/workflow delta guards.
++description: Assess markdown-first planning and design repos for entropy risks, map canonical truth ownership, produce a compact current-state packet for fresh sessions, and design the docs/workflow checks that session-coherence-skill-generator builds into the delta guard.
+ metadata:
+   version: "0.1.0"
+ ---
+@@ -14,7 +14,7 @@
+ 1. assess the entropy profile
+ 2. map canonical truth ownership
+ 3. produce a compact current-state packet for the next fresh session
+-4. generate or refine a session-end delta guard
++4. design the session-end delta guard's checks, which `session-coherence-skill-generator` writes or amends
+ 5. integrate the guard into the actual handoff loop
+ 
+ ## When to Run
+@@ -129,9 +129,10 @@
+ 
+ ---
+ 
+-## Phase 2: Guard Generation / Refinement
++## Phase 2: Guard Design
+ 
+-Use this phase when the repo needs a new guard or the existing guard needs amendment.
++Use this phase when the repo needs a new guard or the existing guard needs amendment. It designs the checks;
++`skills/session-coherence-skill-generator/SKILL.md` writes or amends the guard from them.
+ 
+ ### Step 6: Inventory existing guard surfaces
+ 
+@@ -193,7 +194,7 @@
+ 
+ Deliver:
+ 
+-- the refined or generated guard
++- the guard design (checks, and the depth of each), handed to `session-coherence-skill-generator`
+ - the current-state packet
+ - the canonical truth map
+ - immediate integration advice
+diff '--color=never' -ruN settled/skills/entropy-assessment/SKILL.md q1/skills/entropy-assessment/SKILL.md
+--- settled/skills/entropy-assessment/SKILL.md	2026-10-07 20:03:00.839528342 +0100
++++ q1/skills/entropy-assessment/SKILL.md	2026-10-07 20:03:00.885640194 +0100
+@@ -119,7 +119,7 @@
+ 
+ - run `docs-first-planning-assessment`
+ - refine an existing guard
+-- add a lightweight general post-work guard
++- hand to `skills/session-coherence-skill-generator/SKILL.md` for a lightweight general post-work guard
+ - hand the result to `guards-integrator`
+ - stop at assessment only because the system does not yet need a guard change
+ 
+diff '--color=never' -ruN settled/skills/session-coherence-skill-generator/SKILL.md q1/skills/session-coherence-skill-generator/SKILL.md
+--- settled/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 20:03:00.862431785 +0100
++++ q1/skills/session-coherence-skill-generator/SKILL.md	2026-10-07 20:03:00.885914022 +0100
+@@ -17,7 +17,9 @@
+ 
+ Use this skill when you want to create or refresh a repo-specific guard that can
+ be run during or near the end of a coding session to leave the codebase coherent,
+-self-explanatory, and easy to pick up next time.
++self-explanatory, and easy to pick up next time. It is the one skill in
++entropy-guard that writes or amends guards; the assessment skills supply its
++inputs.
+ 
+ This is a meta skill: it does not assume any particular repository's file
+ layout. It first discovers the repository's own context-preservation

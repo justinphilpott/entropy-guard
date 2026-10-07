@@ -1,0 +1,31 @@
+PROVISIONAL, question 4 (questions.md): the credential boundary and the browser's Chromium. Do not apply until
+Justin answers. Written for the recommended answer (a); replace each <Justin's decision, date and record> placeholder,
+and apply together with a fix giving src/adapters/orc-service.ts's commands a minimal environment.
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -93,7 +93,10 @@
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+ code-fixed read-only `git log` without a shell, `src/adapters/orc-service.ts`, which runs
+ the restart card's git reads, frozen-lockfile `pnpm install`, build and
+-`systemctl --user restart orc.service` (orchestrator#101; "Security review" below), and
++`systemctl --user restart orc.service` (orchestrator#101; "Security review" below),
++`src/adapters/browser/playwright.ts`, which through Playwright's library launches one
++headless Chromium per browser session, holding that session's Scope login and confined
++to the hosts its approval card allows (<Justin's decision, date and record>), and
+ `src/adapters/mcp/client.ts`, which delegates process transport to the official MCP SDK
+ for a separately declared server. `test/architecture.test.ts` enforces this list for
+ `src/` by searching for subprocess primitives, so it does not see a process that a
+--- a/README.md
++++ b/README.md
+@@ -109,7 +109,9 @@
+ A credential a Scope's package uses is kept by that Scope, in
+ `~/.config/scopes/<scope>/credentials/`, and read by `src/adapters/scope-credentials.ts` when the
+ package activates (the operator, 2026-09-28: logins "should DEFINITELY NOT be centralised"). No
+-subprocess ORC launches receives one.
++subprocess ORC launches receives one, with one exception (<Justin's decision, date and record>): the
++Chromium a browser session launches holds that session's Scope login (`storage-state`), confined to
++the hosts its approval card allows.
+ 
+ ### As a service, restarted from a card
+ 

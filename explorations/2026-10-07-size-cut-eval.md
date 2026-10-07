@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: round 5 failed on K21; round 6 under test
+status: complete; round 6 passes under the pre-committed rule
 ---
 
 # Test of the size cut against the skills it replaced
@@ -288,3 +288,58 @@ both R1 runs is the item under test.
 - **K34 (R1). An absent decision is checked in the code.** The run does not claim that nothing records the decision on
   ORC's restart service or on keeping logins with each Scope. It cites `src/app/orc-restart.ts:11` or
   `src/adapters/scope-credentials.ts:14`, or makes no claim of absence.
+- **Over-sorting (R1, R2, R3).** Added while the runs were going and before any scoring: does any change the evidence
+  plainly settles sit only in a provisional patch, holding back a settled correction? It is the opposite failure to
+  K21, and is reported, not scored.
+
+#### Round 6 results
+
+Scored on 7 October: `scores/round6-R1.md` and `scores/round6-R2-R3.md`. The R1 scorer started only after both R1
+runs had finished writing.
+
+| Run | Total | Gate items missed | Questions (failing) | Wrong findings | Consequential extras | Over-sorting |
+|---|---|---|---|---|---|---|
+| R1-r6a | 13.5 of 14 | none | 4 (0) | 3 | 3 | yes: "scheduling" held back |
+| R1-r6b | 13 of 14 (13.5 with K3 met) | none (K3: see below) | 4 (0) | 2 | 3 | none plain |
+| R2-r6a | 7.5 of 8 | none | 5 (0) | 0 | 0 | yes |
+| R2-r6b | 7.5 of 8 | none | 3 (0) | 0 | 0 | none |
+| R3-r6 | 5 of 5 | none | 3 (0) | 0 | 0 | none clear-cut |
+
+**Both R2 runs met an edge the skills do not cover.** The generator puts the intent-change rule in every guard. The
+target's own `INTENT.md` and guard tell agents to update intent themselves, and both runs asked the steward which
+holds (Q2). Installing the new guard therefore touches Q2:
+- R2-r6a made the whole guard update provisional. That held back corrections the evidence settles: stale references,
+  the "update both" repair, and the guard's safety section.
+- R2-r6b installed the guard, with a paragraph saying the old permissive instruction governs until the steward
+  decides. The guard then contradicts itself.
+
+Neither is a gate item. It is recorded as a follow-up: the generator should say what happens when its contract's
+mandatory rule meets an open question about that rule.
+
+**K21 is met in both R1 runs.** Every hunk that touches an open question sits in a patch labelled provisional on that
+question, and the settled patches leave "workflow execution" and both caps alone. R3 and both R2 runs also produced
+settled and provisional patches, sorted by question.
+
+**One score is re-applied: K3 in R1-r6b.** The round-6 scorer gave it 0.5 because the run never examined "workflow
+execution". In round 1 the baseline was scored met on K3 for the same behaviour: "It does not flag 'workflow
+execution', which K21 treats as having two readings" (`scores/R1.md`). R1-r6b's settled patch removes "scheduling"
+alone and the Bookwhen token line, and keeps "workflow execution", which is what K21 requires. Holding the candidate
+to a stricter reading than the baseline was held to would not test the same thing, so K3 is counted as met here.
+K3's wording predates K21, and conflicts with it on "workflow execution"; a future key should drop that phrase from K3.
+
+**Verdict under the pass rule: the candidate passes.** Every key item the baseline met in round 1 is met in every run
+of its case: R1's K1, K3, K4, K5, K6, K8, K21 and K23 in both runs; R2's K11 to K15 in both; R3's K16 and K24. R4 and
+R5 stand from round 5 (14 of 14, and 2 of 2), as the change did not touch their path.
+
+**Reported, not gates:**
+- **K34 is met in one of two runs,** against none of two in round 5. R1-r6a cited the Scope credentials decision but
+  still said nothing records the restart service's.
+- **K32 is partly met in both runs,** as in round 5. Both class Danger as an enforced invariant, though
+  `SECURITY-REVIEW.md:54-55` says a failed check only warns without GitHub Pro.
+- **ORC's network reach is still misstated in both runs.** R1-r6a's settled README text points readers to `AGENTS.md`
+  as the list of what ORC itself reaches, and that list omits the Chromium ORC launches in its own process. R1-r6b
+  names the browser in its findings but credits its reach to packages in its settled README sentence. Counting rounds
+  1 to 6, the reach is misstated in 6 of the 11 cut runs checked for it, despite the targeted fix at `29e629d`. The
+  baseline's one run did not misstate it. This is the next thing to fix, before the skills are run on ORC.
+- **Over-sorting appeared in 2 of 5 runs:** R1-r6a held the settled removal of "scheduling" in a provisional patch,
+  and R2-r6a held its whole guard update (above).

@@ -1,0 +1,51 @@
+# PROVISIONAL. Do not apply until Justin answers Q1 (questions.md): where are Justin's decisions about ORC recorded?
+# Drafted on the recommended answer, the orchestration-lab Scope's decisions/ folder. Apply after settled.patch.
+
+--- a/orchestrator/AGENTS.md
++++ b/orchestrator/AGENTS.md
+@@ -11,6 +11,11 @@
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
++## Decisions
++
++Justin's decisions about ORC are recorded in the orchestration-lab Scope's `decisions/` folder, one dated file each.
++A comment in the code that quotes "the operator" names the record it comes from.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data
+--- a/scope-orchestration-lab/AGENTS.md
++++ b/scope-orchestration-lab/AGENTS.md
+@@ -16,6 +16,7 @@
+ | Something true of ORC | `/home/justin-philpott/pro/orchestrator` |
+ | Something true of the generic Scope model | `/home/justin-philpott/pro/scope` |
+ | Something true of their relationship | `memory/` here |
++| A decision of Justin's, about this lab or about ORC | `decisions/` here: one dated file, in his words |
+ | A resource joined or left this Scope | `scope.yaml`, then one line in `SCOPE.md` |
+ 
+ Do not duplicate repository facts here. Agent definitions and private context
+--- /dev/null
++++ b/scope-orchestration-lab/decisions/2026-10-03-preview-items.md
+@@ -0,0 +1,8 @@
++# Decision: a branch preview keeps all six items
++
++Justin, 3 October 2026, on orchestrator#194: the preview keeps all six items, with a configurable limit and fixed
++tailnet links.
++
++Copied on 2026-10-07 by the entropy-guard assessment from `STATE.md` as it stood at 2026-10-04 17:31 (line 57), where
++it was the only record found in ORC or this lab. Recording it is not deciding it again. Not checked: the comments on
++orchestrator#194.
+--- a/scope-orchestration-lab/STATE.md
++++ b/scope-orchestration-lab/STATE.md
+@@ -42,8 +42,8 @@
+ - Invoicing works; email is parked on a woodwork domain (finance#3); `invoicing.json` in the Waterlands vault awaits his
+   review, uncommitted (4 Oct). Unmerged (4 Oct): orchestrator #106, #132, #133; scope-finance #1, #2. #178, #176, #133,
+   #132 touch guarded files with no `## Security review` section (2 Oct).
+-- Decided 3 Oct, not yet in a decision record: #194 keeps all six preview items (configurable limit, fixed tailnet
+-  links); MS `failure-verdicts` dropped; MS #52 reads every entry-list page.
++- Decided 3 Oct, not yet in Moving Stillness's decision record: MS `failure-verdicts` dropped; MS #52 reads every
++  entry-list page. (#194's decision: `decisions/2026-10-03-preview-items.md`.)
+ - Open from the 7 Oct entropy assessment: where decisions about ORC are recorded; whether a merged pull request
+   authorises a wider ORC boundary; which size cap this file keeps; what in ORC README's "Deliberately absent" stands.
+ 

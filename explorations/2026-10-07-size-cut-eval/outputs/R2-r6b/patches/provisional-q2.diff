@@ -1,0 +1,47 @@
+PROVISIONAL patch: not to be applied until Justin Philpott answers Q2, whether contributors may revise INTENT.md themselves (finding F2).
+It drafts the recommended answer in questions.md. Apply after settled.diff, from the repository root:
+patch -p1 < provisional-q2.diff
+
+diff '--color=never' -ruN settled/AGENTS.md q2/AGENTS.md
+--- settled/AGENTS.md	2026-10-07 20:03:00.862049728 +0100
++++ q2/AGENTS.md	2026-10-07 20:03:00.909394390 +0100
+@@ -26,7 +26,7 @@
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+ - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
++- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, record it in DECISIONS.md as a proposal for Justin Philpott; update INTENT.md only after his recorded decision, citing it.
+ 
+ ## Project Constraints
+ 
+diff '--color=never' -ruN settled/INTENT.md q2/INTENT.md
+--- settled/INTENT.md	2026-10-07 20:03:00.839336734 +0100
++++ q2/INTENT.md	2026-10-07 20:03:00.909322119 +0100
+@@ -1,6 +1,6 @@
+ # Intent Statement
+ 
+-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
++> This document is the north star for the entropy-guard project and the meta-skill we are building. Humans and AI agents propose refinements in DECISIONS.md as our understanding deepens; Justin Philpott decides them, and this document changes only after his recorded decision. When it changes, note the date and the decision that prompted the revision.
+ 
+ *Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+ 
+@@ -136,4 +136,4 @@
+ 
+ ---
+ 
+-*This document is a living artifact. If you find something missing, imprecise, or worth expanding — add it. Note what prompted the revision.*
++*This document is a living artifact. If you find something missing, imprecise, or worth expanding, propose it in DECISIONS.md for Justin Philpott's decision.*
+diff '--color=never' -ruN settled/skills/local/entropy-guard/SKILL.md q2/skills/local/entropy-guard/SKILL.md
+--- settled/skills/local/entropy-guard/SKILL.md	2026-10-07 20:03:00.860758618 +0100
++++ q2/skills/local/entropy-guard/SKILL.md	2026-10-07 20:03:00.909454406 +0100
+@@ -64,10 +64,6 @@
+ 
+ (Intent-change rule v2, from entropy-guard `skills/entropy-assessment/intent-change-rule.md`.)
+ 
+-Open, awaiting Justin Philpott (proposal in `DECISIONS.md`): the opening note of `INTENT.md` and `AGENTS.md` "Consult
+-INTENT.md for significant decisions" let any contributor revise `INTENT.md` with a dated note, which steps 3 to 5 do
+-not allow. Until he decides, that `AGENTS.md` instruction governs edits to `INTENT.md` itself, and the report lists
+-each such edit for his review.
+ 
+ ## Checks
+ <!-- One line per justified check, each with a trigger and a named thing to check. -->

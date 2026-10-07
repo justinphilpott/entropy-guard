@@ -1,0 +1,27 @@
+PROVISIONAL: do not apply until the steward answers Q1 (questions.md): the date of the reference-only call,
+whether to log it in DECISIONS.md, and who made it. Fill in the three <...> placeholders first.
+Findings F1, F2. Apply after settled.patch: patch -p1 < provisional-Q1.patch
+
+diff --color '--color=never' -ruN --no-dereference settled/DECISIONS.md q1/DECISIONS.md
+--- settled/DECISIONS.md	2026-08-01 21:12:00.000000000 +0100
++++ q1/DECISIONS.md	2026-10-07 19:57:58.385247382 +0100
+@@ -872,6 +872,19 @@
+ 
+ ---
+ 
++### <DATE: steward to supply> — agentic-architecture is reference-only
++
++*Recorded <RECORDING DATE> from the status notes at the top of README.md and AGENTS.md, which carry no date or author.
++This entry records that call; it does not make it again. Decided by: <STEWARD: to confirm>.*
++
++This repository is no longer current architecture authority. The current Personal Agent architecture lives in
++`../personal-agent`; the current generic Scope and Project model lives in `../../scope`. Do not extend or reinterpret
++this blueprint as current design without explicit authorization.
++
++Earlier entries remain the record of what was decided while this repo was current. They are not current authority.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.

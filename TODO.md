@@ -4,21 +4,14 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-Size cut approved by Justin on 2026-10-07 ("lets go"), following `explorations/2026-10-05-skills-size-review-astra.md`,
-on branch `cut-skills-to-derived-size`. Baseline for comparison: the skills at `daee846` (PR #13 merged).
-
-- [x] Step 1: the intent-change rule in its own file; this repo's guard to about 700 words
-- [x] Step 2: the generator to about 900 words, with bootstrap mode in its own file and one guard contract
-- [x] Step 3: the integrator to about 850 words, with one worked example
-- [x] Step 4: the front door to about 550 words, with the mixed profile in its own file; docs-first to about 950
-- [x] Step 5: the intent pass to about 800 words
-- [ ] Step 6: the test (`explorations/2026-10-07-size-cut-eval.md`). Astra's review is done, all 10 findings fixed. Round 5 failed on K21 in one R1 run; the fix sorts proposed changes into settled and provisional patches. Round 6 (R1 ×2, R2 ×2, R3 ×1) is running on it; then the PR
-- [x] Small items: stall cause corrected in `FRICTION.md`; codex loads the same global rules, so the reply cap likely applies there too (not yet tested; `astra-review` is Justin's to change)
-
-Then: assess ORC and the lab read-only with the cut skills.
+Size cut (approved by Justin 2026-10-07, "lets go") is done and tested on branch `cut-skills-to-derived-size`; its
+pull request is open for Justin to merge. Test: `explorations/2026-10-07-size-cut-eval.md` (round 6 passes).
 
 ## Next Up
 
+- [ ] Stop assessments misstating what a system reaches: 6 of 11 cut runs on ORC rewrote ORC's network reach wrongly, most often by leaving out the Chromium ORC launches itself, despite the fix at `29e629d`. Do before the ORC assessment
+- [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
+- [ ] Fix K3's wording in the eval key so it no longer conflicts with K21 on "workflow execution"
 - [ ] Assess ORC and the lab Scope together with the revised skills, read-only; bring the results and any proposed changes to Justin before anything in ORC changes
 - [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction

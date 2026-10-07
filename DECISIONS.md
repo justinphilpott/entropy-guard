@@ -25,7 +25,7 @@ Kept intact: the intent distinctions, the staged/unstaged and untouched-consumer
 - **The guard budget:** its terms are counted once each, against a measured 706-word common contract, and it never cuts justified coverage.
 
 The library grows to 6,364 words: about 750 words of restored obligations, which Astra's review said belong in the budget.
-**Amended**: 2026-10-07, after round 5 of the test failed on K21 (`explorations/2026-10-07-size-cut-eval.md`): one run named the open questions its README hunk touched, then left the hunk in its settled patch. Proposed changes are now sorted, not judged: any change that touches an open question goes in a separate provisional patch. The intent pass also searches the code and commit messages before reporting that nothing records a decision. 93 words more.
+**Amended**: 2026-10-07, after round 5 of the test failed on K21 (`explorations/2026-10-07-size-cut-eval.md`): one run named the open questions its README hunk touched, then left the hunk in its settled patch. Proposed changes are now sorted, not judged: any change that touches an open question goes in a separate provisional patch. The intent pass also searches the code and commit messages before reporting that nothing records a decision. 93 words more. Round 6 then passed under the same rule, with one scorer's half point on K3 re-applied to the standard the baseline was scored by.
 
 ---
 

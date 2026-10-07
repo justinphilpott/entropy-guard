@@ -1,0 +1,24 @@
+PROVISIONAL PATCH - waits on question Q5 "Guard snapshot" (questions.md).
+Do not apply until Justin Philpott has answered Q5 and the answer is recorded in DECISIONS.md, replacing
+proposal 5 of "Open proposals awaiting the steward". Written for the recommended answer.
+Apply after settled.patch, from the repository root: patch -p1 < <this file>
+It edits INTENT.md, an intent document: the steward's recorded answer to Q5 is the decision that permits it.
+
+diff -ruN -x TODO.md b/INTENT.md Q5/INTENT.md
+--- b/INTENT.md	2026-05-11 21:50:31.000000000 +0100
++++ Q5/INTENT.md	2026-10-07 20:05:05.180341488 +0100
+@@ -91,7 +91,7 @@
+ 
+ 3. **Guard runner** (run-time) — discovers all guards registered for a system and executes them at the correct handoff point (pre-commit, CI, PR review). This is the operational wrapper that ensures guards actually get run. A guard that exists but isn't run is dead weight. The runner handles discovery, ordering, execution, and output aggregation.
+ 
+-4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date, system snapshot) that each guard carries.
++4. **Guard evaluator** (maintenance-time) — periodically checks whether the guard set is still appropriate for the system. Have the guards gone stale? Has the system outgrown them? Are they consistent with each other? This is the generator re-run in evaluation mode, aided by the versioning metadata (generated date and source) that each guard carries, read against the system's current state file.
+ 
+ These four tools have different cadences: the generator and integrator run when guards are introduced or redesigned, the runner runs at every handoff point, and the evaluator runs periodically. They should not be conflated.
+ 
+diff -U0 b/TODO.md Q5/TODO.md
+--- b/TODO.md
++++ Q5/TODO.md
+@@ -34,2 +33,0 @@
+-  - *Guard snapshot:* does a guard carry a snapshot of the system (`INTENT.md` "The guard lifecycle", item 4), or
+-    only its generated date and source?

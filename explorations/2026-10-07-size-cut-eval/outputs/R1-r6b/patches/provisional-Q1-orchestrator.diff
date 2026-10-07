@@ -1,0 +1,18 @@
+PROVISIONAL, question 1 (questions.md): where the session guard lives. Do not apply until Justin answers.
+Written for the recommended answer (a). Apply after settled-orchestrator.diff; guarded path, needs a Security review section.
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -154,6 +154,12 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++Where the work stands is in the orchestration lab's `STATE.md` (`~/scopes/scope-orchestration-lab`). At the end of a
++work session, before the last commit or the hand-back, run that lab's `skills/session-coherence-guard/SKILL.md` on what
++the session changed, and put its report in the pull request's description.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and

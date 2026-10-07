@@ -1,0 +1,20 @@
+# PROVISIONAL. Do not apply until Justin answers Q4 (questions.md): which items in ORC README's 'Deliberately absent'
+# list still stand? Drafted on the recommended answer. Removing 'scheduling' alone is settled by Justin's decision of
+# 2026-09-17, but it edits the same sentence Q4 asks about, so it waits here. Apply after settled.patch.
+
+--- a/orchestrator/README.md
++++ b/orchestrator/README.md
+@@ -150,9 +150,10 @@
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++Deliberately absent, and each requires a decision rather than a convenience: reminders, sandboxes,
++shell access, and file edits. Scheduling and workflow execution exist as task types declared to
++durable work (Justin's decision of 2026-09-17, in the orchestration-lab Scope). Each additional
++external system still requires a decision; AGENTS.md, under "Boundaries", says what ORC reaches today.
+ 
+ ## Pi
+ 
