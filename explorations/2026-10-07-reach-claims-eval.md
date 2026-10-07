@@ -175,3 +175,28 @@ blind, labelled in random order.
   better. For K36 the candidate's sum is at least the reference's.
 - **Reported, not gates:** every other item, questions, wrong findings, consequential extras, over-sorting, and the
   words each run read.
+
+### Round 8 results
+
+Each case's six runs were scored blind by one scorer; the labels were unblinded afterwards from
+`scores/r8-mapping.json`. Sums over three runs per version.
+
+**R2 (`scores/round8-R2.md`):**
+
+| Item | Candidate | Reference | Rule | Result |
+|---|---|---|---|---|
+| K11 | 2.5 | 3 | no drop over 0.5 | holds |
+| K12 | 3 | 3 | no drop over 0.5 | holds |
+| K13 | 2.5 | 3 | no drop over 0.5 | holds |
+| K14 | 3 | 3 | no drop over 0.5 | holds |
+| K15 | 3 | 3 | no drop over 0.5 | holds |
+| K36 | 3 | 2.5 | at least the reference | holds |
+| K10 (reported) | 1 | 2 | – | – |
+
+K13 recovers from round 7, where the reach rule sat in the front door and every candidate run missed half of it: here
+one of three candidate runs misses `distill-article`. K10 is lower for the candidate, by one point; it is not a gate,
+and it was the weakest item for every version in every round.
+
+**R3 (`scores/round8-R3.md`):** all six runs score 5 of 5, so K16 and K24 are 3 and 3 for each version, and the rule
+holds. Every run chose `none` and handed nothing to the generator. The runs differ in patch size, from 2 files to 16,
+which the key does not score.

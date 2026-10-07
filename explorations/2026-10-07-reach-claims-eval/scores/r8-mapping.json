@@ -1,0 +1,20 @@
+{
+ "R1-a": "candidate",
+ "R1-f": "candidate",
+ "R1-c": "candidate",
+ "R1-d": "reference",
+ "R1-e": "reference",
+ "R1-b": "reference",
+ "R2-b": "candidate",
+ "R2-d": "candidate",
+ "R2-e": "candidate",
+ "R2-f": "reference",
+ "R2-a": "reference",
+ "R2-c": "reference",
+ "R3-f": "candidate",
+ "R3-b": "candidate",
+ "R3-a": "candidate",
+ "R3-e": "reference",
+ "R3-d": "reference",
+ "R3-c": "reference"
+}
