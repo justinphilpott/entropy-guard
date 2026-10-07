@@ -43,7 +43,7 @@ shows what was built, not what was approved. Never ask the steward to ratify a d
 
 | Condition | How to recognise it | Response |
 |---|---|---|
-| **Stale description** | A document contradicts a later recorded steward decision. | Correct it from that decision, citing it. Do not ask. |
+| **Stale description** | A document contradicts a later recorded steward decision. | Correct only what that decision plainly covers, citing it. A word or phrase the decision does not plainly settle stays as it is, and is noted as an open question. Do not ask about what it does settle. |
 | **Conflict** | Two sources prescribe incompatible things; no recorded decision settles which wins. | Present both, with sources. |
 | **Missing** | An outcome or constraint the work depends on is stated nowhere. | Name the missing decision. |
 | **Ambiguous** | A statement allows readings that lead to different work. | Give the readings and one concrete case where they diverge. |
