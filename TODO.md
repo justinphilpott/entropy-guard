@@ -4,7 +4,7 @@ Lightweight task tracking for early development. Graduate to an issue tracker (G
 
 ## Doing Now
 
-Size cut: done and tested; PR #14 open for Justin to merge.
+Size cut: done, tested and merged (PR #14, `f2a3dba`).
 
 Reach claims (approved by Justin 2026-10-07, "Agreed, proceed"), on branch `reach-claims-show-search`, stacked on
 PR #14: a claim about everything a system reaches is checked against the code with a recorded search. Test:
@@ -15,7 +15,8 @@ that criterion. No PR opened.
 
 **Paused by Justin at 23:22 on 7 October until work on the orchestrator reaches a pause.** On resuming, three
 decisions wait for him: what ships from this branch (both changes, the patch check alone, or more runs); the ORC
-assessment's snapshot; and an Astra review of this branch. PR #14 (the size cut) is still open for him to merge.
+assessment's snapshot; and an Astra review of this branch. PR #14 (the size cut) was merged at 23:23 on Justin's
+"merge ok", as `f2a3dba`; this branch now sits on what main holds.
 
 ## Next Up
 
