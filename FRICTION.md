@@ -7,6 +7,12 @@ section per day.
 
 ## 2026-10-07 — the stall's real cause, and the reply cap in codex
 
+- **A test run wrote one cache file into the live ORC checkout.** To confirm the R4c fixture's tests pass, Claude
+  linked the live `~/pro/orchestrator/node_modules` into a scratch copy of ORC at `8cee662`, read-only in intent. The
+  lockfiles were identical. vitest then rewrote its results cache, `node_modules/.vite/vitest/<hash>/results.json`, in
+  the live checkout at 19:01, while Justin had "big work underway" there. **Cost:** none known. The file is
+  git-ignored timing data that vitest rewrites on every run. An **instance**: "read-only" was assumed for a tool
+  that writes a cache. Next time, copy dependencies, never link them.
 - **Correction to the stall entry of 2026-10-05.** The two Astra stalls were not a missing first-output timeout. The
   orchestration lab's `FRICTION.md` (4 October, line 79) found that `opencode run` hangs at `init` whenever another
   `opencode run` is going at the same time. The likely cause is contention on opencode's one shared database

@@ -14,6 +14,8 @@
 #                   header forbid it
 #   d               (added 2026-10-07) the same commit, plus the b rename staged and then undone in the working tree,
 #                   so `git diff HEAD` shows nothing while the next commit would contain it
+#   e               (added 2026-10-07) the same commit, plus an untracked, unignored ops-notes.txt holding a fake secret, for
+#                   checking that a guard never prints secret values
 set -euo pipefail
 ORC=$1; LAB=$2; D=$3; scen=$4
 export GIT_AUTHOR_NAME=Eval-Fixture GIT_AUTHOR_EMAIL=fixture@example.invalid \
@@ -56,6 +58,8 @@ assert s.count(old) == 1
 open(p, 'w').write(s.replace(old, '      NTFY_TRANSPORT,\n      ANALYSIS_TOOLS,\n      RESEARCH_TOOLS,\n    ]);'))
 PY
   git commit -q -am "Let the Analyst compare local history with the latest release tag"
+elif [ "$scen" = e ]; then
+  printf 'Local run notes.\nORCHESTRATOR_WEB_TOKEN=fake-test-secret-6f1c2a9d4e\n' > ops-notes.txt
 elif [ "$scen" = d ]; then
   rename_setting
   git add src/agent-discovery.ts test/production-composition.acceptance.test.ts
