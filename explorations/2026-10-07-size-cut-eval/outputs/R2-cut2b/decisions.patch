@@ -1,0 +1,72 @@
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4,6 +4,33 @@
+ 
+ ---
+ 
++### PROPOSED, awaiting steward: Intent changes are proposed before INTENT.md is edited
++
++**Status**: Proposed 2026-10-07 by an agent's entropy assessment of this repo. Awaiting Justin Philpott. Not in force; `INTENT.md` and `AGENTS.md` are unchanged until it is decided.
++**Context**: `INTENT.md` invites humans and agents to refine it directly ("meant to be refined collaboratively... When you update it, note the date"), and `AGENTS.md` ("Consult INTENT.md for significant decisions") tells agents to update `INTENT.md` when a decision refines or challenges it. The 2026-04-07 revision changed the validation loop's target and measure with no recorded decider, and it now disagrees with "Farm broader entropic-immunity exploration..." below. The steward's own recorded view (2026-03-24 conversation in `explorations/`) is that questioning intent is rare.
++**Decision (proposed)**: An agent that finds the intent wrong records a proposal here, marked as awaiting the steward. `INTENT.md`, `README.md` "Project status" and `AGENTS.md` "Project Constraints" change only after the steward records the decision. Agents may draft the wording inside the proposal.
++**Impact (if accepted)**: The `INTENT.md` header, its closing line, and `AGENTS.md` "Consult INTENT.md..." and "Prefer updating the core knowledge docs..." are reworded to match; the local guard carries the intent-change rule.
++
++---
++
++### PROPOSED, awaiting steward: What the validation batch measures
++
++**Status**: Proposed 2026-10-07 by an agent's entropy assessment. Awaiting Justin Philpott. Not in force.
++**Context**: "Farm broader entropic-immunity exploration..." below sets the measure as "more merged PRs" on "a larger set of open source projects". `INTENT.md` ("Scope boundary and next validation loop"), `README.md` ("Project status") and `TODO.md` ("Next Up") measure clearer session recovery, fewer reintroduced stale ideas and more coherent docs on docs-first planning repos. "Specialize first around docs-first planning repos..." settles the kind of repo, not the measure.
++**Decision (proposed)**: Measure what `INTENT.md` names, and also record whether changes were accepted wherever the assessed repo has a PR flow, since accepted changes were the first signal of the method's value.
++**Impact (if accepted)**: One statement of the measure lives here; `INTENT.md`, `README.md` and `TODO.md` link to it instead of restating it.
++
++---
++
++### PROPOSED, awaiting steward: One skill writes guards
++
++**Status**: Proposed 2026-10-07 by an agent's entropy assessment. Awaiting Justin Philpott. Not in force.
++**Context**: Two skills generate guards: `docs-first-planning-assessment` (Phase 2) and `session-coherence-skill-generator`. `INTENT.md` ("The guard lifecycle: four distinct tools") says the generator role is carried by the assessment workflow and does not mention `session-coherence-skill-generator`; "Session-coherence generation should bootstrap young repos..." below extends the generator but does not set the two skills' roles.
++**Decision (proposed)**: `session-coherence-skill-generator` is the only skill that writes guards. `entropy-assessment` and `docs-first-planning-assessment` supply the analysis and the checks.
++**Impact (if accepted)**: `docs-first-planning-assessment` Phase 2 hands to the generator; `guards-integrator` names the generator as its input; `INTENT.md` "four distinct tools" is updated after this decision is recorded.
++
++---
++
+ ### Session-coherence generation should bootstrap young repos before generating guards
+ 
+ **Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.
+@@ -38,6 +65,8 @@
+ 
+ ### Entropy assessment should support guard refinement and evidence-based bootstrap design
+ 
++*Moved out of `entropy-assessment` when it became a router ("Specialize first around docs-first planning repos..." above). Refinement-first and companion-artifact tracking live in `docs-first-planning-assessment` (Step 6, Output); the requirement to verify bootstrap actions against the current artifact is restored there in Step 5.*
++
+ **Context**: Applying `entropy-assessment` to real projects exposed a cluster of related misfires. The skill framed Phase 2 primarily as generating new guards, even when the right outcome was a targeted amendment to an existing guard. It also allowed bootstrap checks to be written from indirect notes without verifying the current artifact, and it did not clearly distinguish stable guard definitions from the companion artifacts that should record bootstrap completion. Cold-start projects with no established loop likewise had no named minimum-viable integration pattern.
+ **Decision**: Treat guard refinement as a first-class Phase 2 outcome alongside guard generation. Require bootstrap actions to be verified against the current artifact before they are written, require bootstrap completion to be tracked outside the guard file, and add an explicit no-existing-loop bootstrap integration pattern for early-stage projects. Also make internal docs-to-docs drift more explicit for markdown-first systems.
+ **Impact**: `skills/entropy-assessment/SKILL.md` now fits existing-guard systems better, produces more trustworthy bootstrap checks, preserves guard files as stable definitions, and offers a clearer adoption path for cold-start repos. The methodology also better matches the repo's own framing that documentation-first systems often drift internally rather than primarily against code.
+@@ -46,6 +75,8 @@
+ 
+ ### Add workflow/process as a first-class assessment domain
+ 
++*The appendix this added was removed when `entropy-assessment` became a router ("Specialize first around docs-first planning repos..." above). Workflow/process remains a domain in its Step 4a and a vector in `docs-first-planning-assessment` Step 4.*
++
+ **Context**: Dogfooding `entropy-assessment` against this repo showed a repeatable gap. The skill already talked about collaborative workflow and inter-domain drift in principle, but its explicit Phase 1 domain map and Phase 2 appendices only covered documentation, code, tests, and API contracts. That made workflow-heavy repos awkward to classify and left no direct path to generate workflow/process guards when the main entropy risks lived in handoffs, rituals, or contributor instructions.
+ **Decision**: Extend `skills/entropy-assessment/SKILL.md` with workflow/process as a first-class domain in both assessment and guard generation. Add workflow/process signals to the Phase 1 domain map and drift analysis, and add a dedicated appendix covering inventory items, entropy vectors, checklist guidance, and existing mechanisms.
+ **Impact**: The assessment now matches the repo's own framing that entropy often accumulates in practice as much as in map or territory. Workflow-heavy systems can be assessed without awkward shoehorning, and the skill can recommend either a dedicated workflow guard or a combined guard when that is the lower-burden design.
+@@ -112,6 +143,8 @@
+ 
+ ### Rename entry point from entropy-guard-generator to entropy-assessment
+ 
++*Partially superseded by "Specialize first around docs-first planning repos..." above: the name stands, but `entropy-assessment` no longer has a Phase 2 or Steps 5-8 and does not generate guards.*
++
+ **Context**: The entry point skill's primary value is assessment (Steps 1–4: establish intent, survey landscape, identify drift risks, recommend generators). Guard generation (Steps 5–8) is optional delegation to domain generators. But the name "generator" framed assessment as a means to an end rather than a first-class deliverable. Agents arriving cold didn't recognize this skill as the obvious start point for reviewing a system.
+ **Decision**: Rename to `entropy-assessment`. Restructure the skill into two explicit phases: Phase 1 (Assessment, Steps 1–4) produces a standalone entropy profile; Phase 2 (Guard Generation, Steps 5–8) is optional. Add an assessment output format between the phases.
+ **Impact**: Assessment becomes the obvious entry point for any agent evaluating a system. The skill is useful even without generating guards.
+@@ -128,7 +161,7 @@
+ 
+ ### Consolidate domain generators into single skill with domain appendices
+ 
+-*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above.*
++*Partially superseded by "Specialize first around docs-first planning repos, but keep entropy-assessment as the front door" above: the domain appendices no longer exist in `entropy-assessment`; the deletion of the four domain generators still holds.*
+ 
+ **Context**: The four domain generators (docs, code, test, API) were ~80% identical scaffolding — Steps 0–7 with the same structure, domain-adapted. The unique domain knowledge (entropy vectors, inventory items, checklist design guidance) accounted for ~20% of their content. The assessment skill's Phase 2 existed solely as a routing/coordination layer between the entry point and the generators. This meant an agent had to read 5 files to do what one file could accomplish. The insight from the two-layer decision — that domains need different analytical lenses — was correct, but the domain-specific knowledge turned out to be reference data, not separate processes.
+ **Decision**: Fold all domain knowledge into the entropy-assessment skill as reference appendices (one per domain). Delete the four standalone generator skills. The assessment skill now handles both assessment (Phase 1) and generation (Phase 2) with built-in domain references. Supersedes "Two-layer generator architecture" and "Exportable skills vs local skills" (for the generator skills specifically — the distinction still applies to local skills like entropy-guard).

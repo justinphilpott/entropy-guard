@@ -1,0 +1,55 @@
+Patch 02: corrections in the orchestration-lab Scope (apply in ~/scopes/scope-orchestration-lab with `patch -p1`).
+Prepared 2026-10-07 by the entropy assessment (assessment.md). Status: corrections, no decision.
+Findings: F5, F11, F15.
+Open questions touched: none. SCOPE.md copies the 4 Oct decision in Justin's recorded words and leaves "what else it
+should cover" open; scope.yaml's `purpose` is left alone (the Scope model owns that file's format; see F5).
+
+diff --color -ruN '--color=never' -x STATE.md -x AGENTS.md a/README.md b/README.md
+--- a/README.md
++++ b/README.md
+@@ -13,12 +13,11 @@
+ issues, and a day-by-day history. Regenerate it from live data with:
+ 
+ ```bash
+-node tools/report.mjs             # snapshot, runs the test suite (~10s)
+-node tools/report.mjs --no-tests  # fast rebuild, keeps the day's test count
+-node tools/report.mjs --serve     # http://localhost:4190, rebuilds on reload
++node tools/report.mjs             # snapshot, runs both test suites (about two minutes)
++node tools/report.mjs --no-tests  # fast rebuild (about ten seconds), keeps the day's test count
+ ```
+ 
+-Open it directly at `file:///home/justin-philpott/scopes/scope-orchestration-lab/status.html`,
+-or use `--serve` if you want it always current. One snapshot per day is kept in
++Open it directly at `file:///home/justin-philpott/scopes/scope-orchestration-lab/status.html`;
++nothing serves it. The page says when it was generated. One snapshot per day is kept in
+ `reports/`, because git records what changed on a day but not what was true on
+ it: test counts, agent states and open issues are only knowable while current.
+diff --color -ruN '--color=never' -x STATE.md -x AGENTS.md a/SCOPE.md b/SCOPE.md
+--- a/SCOPE.md
++++ b/SCOPE.md
+@@ -6,6 +6,10 @@
+ reusable Scope-owned agents. It owns the private context, policy, workflows,
+ agent definitions, and resource inventory that share this trust boundary.
+ 
++Justin, 4 October 2026 (interview): the lab is the central Scope for project
++management, core issue tracking, code quality and security. Astra is to say
++what else it should cover; that is still open.
++
+ ## Projects
+ 
+ - `orchestrator` is the active project. Its implementation lives at
+diff --color -ruN '--color=never' -x STATE.md -x AGENTS.md a/decisions/2026-09-17-async-work-architecture.md b/decisions/2026-09-17-async-work-architecture.md
+--- a/decisions/2026-09-17-async-work-architecture.md
++++ b/decisions/2026-09-17-async-work-architecture.md
+@@ -4,6 +4,11 @@
+ the #26 design note that ORC's host would own approval policy, and the unmerged branch
+ `feat/26-operator-operations` built from it.
+ 
++> **Superseded in part (note added 2026-10-07; it decides nothing).** "What a task type declares" below lists
++> `idempotency`. ORC split it into `repeatEffect` and `submissionKey` ("The approved split", ORC's `FIXES.md`,
++> commit `79a33ef`, 2026-09-17); who approved the split is not recorded there. ORC's `src/core/async/types.ts`
++> holds the declaration as built.
++
+ ## Context
+ 
+ ORC needs work that outlives a chat turn: an approval that arrives hours later, a browser job that takes

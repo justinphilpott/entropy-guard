@@ -1,0 +1,27 @@
+# integration.patch: the two edits that go with the refined guard. Apply after state-update.patch, together with
+# copying guard/SKILL.md over skills/local/entropy-guard/SKILL.md: patch -p1 < integration.patch
+# AGENTS.md: record the start commit in "Doing Now" so the guard has a baseline. TODO.md: the doc-health-check item no
+# longer claims the guard refers to it.
+# Open questions touched: Q1 and Q2. Installing the refined guard enacts their recommended answers (it names the
+# steward and carries the intent-change rule), so apply this only after the steward has answered both. Q3, Q4 untouched.
+diff -ru c/AGENTS.md d/AGENTS.md
+--- c/AGENTS.md	2026-10-07 17:51:37.497023209 +0100
++++ d/AGENTS.md	2026-10-07 17:51:37.538466636 +0100
+@@ -19,7 +19,7 @@
+ - **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
+ - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
+ - **Commit early, commit often**: A coherent small change beats a perfect one in progress. Small commits are easy to review, revert, and understand in git log
+-- **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section — enough detail to resume if interrupted or context is lost. When the work is complete, derive your commit message from those items, then clear the section
++- **TODO.md as live context**: Before starting work, write what you're doing in TODO.md's "Doing Now" section, with the commit you started from (`git rev-parse --short HEAD`) — enough detail to resume if interrupted or context is lost. When the work is complete, run the entropy guard (it compares against that commit), derive your commit message from those items, then clear the section
+ - **Docs travel with code**: If a change affects how the project works, update the relevant docs in the same commit — not later
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+diff -ru c/TODO.md d/TODO.md
+--- c/TODO.md	2026-10-07 17:54:33.478033299 +0100
++++ d/TODO.md	2026-10-07 17:54:33.498454412 +0100
+@@ -28,4 +28,4 @@
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
+-- [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
++- [ ] Create `doc-health-check` skill: a full informational-coverage audit, distinct from the session guard (which no longer refers to it)

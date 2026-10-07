@@ -1,0 +1,48 @@
+# state-update.patch: brings TODO.md (the repo's state file) up to date, and records the assessment's four questions
+# in DECISIONS.md as proposals awaiting the steward. Apply after cleanup.patch: patch -p1 < state-update.patch
+# Findings: F10 (state), and F1, F2, F4, F5 recorded as proposals.
+# Open questions touched: Q1-Q4 are recorded as proposals only, each marked "Not decisions"; none is settled, and the
+# text each is about (INTENT.md, AGENTS.md "Working Practices", DECISIONS.md "Farm broader...", the two guard-writing
+# skills) is unchanged.
+diff -ru b/DECISIONS.md c/DECISIONS.md
+--- b/DECISIONS.md	2026-10-07 17:50:53.769026491 +0100
++++ c/DECISIONS.md	2026-10-07 17:51:37.515516778 +0100
+@@ -4,6 +4,17 @@
+ 
+ ---
+ 
++### Proposed, awaiting the steward: four questions from the 2026-10-07 entropy assessment
++
++*Not decisions. Recorded 2026-10-07 by an entropy assessment of snapshot `447da9a`. Each waits for the steward's recorded answer, and the work that depends on it waits too. Answer by replacing an item with a dated decision entry that names who decided.*
++
++- **Who the steward is.** Nothing in the repo names one. Recommended: Justin Philpott, named in AGENTS.md.
++- **How INTENT.md changes.** Its header note and AGENTS.md "Working Practices" let any contributor revise it with a dated note. Recommended: a change of intent is first recorded here as a proposal, and INTENT.md changes after the steward's recorded decision; a direct correction is fine where a recorded decision already settles it.
++- **What the validation batch measures.** "Farm broader…" below says whether it produces more merged PRs; INTENT.md "Scope boundary and next validation loop" says clearer session recovery, fewer reintroduced stale ideas, more coherent docs and sharper feedback. Recommended: INTENT.md's measures, with merged PRs also tracked where the assessed repo is open source.
++- **Which skill writes guards.** `docs-first-planning-assessment` Phase 2 and `session-coherence-skill-generator` both do, with different templates; INTENT.md "The guard lifecycle" names neither as the writer. Recommended: `session-coherence-skill-generator` writes all guards, and `docs-first-planning-assessment` supplies its checks to it.
++
++---
++
+ ### Session-coherence generation should bootstrap young repos before generating guards
+ 
+ **Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.
+diff -ru b/TODO.md c/TODO.md
+--- b/TODO.md	2026-10-07 17:50:37.350332451 +0100
++++ c/TODO.md	2026-10-07 17:54:33.478033299 +0100
+@@ -2,6 +2,17 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++Checked 2026-10-07 by an entropy assessment of snapshot `447da9a`, which had no git history to read. This section goes stale when a skill is added, renamed or retired, when a steward decision lands, or when the next-step plan changes. Whoever makes that change refreshes it; the session guard (`skills/local/entropy-guard/SKILL.md`) checks it.
++
++- **Stage:** `entropy-assessment` routes; `docs-first-planning-assessment` is the deepest path (INTENT.md, revised 2026-04-07). `session-coherence-skill-generator` gained a bootstrap mode (DECISIONS.md, top decision; its metadata says 2026-05-11). The validation batch in Next Up has no recorded results in this repo.
++- **Read first:** INTENT.md for purpose and scope, DECISIONS.md for what is settled, AGENTS.md for how to work, then the skill you are changing.
++- **Settled, do not reopen casually:** the front door routes rather than generates (DECISIONS.md "Specialize first…"); broader entropic-immunity theory belongs to the sibling `entropy-immune-system` repo (DECISIONS.md "Farm broader…"); one local guard covers docs and workflow (DECISIONS.md "Keep a single local guard…"); judgment guards mature from manual to a non-blocking reminder (DECISIONS.md "Guard adoption should usually mature…").
++- **Open, awaiting the steward:** four proposals in DECISIONS.md "Proposed, awaiting the steward". Work that depends on them waits: installing the refined local guard (steward, INTENT.md changes); any change to INTENT.md's header note or AGENTS.md's "update INTENT.md" practice (INTENT.md changes); what the validation batch records (measures); reconciling the two guard-writing skills (guard writer).
++- **Misleading nearby:** `explorations/` and the LEARNINGS.md entries marked "Historical for this repo" are farmed-off theory, not direction here. DECISIONS.md entries marked "Partially superseded" describe an `entropy-assessment` structure (Phase 2, appendices, Step 8) that no longer exists.
++- **Next actions:** (1) the steward answers the four proposals; (2) then install the refined local guard drafted by the 2026-10-07 assessment, and see its hook reminder fire once; (3) choose the first repos for the validation batch.
++
+ ## Doing Now
+ 
+ [empty]

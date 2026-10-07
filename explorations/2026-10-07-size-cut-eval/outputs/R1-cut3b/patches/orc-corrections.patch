@@ -1,0 +1,155 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 18:18:18.037392238 +0100
++++ b/AGENTS.md	2026-10-07 18:18:49.618182286 +0100
+@@ -44,7 +44,7 @@
+ In-the-box agents, such as Iris and the Researcher, are templates packaged alongside core through the
+ same interface as any Scope agent. They are not core, and core does not depend on any of them.
+ 
+-`test/core-ties.ts` ratchets all four ties in `src/` and `web/src/`, per file, at exact counts: a
++`test/core-ties.ts` ratchets all four ties in `config/`, `src/` and `web/src/`, per file, at exact counts: a
+ count may only fall, and its allowance falls in the same change. On 2026-09-13 the baseline was:
+ 
+ - Scope: 426 matches in 14 files.
+@@ -99,8 +99,9 @@
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+ ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++sends only a title, the notice's summary and the one configured tap address. No module imports a
++Bookwhen client: Bookwhen code belongs to the Scope that needs it, as above, and
++`test/architecture.test.ts` asserts it.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+diff -ruN a/dangerfile.js b/dangerfile.js
+--- a/dangerfile.js	2026-10-07 18:18:18.037424835 +0100
++++ b/dangerfile.js	2026-10-07 18:18:54.208197286 +0100
+@@ -13,6 +13,11 @@
+   /^config\//,
+   /^scripts\/approve-agent-package\.ts$/,
+   /^scripts\/async-work\.ts$/,
++  // Operator commands that grant, revoke or activate authority, and the one reader of ORC's credentials file.
++  /^scripts\/execution-policies\.ts$/,
++  /^scripts\/approval-grants\.ts$/,
++  /^scripts\/activate-research-agent\.ts$/,
++  /^scripts\/orc-env\.sh$/,
+   /^package\.json$/,
+   /^pnpm-lock\.yaml$/,
+   /^AGENTS\.md$/,
+diff -ruN a/FIXES.md b/FIXES.md
+--- a/FIXES.md	2026-10-07 18:18:18.037521233 +0100
++++ b/FIXES.md	2026-10-07 18:19:07.802068536 +0100
+@@ -1,5 +1,9 @@
+ # Fixes from the adversarial review of 2026-09-17
+ 
++> **Historical: a branch report.** Written on the branch it names, at the time it describes. Its statements about
++> what is committed, pushed or untouched describe that moment, not now. What ORC does now is in `README.md`,
++> `AGENTS.md`, `test/architecture.test.ts` and the code.
++
+ Four changes on `feat/async-work-capability`, one commit each, plus one commit on `feat/apply-slots-facade`
+ in the Moving Stillness Scope. Source of the findings:
+ `reports/2026-09-17-async-review-conflation.md`. Every claim below was checked against the code and then
+diff -ruN a/OPERATOR.md b/OPERATOR.md
+--- a/OPERATOR.md	2026-10-07 18:18:18.037503688 +0100
++++ b/OPERATOR.md	2026-10-07 18:19:07.786653555 +0100
+@@ -1,5 +1,9 @@
+ # Operator: the approval card in the browser, and the notification path
+ 
++> **Historical: a branch report.** Written on the branch it names, at the time it describes. Its statements about
++> what is committed, pushed or untouched describe that moment, not now. What ORC does now is in `README.md`,
++> `AGENTS.md`, `test/architecture.test.ts` and the code.
++
+ Branch `feat/async-work-capability`, worktree `ws-async2`. Four commits on top of `87ba815`:
+ 
+ ```
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 18:18:18.037355524 +0100
++++ b/README.md	2026-10-07 18:18:43.234161001 +0100
+@@ -2,9 +2,12 @@
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+ adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++isolated fixed researcher child for each public-web research invocation. Its own external paths
++are public webpages through Jina Reader and durable-work notices to an ntfy topic. Approved Scope
++packages reach outside services, such as Bookwhen, through declared connectors and a host-limited
++browser, including writes run as durable work (orchestration-lab
++`decisions/2026-09-17-async-work-architecture.md`); ORC's source holds no Bookwhen implementation
++(`test/architecture.test.ts`).
+ 
+ ## Direction
+ 
+@@ -73,10 +76,10 @@
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++Open-Friday queries come from an approved Scope package's contribution; until one is configured,
++`list_open_fridays` answers that it is unavailable (`src/runtime.ts`). ORC itself reads no Bookwhen
++token and depends on no Bookwhen client (`test/architecture.test.ts`, "keeps Bookwhen
++implementations out of ORC source").
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ ORC discovers agent definitions from each Scope's `agents/` directory; later entries override
+@@ -150,8 +153,9 @@
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++additional external data sources, workflow execution, sandboxes, shell access, and file edits.
++Scheduling was decided by Justin on 2026-09-17: durable work runs now, at a time, or on a recurring
++schedule (orchestration-lab `decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi
+ 
+diff -ruN a/REWORK.md b/REWORK.md
+--- a/REWORK.md	2026-10-07 18:18:18.037451941 +0100
++++ b/REWORK.md	2026-10-07 18:19:07.758090907 +0100
+@@ -1,5 +1,9 @@
+ # Rework: ORC's async work capability
+ 
++> **Historical: a branch report.** Written on the branch it names, at the time it describes. Its statements about
++> what is committed, pushed or untouched describe that moment, not now. What ORC does now is in `README.md`,
++> `AGENTS.md`, `test/architecture.test.ts` and the code.
++
+ Branch `feat/async-work-capability`, worktree `ws-async2`. Nothing committed, nothing pushed.
+ 
+ This continues the rework another agent began. That agent had replaced `AsyncStorePort` with intent-shaped
+diff -ruN a/SEAM.md b/SEAM.md
+--- a/SEAM.md	2026-10-07 18:18:18.037487528 +0100
++++ b/SEAM.md	2026-10-07 18:19:07.772543658 +0100
+@@ -1,5 +1,9 @@
+ # Seam: the async work capability gets its callers
+ 
++> **Historical: a branch report.** Written on the branch it names, at the time it describes. Its statements about
++> what is committed, pushed or untouched describe that moment, not now. What ORC does now is in `README.md`,
++> `AGENTS.md`, `test/architecture.test.ts` and the code.
++
+ Branch `feat/async-work-capability`, worktree `ws-async2`. Four commits on top of `928b340`:
+ 
+ ```
+diff -ruN a/SECURITY-REVIEW.md b/SECURITY-REVIEW.md
+--- a/SECURITY-REVIEW.md	2026-10-07 18:18:18.037410386 +0100
++++ b/SECURITY-REVIEW.md	2026-10-07 18:19:00.589217708 +0100
+@@ -176,9 +176,11 @@
+ 
+ ## Which changes ask for this
+ 
+-Everything under `src/`, plus AGENTS.md, this file, the architecture test, and
+-the check itself (`dangerfile.js`, `.github/`, `.githooks/`). A short exemption
+-list in `dangerfile.js` covers paths known not to change what an agent can reach.
++The guarded paths are listed once, in `GUARDED` in `dangerfile.js`: everything
++under `src/` and `config/`, the operator scripts that grant or approve
++authority, the dependency manifests, the rules and their tests, and the check
++itself. The `EXEMPT` list beside it covers paths known not to change what an
++agent can reach.
+ 
+ That way round on purpose: a new directory under `src/` is guarded the day it
+ appears, rather than the day someone remembers to add it. Adding to the

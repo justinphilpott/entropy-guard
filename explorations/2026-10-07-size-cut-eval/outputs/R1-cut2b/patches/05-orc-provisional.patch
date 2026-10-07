@@ -1,0 +1,21 @@
+Patch 05: PROVISIONAL. Apply only after Justin answers Q1 as recommended (questions.md).
+ORC AGENTS.md (apply in ~/pro/orchestrator with `patch -p1`, before or after patch 01).
+Findings: F17, F18. It settles Q1, so it is not a correction. AGENTS.md is a guarded path: its pull request needs
+"## Security review: No new authority; a pointer to where state and the session-end guard live."
+It names a Scope's path in ORC's instructions. AGENTS.md already names orchestrator#140 and pro/agentic paths, and
+the core-ties ratchet covers src/ and web/src/ only, but a pointer kept in #140's description would keep ORC's own
+files free of it. That choice is Justin's; this patch follows the existing practice.
+
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -11,6 +11,10 @@
+ agent working here (Justin, 2 Oct 2026). Read it before starting work, and follow the rules in its description:
+ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
++Current state, steward decisions and what broke in real use live in the orchestration-lab Scope
++(`~/scopes/scope-orchestration-lab`: `STATE.md`, `decisions/`, `FRICTION.md`). Before handing off, run its
++`skills/session-coherence-guard/SKILL.md`.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data

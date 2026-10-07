@@ -1,0 +1,81 @@
+--- a/skills/guards-integrator/SKILL.md
++++ b/skills/guards-integrator/SKILL.md
+@@ -17,7 +17,7 @@
+ 
+ ## When to Run
+ 
+-- After `entropy-assessment` generates one or more guards
++- After a guard is generated or refined
+ - When a system has guards on disk but no clear way they enter daily work
+ - When the team already has an agentic loop, PR flow, or CI pipeline and wants to fit guards into it with minimal disruption
+ - When an existing guard is routinely skipped, forgotten, or run too late to be useful
+@@ -218,12 +218,12 @@
+ - Assumed ... because ...
+ ```
+ 
+-If the assessment skill generated the guards in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
++If the guards were generated in the same session, append this brief directly after the guard set so the maintainer gets both artifacts together.
+ 
+ ---
+ 
+ ## What This Is Not
+ 
+-- A replacement for `entropy-assessment` — use that to decide what guards are needed
++- A replacement for the assessment — `entropy-assessment` and the track it routes to decide what guards are needed
+ - A guard runner implementation — this skill recommends integration; it does not execute guards for you
+ - An excuse to add ceremony — if a guard cannot fit the loop without large overhead, simplify the guard or move more of it into automation
+--- a/skills/session-coherence-skill-generator/SKILL.md
++++ b/skills/session-coherence-skill-generator/SKILL.md
+@@ -19,8 +19,8 @@
+ be run during or near the end of a coding session to leave the codebase coherent,
+ self-explanatory, and easy to pick up next time.
+ 
+-This is a meta skill: it does not assume the repository already has FlowBook's
+-exact files. It first discovers the repository's own context-preservation
++This is a meta skill: it does not assume any particular repository's file
++layout. It first discovers the repository's own context-preservation
+ structures, then writes or updates a custom session-coherence skill for that
+ repository.
+ 
+@@ -190,8 +190,8 @@
+     needed now, which are soon, which are premature, and is guard generation still
+     premature?
+ 
+-Prefer the repository's existing vocabulary. Do not impose FlowBook's exact file
+-layout on another codebase.
++Prefer the repository's existing vocabulary. Do not impose another repository's
++file layout.
+ 
+ ---
+ 
+--- a/skills/docs-first-planning-assessment/SKILL.md
++++ b/skills/docs-first-planning-assessment/SKILL.md
+@@ -111,7 +111,7 @@
+ - **Loop map**
+ - **Entropy profile**: top risks ranked by destructive potential
+ - **Recommendations**: what to consolidate, demote, mark as historical, or guard
+-- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense
++- **Bootstrap actions**: one-time cleanup work needed before a recurring guard makes sense, each verified against the current file before it is written
+ 
+ Also produce a **current-state packet** for the next fresh session. Keep it short and operational.
+ 
+--- a/README.md
++++ b/README.md
+@@ -105,6 +105,7 @@
+ | [PHILOSOPHY.md](PHILOSOPHY.md) | Free-form reflections on entropy, self-awareness, and system design |
+ | [DECISIONS.md](DECISIONS.md) | Architectural decisions with context and rationale |
+ | [LEARNINGS.md](LEARNINGS.md) | Validated discoveries from building and using guards |
++| [explorations/](explorations/) | Historical: the March 2026 conversations and digests that seeded the sibling `entropy-immune-system` repo (see DECISIONS.md, "Farm broader entropic-immunity exploration..."). Not current direction |
+ 
+ ### Project operations
+ 
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -45,6 +45,7 @@
+ - [skills/guards-integrator/](skills/guards-integrator/) — maps generated guards into the target system's real iteration loop so they get used
+ - [skills/session-coherence-skill-generator/](skills/session-coherence-skill-generator/) — generates repo-specific session handoff guards or bootstraps minimal handoff memory for young repos
+ - `../entropy-immune-system/` — sibling repo holding the broader exploration and future theory work that grew out of entropy-guard
++- [explorations/](explorations/) — historical: the March 2026 conversations and digests that seeded `entropy-immune-system`; not current direction
+ 
+ ## Commands
+ 
