@@ -2,7 +2,7 @@
 name: session-coherence-skill-generator
 description: The guard builder for entropy-guard. Generate or update a repository's session-end coherence guard from an assessment's findings, or bootstrap the smallest context-preservation structure for a young repo that is starting to need handoff memory.
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 ---
 
 # Skill: Session Coherence Skill Generator
@@ -10,26 +10,19 @@ metadata:
 The only skill in entropy-guard that writes guards. It builds or updates the guard an agent or person runs at the end
 of a work session, so the repo is left coherent, honest about its state, and easy to pick up.
 
-- **Inputs** come from an assessment: `skills/entropy-assessment/SKILL.md` or
-  `skills/docs-first-planning-assessment/SKILL.md`. If there was none, run `entropy-assessment` in assessment-only
-  mode first rather than discovering the repo again here.
-- **A young repo** with no stable memory yet: follow [`bootstrap.md`](bootstrap.md) instead, and build no guard.
-- **Afterwards**, hand the guard to `skills/guards-integrator/SKILL.md`, which places it and checks it is adopted.
+## Inputs, and the guard decision
 
-## Modes
+The inputs come from an assessment. If none was given, call `skills/entropy-assessment/SKILL.md` for analysis only,
+passing your own mode. Its "Called for analysis only" contract returns the findings, the guard decision and the inputs
+below. Then act on the decision:
 
-Use the mode asked for; when the runtime mode and the wording differ, the stricter wins.
+- **`none`:** stop. Report that no guard change is needed, and why.
+- **`bootstrap`:** follow [`bootstrap.md`](bootstrap.md). Build a guard only if its verdict is `ready now`.
+- **`create` or `update`:** build the guard to the contract below, then hand it to `skills/guards-integrator/SKILL.md`.
+  That handover is this skill's alone.
 
-- **Plan or suggest-only:** draft the guard and report; edit nothing.
-- **Build:** write or update the guard and any directly implied doc updates.
-- **Discuss-first:** propose the guard's shape before writing. The default for cross-repo or policy changes.
-- **Audit-only:** report existing structures and risks; build nothing unless asked.
-
-## Before writing: are the inputs complete?
-
-The guard needs each of these. Take them from the assessment; fill any gap with an assessment-only run, never by
+The inputs a guard needs are below. Any input marked unresolved stays visible in the guard; do not fill it by
 guessing.
-
 - the steward, every document that holds authorised intent (a north star, a scope definition, a README's direction:
   not only the README), the decision surface, and any open intent questions (`intent-pass.md`);
 - the current-state file, and who refreshes it;
@@ -40,7 +33,11 @@ guessing.
 - live operational state or spend that a session can change;
 - the assessment's findings, by id.
 
-Never read secret values; read `.env.example`, not `.env`.
+## Modes and safety
+
+The "Modes and safety" section of the guard contract below applies to this skill as well as to every guard it writes.
+When the runtime mode and the wording differ, the stricter wins. Discuss-first is the default for changes that cross
+repositories or touch policy.
 
 ## The guard contract
 
@@ -54,12 +51,18 @@ name: session-coherence-guard
 description: Check this repository's coherence at the end of a work session, before handoff.
 metadata:
   generated: "<date>"
-  source: "entropy-guard session-coherence-skill-generator v0.4.0"
+  source: "entropy-guard session-coherence-skill-generator v0.5.0"
 ---
 
 # Skill: <Repo> Session Coherence Guard
 
 Run at the end of a work session, before commit or handoff. Check only this session's change.
+
+## Modes and safety
+- Follow the invocation's mode: plan, audit-only and discuss-first inspect and report without editing; build permits
+  scoped repairs.
+- Never commit or push unless asked. Never read, print or write secret values; inspect examples and key names instead.
+- Leave unrelated changes alone, and keep committed workflow logic out of vendor-specific agent folders.
 
 ## Where things live
 <!-- Pointers only. Never copy current direction, work status, next tasks or build ids into the guard; they belong in
@@ -70,9 +73,12 @@ the state file. Stable links to an issue or record that owns a policy are fine. 
 - Rules owned elsewhere: <links>.
 
 ## What changed this session
+Find the commit the session started from, and write it in place of `<start>` below. If you cannot, use <upstream> and
+report "coverage incomplete". If neither exists, report committed changes as not covered, and still inspect staged,
+unstaged and untracked work.
 ```bash
-git log --oneline "$START"..HEAD          # commits
-git diff "$START" HEAD                    # what they changed
+git log --oneline <start>..HEAD           # commits
+git diff <start> HEAD                     # what they changed
 git status --short
 git diff --cached                         # staged: what the next commit holds
 git diff                                  # unstaged
@@ -81,7 +87,6 @@ git ls-files --others --exclude-standard  # untracked: read those that matter
 <!-- Check staged and unstaged separately: `git diff HEAD` nets them out, so a change staged and then undone in the
 working tree shows nothing yet still lands. Add live changes the checks depend on (a deployed build, a grant), read
 with the time. -->
-If the start point is unknown, compare against <upstream> and report "coverage incomplete".
 
 ## Intent
 Does this change fit the authorised intent in <files>? If not:
@@ -90,16 +95,20 @@ Does this change fit the authorised intent in <files>? If not:
 (Intent-change rule v2, from entropy-guard.)
 
 ## Checks
-<!-- One line per justified check, each with a trigger and a named thing to check. Never write "the test is the
-record" or "the code is the record": where a description, the code and a check disagree, establish which is wrong
-first. -->
+<!-- One line per justified check, each with a trigger and a named thing to check. -->
 - If <code area> changed: does <doc> still describe it?
-- When two documents describe one thing, decide which owns it and reduce the other to a link. Keep summaries and
-  independent tests of the same contract.
 - For each state claim changed in <state file>: do its other mentions still agree?
 ```bash
 <repo commands that CI does not already run>
 ```
+
+## Repairs
+- One owner per concept: when two places define one concept independently, reduce one to a link. Keep summaries,
+  generated projections, versioned copies and independent tests, and keep them correct.
+- Limit every correction by its evidence. Change only what the evidence settles, and leave open parts visibly open.
+  For an exhaustive list or an "only" claim, check the full scope, including delegated behaviour. Never change a
+  prescribed boundary because of observed behaviour, and never treat a test or the code as the record: where a
+  description, the code and a check disagree, establish which is wrong first.
 
 ## Report
 - Baseline, and whether coverage was complete; what was checked and what was not.
@@ -110,18 +119,27 @@ first. -->
 
 ## Size
 
-A guard runs every session, so its size is derived, not picked: about **450 + 36 × J + S + C** words, where J is the
-number of justified checks, S the words of source pointers, and C the words of repo-specific commands. The 450 covers
-the common contract above; 36 words is a planning average for one complete instruction, taken from a small sample
-in Astra's size review (`explorations/2026-10-05-skills-size-review-astra.md`), not a hard limit. Report the guard's size and its J. Over budget means removing
-duplication or narrowing scope, never silent truncation.
+A guard runs every session, so its size is derived, not picked. Its terms are counted once each:
+
+- **The common contract:** the template above with the intent-change rule copied in, before any repo-specific content.
+  Measured on 2026-10-07 at 706 words (`wc -w` on the template with the rule copied in, placeholders included).
+- **Checks:** each justified repo-specific check beyond the template's two standing ones, at a planning average of 36
+  words. That average was taken from a small sample in Astra's size review
+  (`explorations/2026-10-05-skills-size-review-astra.md`); it is not a limit.
+- **Pointers:** the words of the filled-in "Where things live" values.
+- **Commands:** the words of repo-specific commands not already in the template.
+
+The budget is the common contract, plus 36 for each check, plus the pointers, plus the commands. Report the actual
+size and each of these terms. Remove duplication first. If justified coverage still exceeds the budget, keep it and
+explain the excess. Never cut required coverage to meet an estimate.
 
 ## Steps
 
 1. Record the work in the repo's current-state file.
-2. Check the inputs are complete.
+2. Check the inputs are complete, and act on the guard decision.
 3. Write or update the guard to the contract.
 4. Review before handing over:
+   - the guard carries "Modes and safety", and binds its baseline;
    - every proposed patch against the open questions, so none quietly settles one;
    - every repair instruction against authorised intent;
    - the size against the budget.
@@ -131,12 +149,10 @@ duplication or narrowing scope, never silent truncation.
 
 In plan mode, follow the same steps but edit nothing, and list the files build mode would change.
 
-## Safety
-
-Never commit or push unless asked. Never read or print secrets. Leave unrelated changes alone. Commit no workflow
-logic into vendor-specific agent folders such as `.claude/` or `.cursor/`.
-
 ## Output
 
-What was supplied or found; the guard's path, size and J, or the bootstrap verdict; doc references added; validation
-run; open questions the guard leaves visible; the handoff to `guards-integrator`.
+- What was supplied or found.
+- The guard decision, and the guard's path, size and budget terms, or the bootstrap verdict.
+- Doc references added, and validation run.
+- Open questions the guard leaves visible.
+- The handoff to `guards-integrator`.

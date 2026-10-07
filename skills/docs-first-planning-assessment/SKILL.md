@@ -12,8 +12,9 @@ work happens across repeated human and agent sessions. It does not write guards:
 `skills/session-coherence-skill-generator/SKILL.md`.
 
 Not for code-first systems (use `skills/entropy-assessment/SKILL.md`), one-off documents with no recurring loop, or
-placing an existing guard (use `skills/guards-integrator/SKILL.md`). Its assessment follows the output rules in
-`entropy-assessment`: one findings list, with ids.
+placing an existing guard (use `skills/guards-integrator/SKILL.md`). It follows "Called for analysis only" and "Rules
+along the whole route" in `entropy-assessment`: it inherits the caller's mode, keeps one findings list with ids, and
+limits every correction by its evidence.
 
 ## Step 1: Intent and horizon
 
@@ -48,9 +49,9 @@ anchor the fix. This matrix gives the common risks, what drift looks like, and t
 
 | Risk | What drift looks like | Guard check |
 |---|---|---|
-| **Parallel truth** | Two documents are each complete about one concept, or the same decision, status or convention is kept in several files. | When a change touches something two documents describe, decide which owns it and reduce the other to a link. Keep summaries, generated projections and independent tests of the same contract. |
+| **Parallel truth** | Two documents are each complete about one concept, or the same decision, status or convention is kept in several files. | Apply the one-owner rule (`entropy-assessment`, "Rules along the whole route"). |
 | **Local-global inversion** | Component notes restate system-wide truth in full. | Local notes record only local implications. |
-| **Superseded material nearby** | Old or imported documents sit by live truth, half-marked, easy to revive. | Before recreating anything to fix a reference, check whether it was superseded in `DECISIONS.md` or the state file. |
+| **Superseded material nearby** | Old or imported documents sit by live truth, half-marked, easy to revive. | Before restoring a deleted artifact, reviving an old concept or recreating a reference target, check whether the decision owner or the state file records its supersession. |
 | **Stale references** | Changed paths, names or links. | Search for each old name; links to a link checker. |
 | **Lost decisions and learnings** | Choices and gotchas that live only in sessions. | Did this session produce a decision or a learning? Record it. |
 | **State dishonesty** | `TODO.md`, roadmaps or handoffs no longer match reality. | Does the state file match reality, and do the other mentions of each changed claim agree? |
@@ -60,7 +61,8 @@ anchor the fix. This matrix gives the common risks, what drift looks like, and t
 ## Step 5: Bring the current-state file up to date
 
 Update the repo's **existing** state file, the one the loop map shows is read first. Never add a competing summary. If
-there is none, create the smallest one (`session-coherence-skill-generator`'s `bootstrap.md`). It holds:
+there is none, create the smallest one, using `session-coherence-skill-generator`'s `bootstrap.md` for that one surface.
+It holds:
 - the current stage;
 - the canonical documents to trust first;
 - settled decisions, linked to where they are recorded;
@@ -85,15 +87,18 @@ Deliver these, from one findings list:
 - one-time cleanup, each item verified against the current file;
 - the state-file update, as a patch or the files changed.
 
-For assessment only, stop here. A reference-only or retired repo usually needs no new guard.
+## Step 7: The guard inputs
 
-## Step 7: Supply the generator
+This step is part of the analysis, so it runs even for an assessment only.
 
 1. List the existing guard surfaces (guards, instruction files, hooks, templates) as keep, amend, replace or demote.
    Prefer refining a sound existing guard.
 2. Write the matrix's checks against this repo's actual files.
-3. Run `session-coherence-skill-generator` with the intent section, the truth and loop maps, those checks and the guard
-   surfaces. Then run `guards-integrator`.
+3. Make the guard decision (`none`, `bootstrap`, `create` or `update`), as in `entropy-assessment` Step 3. A
+   reference-only or retired repo usually needs `none`.
+
+Then, if another skill called this one, return the assessment and these inputs to it. Otherwise, for `create` or
+`update`, hand them to `session-coherence-skill-generator`, which hands on to `guards-integrator`.
 
 Track cleanup in `TODO.md` or a handoff note, never in the guard itself.
 

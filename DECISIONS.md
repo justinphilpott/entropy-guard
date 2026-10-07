@@ -15,6 +15,16 @@ Record architectural choices so future you (and agents) understand why.
 
 Kept intact: the intent distinctions, the staged/unstaged and untouched-consumer traps, adoption evidence, and the one-findings-list rules.
 **Impact**: The library falls from 9,729 to 5,448 words (target about 5,200); a docs-first route loads about 4,450, a mixed route about 3,950; this repo's guard falls from 1,644 to 604 words. The cut is checked against the skills at `daee846` on the existing cases and the critique's next checks (`explorations/2026-10-07-size-cut-eval.md`).
+**Amended**: 2026-10-07, after Astra's adversarial review of the cut (`explorations/2026-10-07-size-cut-review-astra.md`, 10 findings, all verified to hold), fixed under Justin's `astra-review` rule:
+- **Guards' own safety:** generated guards carry their own "Modes and safety" section and bind their baseline commit explicitly.
+- **The analysis contract:** the front door defines one "Called for analysis only" contract, which inherits the caller's mode, returns before generation, and returns the guard decision (`none`, `bootstrap`, `create`, `update`). `none` is allowed for an active system that needs no change, and one caller owns each handover.
+- **Bootstrap:** `bootstrap.md` serves both a young repo and a single missing surface.
+- **Adoption evidence:** the integrator reports each mechanism as a reminder, an executed check or an enforced invariant, each with its own evidence, and weighs a guard's cost against its trigger.
+- **Rules defined once:** the one-owner rule and the rule that every correction is limited by its evidence are each defined once, at the front door, with generated guards carrying a copy.
+- **Supersession:** the check covers restoring, reviving and recreating.
+- **The guard budget:** its terms are counted once each, against a measured 706-word common contract, and it never cuts justified coverage.
+
+The library grows to 6,364 words: about 750 words of restored obligations, which Astra's review said belong in the budget.
 
 ---
 

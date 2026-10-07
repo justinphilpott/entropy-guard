@@ -54,8 +54,8 @@ Most answers will be "nothing to do".
    - Does each concept still have one home? If two docs describe it, decide which owns it and reduce the other to a
      link. A summary or an independent check of the same contract is not a redundant copy: keep it.
    - Are any links, paths or names now stale? Search for the old name.
-   - Before recreating something to fix a broken reference, check whether it was deliberately superseded in
-     `DECISIONS.md`.
+   - Before restoring a deleted file, reviving an old concept or recreating a reference target, check whether
+     `DECISIONS.md` or `TODO.md` records its supersession.
 6. **Placeholders and state.** Fill or remove any placeholder your work now answers. Clear "Doing Now" in `TODO.md`,
    tick finished items, and add anything this work surfaced.
 

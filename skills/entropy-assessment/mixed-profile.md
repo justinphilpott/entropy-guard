@@ -21,9 +21,9 @@ Skip this for a single repository.
 Check each of these with evidence:
 
 - **Docs against implementation:** settings, commands, paths and identifiers named in prose that the code no longer
-  reads or provides. Search the code for each one. When a correction rewrites a list of capabilities or boundaries,
-  such as what the system reaches, launches or stores, search the code for every member of that kind, not only the
-  one that prompted the edit.
+  reads or provides. Search the code for each one. Any correction follows "Every correction is limited by its
+  evidence" in `SKILL.md`: for a list of what the system reaches, launches or stores, search for every member of that
+  kind, including what it delegates.
 - **Docs against docs:** state and handoff files that contradict themselves or each other.
 - **Tests against implementation:** tests that exist but never run, or that test a different representation from the
   one used in practice.

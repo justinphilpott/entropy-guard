@@ -1,8 +1,14 @@
-# Bootstrap mode for young repositories
+# Bootstrap: the smallest missing memory
 
-Read this only when the target is a young repository: it has started to accumulate real work, but has no stable place
-to keep its context between sessions. Bootstrap mode adds the smallest missing memory, and does not build a guard
-until there is a repeated loop to guard.
+Read this in two cases:
+- **A young repository,** which has started to accumulate real work but has no stable place to keep its context
+  between sessions. Bootstrap adds the smallest missing memory, and builds no guard until there is a repeated loop
+  to guard.
+- **An established repository missing one surface,** when an assessment needs a state file or decision log that does
+  not exist. Assess and add only that surface, then return to the caller.
+
+Inherit the caller's operating mode. In plan, audit-only or discuss-first mode, propose the files; in build mode,
+create them.
 
 ## Signals that it applies
 
@@ -17,7 +23,7 @@ until there is a repeated loop to guard.
 - Prefer one small file or section to several new process documents.
 - Classify each missing surface as **Needed now**, **Soon** or **Premature**. Absence is evidence, but not every
   absence is a gap to fill.
-- In build mode, create only the **Needed now** surfaces unless the owner approves more.
+- Even in build mode, create only the **Needed now** surfaces unless the owner approves more.
 
 ## The ladder, in order
 
@@ -35,3 +41,5 @@ until there is a repeated loop to guard.
 - Missing surfaces, as **Needed now**, **Soon** and **Premature**.
 - The minimal patch, or the files created in build mode.
 - A guard-readiness verdict, `not yet`, `soon` or `ready now`, with the event that would make a guard worth building.
+  Return it to the caller: `ready now` lets the caller go on to build a guard; `not yet` and `soon` end guard
+  construction.

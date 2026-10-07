@@ -25,9 +25,13 @@ Record decisions and directives even when their author or date is unknown, and k
 attribution does not make a statement an inference, or mean there is no usable intent. If nothing says who the
 steward is, that is a finding.
 
-Read every existing guard's repair instructions against [`intent-change-rule.md`](intent-change-rule.md). An
-instruction to edit intent documents to match the work, or to keep two copies of one thing in step ("update both"),
-is a path for unauthorised drift: record it as a finding, quoting the line.
+Read every existing guard's repair instructions against [`intent-change-rule.md`](intent-change-rule.md), quoting the
+line for each finding:
+- **Intent:** flag any repair that treats the work as permission to change authorised intent, such as "update
+  INTENT.md to match". These are paths for unauthorised drift.
+- **Ownership:** flag separately any repair that keeps two independent definitions of one concept in step, such as
+  "update both". Apply the one-owner rule in `SKILL.md`'s "Rules along the whole route": summaries, generated
+  projections and independent tests are not competing definitions.
 
 ## 2. Compare three readings
 
@@ -76,7 +80,8 @@ Ask only when the evidence cannot settle a gap **and** the answer changes what g
   source and date. Recording it is not deciding it again.
 - **Proposed intent changes** are recorded there too, marked as awaiting the steward. Intent documents change only after
   the steward's recorded decision.
-- **No new register.** Add a decision log only if there is none, the smallest one (the generator's `bootstrap.md`).
+- **No new register.** Add a decision log only if there is none: the smallest one, using the generator's `bootstrap.md`
+  for that one surface.
 - **No usable intent at all:** stop guard work, report what could still be inventoried, and recommend an
   intent-elicitation interview, such as an `intent-architect`-style skill.
 

@@ -43,6 +43,9 @@ any uncertainty.
    - **Output:** where the result is recorded.
    - **Escalation:** what happens to a gap too large to fix in the current change.
    - **Ordering:** whether it runs before, after or alongside the other guards.
+
+   Estimate each guard's execution cost against how often its trigger fires. If the cost does not fit the real loop,
+   move the trigger, or move stable mechanical checks into existing tooling.
 3. **Choose the depth of each check.** Keep judgment in the guard, and move stable mechanics into tooling as soon as
    the system supports it. The depths are:
    - **External:** a skill run by hand.
@@ -55,16 +58,26 @@ any uncertainty.
 4. **Make it visible to agents.** Put the guard in their standing instructions and in the task's completion
    criteria, choosing the smallest change that a fresh agent will meet at the right moment.
 5. **Verify adoption.** A guard counts as adopted only when both of these hold:
-   - **Its trigger has fired once.** See the hook or check run on a real or scratch commit, the CI step on a pull
-     request, or one scheduled run's output.
+   - **It has run once at its trigger,** shown by a completed guard report. A reminder firing shows only that the
+     reminder works.
    - **A fresh agent session finds it.** Ask a session with no context what it must do before handing off. Check
      each distinct way agents load instructions here; a pointer from an instruction file counts even when skills do
      not load automatically.
 
-   Keep to the invocation's mode. If exercising a trigger needs an unapproved commit or push, report it `planned`;
-   giving advice does not authorise either. Keep configuration evidence apart from execution evidence: "the hooks
-   path points at `.githooks/`" is not "the hook ran". For an enforced invariant, record a permitted failing case
-   that was refused.
+   Report each mechanism with these four things:
+   - **what it is:** a reminder, an executed check, or an enforced invariant;
+   - **its status:** `verified`, `planned` or `unknown`;
+   - **its evidence;**
+   - **the date.**
+
+   Each kind of mechanism needs its own evidence:
+   - **A reminder** is verified by seeing it fire.
+   - **An executed check** is verified by an actual guard result.
+   - **An enforced invariant** is verified by a permitted failing case that was refused.
+
+   Keep configuration evidence apart from execution evidence: "the hooks path points at `.githooks/`" is not "the
+   hook ran". Keep to the invocation's mode. If gathering evidence needs an unapproved commit or push, report the
+   mechanism `planned`; giving advice does not authorise either.
 6. **Plan the rest.** Use only the horizons with a justified next action: Now, with what exists today; Next, light
    prompting or automation; Later, stable mechanical checks moved into existing CI, schemas, types or a scheduler.
    Link each gap that already has an issue or decision to it, rather than starting parallel work.
@@ -79,8 +92,10 @@ A brief that refers to the assessment's findings by id. Leave out any section wi
   result in the commit message / large gaps to TODO.md
 
 ## Adoption
-- `session-coherence-guard`: reminder (pre-commit hook) + check that runs (agent at session end);
-  verified 2026-10-05: hook fired on a scratch commit; a fresh session named the guard and its path
+- pre-commit reminder: reminder; verified 2026-10-05, fired on a scratch commit
+- `session-coherence-guard`: executed check; verified 2026-10-05, run at session end, report in the commit message
+  of `a1b2c3d`; a fresh session named the guard and its path
+- CI link check: enforced invariant; planned (finding F7)
 
 ## Plan
 - Now: link the guard from AGENTS.md (finding F3)
