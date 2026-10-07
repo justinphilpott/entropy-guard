@@ -1,0 +1,194 @@
+Proposed changes to agentic-architecture, from the entropy assessment of 2026-10-07 (assessment.md).
+Not applied: the target was a read-only snapshot. Apply from the repository root with `git apply`.
+
+Applying any of this needs the steward's explicit authorisation, because AGENTS.md's reference-only notice forbids
+changes without it. See questions Q1-Q3 in questions.md.
+
+What each file's change rests on:
+- DECISIONS.md: records a PROPOSAL awaiting the steward (Q1). It decides nothing. Open-question registry text is
+  unchanged.
+- ROADMAP.md: the current-state file update (docs-first Step 5). States the status as awaiting confirmation and lists
+  Q1-Q3 without answering them.
+- architecture/INDEX.md: a contradictory state pointer, fixed as usual (finding F10). It points at the orchestration
+  snapshot's Under Review list for the seam probe, where that item already is; F7 (which document owns open
+  questions) stays open.
+- components.yaml: stale paths, fixed as usual (F18), from DECISIONS.md "Local directory structure" (2026-04-04,
+  updated 2026-04-28) and SCOPES_PLANNED.md's "tools" scope. Whether those directories exist on disk was not checked.
+- AGENTS.md, skills/entropy-guard.md, skills/session-kickoff.md: demotion of the existing guard surfaces. Apply ONLY if
+  the steward answers Q1 "reference-only". If Q1 is answered "active", drop these three files' changes and the
+  ROADMAP.md status section, and run session-coherence-skill-generator for an `update` instead.
+
+Open questions touched, with their text left unchanged: Q1, Q2, Q3; F7.
+
+diff --git a/AGENTS.md b/AGENTS.md
+index 431a9ef..0445def 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -35,6 +35,7 @@ These are the current settled positions: a high bar to re-open, not to be reliti
+ 
+ ## Session start
+ 
++0. Read the reference-only notice above and the status section at the top of ROADMAP.md. Unless the steward has explicitly authorised a change to this repository, read for reference only and stop before step 6: do not choose next work from this repository.
+ 1. Check ROADMAP.md — know what version we're on and what's being worked towards
+ 2. Read MODEL.md — understand the system model and component relationships
+ 3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+diff --git a/DECISIONS.md b/DECISIONS.md
+index db83772..d6dcf19 100644
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -872,6 +872,20 @@ Operational rule: when a discussion turns into "this doc says X but that doc say
+ 
+ ---
+ 
++### Proposed 2026-10-07 — agentic-architecture is reference-only *(awaiting the steward; not decided)*
++
++The notices at the top of README.md and AGENTS.md, undated and unattributed, say this repository is reference-only:
++current Personal Agent architecture lives in `../personal-agent`, the current Scope and Project model lives in
++`../../scope`, and decisions here are not current authority. No entry in this log records that change, and this
++entry does not decide it. An entropy assessment proposed it on 2026-10-07 so that the status has a place in this log.
++
++If the steward confirms it, replace this paragraph with the decision, its date and its author. It would supersede
++the part of "Five layers clarify blueprint, release, installation, runtime, and live state" (2026-04-23) and of
++"Level 2 distribution source lives in `agentic-architecture-distribution`" (2026-05-14) that names this repository as
++the current design source.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+diff --git a/ROADMAP.md b/ROADMAP.md
+index 05689fc..1464d35 100644
+--- a/ROADMAP.md
++++ b/ROADMAP.md
+@@ -1,5 +1,28 @@
+ # Roadmap — Current Named Version
+ 
++## Status — read this first
++
++Checked 2026-10-07 against this repository's own files. Refresh this section when the steward decides the
++repository's status; whoever records that decision refreshes it.
++
++- **Reference-only, awaiting the steward's confirmation.** The notices at the top of README.md and AGENTS.md (undated,
++  unattributed) say this repository is no longer current architecture authority. DECISIONS.md does not record that
++  change yet: see its proposed entry "agentic-architecture is reference-only". While the notice stands, the unchecked
++  items below are not active work.
++- **Current authority, per those notices:** `../personal-agent` and `../../scope`. Not checked from here.
++- **Trust first, as history:** [DECISIONS.md](DECISIONS.md), [architecture/INDEX.md](architecture/INDEX.md) for
++  orchestration anatomy, and [components/temporal-coordinator/SPEC.md](components/temporal-coordinator/SPEC.md) for the
++  temporal coordinator.
++- **Misleading material nearby:** [architecture/PICKUP.md](architecture/PICKUP.md) is superseded (2026-07-26);
++  RUNTIME.md's "Runtime gateway (unified for v0)" predates the 2026-07-16 seam decomposition; the Backlog's
++  "Scheduling" and "First scheduled pipeline" lines predate the 2026-07-26 temporal coordinator V0 decision.
++- **Open questions for the steward:** Is the reference-only status confirmed? Should the remaining stale text be
++  corrected, or the repository left frozen? Should the unpromoted findings of runs 001-003 be carried to the successor
++  repositories? Architectural open questions: [DECISIONS.md — Open Questions](DECISIONS.md#open-questions) and the
++  orchestration snapshot's Under Review list.
++- **Next actions:** (1) the steward confirms or reverses the status in DECISIONS.md; (2) the steward decides whether
++  stale text is corrected; (3) check the successor repositories for the runs 001-003 findings.
++
+ ## Current named version: Sol 0.1 — Blueprint
+ 
+ - [x] Architecture blueprint and design values articulated
+diff --git a/architecture/INDEX.md b/architecture/INDEX.md
+index 15ce070..2a9cfcc 100644
+--- a/architecture/INDEX.md
++++ b/architecture/INDEX.md
+@@ -12,9 +12,9 @@ This is a loose guide, not a validation system — bend it when clarity wins.
+ |---|---|---|
+ | orchestration | v1 | [2026-07-16-orchestration](snapshots/2026-07-16-orchestration/ARCH.md) |
+ 
+-## Current Pickup
++## Pickup
+ 
+-Next architecture work starts at [PICKUP.md](PICKUP.md): resolve the scope-manager / platform-runtime seam boundary before pinning ingress and capability contracts.
++[PICKUP.md](PICKUP.md) is marked a superseded historical pickup point (2026-07-26). Its open probe, the scope-manager / platform-runtime seam boundary, remains in the orchestration snapshot's Under Review list.
+ 
+ ## Snapshot Rules
+ 
+diff --git a/components.yaml b/components.yaml
+index 004f671..ebfa9b5 100644
+--- a/components.yaml
++++ b/components.yaml
+@@ -32,7 +32,7 @@ components:
+   scope:
+     status: in-progress
+     design: components/scope
+-    implementation: ../scope
++    implementation: ../../scope
+     role: Authorization primitive; resource grouping, membership, policy
+ 
+   agent:
+@@ -48,37 +48,37 @@ components:
+ 
+   library:
+     status: exploratory
+-    repo: ../library
++    repo: ../../library
+     role: Reusable agent skills
+ 
+   seed:
+     status: exploratory
+-    repo: ../seed
++    repo: ../../seed
+     role: Project bootstrapping
+ 
+   entropy-guard:
+     status: exploratory
+-    repo: ../entropy-guard
++    repo: ../../entropy-guard
+     role: Coherence tooling for fast-iterating systems
+ 
+   entropy-immune-system:
+     status: exploratory
+-    repo: ../entropy-immune-system
++    repo: ../../entropy-immune-system
+     role: Coherence research
+ 
+   git-sync:
+     status: exploratory
+-    repo: ../git-sync
++    repo: ../../git-sync
+     role: Multi-machine dev sync
+ 
+   flowbook:
+     status: exploratory
+-    repo: ../flowbook
++    repo: ../../flowbook
+     role: Audio pipeline application
+ 
+   flowvoice:
+     status: exploratory
+-    repo: ../flowvoice
++    repo: ../../flowvoice
+     role: Voice layer application
+ 
+   agentic-colab:
+diff --git a/skills/entropy-guard.md b/skills/entropy-guard.md
+index 6442f34..0b3e23d 100644
+--- a/skills/entropy-guard.md
++++ b/skills/entropy-guard.md
+@@ -9,6 +9,11 @@ system_snapshot: "Current named version: Sol 0.1. Blueprint repo with component
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Status (proposed 2026-10-07, awaiting the steward):** this repository is reference-only per the notice in
++> AGENTS.md. Run this guard only on a change the steward has explicitly authorised, and fix only what that change
++> touched. The `system_snapshot` and `last_evaluated` above date from 2026-04-27, before the 2026-07-16 snapshot
++> decision and the 2026-07-26 temporal coordinator V0 decision; read them as historical.
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+diff --git a/skills/session-kickoff.md b/skills/session-kickoff.md
+index c4b603f..c1c1393 100644
+--- a/skills/session-kickoff.md
++++ b/skills/session-kickoff.md
+@@ -16,6 +16,7 @@ This skill exists to stop fresh sessions from starting cold with "what's next?"
+ - For a tiny, explicit edit where the relevant file is already known
+ - Mid-session when the current-state packet is still fresh and the work has not shifted
+ - As a substitute for the entropy guard at commit time
++- When no change to this repository has been explicitly authorised: it is reference-only (see the notice in AGENTS.md)
+ 
+ ## Canonical Inputs
+ 

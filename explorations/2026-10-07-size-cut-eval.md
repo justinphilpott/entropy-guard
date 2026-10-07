@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: final candidate under test (Round 5)
+status: round 5 failed on K21; round 6 under test
 ---
 
 # Test of the size cut against the skills it replaced
@@ -158,9 +158,12 @@ The baseline's round-1 run did not.
 The fix (`29e629d`): before a correction rewrites a list of capabilities, search the code for every member of that
 kind. Round 4 re-tests R1 twice on it.
 
-### Round 4
+### Round 4: the fix at `29e629d`, R1 twice
 
-*Pending.*
+Not blind-scored. On 7 October the coordinating session checked one point by hand: both runs, R1-cut4a and R1-cut4b,
+include ORC's Playwright browser when they rewrite ORC's network reach. Three of the five earlier cut runs had left it
+out. The final candidate superseded this revision before it could be scored on the full key, so round 5 carries the
+verdict.
 
 ### Verdict so far (corrected on 2026-10-07 after Astra's review)
 
@@ -209,3 +212,79 @@ run of that case. A partly met item counts as a loss. Items the baseline did not
   or an enforced invariant. It never reports an executed check as verified without an actual guard result.
 - **K33 (all guards). The guard's safety and baseline.** Every generated guard has a "Modes and safety" section, and
   binds its baseline commit rather than leaving `$START` unset.
+
+#### Round 5 results
+
+Scored on 7 October against the key alone. There is one version in this round, so there is nothing to blind. The
+scorers' reports are in `scores/round5-R1.md`, `scores/round5-R2-R3-R5.md` and `scores/round5-R4.md`. R1-final-a was
+still writing files when its scorer started; the scorer reports that it scored the final files, and its quotes match
+them.
+
+| Run | Total | Gate items missed | Questions (failing) | Wrong findings | Consequential extras |
+|---|---|---|---|---|---|
+| R1-final-a | 13.5 of 14 | none | 4 (1) | 2 | 0 |
+| R1-final-b | 12.5 of 14 | **K21** | 5 (1) | 1 | 2 |
+| R2-final-a | 7 of 8 | none | 4 (1) | 0 | 1 |
+| R2-final-b | 7.5 of 8 | none | 3 (0) | 0 | 0 |
+| R3-final | 5 of 5 | none | 3 (0) | 0 | 0 |
+| R4a to R4e, and the guard | 14 of 14 | none | – | – | – |
+| R5-final | 2 of 2 | none | 5 (1) | 0 | 0 |
+
+**Verdict under the pass rule: the final candidate fails, on K21 in R1-final-b.** Every other item the baseline met
+is met in every run.
+
+**What failed.** R1-final-b's `orc.patch` holds the corrections the run says the evidence settles. One hunk rewrites
+the opening of ORC's `README.md` to say that ORC sends notices to "its own and approved packages'" ntfy topics, and
+that packages' connectors "reach further, each under its own approval". The run's own Q1 asks whether package ntfy
+notices were authorised, and its Q2 lists "the README intro's description of package connectors" as depending on the
+answer. The run named both questions as touched by the hunk, then left it in the settled patch. The same hunk files
+the browser under packages, though ORC launches it in its own process, and leaves out Pi's calls to its model
+provider: the misstated network reach of rounds 1 to 3, in a milder form. R1-final-a put its equivalent changes in a
+separate patch marked "PROVISIONAL … Do not apply until Justin has confirmed", and met K21.
+
+**This is a missing system, not an instance.** K21 has failed in three of the seven cut runs scored on it (round 1,
+R1-cut2b, R1-final-b). Each fix before this one added an instruction to judge whether a patch settles a question,
+and the judgement is where it fails: in the latest failure the run had already named the questions its hunk touched.
+Nothing acted on that naming. The missing piece is a sorting rule that does.
+
+**Recorded, not gates:**
+- **Both R1 runs report boundary extensions as having no recorded decision,** though the code quotes the operator for
+  two of them: `src/app/orc-restart.ts:11` (orchestrator#101, 28 September) and `src/adapters/scope-credentials.ts:14`
+  (28 September). The intent pass sent runs to documents, decision logs, state files and instruction files only.
+- **K10 is the weakest item in every version:** 0 and 0.5 here, 0 for the baseline.
+- **K32 is partly met in R1-final-a:** it classes Danger as an enforced invariant, though without GitHub Pro a failed
+  Danger check only warns.
+- **R3's K30 was scored met for zero handovers,** which is right for a `none` decision. The item's "once" should have
+  read "at most once".
+- **The baseline was run once per case in round 1; the candidate runs twice.** The rule holds the candidate to every
+  run, so it is the stricter test. That does not change the verdict.
+
+### What was changed after round 5
+
+- **K21:** proposed changes are sorted by whether they touch an open question. A change touches one if it edits the
+  question's text, or states as fact what the question asks. Those go in a separate patch marked provisional, naming
+  each question, not applied until the steward answers. The rule lives in `entropy-assessment`'s "Rules along the
+  whole route"; the generator's review step and the intent pass's "Steward absent" line point at it.
+- **Absent decisions:** before reporting that nothing records a decision, the intent pass searches the code and commit
+  messages around the thing in question.
+- **A stale reference:** the front door named the generator's "Before writing" section, which is now "Inputs, and the
+  guard decision".
+
+Size: 93 words more across three files (front door 1,013 to 1,067; intent pass 990 to 1,020; generator 1,300 to
+1,309).
+
+### Round 6: the fix after round 5 (key written before any run)
+
+**Runs:** R1 twice, R2 twice and R3 once. R4 and R5 are not re-run, because the change touches neither the guard
+template nor the route to the generator.
+
+**The pass rule:** as in round 5. Every key item the baseline met in round 1 is met in every run of its case. K21 in
+both R1 runs is the item under test.
+
+**Clarified before the runs:** K30 reads "at most once, and exactly once when the guard decision is `create` or
+`update`".
+
+**Added, reported and not a gate:**
+- **K34 (R1). An absent decision is checked in the code.** The run does not claim that nothing records the decision on
+  ORC's restart service or on keeping logins with each Scope. It cites `src/app/orc-restart.ts:11` or
+  `src/adapters/scope-credentials.ts:14`, or makes no claim of absence.

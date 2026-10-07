@@ -140,7 +140,8 @@ explain the excess. Never cut required coverage to meet an estimate.
 3. Write or update the guard to the contract.
 4. Review before handing over:
    - the guard carries "Modes and safety", and binds its baseline;
-   - every proposed patch against the open questions, so none quietly settles one;
+   - every proposed patch, sorted as `entropy-assessment`'s "Rules along the whole route" requires: nothing in a
+     settled patch touches an open question;
    - every repair instruction against authorised intent;
    - the size against the budget.
 5. Mention the guard in the operator docs, if the repo's workflow documents its guards.

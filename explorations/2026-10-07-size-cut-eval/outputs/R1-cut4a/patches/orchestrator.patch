@@ -1,0 +1,122 @@
+Proposed corrections to ORC's documentation (repository: orchestrator). Not applied: the target is a read-only
+snapshot. Apply from the repository root with `git apply` or `patch -p1`. Findings are in ../assessment.md.
+
+Every file here is on Danger's guarded list, so the pull request needs a `## Security review` section:
+"No new authority; documentation brought in line with code and recorded decisions."
+
+Each hunk, and what authorises it:
+- README.md, first paragraph (F11): two documents described one thing; README now links to AGENTS.md's list.
+- README.md, Bookwhen token paragraph (F12): AGENTS.md's own rule that domain code belongs to the Scope
+  (Justin, 2026-09-12 and 13) and test/architecture.test.ts, which refuses the Bookwhen client.
+- README.md, "without applying it" (F13): Justin's decision of 2026-09-17 (lab decisions/), Consequences.
+- README.md, "Deliberately absent" (F13): the same decision settles scheduling only. "reminders" and
+  "workflow execution" are left unchanged: open question Q4.
+- AGENTS.md, subprocess paragraph (F14): adds src/adapters/orc-service.ts (orchestrator#101), which the
+  architecture test already confines.
+- AGENTS.md, network paragraph (F14, F12): adds the in-process browser (Justin, 3 Oct, "lets use the library",
+  lab reports/2026-10-03-browser-stack-prior-art.md:76); replaces the missing src/bookwhen.ts sentence.
+- SECURITY-REVIEW.md, "Which changes ask for this" (F19): reduces a restated, incomplete path list to a link
+  to dangerfile.js's GUARDED list.
+
+Open questions this patch touches, with the text each is about left unchanged:
+- Q4: README's "reminders" and "workflow execution" stay in the "Deliberately absent" list.
+- Q5: README's credentials paragraph ("A credential is read in exactly one place ... No subprocess ORC
+  launches receives one") is not edited.
+- Q2: AGENTS.md's core-ties paragraph ("a count may only fall") is not edited.
+
+--- a/README.md
++++ b/README.md
+@@ -2,9 +2,8 @@
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+ adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++isolated fixed researcher child for each public-web research invocation. What else it reaches and
++launches is listed, with the module that owns each, in [AGENTS.md](AGENTS.md).
+ 
+ ## Direction
+ 
+@@ -73,10 +72,10 @@
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++Open-Friday queries (`list_open_fridays`) come from an approved Scope package; until one is approved
++the tool answers that it is unavailable (`src/runtime.ts`). ORC holds no Bookwhen client:
++`test/architecture.test.ts` refuses `@jphil/bookwhen-client` as a dependency or an import, because
++domain code belongs to the Scope that needs it ([AGENTS.md](AGENTS.md)).
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ ORC discovers agent definitions from each Scope's `agents/` directory; later entries override
+@@ -144,14 +143,17 @@
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+ open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++a code-selected Bookwhen admin entry and calculate a slot-change plan; applying one is durable work
++that waits for the operator's approval card (Justin's decision of 2026-09-17, in the
++orchestration-lab Scope's `decisions/2026-09-17-async-work-architecture.md`). It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++additional external data sources, workflow execution, sandboxes, shell access, and file edits.
++Scheduling was decided on 2026-09-17 (the same decision): durable work runs now, at a time, or on a
++recurring schedule.
+ 
+ ## Pi
+ 
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -91,16 +91,23 @@
+ 
+ Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+ code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
++code-fixed read-only `git log` without a shell, `src/adapters/mcp/client.ts`,
+ which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++server, and `src/adapters/orc-service.ts`, which for the restart card runs git's read
++commands in ORC's own checkout, a frozen-lockfile pnpm install, the build, and
++`systemctl --user restart orc.service` (orchestrator#101). `test/architecture.test.ts`
++holds the same four. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+ Direct network access exists only in `src/core/research-tools.ts`, for
+ read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+ ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++sends only a title, the notice's summary and the one configured tap address.
++`src/adapters/browser/playwright.ts` drives one headless Chromium per browser session
++in ORC's own process, kept to the hosts its grant names (Justin, 3 Oct 2026, "lets use
++the library", orchestrator#76; the orchestration-lab Scope's
++`reports/2026-10-03-browser-stack-prior-art.md`). ORC imports no Bookwhen client:
++`test/architecture.test.ts` refuses `@jphil/bookwhen-client`.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+--- a/SECURITY-REVIEW.md
++++ b/SECURITY-REVIEW.md
+@@ -176,9 +176,10 @@
+ 
+ ## Which changes ask for this
+ 
+-Everything under `src/`, plus AGENTS.md, this file, the architecture test, and
+-the check itself (`dangerfile.js`, `.github/`, `.githooks/`). A short exemption
+-list in `dangerfile.js` covers paths known not to change what an agent can reach.
++The paths listed in `GUARDED` in `dangerfile.js`, which is the one list; it
++starts with everything under `src/`, and `test/architecture.test.ts` checks it
++still holds `src/` and every checker. The `EXEMPT` list beside it covers paths
++known not to change what an agent can reach.
+ 
+ That way round on purpose: a new directory under `src/` is guarded the day it
+ appears, rather than the day someone remembers to add it. Adding to the

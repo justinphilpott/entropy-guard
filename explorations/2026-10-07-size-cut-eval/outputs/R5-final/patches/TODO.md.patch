@@ -1,0 +1,38 @@
+Patch to TODO.md, the state file (docs-first Step 5; generator Step 1). Plan mode: not applied.
+Open questions it touches: Q1-Q5. It records them with recommendations and leaves the text they are about
+(INTENT.md preamble, AGENTS.md line 27, INTENT.md "The guard lifecycle", README.md) unchanged.
+Apply from the repository root with: git apply TODO.md.patch
+
+--- a/TODO.md
++++ b/TODO.md
+@@ -2,6 +2,20 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current State
++
++Checked 2026-10-07 against the repository's files. Refresh it in the report step of `skills/local/entropy-guard/SKILL.md` at the end of each session. It goes stale when a skill under `skills/` is added, renamed or changes its handoffs, or when an open question below is answered.
++
++- **Stage**: active. External validation on docs-first planning repos is next (`INTENT.md`, "Scope boundary and next validation loop").
++- **Trust first**: `INTENT.md` for purpose and guard principles; `DECISIONS.md`, newest first; each `skills/*/SKILL.md` for its own contract; `AGENTS.md` for working practice. `README.md` and `AGENTS.md` "Key Files" summarise these.
++- **Open questions for the steward** (raised 2026-10-07 by an entropy assessment; each answer goes to `DECISIONS.md`):
++  - Q1. Who is the steward, whose recorded decisions authorise a change of intent? No file names one. Recommended: Justin Philpott, owner of `github.com/justinphilpott/entropy-guard`.
++  - Q2. Does the `INTENT.md` preamble ("meant to be refined collaboratively — by humans and AI agents") let an agent change `INTENT.md` without a recorded steward decision? `AGENTS.md` "Consult INTENT.md for significant decisions" says to update it. Recommended: no; see the proposal in `DECISIONS.md`.
++  - Q3. Which skill writes guards: `session-coherence-skill-generator`, or Phase 2 of `docs-first-planning-assessment`? `INTENT.md` "The guard lifecycle" gives the role to the assessment workflow and does not mention the generator. Recommended: the generator; see the proposal in `DECISIONS.md`.
++  - Q4. Is this repo bound by a user-wide instructions file or another policy it does not own? Recommended: if so, link it under "Rules owned elsewhere" in the local guard.
++  - Q5. Which measure does the validation batch track: more merged PRs (`DECISIONS.md`, "Farm broader entropic-immunity exploration") or clearer session recovery and fewer reintroduced stale ideas (`INTENT.md`)? Recommended: record which, before the batch starts.
++- **Misleading nearby**: `DECISIONS.md` and `LEARNINGS.md` entries that describe `entropy-assessment` with "Phase 1/Phase 2", "Step 8", domain appendices or four domain generators describe shapes that no longer exist. `explorations/` is historical; that theory continues in `entropy-immune-system`. `doc-health-check` and `distill-article` are named but are not in this repo.
++
+ ## Doing Now
+ 
+ [empty]
+@@ -17,4 +31,8 @@
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)
+-- [ ] Create `doc-health-check` skill (referenced in local/entropy-guard/SKILL.md but doesn't exist yet)
++- [ ] Create `doc-health-check` skill (a full audit of informational coverage; does not exist yet)
++- [ ] Remove the "FlowBook" references from `skills/session-coherence-skill-generator/SKILL.md` ("does not assume the repository already has FlowBook's exact files", "Do not impose FlowBook's exact file layout"): an exported skill naming another project's files
++- [ ] Replace the seed boilerplate in `AGENTS.md` "Working Practices" ("Working code with tests beats perfect code in progress") with practice that fits a markdown repo with no code or tests
++- [ ] Once Q2 is answered: make `AGENTS.md` "Consult INTENT.md for significant decisions" and the `INTENT.md` preamble say what the steward decided
++- [ ] Once Q3 is answered: reduce the skill that does not own guard writing, `INTENT.md` "The guard lifecycle" and `README.md` "To generate guards" to links to the one that does

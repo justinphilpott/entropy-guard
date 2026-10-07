@@ -1,0 +1,31 @@
+Patch to DECISIONS.md: two proposals awaiting the steward (intent pass, section 5). Plan mode: not applied.
+Open questions it touches: Q2 and Q3. It records proposals only, marked as not decisions, and edits no existing entry.
+Apply from the repository root with: git apply DECISIONS.md.patch
+
+--- a/DECISIONS.md
++++ b/DECISIONS.md
+@@ -4,6 +4,24 @@
+ 
+ ---
+ 
++### Proposed, awaiting the steward: agents propose changes of intent rather than make them
++
++**Status**: Proposal, not a decision. Raised 2026-10-07 by an entropy assessment run in plan mode. Answers open question Q2 in `TODO.md`.
++**Context**: The `INTENT.md` preamble says it is "meant to be refined collaboratively — by humans and AI agents". `AGENTS.md` "Consult INTENT.md for significant decisions" tells a session to update `INTENT.md` when a decision refines or challenges it, and the local guard used to say the same. Nothing records who may decide a change of intent, so a session can change the north star to fit its own work.
++**Proposal**: A session may correct `INTENT.md` where a recorded decision already settles the point, citing it. A change to what the project is for is recorded here as a proposal for the steward, and `INTENT.md` changes only after the steward's recorded decision. If adopted, amend the preamble and the `AGENTS.md` practice to say so.
++**Impact if adopted**: The repo's own instructions and the intent-change rule in `skills/local/entropy-guard/SKILL.md` agree.
++
++---
++
++### Proposed, awaiting the steward: one skill writes guards
++
++**Status**: Proposal, not a decision. Raised 2026-10-07 by an entropy assessment run in plan mode. Answers open question Q3 in `TODO.md`.
++**Context**: `skills/docs-first-planning-assessment/` has "Phase 2: Guard Generation / Refinement". `skills/session-coherence-skill-generator/` writes `skills/session-coherence-guard/SKILL.md` from its own template. `INTENT.md` "The guard lifecycle" gives the generator role to the assessment workflow, including `docs-first-planning-assessment`, and does not mention `session-coherence-skill-generator`. `README.md` describes both. No entry here records why the generator joined the exported skills or how the two relate.
++**Proposal**: Make `session-coherence-skill-generator` the only skill that writes guards. `docs-first-planning-assessment` supplies its checks and hands over. Reason: the newest entry below already invests in the generator, and it carries the one written guard template. Then reduce the other skill, `INTENT.md` "The guard lifecycle" and `README.md` "To generate guards" to links.
++**Impact if adopted**: External users meet one generator and one template, and `INTENT.md` names the skill that does the job.
++
++---
++
+ ### Session-coherence generation should bootstrap young repos before generating guards
+ 
+ **Context**: A repo can outgrow chat/local memory before it has enough repeated workflow history to justify a dedicated session-coherence guard. The previous `session-coherence-skill-generator` mostly targeted repos that already had durable context surfaces, and treated very small repos as a case where the skill should simply suggest a lightweight `TODO.md` or `AGENTS.md` first.

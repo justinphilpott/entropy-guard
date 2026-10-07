@@ -21,7 +21,7 @@ The generator calls this skill when it lacks analysis, and a person may ask for 
 - **What it returns:**
   - the findings;
   - the guard decision from Step 3;
-  - the generator's inputs, as listed in the generator's "Before writing", with each one that is inapplicable or
+  - the generator's inputs, as listed in the generator's "Inputs, and the guard decision", with each one that is inapplicable or
     unresolved marked as such.
 - **Reuse.** It reuses analysis already done and investigates only what is missing.
 
@@ -96,8 +96,11 @@ These apply to the docs-first assessment, the generator, the guards it writes, a
   - For an exhaustive list or an "only" claim, such as what the system reaches, launches or stores, check the full
     stated scope, including delegated behaviour. Otherwise, mark the replacement as incomplete.
   - Observed behaviour never authorises changing a prescribed boundary.
-  - Each proposed patch names the open questions it touches and leaves their text unchanged. A patch that settles an
-    open question is a decision, not a correction.
+  - Sort proposed changes by whether they touch an open question. A change touches one if it edits the question's
+    text, or states as fact what the question asks, such as describing a reach whose authorisation is open. Put those
+    in a separate patch marked provisional, naming each question, not to be applied until the steward answers. The
+    settled patch holds only changes that touch none. A change that settles an open question is a decision, not a
+    correction.
 - **Never cut these for length:** where a claim came from, what was not covered, and the difference between a proposal
   and a decision.
 

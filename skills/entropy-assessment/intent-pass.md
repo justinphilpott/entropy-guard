@@ -12,7 +12,8 @@ on a team.
 
 Find the governing purpose, constraints and decision sources, and collect only the statements the assessment's gaps
 need. Look in top-level documents (`README.md`, `INTENT.md`, vision or roadmap), decision logs and ADRs, state files,
-and agent instruction files. Record each statement with:
+and agent instruction files. Before reporting that nothing records a decision, also search the code and commit
+messages around the thing in question, where some repositories quote the steward. Record each statement with:
 
 - **where it is:** the file and line;
 - **its kind:** a decision or directive (a decision-log entry, an ADR, a status banner, a standing instruction), a
@@ -68,8 +69,8 @@ Ask only when the evidence cannot settle a gap **and** the answer changes what g
   words in vocabulary they did not use.
 - **Steward absent:** record each question with its recommendation. Continue independent work, and draft the work
   that depends on an answer as provisional. Never implement, install or enforce a recommendation that needs a new
-  decision. Before handing over, check every proposed patch against the open questions, so that none quietly settles
-  one.
+  decision. Before handing over, sort every proposed change into a settled or a provisional patch, as `SKILL.md`'s
+  "Rules along the whole route" requires.
 
 ## 5. Record
 
