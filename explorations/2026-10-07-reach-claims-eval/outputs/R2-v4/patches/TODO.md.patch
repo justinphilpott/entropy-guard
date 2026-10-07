@@ -1,0 +1,39 @@
+--- a/TODO.md
++++ b/TODO.md
+@@ -2,6 +2,36 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state (read first)
++
++Read this before anything else in a fresh session. It holds only what the other docs cannot tell you quickly. Whoever runs `skills/local/entropy-guard/SKILL.md` at the end of a session refreshes it. It is stale after any change to `INTENT.md`, `DECISIONS.md`, the list of skills, or an item below.
++
++Last checked: 2026-10-07, against snapshot `447da9a` (newest dated content: `skills/session-coherence-skill-generator/SKILL.md`, `last_updated` 2026-05-11).
++
++- **Stage**: an active, practical guard toolkit; the strongest validated path is docs-first planning repos (source: `INTENT.md`, "Scope boundary and next validation loop"; checked 2026-10-07).
++- **Trust first**: `INTENT.md` for purpose and principles, then `DECISIONS.md` for settled choices (undated; position is not a reliable order), then this section, then the skill you are changing. `README.md` and `AGENTS.md` summarise these; where they disagree, fix the summary.
++- **Settled; do not reopen casually**:
++  - `entropy-assessment` is the single front door and a router; it no longer builds guards (`DECISIONS.md`, "Specialize first around docs-first planning repos…").
++  - One local guard covers docs and workflow (`DECISIONS.md`, "Keep a single local guard…").
++  - Judgment-heavy guards mature External, then Prompted, then deeper; the pre-commit hook only reminds (`DECISIONS.md`, "Guard adoption should usually mature…").
++  - Theory work continues in the sibling `entropy-immune-system` repo, and `explorations/` stays here as its seed material (`DECISIONS.md`, "Farm broader entropic-immunity exploration…"; Justin, 2026-03-24, last exchange of `explorations/2026-03-24-entropy-immune-system-conversation.md`).
++  - Exportable skills live in `skills/`, local ones in `skills/local/`, in the agentskills.io format (`DECISIONS.md`, entries of those names).
++- **Active fronts** (checked 2026-10-07):
++  - The external validation batch on docs-first planning repos (Next Up below). No results are recorded in the repo yet.
++  - `session-coherence-skill-generator` and its bootstrap mode for young repos: the newest work (top `DECISIONS.md` entry; skill metadata 2026-05-11). Its place among the other skills is open question 2.
++- **Open questions**, each recorded as a proposal awaiting Justin in `DECISIONS.md`; work that depends on one waits for it:
++  1. Who decides intent, and may contributors edit `INTENT.md` directly? ("Proposed: name the steward…")
++  2. Which skill builds guards? ("Proposed: one guard builder…")
++  3. What does the validation batch measure, and on which repos? ("Proposed: one statement of the next validation loop")
++- **Misleading if read as current**:
++  - `explorations/` and the autopoiesis section of `PHILOSOPHY.md`: theory now pursued in `entropy-immune-system`, not plans for this repo.
++  - `LEARNINGS.md` entries "Just-in-time guard generation…", "The four-component temporal hierarchy…" and "Most current guards operate at the wrong layer…": validated by a conversation, not by use. Their "no persistent guard artifact" direction is not this repo's current practice.
++  - `DECISIONS.md` and `LEARNINGS.md` entries that cite `entropy-assessment`'s "Phase 2", its Steps 5 to 8, or its domain appendices: those parts were removed when the skill became a router.
++- **Next actions**:
++  1. Justin answers open question 1; then install the refined local guard.
++  2. Answer open question 2, then make the skill handoffs match it (`guards-integrator` "When to Run", `entropy-assessment` Steps 3 and 4d, the lifecycle in `INTENT.md`, `README.md`).
++  3. Start the validation batch on open-source docs-first planning repos, which fit both readings in open question 3, recording both measures until it is answered.
++
+ ## Doing Now
+ 
+ [empty]

@@ -1,0 +1,21 @@
+Provisional patch for Q2 (questions.md). Do not apply until Justin answers Q2. It writes the recommended answer
+(finding F8): config/installation.ts may rise until orchestrator#152; src/ and web/src/ may only fall.
+
+Apply after settled.patch, from orc-lab/: patch -p1 < provisional-Q2.patch
+
+diff -ruN b/orchestrator/AGENTS.md q2/orchestrator/AGENTS.md
+--- b/orchestrator/AGENTS.md	2026-10-07 22:00:29.581103057 +0100
++++ q2/orchestrator/AGENTS.md	2026-10-07 22:03:01.139558566 +0100
+@@ -51,8 +51,10 @@
+ In-the-box agents, such as Iris and the Researcher, are templates packaged alongside core through the
+ same interface as any Scope agent. They are not core, and core does not depend on any of them.
+ 
+-`test/core-ties.ts` ratchets all four ties in `src/` and `web/src/`, per file, at exact counts: a
+-count may only fall, and its allowance falls in the same change. On 2026-09-13 the baseline was:
++`test/core-ties.ts` ratchets all four ties in `config/`, `src/` and `web/src/`, per file, at exact counts. In `src/`
++and `web/src/` a count may only fall, and its allowance falls in the same change. The allowance for
++`config/installation.ts` may rise while Scopes cannot load by card (orchestrator#152), each rise dated and naming the
++agent it installs. On 2026-09-13 the baseline was:
+ 
+ - Scope: 426 matches in 14 files.
+ - Model: 39 matches in 9 files.

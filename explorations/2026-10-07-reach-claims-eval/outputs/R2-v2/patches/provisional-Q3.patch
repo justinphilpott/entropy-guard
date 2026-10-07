@@ -1,0 +1,36 @@
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-10-07 22:14:34.622176743 +0100
++++ b/INTENT.md	2026-10-07 22:16:39.740711987 +0100
+@@ -132,7 +132,7 @@
+ - run `entropy-assessment` as the front door, then route into `docs-first-planning-assessment`
+ - generate or refine guards where appropriate and use the current-state packet at session start
+ - run those guards locally while making targeted improvements
+-- track whether this produces clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
++- track whether this produces more merged PRs, clearer session recovery, fewer reintroduced stale ideas, more coherent docs, and sharper feedback on what the methodology gets right or wrong
+ 
+ ---
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:16:20.172779116 +0100
++++ b/README.md	2026-10-07 22:16:39.740785058 +0100
+@@ -123,7 +123,7 @@
+ 
+ The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+ 
+-The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
++The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields more merged PRs, clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
+ 
+ See [TODO.md](TODO.md) for current priorities.
+ 
+diff -ruN a/TODO.md b/TODO.md
+--- a/TODO.md	2026-10-07 22:15:36.823650808 +0100
++++ b/TODO.md	2026-10-07 22:16:39.740830378 +0100
+@@ -23,7 +23,7 @@
+ ## Next Up
+ 
+ - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
+-- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
++- [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful, including how many of the resulting PRs are merged
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
+ ## Backlog

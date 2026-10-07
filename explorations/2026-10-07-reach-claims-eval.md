@@ -5,7 +5,7 @@ participants:
   - Justin Philpott
   - Claude Opus 5.5
 type: evaluation
-status: key written; runs to follow
+status: round 7 fails; variance runs being scored
 ---
 
 # Test of the rule that a claim about everything a system reaches shows its search
@@ -88,6 +88,36 @@ meets each item. Without that, an unrelated miss cannot be told from a regressio
 and two of the baseline (`daee846`) were started on 7 October at about 22:10, scored blind on K10 to K15. They
 measure variation; they do not change this round's verdict under its rule.
 
-### R1
+### R1 (`scores/round7-R1.md`)
 
-*Pending.*
+| Run | Total | Gate items missed | K35 | K32 | K34 | Questions (failing) | Wrong findings | Consequential extras |
+|---|---|---|---|---|---|---|---|---|
+| R1-r7a | 14.5 of 15 | none | 1 | 0.5 | met | 5 (0) | 2 | 2 |
+| R1-r7b | 14 of 15 | **K35** | 0 | 1 | met | 5 (0) | 3 | 3 |
+| R1-r7c | 13 of 15 | **K35, K21** (0.5) | 0 | 1 | not met | 5 (0) | 2 | 3 |
+
+**The search works; the patches do not use it.** All three runs found ORC's own Chromium, credited it to ORC's
+process, and recorded searches that the scorer re-ran and matched. Before this change, 6 of 11 runs misstated ORC's
+reach somewhere in their output, and the findings were not scored separately from the patches. What failed now is the
+step after the findings:
+- **R1-r7b** reports Chromium missing from ORC's subprocess list (its F5), then its settled patch rewrites that list
+  to four modules without Chromium, not marked incomplete.
+- **R1-r7c** has correct findings and a correct provisional `AGENTS.md` hunk, then a provisional README opening that
+  leaves Chromium out and credits the Bookwhen reach to packages, contradicting its own `AGENTS.md` hunk.
+- **R1-r7c also misses half of K21:** a settled hunk edits the sentence its open question Q3 quotes.
+
+**This is a missing system, not an instance.** Three failures now share one cause: a run's patches are written
+without being checked against its own findings and questions. Round 5's K21 failure was the same shape (the run named
+the questions its hunk touched, then left it settled). Nothing in the skills asks for that check: the generator
+reviews its patches for open questions only, and the assessment has no review step at all.
+
+**Also seen, not gates:**
+- **K32 improved:** two of three runs class Danger correctly as an executed check that warns, against none of four in
+  rounds 5 and 6.
+- **K34 is met in two of three runs.**
+- **Over-sorting is in all three runs,** mostly listing Chromium or the restart service held behind a question that the
+  code already settles.
+
+### Verdict under the rule fixed before the runs
+
+**Round 7 fails:** K35 in two of three R1 runs, K21 in one, and K13 in the R2 run. The change is not ready to merge.

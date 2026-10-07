@@ -1,0 +1,39 @@
+diff -ruN a/AGENTS.md b/AGENTS.md
+--- a/AGENTS.md	2026-10-07 22:16:20.172847751 +0100
++++ b/AGENTS.md	2026-10-07 22:16:39.740325182 +0100
+@@ -24,7 +24,7 @@
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+ - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
++- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, record it as a proposal for Justin in DECISIONS.md; update INTENT.md only after he has recorded the decision.
+ 
+ ## Project Constraints
+ 
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-10-07 22:14:34.622176743 +0100
++++ b/INTENT.md	2026-10-07 22:16:39.740254859 +0100
+@@ -1,6 +1,6 @@
+ # Intent Statement
+ 
+-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
++> This document is the north star for the entropy-guard project and the meta-skill we are building. Humans and AI agents refine it together as our understanding deepens: propose a change in DECISIONS.md, and edit this file once Justin has recorded the decision there. When you update it, note the date and the decision that prompted the revision.
+ 
+ *Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+ 
+diff -ruN a/skills/local/entropy-guard/SKILL.md b/skills/local/entropy-guard/SKILL.md
+--- a/skills/local/entropy-guard/SKILL.md	2026-10-07 22:16:20.177577489 +0100
++++ b/skills/local/entropy-guard/SKILL.md	2026-10-07 22:16:39.740373518 +0100
+@@ -49,12 +49,6 @@
+ Constraints"? If a skill file changed, does it still keep INTENT.md's guard principles: low burden, delta scope,
+ enforcement depth matched to the vector, and inter-domain drift? If not:
+ 
+-**In force until Justin answers Q1** (DECISIONS.md, "Proposed, awaiting Justin"), the repo's current text: update the
+-skill, or if INTENT.md itself needs revision, update it with a dated note explaining what prompted the change. List any
+-such revision under "Proposals for Justin" in the report.
+-
+-**Provisional, takes force only when Justin records Q1 as recommended:**
+-
+ > When this session's work and the authorised intent disagree:
+ >
+ > 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of

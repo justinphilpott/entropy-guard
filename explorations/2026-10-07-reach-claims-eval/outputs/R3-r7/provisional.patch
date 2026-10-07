@@ -1,0 +1,108 @@
+PROVISIONAL patch for agentic-architecture (entropy-guard assessment, 2026-10-07). Do not apply until the steward
+answers the questions named below. Apply after settled.patch, from the repository root: patch -p1 < provisional.patch
+
+- DECISIONS.md hunk (P1) waits on Q1: records the status banner as a dated, attributed decision; the date and the
+  steward's name are placeholders the steward must fill. Finding F1, F2.
+- All other hunks (P2) wait on Q2 (recommended answer: frozen reference) and, because the guard's new status line
+  cites the DECISIONS.md entry, also on Q1. They demote the active-blueprint maintenance surfaces. Findings F6, F7.
+
+diff --color -ru settled/AGENTS.md prov/AGENTS.md
+--- settled/AGENTS.md	2026-10-07 21:54:15.834466898 +0100
++++ prov/AGENTS.md	2026-10-07 21:54:35.134770558 +0100
+@@ -35,6 +35,9 @@
+ 
+ ## Session start
+ 
++> Historical: these steps were written while this repo was the active blueprint. For current work, go to the
++> repositories named in the banner above. Use the steps below only to consult this repo's history.
++
+ 1. Check ROADMAP.md — know what version we're on and what's being worked towards
+ 2. Read MODEL.md — understand the system model and component relationships
+ 3. Skim DECISIONS.md — know what's been concluded (especially recent entries)
+@@ -69,7 +72,7 @@
+ - Prefer one canonical owner per concept. Root docs own system-wide truths; component docs should describe local shape and implications, then link to root decisions instead of restating them in full.
+ - When older notes conflict with newer settled docs, the newer settled state wins. Update or mark the older material superseded in the same change.
+ - Components are `exploratory` by default in components.yaml — only elevate status when explicitly instructed
+-- Before committing non-trivial changes, run [skills/entropy-guard.md](skills/entropy-guard.md)
++- Changes here are limited to status corrections and historical marking. [skills/entropy-guard.md](skills/entropy-guard.md) is historical and is not run before commits.
+ 
+ ## What belongs in this repo
+ 
+diff --color -ru settled/DECISIONS.md prov/DECISIONS.md
+--- settled/DECISIONS.md	2026-10-07 21:54:00.341994600 +0100
++++ prov/DECISIONS.md	2026-10-07 21:54:35.134597260 +0100
+@@ -872,6 +872,20 @@
+ 
+ ---
+ 
++### <DATE: steward to supply> — This repository is reference-only *(proposed record, awaiting the steward)*
++
++Recorded from the status banners at the top of README.md and AGENTS.md, which carry no date or author. In their words:
++
++> Reference-only. Current Personal Agent architecture lives in [`personal-agent`](../personal-agent), and the current
++> generic Scope/Project model lives in [`scope`](../../scope). Do not treat decisions in this repository as current
++> authority.
++
++> Do not extend or reinterpret this blueprint as current design without explicit authorization.
++
++Decided by: <steward: to supply>.
++
++---
++
+ ## Open Questions
+ 
+ This is the canonical registry for architectural open questions. Other files may reference these questions but should not duplicate them — link here instead.
+diff --color -ru settled/README.md prov/README.md
+--- settled/README.md	2026-10-07 21:54:15.834532198 +0100
++++ prov/README.md	2026-10-07 21:54:35.134998005 +0100
+@@ -26,7 +26,7 @@
+ - [PI_AGENT_OVERVIEW.md](PI_AGENT_OVERVIEW.md) — Pi agent framework evaluation
+ - [AUTH_OPTIONS_ANALYSIS.md](AUTH_OPTIONS_ANALYSIS.md) — auth and model-access tradeoff analysis for early agent work
+ - [runs/](runs/) — runtime experiment records and planned Pi evaluations
+-- [skills/](skills/) — blueprint project-maintenance skills including session kickoff and entropy guard
++- [skills/](skills/) — historical blueprint project-maintenance skills (session kickoff, entropy guard), not run now that the repo is reference-only
+ - [RUNTIME.md](RUNTIME.md) — runtime architecture model (platform components, sandbox lifecycle, communication patterns, pipelines)
+ - [SCOPES_PLANNED.md](SCOPES_PLANNED.md) — planned scope inventory and open questions
+ - [components/scope/](components/scope/) — scope component design (model, plan, decisions, template source, skills)
+diff --color -ru settled/skills/entropy-guard.md prov/skills/entropy-guard.md
+--- settled/skills/entropy-guard.md	2026-10-07 21:54:00.357578052 +0100
++++ prov/skills/entropy-guard.md	2026-10-07 21:54:35.134825055 +0100
+@@ -9,6 +9,10 @@
+ 
+ # Entropy Guard: agentic-architecture
+ 
++> **Historical.** Written for this repo while it was the active blueprint. The repo is reference-only (README.md
++> banner), and several checks below direct extension work that the banner rules out, so this guard is not run before
++> commits. See the reference-only entry in DECISIONS.md.
++
+ Delta-scoped coherence check for the architecture blueprint. Covers internal document consistency, component design consistency, terminology discipline, map/territory integrity, and open question hygiene.
+ 
+ ## When to Run
+diff --color -ru settled/skills/README.md prov/skills/README.md
+--- settled/skills/README.md	2026-10-07 21:54:00.393644018 +0100
++++ prov/skills/README.md	2026-10-07 21:54:35.134905114 +0100
+@@ -4,7 +4,9 @@
+ 
+ They are not architecture primitives, live runtime skills, or generic reusable helper skills.
+ 
+-- `session-kickoff.md` builds a compact current-state packet before architecture work.
+-- `entropy-guard.md` checks coherence before committing non-trivial blueprint changes.
++- `session-kickoff.md` (historical) built a compact current-state packet before architecture work.
++- `entropy-guard.md` (historical) checked coherence before committing non-trivial blueprint changes.
++
++Both were written for the active blueprint and are not run now that the repo is reference-only.
+ 
+ Core component/layer pattern skills live under `components/{component}/skills/`. Generic helper and operator skills belong in Agentic Tools or a reusable skill library. Live operational skills belong in instantiated scope repos.
+diff --color -ru settled/skills/session-kickoff.md prov/skills/session-kickoff.md
+--- settled/skills/session-kickoff.md	2026-10-07 21:54:00.377009483 +0100
++++ prov/skills/session-kickoff.md	2026-10-07 21:54:35.134871687 +0100
+@@ -1,5 +1,9 @@
+ # Skill: Session Kickoff
+ 
++> **Historical.** Written for this repo while it was the active blueprint. The repo is reference-only (README.md
++> banner): there is no live architectural truth here to compress, and current work belongs in the repositories the
++> banner names.
++
+ Build a compact current-state packet before starting work in `agentic-architecture`.
+ 
+ This skill exists to stop fresh sessions from starting cold with "what's next?" against the whole repo. The goal is to compress live architectural truth into a small packet that a context-limited model can hold onto while working.

@@ -1,0 +1,51 @@
+diff -ruN a/INTENT.md b/INTENT.md
+--- a/INTENT.md	2026-10-07 22:14:34.622176743 +0100
++++ b/INTENT.md	2026-10-07 22:16:39.740429206 +0100
+@@ -85,7 +85,7 @@
+ 
+ A complete guard system involves four distinct tools that serve different purposes. In this repo today, the generator and integrator exist as explicit skills; the runner and evaluator are part of the conceptual lifecycle and remain future work.
+ 
+-1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, that role is carried by the assessment workflow rooted at `skills/entropy-assessment/` and, for the strongest validated case, `skills/docs-first-planning-assessment/`.
++1. **Guard generator** (design-time) — analyzes a system and produces guards tailored to its entropy profile. Run when setting up guards for a new system or re-evaluating whether existing guards still fit. In this repo today, the assessment workflow rooted at `skills/entropy-assessment/` (and, for the strongest validated case, `skills/docs-first-planning-assessment/`) analyses the system, and `skills/session-coherence-skill-generator/` is the one skill that writes guards.
+ 
+ 2. **Guard integrator** (adoption-time) — examines the system's current loops (agent sessions, commits, PRs, CI, releases) and recommends how generated guards should be discovered, triggered, and introduced with minimal friction. This is the bridge between guard design and real use. A generated guard without an adoption path is only half-finished. In this repo, that role is represented by `skills/guards-integrator/SKILL.md`.
+ 
+diff -ruN a/README.md b/README.md
+--- a/README.md	2026-10-07 22:16:20.172779116 +0100
++++ b/README.md	2026-10-07 22:16:39.740544073 +0100
+@@ -86,9 +86,9 @@
+ | Skill | Purpose |
+ |-------|---------|
+ | [entropy-assessment/](skills/entropy-assessment/) | Start here — front door that classifies the system shape, routes to deeper assessment workflows, and provides a lightweight fallback profile when no specialized path fits yet |
+-| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and generates or refines docs/workflow delta guards |
++| [docs-first-planning-assessment/](skills/docs-first-planning-assessment/) | Deep path for markdown-first planning/design repos — assesses canonical truth structure, produces a current-state packet, and supplies docs/workflow checks to the guard generator |
+ | [guards-integrator/](skills/guards-integrator/) | Maps generated guards into a system's existing iteration loop (agent, commit, PR, CI, release) and prompts for upstream feedback if the integration guidance itself misfires |
+-| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | Generates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
++| [session-coherence-skill-generator/](skills/session-coherence-skill-generator/) | The one skill that writes guards: generates or updates repo-specific session handoff guards, or bootstraps minimal context-preservation files for young repos before a full guard is justified |
+ 
+ ### Skills (local to this project)
+ 
+diff -ruN a/skills/docs-first-planning-assessment/SKILL.md b/skills/docs-first-planning-assessment/SKILL.md
+--- a/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 22:14:34.622355315 +0100
++++ b/skills/docs-first-planning-assessment/SKILL.md	2026-10-07 22:16:39.740636334 +0100
+@@ -151,9 +151,9 @@
+ 
+ Prefer refining a mostly-sound existing guard over replacing it.
+ 
+-### Step 7: Design the docs-first delta guard
++### Step 7: Design the docs-first delta guard checks
+ 
+-For this repo shape, the default is usually one combined docs + workflow guard run at session end or before commit.
++This step designs the checks; `skills/session-coherence-skill-generator/SKILL.md` writes them into the guard, to its template. For this repo shape, the default is usually one combined docs + workflow guard run at session end or before commit.
+ 
+ The guard should stay delta-scoped and low-burden. It should check only what changed in this session.
+ 
+@@ -193,7 +193,7 @@
+ 
+ Deliver:
+ 
+-- the refined or generated guard
++- the docs-first checks, handed to `skills/session-coherence-skill-generator/SKILL.md`, which writes or refines the guard
+ - the current-state packet
+ - the canonical truth map
+ - immediate integration advice

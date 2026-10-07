@@ -1,0 +1,10 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -16,6 +16,7 @@
+ 
+ ## Working Practices
+ 
++- **Start from TODO.md's current state**: In a fresh session, read the "Current state (read first)" section of `TODO.md` before other docs. It names the docs to trust first, the open questions and what is misleading if read as current. The local entropy guard refreshes it at the end of each meaningful session.
+ - **Run entropy-guard before committing**: After any meaningful work session, run `skills/local/entropy-guard/SKILL.md` before committing. This is the primary mechanism for keeping this project coherent. Skip only for trivial changes (typos, minor formatting). This is non-negotiable — it takes 2–5 minutes and is the whole point of this project practicing what it preaches. This repo also ships a non-blocking reminder hook at `.githooks/pre-commit`; enable it locally by linking it to `.git/hooks/pre-commit`.
+ - **Small, atomic commits**: One logical change per commit. If you can't summarise it in a sentence, break it up
+ - **Commit early, commit often**: Working code with tests beats perfect code in progress. Small commits are easy to review, revert, and understand in git log

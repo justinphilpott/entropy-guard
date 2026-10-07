@@ -1,0 +1,91 @@
+diff '--color=never' -ruN b/AGENTS.md c/AGENTS.md
+--- b/AGENTS.md	2026-10-07 22:15:24.328525625 +0100
++++ c/AGENTS.md	2026-10-07 22:16:29.589603366 +0100
+@@ -24,7 +24,7 @@
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+ - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
++- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, record it as a proposal for Justin Philpott in DECISIONS.md; INTENT.md changes only after his recorded decision.
+ 
+ ## Project Constraints
+ 
+diff '--color=never' -ruN b/INTENT.md c/INTENT.md
+--- b/INTENT.md	2026-10-07 22:15:24.328550712 +0100
++++ c/INTENT.md	2026-10-07 22:16:29.589515732 +0100
+@@ -1,6 +1,6 @@
+ # Intent Statement
+ 
+-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
++> This document is the north star for the entropy-guard project and the meta-skill we are building. Its steward, Justin Philpott, revises it; anyone, human or AI agent, may propose a revision in DECISIONS.md as our understanding deepens. Each revision notes the date, what prompted it, and the decision it follows.
+ 
+ *Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+ 
+@@ -136,4 +136,4 @@
+ 
+ ---
+ 
+-*This document is a living artifact. If you find something missing, imprecise, or worth expanding — add it. Note what prompted the revision.*
++*This document is a living artifact. If you find something missing, imprecise, or worth expanding, propose it in DECISIONS.md and say what prompted it.*
+diff '--color=never' -ruN b/LEARNINGS.md c/LEARNINGS.md
+--- b/LEARNINGS.md	2026-10-07 22:15:24.328563182 +0100
++++ c/LEARNINGS.md	2026-10-07 22:16:29.589890067 +0100
+@@ -116,6 +116,8 @@
+ 
+ ### Just-in-time guard generation is a better model than pre-generated guard artifacts
+ 
++*Status: a hypothesis from the 2026-03-19 conversation, not validated in use here; that line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS.md, "Farm broader…").*
++
+ **Topic**: Guard generation methodology
+ 
+ **Insight**: A pre-generated guard encodes system state at time A and drifts from time B onward. A process generator that produces fresh guards from current state + cached memory + intent is fundamentally more robust — not because it's a better implementation but because it's a different category of thing. The generator makes claims about how to assess *any state of this system*; the guard makes claims about *a specific past state*. The analogy: DNA repair enzymes aren't pre-stocked patches — they're proteins that recognise and respond to damage classes, whatever form the damage takes.
+@@ -126,6 +128,8 @@
+ 
+ ### The four-component temporal hierarchy of a complete guarding system
+ 
++*Status: a hypothesis from the 2026-03-19 conversation, not validated in use here; that line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS.md, "Farm broader…").*
++
+ **Topic**: Guard system architecture
+ 
+ **Insight**: A complete guarding system has four components with fundamentally different persistence expectations: (1) intent — slowest to change, constitutional core; (2) system memory — the cached entropy profile, analogous to immune memory, updates with major architectural shifts; (3) process generator — freshly instantiated at each handoff from the other three, never persisted; (4) delta — what changed this iteration, consumed immediately. The error in current guard design is treating all four as having the same persistence profile. The stability hierarchy maps directly to the biological analogy: the repair enzyme genes (intent) are ancient; the enzymes themselves (memory) persist in the cell; the specific repair action (process) is immediate and consumed.
+@@ -136,6 +140,8 @@
+ 
+ ### Most current guards operate at the wrong layer — representational rather than meaning
+ 
++*Status: a hypothesis from the 2026-03-19 conversation, not validated in use here; that line of thought continues in the sibling `entropy-immune-system` repo (DECISIONS.md, "Farm broader…").*
++
+ **Topic**: Guard design methodology
+ 
+ **Insight**: There is a layer hierarchy from representational consistency (layer 5: docs agree with each other) down to actual-meaning integrity (layer 1: the effect still serves what motivated building it). Current entropy guards almost entirely operate at layers 4–5. Test suites operate at layer 3 — checking against a static behavioral baseline. Almost nothing guards layers 1–2. A system can be perfectly internally consistent, pass all tests, and be doing the wrong thing — intent drift at layer 1 is invisible to every representational guard. This is the cancer pattern: local coherence, global harm.
+diff '--color=never' -ruN b/skills/local/entropy-guard/SKILL.md c/skills/local/entropy-guard/SKILL.md
+--- b/skills/local/entropy-guard/SKILL.md	2026-10-07 22:18:03.173503561 +0100
++++ c/skills/local/entropy-guard/SKILL.md	2026-10-07 22:18:03.173565585 +0100
+@@ -42,10 +42,24 @@
+ working tree shows nothing yet still lands. -->
+ 
+ ## Intent
+-Does this change fit the authorised intent in `INTENT.md` and the scope decisions in `DECISIONS.md`? If not, update
+-the skill, or if `INTENT.md` itself needs revision, update it with a dated note explaining what prompted the change.
+-<!-- Open: whether this repair stands, or is replaced by entropy-guard's intent-change rule v2, waits for Justin
+-Philpott (proposal 1 at the top of `DECISIONS.md`). -->
++Does this change fit the authorised intent in `INTENT.md` and the scope decisions in `DECISIONS.md`? If not:
++
++> When this session's work and the authorised intent disagree:
++>
++> 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of
++>    intent nobody has decided.
++> 2. Fix a defect in the work.
++> 3. Go ahead with an adaptation within existing authorisation, and record its reason where that helps. Record an
++>    undecided change of intent as a proposal for Justin Philpott in `DECISIONS.md`; work that depends on it waits
++>    for the decision.
++> 4. Do not edit `INTENT.md` or the scope decisions in `DECISIONS.md` to match the work unless Justin Philpott has
++>    recorded that decision.
++> 5. Correct a document directly only when a recorded decision of Justin Philpott's already settles it, and cite that
++>    decision.
++> 6. Before making a description, an implementation and a check agree, establish which of them is wrong. A test or
++>    the code shows what is checked or built; it does not authorise weakening a documented constraint.
++
++(Intent-change rule v2, from entropy-guard.)
+ 
+ ## Checks
+ - If a skill's contract changed (its name, path, inputs, outputs or handoffs): do the skills that hand to or from it,

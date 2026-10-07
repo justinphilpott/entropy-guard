@@ -1,0 +1,41 @@
+diff --color -ruN settled/AGENTS.md prov/AGENTS.md
+--- a/AGENTS.md	2026-10-07 21:53:59.911493684 +0100
++++ b/AGENTS.md	2026-10-07 21:54:18.749650390 +0100
+@@ -24,7 +24,7 @@
+ - **Check coherence before committing**: Skim project docs and verify they still agree with each other and with the code. Fix drift immediately — it compounds fast
+ - **Capture learnings**: When you discover something non-obvious — a gotcha, a pattern that works, a workaround — add it to LEARNINGS.md. If it's not worth writing down, it wasn't a real learning
+ - **Prune ruthlessly**: Replace placeholders with real content as soon as you can, or delete them. Stale scaffolding is worse than no scaffolding
+-- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, update INTENT.md and note why.
++- **Consult INTENT.md for significant decisions**: Before any substantial design or structural choice, check INTENT.md to ensure alignment. If a decision refines or challenges the intent, record it in DECISIONS.md as a proposal awaiting the steward; INTENT.md changes only after the steward records the decision.
+ 
+ ## Project Constraints
+ 
+diff --color -ruN settled/INTENT.md prov/INTENT.md
+--- a/INTENT.md	2026-05-11 21:50:31.000000000 +0100
++++ b/INTENT.md	2026-10-07 21:54:18.749572913 +0100
+@@ -1,6 +1,6 @@
+ # Intent Statement
+ 
+-> This document is the north star for the entropy-guard project and the meta-skill we are building. It is meant to be refined collaboratively — by humans and AI agents — as our understanding deepens. When you update it, note the date and what prompted the revision.
++> This document is the north star for the entropy-guard project and the meta-skill we are building. Humans and AI agents refine it collaboratively: they propose changes in [DECISIONS.md](DECISIONS.md), and it changes only after the steward records the decision there. When it changes, note the date and the decision that prompted it.
+ 
+ *Last revised: 2026-04-07 — specialized the project's strongest validated path around docs-first planning repos, while keeping a front-door assessment skill that routes into deeper workflows*
+ 
+@@ -136,4 +136,4 @@
+ 
+ ---
+ 
+-*This document is a living artifact. If you find something missing, imprecise, or worth expanding — add it. Note what prompted the revision.*
++*This document is a living artifact. If you find something missing, imprecise, or worth expanding, propose it in DECISIONS.md for the steward.*
+diff --color -ruN settled/README.md prov/README.md
+--- a/README.md	2026-10-07 21:53:59.911413383 +0100
++++ b/README.md	2026-10-07 21:54:18.749729185 +0100
+@@ -123,7 +123,7 @@
+ 
+ The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
+ 
+-The next concrete phase here is external validation on a larger set of docs-first planning repos: run the specialized assessment, generate or refine guards, use the current-state packet at session start, run those guards locally while making targeted improvements, and see whether that yields clearer sessions, fewer reintroduced stale ideas, and more useful changes in the wild.
++The next concrete phase here is external validation on a larger set of docs-first planning repos. [INTENT.md](INTENT.md) "Scope boundary and next validation loop" holds the plan and what it measures.
+ 
+ See [TODO.md](TODO.md) for current priorities.
+ 

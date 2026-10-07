@@ -1,0 +1,52 @@
+--- a/TODO.md
++++ b/TODO.md
+@@ -2,18 +2,49 @@
+ 
+ Lightweight task tracking for early development. Graduate to an issue tracker (GitHub Issues, Linear, etc.) once the project has momentum.
+ 
++## Current state
++
++Read this first at session start. It holds only what the other docs do not tell a fresh reader quickly.
++
++Last checked 2026-10-07 by an entropy-assessment run against commit 447da9a. The session-end guard
++(`skills/local/entropy-guard/SKILL.md`, its TODO.md check) refreshes this section. It is stale after any change to
++`INTENT.md`, `DECISIONS.md`, `README.md` "Project status", or the set of skills under `skills/`.
++
++- **Stage** (sources: `INTENT.md` "Scope boundary and next validation loop", `DECISIONS.md` "Specialize first…";
++  checked 2026-10-07): the front door, the docs-first path, the integrator and the session-coherence generator
++  exist. The external validation batch in Next Up has not started: no batch repo is recorded here.
++- **Trust first**: `INTENT.md` for purpose and scope, `DECISIONS.md` for settled choices, `AGENTS.md` for working
++  practice, then the skill you are changing. `README.md` summarises these and links to them.
++- **Settled, not to reopen casually** (each is an entry in `DECISIONS.md`): one front door, with docs-first as the
++  specialised path ("Specialize first…"); broader theory lives in `../entropy-immune-system/` ("Farm broader…");
++  one combined local guard ("Keep a single local guard…"); reminders before automation, so the hook stays
++  non-blocking ("Guard adoption should usually mature…"); the meta-skill is the product, not a guard library
++  ("Guard creation skills over guard libraries").
++- **Superseded nearby, do not revive**: `entropy-assessment`'s Phase 2, Steps 5–8 and domain appendices, and the
++  four domain generators, were replaced by "Specialize first…". Several `DECISIONS.md` entries and `LEARNINGS.md`
++  implications still describe them. `explorations/` holds conversation records and drafts written for the sibling
++  repo; they are not this repo's direction.
++- **Open questions** (raised 2026-10-07; each is a proposal at the top of `DECISIONS.md`, awaiting the steward):
++  who the steward is, and whether agents may edit `INTENT.md` directly; which skill owns guard building,
++  `docs-first-planning-assessment` Phase 2 or `session-coherence-skill-generator`; whether the validation batch
++  measures merged PRs, session quality, or both.
++- **Next actions** (checked 2026-10-07): the first three items in Next Up.
++
+ ## Doing Now
+ 
+ [empty]
+ 
+ ## Next Up
+ 
++- [ ] Steward: decide the three proposals at the top of `DECISIONS.md` (steward and intent changes; guard-building owner; validation measure)
++- [ ] After the steward proposal is decided: adopt the refined session-end guard from the 2026-10-07 assessment in place of `skills/local/entropy-guard/SKILL.md`
+ - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment` and `docs-first-planning-assessment`
+ - [ ] Generate or refine guards for those projects, use the current-state packet at session start, run the guards locally while making targeted improvements, and track what changes prove useful
+ - [ ] Use the results to refine the docs-first planning assessment, the current-state packet output, and the integration guidance based on real-world hits, misses, and friction
+ 
+ ## Backlog
+ 
++- [ ] Cleanup from the 2026-10-07 assessment: mark `explorations/` as historical in `README.md` "What's here"; reduce the three conceptual `LEARNINGS.md` entries (just-in-time generation, four-component hierarchy, wrong layer) to links to their `PHILOSOPHY.md` sections; remove the FlowBook references and align the metadata in `skills/session-coherence-skill-generator/SKILL.md`; remove seed residue (`AGENTS.md` "working code with tests", the Go block in `.gitignore`); add `.githooks/` to the hook locations `skills/guards-integrator/SKILL.md` searches
+ - [ ] Test the assessment workflow against a real multi-domain system (codebase with tests, docs, and API) — the docs-first planning path is now stronger; need to validate the front door and fallback guidance against a repo with multiple active domains
+ - [ ] Design a **guard runner** concept — a wrapper (script, CI step, or skill) that discovers all guards registered for a system and runs them at the correct handoff point. Distinct from the generator/evaluator (which decides what guards are needed) and the integrator (which maps guards into the workflow). The runner is the operational tool; the generator is the design tool.
+ - [ ] Consider additional specialized tracks after docs-first planning validation (code-first, config/infrastructure, or other recurring repo shapes)

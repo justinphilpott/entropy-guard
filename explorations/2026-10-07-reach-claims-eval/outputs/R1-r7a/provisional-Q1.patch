@@ -1,0 +1,87 @@
+Provisional patch for Q1 (questions.md). Do not apply until Justin answers Q1, then edit it to his answer.
+It is drafted on the recommended answer: the restart card, Chromium, Pi's model calls and the phone connector's
+topics are described as approved (findings F1, F2, F3, F6), and the package-chosen tap address is described as it
+is today and as an outbound channel to be limited. If he decides otherwise, change the code first and this text after.
+
+Apply after settled.patch, from orc-lab/: patch -p1 < provisional-Q1.patch
+
+diff -ruN b/orchestrator/AGENTS.md q1/orchestrator/AGENTS.md
+--- b/orchestrator/AGENTS.md	2026-10-07 22:00:29.581103057 +0100
++++ q1/orchestrator/AGENTS.md	2026-10-07 22:09:45.347846923 +0100
+@@ -96,17 +96,27 @@
+ its outcome by an independent read (#74); the Moving Stillness apply does, and a
+ new grantable type should not be declared without one.
+ 
+-Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+-code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
+-which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++Subprocess access exists in four ORC modules. `src/core/child-agent-process.ts` launches one code-fixed Pi child
++without a shell. `src/core/analysis-tools.ts` launches a code-fixed read-only `git log` without a shell.
++`src/adapters/orc-service.ts`, for an approved restart card (orchestrator#101), runs git's read commands in ORC's own
++checkout, `pnpm install --frozen-lockfile`, `scripts/build.mjs` and `systemctl --user restart orc.service`.
++`src/adapters/browser/playwright.ts` launches one headless Chromium per browser session through Playwright's library
++(orchestrator#76). `src/adapters/mcp/client.ts` can delegate process transport to the official MCP SDK for a
++separately declared server, but nothing in production composes it. Approved Scope packages may implement separately
++declared connectors: the backends that reach an outside service. Their code runs in ORC's process, and this list does
++not cover it.
+ 
+-Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+-which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. No ORC module imports a Bookwhen
++ORC's own code reaches the network in these places. `src/core/research-tools.ts` makes read-only Jina Reader
++requests from the researcher child. `src/adapters/notifications/ntfy.ts` publishes durable-work notices to the ntfy
++topic the operator names in ORC's environment file, each carrying only a title, the notice's summary and the one
++configured tap address. Through ORC's built-in phone connector (`src/adapters/phone/index.ts`) it also publishes a
++Scope package's notices, to the topic the installation names for that package (`config/installation.ts`), carrying
++the package's title, text and tags and an optional tap address. The code accepts any http or https tap address,
++which the trifecta rule above counts as an outbound channel; it is to be limited to the hosts on the package's
++approval card (Q1 of the 2026-10-07 assessment). Chromium, launched by
++`src/adapters/browser/playwright.ts`, reaches only a session's approved hosts, and that module makes its own DNS
++lookups. Pi carries ORC's and its children's requests to the configured model provider. The restart card's
++`pnpm install --frozen-lockfile` downloads any package a release adds. No ORC module imports a Bookwhen
+ client: Bookwhen code belongs to the Moving Stillness Scope's package, and `test/architecture.test.ts` checks that
+ it stays out.
+ Workflow modules receive neither network nor subprocess access.
+diff -ruN b/orchestrator/README.md q1/orchestrator/README.md
+--- b/orchestrator/README.md	2026-10-07 22:10:49.866301276 +0100
++++ q1/orchestrator/README.md	2026-10-07 22:10:49.866377669 +0100
+@@ -1,10 +1,11 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++adapter, and per-conversation model controls. ORC runs in one parent process and launches isolated Pi
++children for the researcher and the analyst. It reads public webpages through Jina Reader. Approved Scope packages
++reach their own services through connectors ORC binds on their approval cards: a booking site's admin pages through
++ORC's browser, a mail account, and the operator's phone. AGENTS.md lists every place ORC reaches the network or
++launches a process.
+ 
+ ## Direction
+ 
+@@ -148,14 +149,15 @@
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+ open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++a Bookwhen admin entry, calculate a slot-change plan, and submit the apply as durable work, which runs only after the
++operator's approval card or a standing grant (AGENTS.md, #67). It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits. Scheduling was decided by Justin on 2026-09-17 (orchestration-lab
++Deliberately absent from ORC's own code, and each requires a decision rather than a convenience:
++reminders, workflow execution, sandboxes, shell access, and edits to arbitrary files. Each outside service and folder
++a Scope package reaches is named on the card that approves that package. Scheduling was decided by Justin on 2026-09-17 (orchestration-lab
+ `decisions/2026-09-17-async-work-architecture.md`).
+ 
+ ## Pi

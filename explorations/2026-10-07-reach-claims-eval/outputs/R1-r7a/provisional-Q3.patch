@@ -1,0 +1,17 @@
+Provisional patch for Q3 (questions.md). Do not apply until Justin answers Q3. It writes the recommended answer
+(finding F11): STATE.md's own header defers to AGENTS.md's cap of about forty content lines.
+
+Apply after settled.patch, from orc-lab/: patch -p1 < provisional-Q3.patch
+
+diff -ruN b/scope-orchestration-lab/STATE.md q3/scope-orchestration-lab/STATE.md
+--- b/scope-orchestration-lab/STATE.md	2026-10-07 22:01:57.009243651 +0100
++++ q3/scope-orchestration-lab/STATE.md	2026-10-07 22:03:01.139617380 +0100
+@@ -1,7 +1,7 @@
+ # State — orchestration-lab
+ 
+ Updated 2026-10-07, by the entropy-guard assessment; nothing live was re-read. **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Cap: about forty content lines (`AGENTS.md`).
+ Stale after any merge, ORC restart, decision or change of focus. The agent that caused it refreshes this file, and the
+ session-end guard (`skills/session-coherence-guard/SKILL.md`) checks it.
+ 

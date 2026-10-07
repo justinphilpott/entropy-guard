@@ -1,0 +1,173 @@
+PROVISIONAL patch, from the 2026-10-07 entropy assessment. Do not apply until Justin answers the questions named
+below (questions.md). It applies on top of settled.diff.
+
+    Lab AGENTS.md "Before handing off", ORC AGENTS.md "Before handing off"      waits on Q1 (and Q2)
+    Lab AGENTS.md cap "sixty lines (Justin, <date>)", STATE.md size line        waits on Q3
+    ORC AGENTS.md network paragraph (SMTP line also waits on orchestrator#137)  waits on Q4
+    ORC test/architecture.test.ts: DNS imports, browser launches               waits on Q4
+    ORC README.md credential sentence, ORC AGENTS.md "each source ... module"   waits on Q5
+
+Also waiting on Q1 and Q2, and not in this diff: copy guard/SKILL.md to
+scope-orchestration-lab/skills/session-coherence-guard/SKILL.md.
+Replace "<date of his answer to Q3>" with the date of Justin's answer, and the number if he chooses another.
+
+diff -ruN settled/orchestrator/AGENTS.md provisional/orchestrator/AGENTS.md
+--- settled/orchestrator/AGENTS.md	2026-10-07 22:00:16.122544079 +0100
++++ provisional/orchestrator/AGENTS.md	2026-10-07 22:02:42.887512449 +0100
+@@ -61,8 +61,8 @@
+ Until a workspace exists, ORC plays both roles — it reads a Scope's lead
+ definition and runs that agent itself. That is a bounded compromise recorded in
+ the open, not the destination. Preparation for splitting it is placement: a
+-Scope's lead definition lives in the Scope, credentials are read in one place,
+-and every dependency is named rather than found, so the set of things a
++Scope's lead definition lives in the Scope, each source of credentials is read in one
++module, and every dependency is named rather than found, so the set of things a
+ component is told is the set a container would mount.
+ 
+ No agent may hold private data, attacker-authored content, and an outbound
+@@ -98,11 +98,31 @@
+ `systemctl --user restart orc.service` (orchestrator#101). The subprocess check in
+ `test/architecture.test.ts` names these four. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+ 
+-Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+-which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. ORC imports no
++ORC's own source opens network connections with Node's primitives only in
++`src/core/research-tools.ts`, for read-only Jina Reader requests, in
++`src/adapters/notifications/ntfy.ts`, which publishes durable-work notices to the ntfy topic
++the operator names in ORC's environment file, and in `src/adapters/browser/playwright.ts`,
++which looks up an approved host's addresses (a DNS lookup) for the browser. No model or agent
++reaches the ntfy transport, and it sends only a title, the notice's summary and the one
++configured tap address.
++
++Everything else ORC reaches goes through a library or a process it starts:
++
++- The ORC process and the researcher child call, through Pi, the model provider that
++  configuration or an agent's definition names.
++- Chromium, launched by `src/adapters/browser/playwright.ts`, is given a proxy where nothing
++  listens, bypassed only for the hosts a browser grant approves (orchestrator#197); for Moving
++  Stillness those are `movingstillness.bookwhen.com` and `cdn.bookwhen.com` (`config/installation.ts`).
++- The restart card's `pnpm install --frozen-lockfile` (`src/adapters/orc-service.ts`) downloads
++  any package a release adds.
++- An MCP server launched by `src/adapters/mcp/client.ts` reaches whatever that server reaches;
++  ORC grants its tools by name (`SECURITY-REVIEW.md`, "Grant tools, never whole servers").
++- Scope package connectors run in ORC's process with what `config/installation.ts` binds. The
++  Finance mail connector is bound to SMTP at `smtp.protonmail.ch:587`; sending real email waits
++  on orchestrator#137.
++
++`test/architecture.test.ts` checks the first paragraph and where a browser may be launched; it
++cannot see what a library or a child reaches. ORC imports no
+ Bookwhen client: reading published events belongs to the Scope package that needs it, and
+ `test/architecture.test.ts` fails if `@jphil/bookwhen-client` is imported or becomes a dependency.
+ Workflow modules receive neither network nor subprocess access.
+@@ -153,6 +173,11 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++At the end of a work session, run the session-coherence guard kept in the orchestration-lab Scope,
++`~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and
+diff -ruN settled/orchestrator/README.md provisional/orchestrator/README.md
+--- settled/orchestrator/README.md	2026-10-07 22:10:50.162158388 +0100
++++ provisional/orchestrator/README.md	2026-10-07 22:10:50.162266891 +0100
+@@ -94,8 +94,11 @@
+ ./scripts/dev-web-local.sh    # loads that file, then pnpm dev:web
+ ```
+ 
+-A credential is read in exactly one place, `src/runtime.ts`, and handed to the narrow connector
+-that needs it. No subprocess ORC launches receives one.
++ORC's own credentials come from that file, loaded by `scripts/orc-env.sh` and read by name in
++the composition roots (`src/web-cli.ts`, `src/app/agent-packages.ts`), which hand each to the
++narrow connector that needs it. A Scope's credentials stay in that Scope's folder and are read
++only by `src/adapters/scope-credentials.ts` (the operator, 2026-09-28: logins are not
++centralised). No subprocess ORC launches receives one.
+ 
+ ### As a service, restarted from a card
+ 
+diff -ruN settled/orchestrator/test/architecture.test.ts provisional/orchestrator/test/architecture.test.ts
+--- settled/orchestrator/test/architecture.test.ts	2026-10-07 21:59:29.439150871 +0100
++++ provisional/orchestrator/test/architecture.test.ts	2026-10-07 22:02:34.645764235 +0100
+@@ -66,6 +66,8 @@
+ const TOOL_RESOLVER = "core/tool-resolver.ts";
+ const MCP_CLIENT = "adapters/mcp/client.ts";
+ const ORC_SERVICE = "adapters/orc-service.ts";
++/** Launches Chromium through Playwright's library and resolves approved hosts before the browser may reach them. */
++const BROWSER_DRIVER = "adapters/browser/playwright.ts";
+ 
+ /**
+  * Every source file, at any depth, as a path relative to src/.
+@@ -834,6 +836,9 @@
+       CHILD_AGENT_PROCESS,
+     ]);
+     expect(filesMatching(/StdioClientTransport/), "MCP subprocess transport escaped its adapter").toEqual([MCP_CLIENT]);
++    // A library that starts a browser launches a process as surely as child_process does.
++    expect(filesMatching(/\bchromium\s*\.\s*launch|\blaunchPersistentContext\b|\bconnectOverCDP\b/), "a browser launch escaped the browser driver")
++      .toEqual([BROWSER_DRIVER]);
+     const mcpClient = readOptionalSource(MCP_CLIENT);
+     expect(mcpClient, "the MCP adapter does not use the official SDK stdio transport")
+       .toContain('@modelcontextprotocol/sdk/client/stdio.js');
+@@ -1292,19 +1297,22 @@
+     );
+   });
+ 
+-  it("limits core network I/O to the approved modules: Jina reads and ntfy notices", () => {
++  it("limits core network I/O to the approved modules: Jina reads, ntfy notices and the browser's host lookups", () => {
+     const directNetworkPatterns = [
+       /\bfetchImpl\b|\bfetch\s*\(|\bnew\s+(?:globalThis\.)?WebSocket\s*\(/,
+       /(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:axios|undici|node-fetch|got|ws)["']/,
+       /(?:import|export)\s*\{[^}]*(?:\brequest\b|\bget\b|\bconnect\b|\bcreateConnection\b|\bcreateSocket\b|\bAgent\b|\bSocket\b|\bTLSSocket\b)[^}]*\}\s*from\s*["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+       /import\s+(?:\*\s+as\s+[A-Za-z_$][\w$]*|[A-Za-z_$][\w$]*)\s+from\s+["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
+       /(?:import\s*\(\s*|require\s*\(\s*)["'](?:node:)?(?:http|https|http2|net|tls|dgram)["']/,
++      // AGENTS.md counts a DNS lookup as an outbound channel.
++      /(?:from\s+|import\s*\(\s*|require\s*\(\s*)["'](?:node:)?dns(?:\/promises)?["']/,
+     ];
+     const directNetwork = sourceFiles().filter((name) => {
+       const source = readSource(name);
+       return directNetworkPatterns.some((pattern) => pattern.test(source));
+     });
+     expect(directNetwork, "direct network access escaped, or an approved module no longer reaches it").toEqual([
++      BROWSER_DRIVER,
+       NTFY_TRANSPORT,
+       RESEARCH_TOOLS,
+     ]);
+diff -ruN settled/scope-orchestration-lab/AGENTS.md provisional/scope-orchestration-lab/AGENTS.md
+--- settled/scope-orchestration-lab/AGENTS.md	2026-10-07 22:00:16.122759055 +0100
++++ provisional/scope-orchestration-lab/AGENTS.md	2026-10-07 22:02:34.644170729 +0100
+@@ -32,10 +32,17 @@
+ ## Keeping state
+ 
+ `STATE.md` is overwritten at each verified event: a commit lands, tests pass, a decision is taken.
+-It holds current state only, capped at about forty content lines. History is in `git log`; open
++It holds current state only, capped at sixty lines (Justin, <date of his answer to Q3>). History is in `git log`; open
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++At the end of every work session on ORC or this Scope, before the last commit or push, run
++[`skills/session-coherence-guard/SKILL.md`](skills/session-coherence-guard/SKILL.md). Its report goes in the commit
++message or the pull request; its next action goes into `STATE.md`; a gap too large for this change becomes an issue
++on the map (orchestrator#140).
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff -ruN settled/scope-orchestration-lab/STATE.md provisional/scope-orchestration-lab/STATE.md
+--- settled/scope-orchestration-lab/STATE.md	2026-10-07 22:01:38.383217669 +0100
++++ provisional/scope-orchestration-lab/STATE.md	2026-10-07 22:02:34.644223714 +0100
+@@ -2,7 +2,7 @@
+ 
+ Updated 2026-10-07 by an entropy assessment, from this file's 2026-10-04 17:31 record; no live service was re-read.
+ **Current state only.** History is in `git log`, open work in GitHub issues,
+-what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Target: sixty lines.
++what broke in real use in `FRICTION.md`. Overwrite at each verified event; do not append. Size: `AGENTS.md`, "Keeping state".
+ 
+ Stale once a commit lands, ORC restarts, a card is approved or Justin decides: whoever did it rewrites this file
+ (`AGENTS.md`, "Keeping state"). Trust first: `SCOPE.md`, `scope.yaml`, `decisions/`, the map orchestrator#140 with

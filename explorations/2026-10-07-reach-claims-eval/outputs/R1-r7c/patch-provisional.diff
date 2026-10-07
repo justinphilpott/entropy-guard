@@ -1,0 +1,149 @@
+PROVISIONAL patch from the entropy-guard assessment of ORC and the orchestration lab, 2026-10-07.
+Do not apply until Justin has answered the questions each hunk names (questions.md; Q1-Q3 are also recorded in
+scope-orchestration-lab decisions/2026-10-07-proposed-boundary-questions.md). Each hunk carries a
+`<!-- PROVISIONAL (Qn) -->` marker to remove on applying. Apply after patch-settled.diff, with `patch -p1`.
+  Q1: orchestrator/AGENTS.md (subprocess and network paragraphs), orchestrator/README.md (opening, credentials).
+  Q2: orchestrator/README.md (opening, Boundary, "Deliberately absent").
+  Q3: orchestrator/AGENTS.md (core-ties exception).
+  Q4: "Before handing off" in both AGENTS.md files (and copying guard/SKILL.md to the lab's skills/session-coherence-guard/).
+  Q5: scope-orchestration-lab/STATE.md header (cap owned by AGENTS.md).
+
+diff -ruN s/orchestrator/AGENTS.md p/orchestrator/AGENTS.md
+--- s/orchestrator/AGENTS.md	2026-10-07 22:01:45.133288857 +0100
++++ p/orchestrator/AGENTS.md	2026-10-07 22:02:52.877592519 +0100
+@@ -45,7 +45,9 @@
+ same interface as any Scope agent. They are not core, and core does not depend on any of them.
+ 
+ `test/core-ties.ts` ratchets all four ties in `config/`, `src/` and `web/src/`, per file, at exact counts: a
+-count may only fall, and its allowance falls in the same change. On 2026-09-13 the baseline was:
++count may only fall, and its allowance falls in the same change. <!-- PROVISIONAL (Q3): --> The one exception is
++`config/installation.ts`, whose Scope allowance may rise when a Scope's agent is installed, with the reason beside it,
++until Scopes load by card (#152). On 2026-09-13 the baseline was:
+ 
+ - Scope: 426 matches in 14 files.
+ - Model: 39 matches in 9 files.
+@@ -89,17 +91,25 @@
+ its outcome by an independent read (#74); the Moving Stillness apply does, and a
+ new grantable type should not be declared without one.
+ 
+-Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+-code-fixed Pi child without a shell, `src/core/analysis-tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/mcp/client.ts`,
+-which delegates process transport to the official MCP SDK for a separately declared
+-server. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+-
+-Direct network access exists only in `src/core/research-tools.ts`, for
+-read-only Jina Reader requests, and in `src/adapters/notifications/ntfy.ts`,
+-which publishes durable-work notices to the ntfy topic the operator names in
+-ORC's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. ORC's source imports no Bookwhen
++<!-- PROVISIONAL (Q1, orchestration-lab decisions/2026-10-07-proposed-boundary-questions.md): apply only after
++Justin records his answer there. -->
++Subprocess access exists in five modules. `src/core/child-agent-process.ts` launches one code-fixed Pi child
++without a shell for each isolated agent run: the researcher, the analyst, and Scope agents placed in a child.
++`src/core/analysis-tools.ts` launches a code-fixed read-only `git log` without a shell. `src/adapters/mcp/client.ts`
++delegates process transport to the official MCP SDK for a separately declared server. `src/adapters/orc-service.ts`
++runs, for an approved restart card only, git reads, `pnpm install --frozen-lockfile`, `scripts/build.mjs` and one
++`systemctl --user restart orc.service`, each with ORC's whole environment. Through `src/adapters/browser/playwright.ts`,
++Playwright's library launches one headless Chromium per approved browser session. Approved Scope packages may
++implement separately declared connectors: the backends that reach an outside service.
++
++Network access exists in four places. `src/core/research-tools.ts` makes read-only Jina Reader requests.
++`src/adapters/notifications/ntfy.ts` publishes durable-work notices, a title, the notice's summary and the one
++configured tap address, to the ntfy topic the operator names in ORC's environment file. Through
++`src/adapters/phone/index.ts` it also publishes a Scope package's notices to that package's own topic on the same
++server: a title, text, up to five tags and an http or https tap address the package chooses. No model reaches the
++ntfy transport except through such a package tool. `src/adapters/browser/playwright.ts` resolves a session's approved
++hosts by DNS, and its Chromium reaches only those hosts. Beyond these, Pi's model calls and the restart's
++`pnpm install` reach the network through their own libraries and tools. ORC's source imports no Bookwhen
+ client: Bookwhen belongs to the Scope that needs it, and `test/architecture.test.ts` checks that it stays out.
+ Workflow modules receive neither network nor subprocess access.
+ 
+@@ -149,6 +159,11 @@
+ git config core.hooksPath .githooks
+ ```
+ 
++## Before handing off
++
++<!-- PROVISIONAL (Q4) --> At the end of a work session, before the last commit or push, run the session coherence
++guard kept in the orchestration-lab Scope: `skills/session-coherence-guard/SKILL.md` there.
++
+ ## Working Style
+ 
+ Use small working examples before generalising. Keep documentation concise and
+diff -ruN s/orchestrator/README.md p/orchestrator/README.md
+--- s/orchestrator/README.md	2026-10-07 22:02:09.283524600 +0100
++++ p/orchestrator/README.md	2026-10-07 22:03:02.340711781 +0100
+@@ -1,10 +1,10 @@
+ # Orchestrator
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+-adapter, and per-conversation model controls. ORC runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++adapter, and per-conversation model controls. <!-- PROVISIONAL (Q1, Q2) --> ORC runs in one parent process and
++launches an isolated Pi child for each delegated isolated agent run, such as the researcher's public-web research.
++Core reads public webpages through Jina Reader; everything else outside the machine, such as Bookwhen or a mail
++server, is reached by an approved Scope package's connectors, bound on its approval card (`config/installation.ts`).
+ 
+ ## Direction
+ 
+@@ -102,7 +102,10 @@
+ In ORC's own source, credentials are read in three places, and each is handed to the narrow connector
+ that needs it: the web token in `src/web-cli.ts`, and a package connector's credentials in `src/app/agent-packages.ts`, from
+ ORC's environment or, for a `scope:` reference, through `src/adapters/scope-credentials.ts` from the
+-package's own Scope (the operator, 2026-09-28: logins "should DEFINITELY NOT be centralised"). No subprocess ORC launches receives one.
++package's own Scope (the operator, 2026-09-28: logins "should DEFINITELY NOT be centralised"). <!-- PROVISIONAL (Q1) -->
++A Pi child's environment is built, not inherited: it gets Pi's agent directory and no connector secret
++(`src/core/child-agent-process.ts`). The restart card's commands (`src/adapters/orc-service.ts`) inherit ORC's whole
++environment, credentials included.
+ 
+ ### As a service, restarted from a card
+ 
+@@ -144,13 +147,15 @@
+ provider credentials, and no tool execution.
+ 
+ Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+-open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+-a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
++open Fridays projected from published Bookwhen events. <!-- PROVISIONAL (Q2) --> Its Moving Stillness specialist,
++a Scope package, can inspect a code-selected Bookwhen admin entry, calculate a slot-change plan, and submit it as
++durable work that applies only after the operator approves its card. It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+-Deliberately absent, and each requires a decision rather than a convenience: reminders,
++<!-- PROVISIONAL (Q2) --> Deliberately absent from core, and each requires a decision rather than a convenience
++(Scope packages reach further only through connectors bound on their approval card): reminders,
+ additional external data sources, workflow execution, sandboxes, shell access, and file
+ edits. Scheduling was decided on 2026-09-17: ORC owns durable work that runs now, at a time, or on a
+ recurring schedule (orchestration-lab `decisions/2026-09-17-async-work-architecture.md`).
+diff -ruN s/scope-orchestration-lab/AGENTS.md p/scope-orchestration-lab/AGENTS.md
+--- s/scope-orchestration-lab/AGENTS.md	2026-10-07 21:59:40.196858048 +0100
++++ p/scope-orchestration-lab/AGENTS.md	2026-10-07 22:02:52.877646809 +0100
+@@ -35,6 +35,11 @@
+ work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+ that stops being read.
+ 
++## Before handing off
++
++<!-- PROVISIONAL (Q4) --> At the end of a work session in this Scope or in ORC, before the last commit or push, run
++[skills/session-coherence-guard/SKILL.md](skills/session-coherence-guard/SKILL.md) and put its report where it says.
++
+ ## Recording agent ideas
+ 
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+diff -ruN s/scope-orchestration-lab/STATE.md p/scope-orchestration-lab/STATE.md
+--- s/scope-orchestration-lab/STATE.md	2026-10-07 22:00:45.567948373 +0100
++++ p/scope-orchestration-lab/STATE.md	2026-10-07 22:02:52.877694760 +0100
+@@ -2,7 +2,7 @@
+ 
+ Updated 2026-10-07: reorganised from the 2026-10-04 17:31 file by the entropy-guard assessment; no live fact was re-read.
+ **Current state only.** History is in `git log`, open work in GitHub issues, what broke in real use in `FRICTION.md`,
+-decisions in `decisions/`. Overwrite at each verified event; do not append. Target: sixty lines.
++decisions in `decisions/`. Overwrite at each verified event; do not append. <!-- PROVISIONAL (Q5) --> Cap: `AGENTS.md`, "Keeping state".
+ **Stale when** a PR merges, ORC restarts, a decision is taken, or a dated line is a week old; whoever caused it rewrites it.
+ 
+ **Stage:** ORC is in daily use while it is built. ORC scheduling (#166) is next. Browser-stack work waits while MS is paused
