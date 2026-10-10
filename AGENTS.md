@@ -31,7 +31,7 @@ A collaborative research and development project exploring entropy guards — sk
 
 - Keep the repo markdown-first and workflow-focused; there is no application runtime in this project yet.
 - Prefer updating the core knowledge docs (`README.md`, `INTENT.md`, `DECISIONS.md`, `LEARNINGS.md`, `TODO.md`) in the same change when behavior or methodology shifts.
-- Exportable skills live in `skills/`; repo-local helper and ritual skills live in `skills/local/`.
+- Exportable skills live in `skills/`; repo-local helper and ritual skills live in `skills/local/`. The exportable ones are installed on Justin's machine as folder links to this checkout, so they name each other as `../<name>/SKILL.md`, and branch work goes in a worktree, not this checkout (DECISIONS.md, 2026-10-10).
 - Keep this repo focused on practical entropy-guard validation and exported workflow guidance; broader entropic-immunity theory work now lives in the sibling `entropy-immune-system` repo. The current strongest validation track is docs-first planning repos.
 
 ## Key Files

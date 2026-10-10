@@ -4,6 +4,14 @@ Record architectural choices so future you (and agents) understand why.
 
 ---
 
+### The exportable skills are installed by folder link, and name each other relatively
+
+**Decided by**: Justin, 2026-10-10 ("yes please link them"), so the skills can be run on Iris (ORC's new name) and other repositories by name.
+**Decision**: The four skills in `skills/` (not `skills/local/`) are installed on Justin's machine as folder links, made by local-config's sync from links in its `home/.agents/skills` (local-config `DECISIONS.md`, 2026-10-10). Their home stays here. They refer to each other as `../<name>/SKILL.md`, which resolves both in this repo and among installed folders; `skills/<name>/SKILL.md` resolved only from this repo's root, and, run inside another repository, read as a path in that repository.
+**Impact**: Every agent on the machine finds the skills by name. The links serve whatever `~/pro/entropy-guard` has checked out, so branch work belongs in a worktree under `~/worktrees/entropy-guard/`, leaving this checkout on `main`. A new cross-reference between exportable skills uses the relative form.
+
+---
+
 ### Skills are sized from what they must hold, and load branch material only on its branch
 
 **Decided by**: Justin, 2026-10-07 ("lets go"), after Astra's independent size review (`explorations/2026-10-05-skills-size-review-astra.md`) found the October revision had grown the instruction library from 6,281 to 9,729 words, with every route loading instructions for routes it was not taking.

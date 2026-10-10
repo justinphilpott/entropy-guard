@@ -41,6 +41,8 @@ Read skills/entropy-assessment/SKILL.md from the entropy-guard repo,
 then assess [your project path] for entropy risks.
 ```
 
+Where the four exportable skills are installed as skills, each `skills/<name>` folder linked as one folder into the agent's skills directory (on Justin's machine, local-config's sync links them into `~/.agents/skills` and `~/.claude/skills`), ask for it by name from inside the project: "Use entropy-assessment to assess this repository for entropy risks." The skills link to each other relatively, so they resolve from either place.
+
 The front door runs the intent pass, classifies the repo, and routes it. The docs-first workflow produces an entropy report, a canonical truth map, an up-to-date current-state file for fresh sessions, and the checks its guard needs.
 
 **If you already know the repo is docs-first planning**: go straight to the specialized skill.

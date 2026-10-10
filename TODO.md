@@ -13,15 +13,20 @@ State at 23:25 on 7 October: round 8 is scored. No regression in any case; the p
 against 1 of 3); the reach rule improves K35 by half a point where the rule asked for a whole run, so the round fails
 that criterion. No PR opened.
 
-**Paused by Justin at 23:22 on 7 October until work on the orchestrator reaches a pause.** On resuming, three
-decisions wait for him: what ships from this branch (both changes, the patch check alone, or more runs); the ORC
-assessment's snapshot; and an Astra review of this branch. PR #14 (the size cut) was merged at 23:23 on Justin's
-"merge ok", as `f2a3dba`; this branch now sits on what main holds.
+Paused by Justin at 23:22 on 7 October; resumed 10 October. Two decisions still wait for him: what ships from this
+branch (both changes, the patch check alone, or more runs), and an Astra review of it. PR #14 (the size cut) was
+merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
+
+**Installed and running on Iris (ORC's new name), 10 October, on Justin's "yes please link them":**
+- The four exportable skills now link to each other as `../<name>/SKILL.md` (`47eae36`), so they resolve once
+  installed. local-config `91a7338` (not pushed) links them into `~/.agents/skills` and `~/.claude/skills` through
+  its sync, with a DECISIONS entry. The links serve whatever `~/pro/entropy-guard` has checked out: this branch now.
+- A read-only assessment of Iris (`origin/main` `a694039`) and the lab Scope (`56a32e0`) is running from copies in
+  this session's scratchpad, through the installed skills. Its output goes to Justin before anything in Iris changes.
 
 ## Next Up
 
 - [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
-- [ ] Assess ORC and the lab Scope together with the revised skills, read-only; bring the results and any proposed changes to Justin before anything in ORC changes
 - [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction
 
