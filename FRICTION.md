@@ -5,6 +5,23 @@ section per day.
 
 ---
 
+## 2026-10-10 — installing the skills, and their first real run on Iris
+
+- **The skills could not be installed as they were.** The four exportable skills named each other as
+  `skills/<name>/SKILL.md`, a path that resolves only from this repo's root. Run by name inside Iris, an agent would
+  have looked for that path in Iris, and the generator writes the guard to `skills/session-coherence-guard/` in the
+  target, so the two meanings of `skills/` would have collided. **Cost:** one commit (`47eae36`), found before any
+  run. A **missing system**: nothing had ever installed the skills outside this repo, so nothing tested that their
+  references resolve from an installed folder.
+- **A hand-made link would not have survived local-config's sync.** Sync removes any `~/.claude/skills/<name>` link
+  into `~/.agents/skills` whose skill is not in local-config. **Cost:** none; read before linking, and the links went
+  into local-config instead (`91a7338`). An **instance**, recorded in local-config `DECISIONS.md`, 2026-10-10.
+- **The skills assume a guard serves one repository.** On Iris and the lab, a system the front door assesses as one,
+  the generator still writes one guard "in the repository" with one baseline, and gives no rule for splitting patches
+  by repository or for a state file rewritten up to 61 times a day. The run worked around each and wrote them down
+  (`explorations/2026-10-10-iris-assessment/skills-feedback.md`). **Cost:** 61 words of the guard, and a `STATE.md`
+  hunk that conflicts before it can be applied. A **missing system** in the generator: multi-repository guards.
+
 ## 2026-10-07 — the stall's real cause, and the reply cap in codex
 
 - **A test run wrote one cache file into the live ORC checkout.** To confirm the R4c fixture's tests pass, Claude
