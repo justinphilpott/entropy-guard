@@ -25,12 +25,22 @@ merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
   skills: `explorations/2026-10-10-iris-assessment/` (`run.md` says how, and which findings were checked). Guard
   decision `create`; 14 findings; 4 questions for Justin; settled and provisional patches, none applied. Nothing in
   Iris or the lab changes until Justin answers.
-- The run's 5 notes on the skills themselves (`skills-feedback.md` there) are not yet triaged: multi-repository guard
-  home and baseline, patches split by repository, a churning state file, test blind spots in reach checks, and
-  `git log -S` for decisions held only in a state file.
+- Justin answered the run's Q1 on 10 October: one guard, in the lab at `skills/session-coherence-guard/SKILL.md`,
+  covering both repositories. Overnight: map issue orchestrator#383; orchestrator PR #384 (Iris's reach, launch and
+  credential lists match the code; pointer to the guard; Danger and names-issue pass) and scope-orchestration-lab PR
+  #6 (the guard installed; three decisions copied out of `STATE.md`; merge first). Both open, not merged.
+- The run's 5 notes on the skills (`skills-feedback.md` there) are sorted into Next Up below.
 
 ## Next Up
 
+- [ ] Guards for a system of several repositories (the Iris run's notes 1 to 3, a missing system in the generator): say
+  where the guard lives (the repository holding the state file, with pointers from the others), find the baseline in
+  each repository the session touched, split patches by repository with their order stated, and deliver a churning
+  state file's update as claims with sources rather than a hunk
+- [ ] `mixed-profile.md`'s reach check: when a test enforces a reach list, read the test's patterns and list what they
+  cannot see (a library that launches a browser, a DNS lookup, `fetch` passed as a value) (Iris run, note 4)
+- [ ] The intent pass: name `git log -S` on the state file as the first search for a decision whose only home is an
+  overwritten state file (Iris run, note 5)
 - [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
 - [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction
