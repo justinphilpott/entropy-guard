@@ -42,7 +42,7 @@ separate one that manages its work. If it does, assess the repositories as one s
 
 | Shape | When | Analysis |
 |---|---|---|
-| **A. Docs-first planning** | Markdown is the primary artifact; decision logs, TODOs and agent instructions carry state; work happens in repeated sessions. | Run `skills/docs-first-planning-assessment/SKILL.md` as a called skill: it returns to Step 3. Its assessment is the assessment; add only intent and lifecycle. |
+| **A. Docs-first planning** | Markdown is the primary artifact; decision logs, TODOs and agent instructions carry state; work happens in repeated sessions. | Run [`docs-first-planning-assessment`](../docs-first-planning-assessment/SKILL.md) as a called skill: it returns to Step 3. Its assessment is the assessment; add only intent and lifecycle. |
 | **B. Mixed docs and code** | Meaningful implementation and a meaningful docs or planning surface, with risk between them. | Read [`mixed-profile.md`](mixed-profile.md). |
 | **C. Code-first** | Implementation is the main artifact; risks are architecture, tests or API drift. | As B. |
 | **D. Workflow-heavy** | The main entropy surface is how work is done: handoffs, releases, instructions, checklists. | As B. |
@@ -109,4 +109,4 @@ These apply to the docs-first assessment, the generator, the guards it writes, a
   and a decision.
 
 If this skill misrouted the system or left a step too implicit, in a way others would hit, note it.
-`skills/local/entropy-guard-feedback/SKILL.md` files it as an issue when working in this repo.
+`skills/local/entropy-guard-feedback/SKILL.md` files it as an issue when working in the entropy-guard repo.

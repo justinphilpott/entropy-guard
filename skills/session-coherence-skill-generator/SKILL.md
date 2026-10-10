@@ -12,13 +12,13 @@ of a work session, so the repo is left coherent, honest about its state, and eas
 
 ## Inputs, and the guard decision
 
-The inputs come from an assessment. If none was given, call `skills/entropy-assessment/SKILL.md` for analysis only,
+The inputs come from an assessment. If none was given, call [`entropy-assessment`](../entropy-assessment/SKILL.md) for analysis only,
 passing your own mode. Its "Called for analysis only" contract returns the findings, the guard decision and the inputs
 below. Then act on the decision:
 
 - **`none`:** stop. Report that no guard change is needed, and why.
 - **`bootstrap`:** follow [`bootstrap.md`](bootstrap.md). Build a guard only if its verdict is `ready now`.
-- **`create` or `update`:** build the guard to the contract below, then hand it to `skills/guards-integrator/SKILL.md`.
+- **`create` or `update`:** build the guard to the contract below, then hand it to [`guards-integrator`](../guards-integrator/SKILL.md).
   That handover is this skill's alone.
 
 The inputs a guard needs are below. Any input marked unresolved stays visible in the guard; do not fill it by
@@ -90,7 +90,7 @@ with the time. -->
 
 ## Intent
 Does this change fit the authorised intent in <files>? If not:
-<the intent-change rule from entropy-guard's `skills/entropy-assessment/intent-change-rule.md`, copied with
+<the intent-change rule from entropy-guard's `entropy-assessment/intent-change-rule.md`, copied with
 <steward>, <intent documents> and <decision surface> filled in>
 (Intent-change rule v2, from entropy-guard.)
 

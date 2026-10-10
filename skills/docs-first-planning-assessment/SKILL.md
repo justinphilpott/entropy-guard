@@ -9,10 +9,10 @@ metadata:
 
 The analysis for markdown-first planning, architecture and design repos, where the documents are the product and
 work happens across repeated human and agent sessions. It does not write guards: it hands its checks to
-`skills/session-coherence-skill-generator/SKILL.md`.
+[`session-coherence-skill-generator`](../session-coherence-skill-generator/SKILL.md).
 
-Not for code-first systems (use `skills/entropy-assessment/SKILL.md`), one-off documents with no recurring loop, or
-placing an existing guard (use `skills/guards-integrator/SKILL.md`). It follows "Called for analysis only" and "Rules
+Not for code-first systems (use [`entropy-assessment`](../entropy-assessment/SKILL.md)), one-off documents with no recurring loop, or
+placing an existing guard (use [`guards-integrator`](../guards-integrator/SKILL.md)). It follows "Called for analysis only" and "Rules
 along the whole route" in `entropy-assessment`: it inherits the caller's mode, keeps one findings list with ids, and
 limits every correction by its evidence.
 
@@ -102,5 +102,5 @@ Then, if another skill called this one, return the assessment and these inputs t
 
 Track cleanup in `TODO.md` or a handoff note, never in the guard itself.
 
-If this skill missed something others would hit, note it. In this repo, `skills/local/entropy-guard-feedback/SKILL.md`
+If this skill missed something others would hit, note it. In the entropy-guard repo, `skills/local/entropy-guard-feedback/SKILL.md`
 files it.
