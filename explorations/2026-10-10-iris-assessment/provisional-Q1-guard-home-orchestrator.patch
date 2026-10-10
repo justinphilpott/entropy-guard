@@ -1,0 +1,25 @@
+diff --git a/.changeset/session-guard-pointer.md b/.changeset/session-guard-pointer.md
+new file mode 100644
+index 0000000..a845151
+--- /dev/null
++++ b/.changeset/session-guard-pointer.md
+@@ -0,0 +1,2 @@
++---
++---
+diff --git a/AGENTS.md b/AGENTS.md
+index cd20ad6..89a4c1c 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -17,6 +17,12 @@ the map first. `.github/workflows/pr-names-issue.yml` fails the check of a pull
+ that is closed, missing or a pull request; the other repositories call the same workflow. Without GitHub Pro a failed
+ check warns rather than blocks a merge (SECURITY-REVIEW.md, "Recording it"; #180), so merge only when it is green.
+ 
++## Before handing off
++
++At the end of a session, run the session-end guard kept in the orchestration lab,
++`~/scopes/scope-orchestration-lab/skills/session-coherence-guard/SKILL.md`. It checks this repository's changes, the
++lab's `STATE.md` and the decisions a session took, and its report goes into that `STATE.md`.
++
+ ## Boundaries
+ 
+ Prompt text instructs the model but never substitutes for tool or data

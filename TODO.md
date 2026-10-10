@@ -21,8 +21,13 @@ merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
 - The four exportable skills now link to each other as `../<name>/SKILL.md` (`47eae36`), so they resolve once
   installed. local-config `91a7338` (not pushed) links them into `~/.agents/skills` and `~/.claude/skills` through
   its sync, with a DECISIONS entry. The links serve whatever `~/pro/entropy-guard` has checked out: this branch now.
-- A read-only assessment of Iris (`origin/main` `a694039`) and the lab Scope (`56a32e0`) is running from copies in
-  this session's scratchpad, through the installed skills. Its output goes to Justin before anything in Iris changes.
+- A read-only assessment of Iris (`origin/main` `a694039`) and the lab Scope (`56a32e0`) ran through the installed
+  skills: `explorations/2026-10-10-iris-assessment/` (`run.md` says how, and which findings were checked). Guard
+  decision `create`; 14 findings; 4 questions for Justin; settled and provisional patches, none applied. Nothing in
+  Iris or the lab changes until Justin answers.
+- The run's 5 notes on the skills themselves (`skills-feedback.md` there) are not yet triaged: multi-repository guard
+  home and baseline, patches split by repository, a churning state file, test blind spots in reach checks, and
+  `git log -S` for decisions held only in a state file.
 
 ## Next Up
 

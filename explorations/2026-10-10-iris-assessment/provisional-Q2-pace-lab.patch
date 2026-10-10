@@ -1,0 +1,17 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 344f550..3746852 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -24,9 +24,9 @@ bounded Scope-root configuration.
+ 
+ ## Pace
+ 
+-`/home/justin-philpott/pro/agentic/HOW_NOT_TO_PLAN.md` governs new design work:
+-one scored real use must come first. Keep implementation examples small and
+-documentation retrospective.
++How much to build follows Justin's user-wide rules, "Build the whole thing, not the proven minimum" (21 Sep) and
++"Before building a part, ask what it is one of" (10 Oct). They replace the earlier rule here that one scored real use
++must come first (`/home/justin-philpott/pro/agentic/HOW_NOT_TO_PLAN.md`). Keep documentation retrospective.
+ 
+ ## Keeping state
+ 

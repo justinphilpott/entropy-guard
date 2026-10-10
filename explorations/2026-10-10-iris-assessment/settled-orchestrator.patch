@@ -1,0 +1,235 @@
+diff --git a/.changeset/reach-lists-match-the-code.md b/.changeset/reach-lists-match-the-code.md
+new file mode 100644
+index 0000000..a845151
+--- /dev/null
++++ b/.changeset/reach-lists-match-the-code.md
+@@ -0,0 +1,2 @@
++---
++---
+diff --git a/.github/pull_request_template.md b/.github/pull_request_template.md
+index ae03ee6..e92b8f5 100644
+--- a/.github/pull_request_template.md
++++ b/.github/pull_request_template.md
+@@ -10,3 +10,10 @@
+ <!-- Required when this changes a guarded path (the list is in dangerfile.js): what an agent can reach that it could
+ not before, and what you tried that was refused (SECURITY-REVIEW.md). "No new authority; <reason>" is a complete
+ answer. Delete this section if nothing guarded changed. -->
++
++## Astra review
++
++<!-- Required on every pull request (dangerfile.js; AGENTS.md, "Astra review"): `Done`, then the report's path and what
++was fixed, or `Not needed`, then the reason in a sentence. Also add a changeset: `pnpm changeset`, or
++`pnpm changeset --empty` when nothing runs differently (.changeset/README.md). If this changes
++src/package-api.api.md, add a `## Package API` section (AGENTS.md, "Security review"). -->
+diff --git a/AGENTS.md b/AGENTS.md
+index bc3091a..cd20ad6 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -13,8 +13,9 @@ every new issue is placed on the map, as a sub-issue of the branch it serves.
+ 
+ **Every pull request names the issue it moves** (Justin, 8 Oct 2026: "Core rule. PR's must have an issue."), with
+ `Fixes #N`, `Closes #N`, `Resolves #N` or `Part of #N` in its description. If no issue exists, open one and place it on
+-the map first. `.github/workflows/pr-names-issue.yml` refuses a pull request that names none, or names one that is
+-closed, missing or a pull request; the other repositories call the same workflow.
++the map first. `.github/workflows/pr-names-issue.yml` fails the check of a pull request that names none, or names one
++that is closed, missing or a pull request; the other repositories call the same workflow. Without GitHub Pro a failed
++check warns rather than blocks a merge (SECURITY-REVIEW.md, "Recording it"; #180), so merge only when it is green.
+ 
+ ## Boundaries
+ 
+@@ -23,9 +24,13 @@ boundaries. Exclude data before returning it, and withhold authority by not
+ providing a tool.
+ 
+ The parent model receives `capture_item`, `close_day`, `current_time`,
+-`design_research_agent`, `list_captures`, `list_open_fridays`, one derived
+-delegate tool for each discovered agent, and one handoff tool for each available
+-agent. Pi's built-in tools and ambient
++`design_research_agent`, `list_captures`, the operator-memory tools `remember`,
++`change_memory` and `recall_memories` where the host composes Iris-app's memory
++(#350), the tools approved package contributions grant it
++(`INSTALLATION_PACKAGE_CONTRIBUTIONS` in `config/installation.ts`; today
++`list_open_fridays`), one derived delegate tool for each discovered agent, and one
++handoff tool for each available agent (`createOrchestratorTools` in `src/tools.ts`,
++assembled in `src/runtime.ts`). Pi's built-in tools and ambient
+ resources stay disabled.
+ 
+ Each conversation with Iris has a mode (#292), switched in its composer; new ones
+@@ -127,19 +132,33 @@ new grantable type should not be declared without one.
+ 
+ Subprocess access exists in `src/core/child-agent-process.ts`, which launches one
+ code-fixed Pi child without a shell, `src/tools/local-files/tools.ts`, which launches a
+-code-fixed read-only `git log` without a shell, and `src/adapters/orc-service.ts`,
+-which runs git's read commands in Iris's own checkout, a frozen-lockfile pnpm install
+-and `systemctl --user restart orc.service` for the restart card. Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
+-
+-Direct network access exists only in `src/adapters/public-web/connector.ts`,
+-which searches Brave and reads through Jina Reader on behalf of an isolated
+-research run, holding Brave's key itself and answering the run's child only over
++code-fixed read-only `git log` without a shell, `src/adapters/orc-service.ts`,
++which runs git's read commands in Iris's own checkout, a frozen-lockfile pnpm install,
++`node scripts/build.mjs` for the restart's build, `systemd-notify --ready`, and
++`systemctl --user reset-failed` and `restart` of `orc.service` for the restart card, and
++`src/adapters/browser/playwright.ts`, which launches one headless Chromium per browser
++session through Playwright's library (#76). Approved Scope packages may implement separately declared connectors: the backends that reach an outside service.
++
++Direct network access exists in `src/adapters/public-web/connector.ts`,
++which searches through the installation's search provider (Kagi; Brave is a second
++Adapter, `search-providers.ts`, #332) and reads through Jina Reader on behalf of an isolated
++run, holding the provider's key itself and answering the run's child only over
+ its IPC channel, and only for an address a search in that run returned or the
+-operator wrote (#296); and in `src/adapters/notifications/ntfy.ts`,
++operator wrote (#296); in `src/adapters/notifications/ntfy.ts`,
+ which publishes durable-work notices to the ntfy topic the operator names in
+-Iris's environment file. No model or agent reaches the ntfy transport, and it
+-sends only a title, the notice's summary and the one configured tap address. `src/bookwhen.ts` is the only module
+-that imports the pinned Bookwhen client, and it reads published events only.
++Iris's environment file, and which no model reaches directly: durable-work notices
++carry only a title, the notice's summary and the one configured tap address, and an
++approved package reaches the same sender through the phone connector it declares
++(`src/adapters/phone/index.ts`, #184), with a bounded title and text, no attachment
++or action button, on a topic the installation names on the package's card; and in
++`src/adapters/browser/playwright.ts`, whose Chromium is kept to the hosts a browser
++grant names and which resolves those hosts with a DNS lookup to refuse private
++addresses. Pi reaches the configured model provider for each model turn, and the
++restart's pnpm install reaches the package registry. Bookwhen code moved to the
++Moving Stillness Scope's package on 15 Sep 2026 (`19a5561`), and
++`test/architecture.test.ts` keeps its client out of Iris-app's source. This list was
++checked against `src/` and `config/` on 10 Oct 2026; approved Scope packages, which run
++in Iris-app's process, and the operator commands in `scripts/` are not listed here.
+ Workflow modules receive neither network nor subprocess access.
+ 
+ Credentials stay in composition roots and narrowed connectors. They are never
+@@ -162,8 +181,8 @@ classes of approval ... enforce as much structure as makes sense whilst allowing
+   marked added, removed, changed or unchanged, with an "unchanged" line for every dimension left alone.
+ - A task type that needs approval declares its card's template in `review`: its `kind`, its `layout` (blocks
+   in order, each required), and the `facts` and change `dimensions` every card must carry. The engine
+-  refuses a card that lacks any of them. Iris's own kinds are "Standing grant", "Package build" and "Iris restart"; a Scope's
+-  package declares its task types' in its manifest.
++  refuses a card that lacks any of them. Iris's own kinds are declared through `src/app/own-cards.ts`, which
++  lists them; a Scope's package declares its task types' in its manifest.
+ - A task type with no template still works, showing title and summary; declare one for any new kind.
+ 
+ ## Security review
+diff --git a/README.md b/README.md
+index ee78271..1edc6b4 100644
+--- a/README.md
++++ b/README.md
+@@ -2,9 +2,11 @@
+ 
+ Justin's local-first personal agent: owned conversations, a browser operator UI, a terminal
+ adapter, and per-conversation model controls. Iris runs in one parent process and launches one
+-isolated fixed researcher child for each public-web research invocation. Its read-only external
+-data paths are published Bookwhen events, fixed Bookwhen admin inspection and planning operations,
+-and public webpages through Jina Reader.
++isolated Pi child for each run whose rights give it an isolated run mode, such as the Researcher's
++public-web research (`src/core/child-agent-process.ts`). What it reaches outside the machine and
++what it launches are listed in [AGENTS.md](AGENTS.md), "Boundaries", and where it reads credentials
++under "Credentials" below; approved Scope packages reach further through the connectors they
++declare, which those lists do not cover.
+ 
+ ## Direction
+ 
+@@ -34,7 +36,9 @@ search calls in that run failed. The researcher still found its answer by pointi
+ at a GitHub search URL. `r.jina.ai` answered unauthenticated and fetched public search-results
+ pages. Because `read_webpage` already subsumed search, the pair was one permission with two names
+ and was collapsed to `read_webpage`. A dedicated search tool may be reinstated if real use shows
+-that reading public pages alone cannot discover what tasks need.
++that reading public pages alone cannot discover what tasks need. It was reinstated on 8 Oct 2026 as
++`web_search`, through the public-web connector and a paid provider under a spending allowance (#296,
++#332).
+ 
+ The researcher has a second scored use, on 2026-09-10, researching which tools one agent may
+ safely hold. It found the framing Iris had been working from, named it, sourced it, and corrected
+@@ -73,10 +77,10 @@ pnpm build && pnpm start:web    # built loopback host
+ pnpm dev                        # terminal adapter (resumes the latest session; --new to start fresh)
+ ```
+ 
+-Set `ORCHESTRATOR_BOOKWHEN_API_TOKEN` in the server process to enable open-Friday queries. The
+-credential is used only by the fixed published-events connector through exact-pinned
+-`@jphil/bookwhen-client@0.6.1`, the same extractor used by the website, and is never returned to the
+-model.
++Open-Friday queries come from the Moving Stillness Scope's approved package, whose
++`list_open_fridays` the installation grants to the parent (`INSTALLATION_PACKAGE_CONTRIBUTIONS`,
++`config/installation.ts`). Iris-app's source holds no Bookwhen client since 15 Sep 2026 (`19a5561`);
++`test/architecture.test.ts` keeps it out.
+ 
+ Set `ORCHESTRATOR_SCOPE_DIRECTORIES` to a comma-separated list of absolute Scope directories.
+ Iris discovers agent definitions from each Scope's `agents/` directory. A Scope's agent replaces a
+@@ -93,7 +97,7 @@ per minute already exceeds the researcher's budget of 12 reads per run.
+ 
+ ### Credentials
+ 
+-Credentials live in `~/.config/orchestrator/env`, mode 600, outside every repository. Strictly
++Iris-app's own credentials live in `~/.config/orchestrator/env`, mode 600, outside every repository. Strictly
+ `KEY=value`, one per line, with `#` comments and no shell syntax. That format is what
+ `docker run --env-file`, systemd's `EnvironmentFile=` and Kubernetes secrets all read, so the file
+ survives containerisation unchanged. None of them run a shell. The launcher refuses any line that is
+@@ -105,8 +109,15 @@ includes the quotes. Write values bare.
+ ./scripts/dev-web-local.sh    # loads that file, then pnpm dev:web
+ ```
+ 
+-A credential is read in exactly one place, `src/runtime.ts`, and handed to the narrow connector
+-that needs it. No subprocess Iris launches receives one.
++Iris-app reads keys from that file's environment in `src/runtime.ts` (the search provider's key),
++`src/web-cli.ts` (the web token) and `src/app/agent-packages.ts` (a package connector's credential
++that its approval names as an environment variable), and hands each to the narrow connector that
++needs it. A Scope's credentials live beside its repository, one file each at
++`~/.config/scopes/<scope>/credentials/<service>.<slot>`, and are read only for that Scope's own
++package when it activates (`src/adapters/scope-credentials.ts`). No subprocess Iris launches
++receives one, except a browser session's Chromium, whose context is loaded with the login storage
++state its package's grant names (`src/adapters/browser/playwright.ts`). Checked against `src/` and
++`config/` on 10 Oct 2026; what approved packages do with a credential they are handed is not covered.
+ 
+ ### As a service, restarted from a card
+ 
+@@ -173,28 +184,29 @@ only what they keep for any chat: its id, timings, model, tool names and outcome
+ said. An incognito chat saved before this change (8 to 10 Oct 2026) can be read and deleted, but
+ takes no more messages.
+ 
+-Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, and
+-open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
++Wide eyes, narrow hands. The model sees its own conversation, a clock, captured summary items, the
++operator's memories (#350), and open Fridays projected from published Bookwhen events. Its Moving Stillness specialist can inspect
+ a code-selected Bookwhen admin entry and calculate a slot-change plan without applying it. It may delegate one bounded public-web task
+ to the fixed researcher and receives that researcher's attributed result and usage. It cannot read
+ repository files, diffs, shell environments, credentials, arbitrary destinations, raw Bookwhen
+ records, raw provider transcripts, or arbitrary local paths.
+ 
+ Deliberately absent, and each requires a decision rather than a convenience: reminders,
+-scheduling, additional external data sources, workflow execution, sandboxes, shell access, and file
+-edits.
++sandboxes, shell access, and file edits. Scheduling and workflow execution arrived by decision as
++durable work (the orchestration lab's `decisions/2026-09-17-async-work-architecture.md`), and
++further external sources the same way: paid web search (#332) and a browser kept to the hosts a
++grant names (#76).
+ 
+ ## Pi
+ 
+-Pi is pinned in four places — the dependency plus three pnpm overrides.
++Pi is pinned once, as the `@earendil-works/pi-coding-agent` dependency in `package.json`; pnpm
++overrides hold its three sibling packages to that version (`scripts/update-pi.mjs`, #280).
+ 
+ ```bash
+ pnpm pi:check    # current vs latest, changes nothing
+-pnpm pi:update   # moves all four, installs, typechecks, tests
++pnpm pi:update   # moves the pin, installs, typechecks, tests
+ ```
+ 
+-Currently on Pi Coding Agent `0.82.1`.
+-
+ ## Working on this
+ 
+ See [AGENTS.md](AGENTS.md) for the rules that constrain changes, and
+diff --git a/docs/GLOSSARY.md b/docs/GLOSSARY.md
+index 258267f..3a5064b 100644
+--- a/docs/GLOSSARY.md
++++ b/docs/GLOSSARY.md
+@@ -149,7 +149,7 @@ compressed, once nobody has touched them for a week.
+ 
+ ## Retired words
+ 
+-- **ORC:** now Agent Iris, or Iris.
++- **ORC:** now Agent Iris, or Iris-app.
+ - **Catalogue:** now the Registry.
+ - **Operation:** an action is a step, a task is a job; a browser grant lists the task types that may open a session.
+ - **Durable work:** now task.

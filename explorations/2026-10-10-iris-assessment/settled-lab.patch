@@ -1,0 +1,160 @@
+diff --git a/README.md b/README.md
+index a5893e0..73df5b4 100644
+--- a/README.md
++++ b/README.md
+@@ -13,8 +13,8 @@ Scope Deck/status-tracker prototype remains as an archived project.
+ issues, and a day-by-day history. Regenerate it from live data with:
+ 
+ ```bash
+-node tools/report.mjs             # snapshot, runs the test suite (~10s)
+-node tools/report.mjs --no-tests  # fast rebuild, keeps the day's test count
++node tools/report.mjs             # snapshot, runs both test suites (about two minutes)
++node tools/report.mjs --no-tests  # fast rebuild (about ten seconds), keeps the day's test count
+ node tools/report.mjs --serve     # http://localhost:4190, rebuilds on reload
+ ```
+ 
+diff --git a/STATE.md b/STATE.md
+index bcf259c..46f8557 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -1,9 +1,12 @@
+ # State — orchestration-lab
+ 
+ **Current state only.** When it last changed is in `git log -1 STATE.md`. History is in `git log`, open work in
+-GitHub issues on the map (orchestrator#140), decisions in `memory/`, what broke in `FRICTION.md`. Overwrite; do not
++GitHub issues on the map (orchestrator#140), what broke in `FRICTION.md`. Overwrite; do not
+ append. Target: sixty lines.
+ 
++Decisions by concern: `memory/` (Scope relations, this lab's processes, the working rules in force), `decisions/`
++(async work), a design report's opening in `reports/`, and the orchestrator's `AGENTS.md` and `docs/GLOSSARY.md`.
++
+ ## North star
+ 
+ **Agent Iris** (working name) is Justin's own agentic system. Say **Iris-app** for the application and its code, and
+@@ -13,14 +16,12 @@ and eventual work showpiece. **Core** is its `src/core/` (glossary, orchestrator
+ 
+ ## How we work
+ 
+-- Our own recorded decisions first, then prior art, peer set first. Astra xhigh review when a pull request changes a
+-  guard, an approval or a grant, behaviour over time, a seam, or several subsystems (`astra-review` skill).
+-- **The live install is development for now** (Justin, 7 Oct 23:05): approved work may stop or break anything running.
+-- **Merge rights** until 15 Oct (Justin, 8 Oct 05:55: "you have merge grants for a week").
+-- Every orchestrator PR carries a `.changeset/*.md`; each merge releases a 0.x version and tag. Edit PR descriptions
+-  with `gh api -X PATCH .../pulls/N -F body=@file`: `gh pr edit` fails on a GitHub deprecation error.
+-- **New, 10 Oct:** an issue number always comes with its short title (local-config `AGENTS.md`); **no agent-specific
+-  code in Core**: generic for any agent, or it lives in a Scope (`memory/core-and-scopes.md`).
++- Rules: Justin's user-wide local-config `home/AGENTS.md` (our own decisions, then prior art; issue numbers with
++  titles; merge requests); the orchestrator's `AGENTS.md` ("Astra review"; "Versions": every PR carries a changeset);
++  `memory/core-and-scopes.md` (no agent-specific code in Core, 10 Oct).
++- **Working rules in force** (`memory/central-scope.md`): the live install is development for now (Justin, 7 Oct
++  23:05); merge rights until 15 Oct (Justin, 8 Oct 05:55); the pause, below.
++- Edit PR descriptions with `gh api -X PATCH .../pulls/N -F body=@file`: `gh pr edit` fails on a GitHub deprecation.
+ 
+ ## Where we are (10 Oct, evening)
+ 
+@@ -33,8 +34,8 @@ agent in a browser on a rehearsal copy.
+ for any agent), #370 (#367, git hooks tell Iris-app of changes instead of minute timers), #377 (#316, an incognito chat
+ is never saved). Needs one restart card.
+ 
+-**#328 (Pi behind its port, codebase layout), phase 1:** PRs 0–3 landed (#338, #339, #340, #369). Next PR 4 (front
+-door's tools), 5 (launcher keyed on run mode), 6 (model port), 7 (composition; needs #282).
++**Where we are now:** #328 (Pi behind its port, codebase layout), phase 1: PRs 0–3 landed (#338, #339, #340, #369).
++Next PR 4 (front door's tools), 5 (launcher keyed on run mode), 6 (model port), 7 (composition; needs #282).
+ 
+ **#362 (Pi release watch):** the agent lives in the lab Scope; Core gives general capabilities
+ (`reports/2026-10-10-scheduled-agent-design.md`). It waits for #152 (Scopes loaded by card, not the env file).
+@@ -43,10 +44,10 @@ door's tools), 5 (launcher keyed on run mode), 6 (model port), 7 (composition; n
+ filed under #152: scope#5 (Scope model 3.2), then #373 (finance and Moving Stillness on version 3), then #374 (build
+ it). The env-file list `ORCHESTRATOR_SCOPE_DIRECTORIES` is superseded and must not be offered (PR #372).
+ 
+-**The pause is reached in code** (STATE, 8 Oct 23:30: a stable base to use Iris-app and change its UI): Kagi search
+-(#335), restarts (#337, #343), the contained rehearsal (#333), #292's handover button kept (option D after, #375), #316
+-never saved (#377). It takes effect at the restart onto 0.5.4. After it: backend work outside `web/src/` only, restarts
+-batched to one he approves a day.
++**The pause is reached in code** (`memory/central-scope.md`, 8 Oct 23:30: a stable base to use Iris-app and change its
++UI): Kagi search (#335), restarts (#337, #343), the contained rehearsal (#333), #292's handover button kept (option D
++after, #375), #316 never saved (#377). It takes effect at the restart onto 0.5.4. After it: backend work outside
++`web/src/` only, restarts batched to one he approves a day.
+ 
+ ## For Justin, in order
+ 
+@@ -59,4 +60,8 @@ batched to one he approves a day.
+ The five storage decisions (#325, `reports/2026-10-09-storage-management-design.md`); D's four, after the pause
+ (#375); #289's five Fridays questions; #336 pieces 2 and 5; #358's
+ separate user, passkey or Gondolin; the scheduling explainer's next decisions
+-(`reports/2026-10-10-scheduling-system-explained.md`). Parked: ADA, goal #35.
++(`reports/2026-10-10-scheduling-system-explained.md`); the entropy-guard assessment's four questions
++(`memory/central-scope.md`, "Waiting"). Parked: ADA, goal #35.
++
++**Misleading nearby** (read 10 Oct): this lab's `status.html` (built 2 Oct); at orchestrator `a694039`, `OPERATOR.md`
++(a 17 Sep branch report) and the README's and `AGENTS.md`'s `src/bookwhen.ts`, Bookwhen token and Pi `0.82.1` (gone).
+diff --git a/memory/central-scope.md b/memory/central-scope.md
+index c7e3445..6573f5c 100644
+--- a/memory/central-scope.md
++++ b/memory/central-scope.md
+@@ -45,7 +45,26 @@ check (#209). Each entry names the trigger that would make it a Scope.
+ - **A capability entry in the Registry.** Not built (glossary, 7 Oct). Trigger: one outcome offered several ways, or
+   by several sources, so an agent has to choose.
+ 
++## Working rules in force
++
++Copied on 10 Oct 2026 from `STATE.md`, where each was first recorded and which is overwritten; recording them here
++decides nothing again. Each lasts as its own words say.
++
++- **The live install is development for now** (Justin, 7 Oct 23:05): approved work may stop or break anything running.
++- **Merge rights until 15 Oct** (Justin, 8 Oct 05:55: "you have merge grants for a week").
++- **The pause point** (asked by Justin at 23:30 on 8 Oct; recorded in `STATE.md` at 23:31, `0c28182`): "Justin wants a
++  stable base to use Iris and change its UI." Before it: Kagi search end to end, reliable restarts, #333 the contained
++  rehearsal, #316 finished or shelved, #292's handover rule confirmed. "After it: backend work (#328 Pi behind its
++  port, then folders) only outside `web/src/`, restarts batched to one he approves a day; the rename and #328's PR 14
++  (`/api/tasks`) wait, since they touch the UI."
++
+ ## Waiting
+ 
+ - Astra's entropy-guard assessment of Core and the lab runs once Justin's entropy-guard upgrade is done. Justin wants a
+   hand in crafting its brief.
++- **Four questions from an entropy-guard assessment by Claude, 10 Oct,** awaiting Justin: (1) where the session-end
++  guard lives, and whether one guard covers sessions in both repositories; (2) whether this Scope's `AGENTS.md`, "Pace",
++  and the orchestrator's `AGENTS.md`, "Working Style", still govern beside the user-wide rules of 21 Sep ("Build the
++  whole thing") and 10 Oct ("Before building a part, ask what it is one of"); (3) whether plain "Iris" is kept out of
++  repository prose now, or when the project-wide rename reaches it (glossary, 10 Oct); (4) one size for `STATE.md`:
++  "about forty content lines" (`AGENTS.md`) or "sixty lines" (its own header).
+diff --git a/memory/core-and-scopes.md b/memory/core-and-scopes.md
+index b21d8d3..b126a86 100644
+--- a/memory/core-and-scopes.md
++++ b/memory/core-and-scopes.md
+@@ -7,6 +7,9 @@ is a direction: none is built yet.
+ ## Names
+ 
+ - ORC is to be called **Core**. The whole system, of which Core is the core, needs a super-name, still unchosen (#42).
++- **Superseded on 7 and 10 Oct** by the glossary agreed with Justin (orchestrator `docs/GLOSSARY.md`): Core is
++  `src/core/` only, the application is Agent Iris (working name), Iris-app for short, and its front-door agent is
++  Iris-agent. Elsewhere in this file "Core" means the whole application, as the word was used on 4 to 6 Oct.
+ 
+ ## How Core learns about Scopes (finding 1)
+ 
+@@ -137,6 +140,7 @@ types and defaults found in `src/core/child-agent-process.ts`.
+ 
+ - **Finance and Waterlands.** Saying finance works on Waterlands' vault without owning it needs a relationship
+   contract (Astra), and the ratchet asks whether invoicing belongs there at all.
+-- **Finding 2.** The retired `agentic-architecture` is still cited in ORC's and Moving Stillness's `AGENTS.md`.
++- **Finding 2.** The retired `agentic-architecture` is still cited in Moving Stillness's `AGENTS.md` (not re-checked on
++  10 Oct). ORC's `AGENTS.md` names it only as retired since 5 Oct (`5e7bef8`).
+ - **Finding 8.** `workflows/` folders in ClearTube, finance and the lab move into `skills/`, each in its Scope's next
+   session.
+diff --git a/tools/map.mjs b/tools/map.mjs
+index fe7e648..e9d32b6 100644
+--- a/tools/map.mjs
++++ b/tools/map.mjs
+@@ -379,7 +379,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
+   }
+   const tree = mapTree();
+   if (!tree) { console.error("GitHub could not be read."); process.exit(2); }
+-  for (const line of renderMap(tree, whereWeAre(), workingNow(projectItems()))) console.log(line);
++  const here = whereWeAre();
++  for (const line of renderMap(tree, here, workingNow(projectItems()))) console.log(line);
++  // The ★ needs STATE.md's "**Where we are now:** #N" line; it was missing from 5 to 10 Oct 2026 and nothing said so.
++  if (!here) console.log("\nNo ★: STATE.md has no \"**Where we are now:** #N\" line naming an issue on the map.");
+   const outside = outsideMap(tree);
+   console.log(outside.length ? `\nOpen issues outside the map (${outside.length}):` : "\nEvery open issue is on the map.");
+   for (const issue of outside) console.log(`  ${label(issue)} ${issue.title}`);

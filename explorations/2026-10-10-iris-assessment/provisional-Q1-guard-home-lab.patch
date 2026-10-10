@@ -1,0 +1,162 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 344f550..e7bc24f 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -46,3 +46,9 @@ days after anyone last merged it (Justin, 7 Oct: "lets tidy things up").
+ Record each new agent, tool, or skill idea in `AGENT_IDEAS.md`. An idea is ingested only after a
+ commit containing that idea has landed. Commit each newly recorded idea immediately rather than
+ batching multiple ideas into a later commit.
++
++## Before ending a session
++
++Run `skills/session-coherence-guard/SKILL.md` before the session's last `STATE.md` commit. It covers this repository
++and any orchestrator checkout or worktree the session touched. Then end the session with `node tools/map.mjs session
++end <id>`.
+diff --git a/STATE.md b/STATE.md
+index 46f8557..12928b4 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -22,6 +22,7 @@ and eventual work showpiece. **Core** is its `src/core/` (glossary, orchestrator
+ - **Working rules in force** (`memory/central-scope.md`): the live install is development for now (Justin, 7 Oct
+   23:05); merge rights until 15 Oct (Justin, 8 Oct 05:55); the pause, below.
+ - Edit PR descriptions with `gh api -X PATCH .../pulls/N -F body=@file`: `gh pr edit` fails on a GitHub deprecation.
++- Before ending a session: `skills/session-coherence-guard/SKILL.md` (drafted 10 Oct; not yet run at a session end).
+ 
+ ## Where we are (10 Oct, evening)
+ 
+diff --git a/memory/central-scope.md b/memory/central-scope.md
+index 6573f5c..baad223 100644
+--- a/memory/central-scope.md
++++ b/memory/central-scope.md
+@@ -23,7 +23,7 @@ type that does the job, and an owner.
+ - package API check;
+ - daily diary;
+ - weekly adversarial review;
+-- entropy guard at session end;
++- entropy guard at session end (`skills/session-coherence-guard/SKILL.md`, run by the session's agent; not scheduled);
+ - FRICTION into rules (#60);
+ - branch and worktree cleanup (#70);
+ - `/tmp` cleanup (#182), proposed as Core's first scheduled job, not yet approved;
+diff --git a/skills/session-coherence-guard/SKILL.md b/skills/session-coherence-guard/SKILL.md
+new file mode 100644
+index 0000000..85e75f2
+--- /dev/null
++++ b/skills/session-coherence-guard/SKILL.md
+@@ -0,0 +1,117 @@
++---
++name: session-coherence-guard
++description: Check this repository's coherence at the end of a work session, before handoff.
++metadata:
++  generated: "2026-10-10"
++  source: "entropy-guard session-coherence-skill-generator v0.5.0"
++---
++
++# Skill: Orchestration Lab and Iris-app Session Coherence Guard
++
++Run at the end of a work session, before commit or handoff. Check only this session's change.
++
++## Modes and safety
++- Follow the invocation's mode: plan, audit-only and discuss-first inspect and report without editing; build permits
++  scoped repairs.
++- Never commit or push unless asked. Never read, print or write secret values; inspect examples and key names instead.
++- Leave unrelated changes alone, and keep committed workflow logic out of vendor-specific agent folders.
++
++## Where things live
++- Authorised intent: this Scope's `SCOPE.md`, `scope.yaml`, and the decisions in `memory/` and `decisions/`; in
++  `~/pro/orchestrator`, the README's "Direction", `AGENTS.md` and `docs/GLOSSARY.md`. Steward: Justin (`scope.yaml`).
++  Open intent questions: `memory/central-scope.md`, "Waiting".
++- Current state and next steps: `STATE.md`. Read it first. Open work: GitHub issues on the map, orchestrator#140.
++- Decisions: `memory/` (Scope relations, this lab's processes, the working rules in force), `decisions/`, a design
++  report's opening in `reports/`, the orchestrator's `AGENTS.md` and `docs/GLOSSARY.md`. What broke: `FRICTION.md`.
++- Rules owned elsewhere: Justin's user-wide `~/AGENTS.md` and `~/.claude/CLAUDE.md`; in `~/pro/orchestrator`,
++  `SECURITY-REVIEW.md`, `AGENTS.md` ("Astra review", "Versions"), `dangerfile.js` and `.github/workflows/`; the
++  `astra-review` skill.
++
++## What changed this session
++Find the commit the session started from, and write it in place of `<start>` below. If you cannot, use `origin/main`
++and report "coverage incomplete". If neither exists, report committed changes as not covered, and still inspect staged,
++unstaged and untracked work.
++```bash
++git log --oneline <start>..HEAD           # commits
++git diff <start> HEAD                     # what they changed
++git status --short
++git diff --cached                         # staged: what the next commit holds
++git diff                                  # unstaged
++git ls-files --others --exclude-standard  # untracked: read those that matter
++```
++<!-- Check staged and unstaged separately: `git diff HEAD` nets them out, so a change staged and then undone in the
++working tree shows nothing yet still lands. Add live changes the checks depend on (a deployed build, a grant), read
++with the time. -->
++Run it here and in each orchestrator checkout or worktree the session touched. `<start>` in each is
++`git rev-list -1 --before=<start time in the session id from map.mjs session start> main`. Add the pull requests
++merged since then (`gh pr list --state merged --search "merged:>=<start time>"` in each repository), and what runs
++now (`pnpm service:status` in `~/pro/orchestrator`), read with the time.
++
++## Intent
++Does this change fit the authorised intent in the files above? If not:
++
++> When this session's work and the authorised intent disagree:
++>
++> 1. Decide which it is: a defect in the work, an adaptation within what is already authorised, or a change of
++>    intent nobody has decided.
++> 2. Fix a defect in the work.
++> 3. Go ahead with an adaptation within existing authorisation, and record its reason where that helps. Record an
++>    undecided change of intent as a proposal for Justin in `memory/central-scope.md`, "Waiting"; work that depends
++>    on it waits for the decision.
++> 4. Do not edit `SCOPE.md`, `scope.yaml`, the decisions in `memory/` and `decisions/`, or the orchestrator's README
++>    "Direction", `AGENTS.md` rules or `docs/GLOSSARY.md` to match the work unless Justin has recorded that decision.
++> 5. Correct a document directly only when a recorded decision of Justin's already settles it, and cite that
++>    decision.
++> 6. Before making a description, an implementation and a check agree, establish which of them is wrong. A test or
++>    the code shows what is checked or built; it does not authorise weakening a documented constraint.
++
++(Intent-change rule v2, from entropy-guard.)
++
++## Checks
++- If code changed (`src/`, `config/`, `scripts/` in the orchestrator; `tools/` here): does the README and
++  `AGENTS.md` beside it still describe it?
++- For each state claim changed in `STATE.md`: do its other mentions still agree?
++- If the change alters what Iris-app or an agent reaches, launches, stores or reads credentials from, or which tools
++  or card kinds exist: do the orchestrator's `AGENTS.md` ("Boundaries", "Approval cards") and README (opening,
++  "Credentials", "Boundary") still hold? Search the code with the command below, record the search, and extend
++  `test/architecture.test.ts` where the new reach escapes its patterns.
++- If a setting, environment variable, command, path, tool, file or pinned version was added, renamed or removed:
++  search both repositories' docs, `STATE.md` and `memory/` for the old name and value.
++- For each time or live fact written this session (`STATE.md`, `FRICTION.md`, issue or PR text): was it read from
++  `date`, a file time, GitHub or `pnpm service:status`, and does it say where and when?
++- Did Justin decide something this session? It is in its concern's file under "Decisions", not only in `STATE.md`;
++  what it supersedes is marked; a design report it settles says so in its opening. Learnings and friction go where
++  `AGENTS.md`, "Where a learning goes", and `FRICTION.md` say.
++- Does the change respect each working rule in force in `memory/central-scope.md`, such as an area held back or a
++  grant's end date, and has any ended?
++- For each pull request merged this session: did the full `pnpm typecheck` and `pnpm test` pass on its final head,
++  with the whole log in a file, and were its GitHub checks green? A failed check warns rather than blocks.
++- If a concept was named or renamed: does `docs/GLOSSARY.md` already name it, and does new prose avoid its retired
++  words? While the plain "Iris" question in "Waiting" is open, report new plain "Iris" without changing it.
++- Before reviving an archived report, a retired word or a superseded mechanism, such as the env-file Scope list,
++  check `memory/`, `STATE.md` and the glossary for its supersession.
++- If the session pulled `~/pro/orchestrator` or merged Iris-app work: did a restart card appear within seconds (it
++  needs `git config core.hooksPath` to be `.githooks` there), and is what runs read back with `pnpm service:status`?
++```bash
++# Here, in the lab. Then `node tools/map.mjs session end "$SESSION_ID"`, Justin's rule.
++node tools/map.mjs --check
++# In the orchestrator checkout, when its code changed: CI runs neither. SESSION_ID is from map.mjs session start.
++pnpm typecheck > "/tmp/${SESSION_ID:?}-typecheck.log" 2>&1; pnpm test > "/tmp/${SESSION_ID:?}-test.log" 2>&1
++grep -rnE 'child_process|spawn\(|execFile|fork\(|\.launch\(|playwright|worker_threads|\bfetch\b' src config
++grep -rnE 'node:(dns|net|https?)|WebSocket|process\.env|readScopeCredential' src config
++```
++
++## Repairs
++- One owner per concept: when two places define one concept independently, reduce one to a link. Keep summaries,
++  generated projections, versioned copies and independent tests, and keep them correct.
++- Limit every correction by its evidence. Change only what the evidence settles, and leave open parts visibly open.
++  For a claim about everything of a kind, such as what the system reaches or launches, search the code rather than
++  trusting a document and a test that agree, and record the search. Never change a
++  prescribed boundary because of observed behaviour, and never treat a test or the code as the record: where a
++  description, the code and a check disagree, establish which is wrong first.
++
++## Report
++- Baseline, and whether coverage was complete; what was checked and what was not.
++- Findings caused by this session, judged by the relationship changed, not the file edited: renaming a setting in
++  the code makes an untouched README wrong. Problems that were already there, listed separately.
++- Proposals for Justin; files updated; the next action, written into `STATE.md`.

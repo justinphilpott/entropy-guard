@@ -1,0 +1,20 @@
+diff --git a/.changeset/working-style-follows-user-rules.md b/.changeset/working-style-follows-user-rules.md
+new file mode 100644
+index 0000000..a845151
+--- /dev/null
++++ b/.changeset/working-style-follows-user-rules.md
+@@ -0,0 +1,2 @@
++---
++---
+diff --git a/AGENTS.md b/AGENTS.md
+index cd20ad6..fdea36a 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -236,5 +236,6 @@ major is a minor whose sentence says what must be done.
+ 
+ ## Working Style
+ 
+-Use small working examples before generalising. Keep documentation concise and
++Build what is naturally needed for where the work is and what is visibly coming, and build the general version when
++a second case appears, as Justin's user-wide rules say (21 Sep and 10 Oct). Keep documentation concise and
+ retrospective: record only what the implementation and real use established.

@@ -1,0 +1,32 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 344f550..f6169d7 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -31,9 +31,11 @@ documentation retrospective.
+ ## Keeping state
+ 
+ `STATE.md` is overwritten at each verified event: a commit lands, tests pass, a decision is taken.
+-It holds current state only, capped at about forty content lines. History is in `git log`; open
+-work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a state file
+-that stops being read.
++It holds current state only, capped at sixty lines, derived from what it must hold: a header (5), the north
++star (4), how we work (6), up to five active fronts at four lines each (20), Justin's next actions (6), his other open
++decisions (6), misleading material nearby (3) and spacing (10); it measured 62 lines at `56a32e0` on 10 Oct. History
++is in `git log`; open work is in GitHub issues, placed on the map (orchestrator#140). A state file that grows is a
++state file that stops being read.
+ 
+ ## Branches
+ 
+diff --git a/STATE.md b/STATE.md
+index 46f8557..afe097a 100644
+--- a/STATE.md
++++ b/STATE.md
+@@ -2,7 +2,7 @@
+ 
+ **Current state only.** When it last changed is in `git log -1 STATE.md`. History is in `git log`, open work in
+ GitHub issues on the map (orchestrator#140), what broke in `FRICTION.md`. Overwrite; do not
+-append. Target: sixty lines.
++append. Size: the cap in `AGENTS.md`, "Keeping state".
+ 
+ Decisions by concern: `memory/` (Scope relations, this lab's processes, the working rules in force), `decisions/`
+ (async work), a design report's opening in `reports/`, and the orchestrator's `AGENTS.md` and `docs/GLOSSARY.md`.
