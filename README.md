@@ -121,11 +121,11 @@ This project runs its [own entropy guard](skills/local/entropy-guard/) before ev
 
 ## Project status
 
-Actively evolving. The project's strongest validated use case is docs-first planning repos: markdown-first systems where evolving design docs, decision logs, handoff docs, and agent instructions need to stay coherent across repeated sessions. The October 2026 revision (see `explorations/2026-10-04-skills-review-synthesis.md`) added the intent pass, made one skill the guard builder, and added routes for mixed and multi-repository systems ahead of assessing ORC. This repo's own guard remains the main reference example.
+Actively evolving. The project's strongest validated use case is docs-first planning repos: markdown-first systems where evolving design docs, decision logs, handoff docs, and agent instructions need to stay coherent across repeated sessions. The October 2026 revision (see `explorations/2026-10-04-skills-review-synthesis.md`) added the intent pass, made one skill the guard builder, and added routes for mixed and multi-repository systems ahead of assessing Iris. This repo's own guard remains the main reference example.
 
 The repo is now deliberately narrower in scope than the exploratory work that spawned it. `entropy-guard` focuses on making the assessment / guard workflow useful, repeatable, and externally validated, starting with docs-first planning systems before broadening further. Broader conceptual exploration has been farmed off into the sibling `entropy-immune-system` repo.
 
-The next concrete phase is assessing ORC, Justin's orchestration system, together with the lab Scope that manages it, then continuing external validation on more repos. Each revision of the skills is checked against the known-answer cases in `explorations/2026-10-04-skills-revision-eval.md`.
+The next concrete phase is assessing Iris, Justin's agentic system, together with the lab Scope that manages it, then continuing external validation on more repos. Each revision of the skills is checked against the known-answer cases in `explorations/2026-10-04-skills-revision-eval.md`.
 
 See [TODO.md](TODO.md) for current priorities.
 
