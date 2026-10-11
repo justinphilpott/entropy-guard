@@ -2,7 +2,7 @@
 
 > This document is the north star for the entropy-guard project and the meta-skill we are building. Its steward is Justin Philpott. Anyone, human or agent, can propose a change by recording it in `DECISIONS.md` as proposed; it lands here once Justin has decided it. When you update it, note the date, what prompted the revision, and the decision it follows.
 
-*Last revised: 2026-10-04 — following Justin's approval of the skills revision ("go ahead with the revision", 4 October; `explorations/2026-10-04-skills-review-synthesis.md`): intent is authorised by the steward rather than inferred, one skill builds guards, guards hold only durable checking policy, and ORC becomes the next validation target. Previous revision: 2026-04-07, docs-first planning specialization.*
+*Last revised: 2026-10-04 — following Justin's approval of the skills revision ("go ahead with the revision", 4 October; `explorations/2026-10-04-skills-review-synthesis.md`): intent is authorised by the steward rather than inferred, one skill builds guards, guards hold only durable checking policy, and Iris becomes the next validation target. Previous revision: 2026-04-07, docs-first planning specialization.*
 
 ---
 
@@ -132,9 +132,9 @@ This repo is now intentionally narrower than the broader conceptual work it help
 - `entropy-guard` stays focused on practical entropy protection: assessment, guard generation/refinement, integration, and eventually stronger operational validation.
 - The larger exploration into entropic immunity, layered steering, viability, and broader sociotechnical theory now continues in the sibling `entropy-immune-system` repo.
 
-The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge was the repo shape where the methodology was already proving useful: docs-first planning systems. The next target is ORC, Justin's orchestration system, assessed together with the lab Scope that manages it (Justin, 2026-10-04: "Once we've upgraded entropy guard if that's clearly useful, we'll be ready to unleash it on the ORC"). It is a mixed code, docs and workflow system spread over more than one repository, which tests the routes beyond docs-first.
+The next major step for this repo is not to widen its philosophy further, but to validate its current practical level more aggressively. The first validation wedge was the repo shape where the methodology was already proving useful: docs-first planning systems. The next target is Iris, Justin's orchestration system, assessed together with the lab Scope that manages it (Justin, 2026-10-04: "Once we've upgraded entropy guard if that's clearly useful, we'll be ready to unleash it on the ORC"). <!-- retired-words: quoted --> It is a mixed code, docs and workflow system spread over more than one repository, which tests the routes beyond docs-first.
 
-- assess ORC and the lab together, read-only first, then with Justin's approval for any change
+- assess Iris and the lab together, read-only first, then with Justin's approval for any change
 - select a larger batch of docs-first planning / architecture / blueprint repos
 - run `entropy-assessment` as the front door and follow its route
 - generate or refine guards where appropriate and keep each repo's current-state file up to date for session start

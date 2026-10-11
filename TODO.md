@@ -17,7 +17,7 @@ Paused by Justin at 23:22 on 7 October; resumed 10 October. Two decisions still 
 branch (both changes, the patch check alone, or more runs), and an Astra review of it. PR #14 (the size cut) was
 merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
 
-**Installed and running on Iris (ORC's new name), 10 October, on Justin's "yes please link them":**
+**Installed, and run on Iris, 10 October, on Justin's "yes please link them":**
 - The four exportable skills now link to each other as `../<name>/SKILL.md` (`47eae36`), so they resolve once
   installed. local-config `91a7338` (not pushed) links them into `~/.agents/skills` and `~/.claude/skills` through
   its sync, with a DECISIONS entry. The links serve whatever `~/pro/entropy-guard` has checked out: this branch now.
@@ -26,9 +26,11 @@ merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
   decision `create`; 14 findings; 4 questions for Justin; settled and provisional patches, none applied. Nothing in
   Iris or the lab changes until Justin answers.
 - Justin answered the run's Q1 on 10 October: one guard, in the lab at `skills/session-coherence-guard/SKILL.md`,
-  covering both repositories. Overnight: map issue orchestrator#383; orchestrator PR #384 (Iris's reach, launch and
-  credential lists match the code; pointer to the guard; Danger and names-issue pass) and scope-orchestration-lab PR
-  #6 (the guard installed; three decisions copied out of `STATE.md`; merge first). Both open, not merged.
+  covering both repositories. Map issue orchestrator#383; scope-orchestration-lab PR #6 (the guard installed; three
+  decisions copied out of `STATE.md`) and orchestrator PR #384 (Iris's reach, launch and credential lists match the
+  code; pointer to the guard), both merged on 11 October on Justin's "merge what is still relevant", after merging
+  `main` into each. The guard then ran from the lab's `main` at that session's end, closing #383
+  (`first-guard-run.md`).
 - The run's 5 notes on the skills (`skills-feedback.md` there) are sorted into Next Up below.
 
 ## Next Up
@@ -42,10 +44,10 @@ merged at 23:23 on 7 October, as `f2a3dba`; this branch sits on what main holds.
 - [ ] The intent pass: name `git log -S` on the state file as the first search for a decision whose only home is an
   overwritten state file (Iris run, note 5)
 - [ ] The generator's mandatory intent-change rule can meet an open question about that same rule (both round-6 R2 runs): say what the guard does then, so a run neither holds back every settled fix nor writes a guard that contradicts itself
-- [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through ORC); each change needs that repo owner's yes
+- [ ] Triage the 7 deployed guards: which are still used, and which need the intent-change rule, pointers instead of copied state, or a delta that includes uncommitted work. The audio-tools guard's spend lines are first (they predate the 2026-10-03 rule that spending goes through Iris); each change needs that repo owner's yes
 - [ ] Build an external validation batch: choose a larger set of docs-first planning / architecture / blueprint repos to assess through `entropy-assessment`, and record hits, misses and friction
 
 ## Backlog
 
-- [ ] Consider additional specialized tracks once ORC and the docs-first batch show where the front door's profile is too thin (code-first, config/infrastructure, or other recurring repo shapes)
+- [ ] Consider additional specialized tracks once Iris and the docs-first batch show where the front door's profile is too thin (code-first, config/infrastructure, or other recurring repo shapes)
 - [ ] Consider a blind-newcomer probe for the current-state file: a fresh agent answers fixed questions with and without it. Only if the file's value comes into question (synthesis, 2026-10-04)
